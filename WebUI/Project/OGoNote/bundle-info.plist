@@ -11,6 +11,7 @@
       { name = LSWModuleManager;  exact-version = 2; },
       { name = LSWViewAction;     version = 1; },
       { name = SkyAttributeCell; },
+      { name = SkyNotePrint;     },
       { name = SkyValueCell;     }
     );
   };
@@ -25,11 +26,13 @@
     WOComponents = (
       { name = SkyNoteList;   },
       { name = SkyNoteEditor; },
+      { name = SkyNotePrint;  },
     );
 
     LSWCommands = (
       { verb = edit; type = "eo/note";    component = SkyNoteEditor; },
       { verb = new;  type = "eo/note";    component = SkyNoteEditor; },
+      { verb = print; type = "eo/note";    component = SkyNotePrint;  },
     );
   };
 }

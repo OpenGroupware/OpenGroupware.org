@@ -10,6 +10,7 @@ OGoNote_OBJC_FILES = \
 	SkyNoteModule.m	\
 	SkyNoteList.m	\
 	SkyNoteEditor.m	\
+        SkyNotePrint.m  \
 
 OGoNote_RESOURCE_FILES += \
 	Version		\

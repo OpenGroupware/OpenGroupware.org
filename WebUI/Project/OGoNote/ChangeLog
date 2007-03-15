@@ -1,3 +1,8 @@
+2007-03-14  Sebastian Reitenbach <reitenbach@rapideye.de>
+
+	* Added print view to note list tab for projects and appointments
+	  (closes OGo bug#1627) (v5.3.16)
+
 2007-03-14  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* v5.1.15

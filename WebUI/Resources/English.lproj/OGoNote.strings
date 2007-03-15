@@ -221,6 +221,7 @@ personType               = "Person";
 pot                      = "Download POT document";
 pps                      = "Download PPS document";
 ppt                      = "Download PPT document";
+printnotes              = "print notes";
 priority                 = "Priority";
 priorityLabel            = "Priority";
 priority_1               = "Very High";

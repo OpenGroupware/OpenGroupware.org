@@ -1,4 +1,7 @@
+"Appointment notes" = "Notizen zum Termin";
+"Project notes" = "Notizen zum Projekt";
 "Quick Create Title" = "Titel der Notiz";
+printnotes         = "Notizen drucken";
 togglecreate        = "Schnell erstellen";
 create              = "Erstellen";
 00_created          = "erstellt";

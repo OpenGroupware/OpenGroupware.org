@@ -11,21 +11,36 @@
   <!-- TODO: can we use <OGo:page-head> ? => different color/clash with tv -->
   <table cellspacing="0" cellpadding="1" border="0" width="100%">
     <tr var:bgcolor="config.colors_tableViewAttributeCell">
+     <var:if condition="printMode" const:negate="YES">
       <td><OGo:font><b><var:string value="title" /></b></OGo:font></td>
       <td align="right">
         <buttons xmlns="http://www.opengroupware.org/ns/wox/ogo">
+          <button name="print" label="printnotes"
+                   action="printNotes" target="print" />
           <button name="showhide" label="togglecreate" 
                   action="toggleQuickCreate" />
           <button name="createnewnote" label="new" 
                   action="createNewNote" />
         </buttons>
       </td> 
+     </var:if>
+     <var:if condition="printMode">
+       <td colspan="2"><OGo:font><b>
+          <var:if condition="isAppointmentAssigned">
+            <OGo:label key="Appointment notes" />
+          </var:if>
+          <var:if condition="isProjectAssigned">
+            <OGo:label key="Project notes" />
+          </var:if>:
+          <var:string value="title" /></b></OGo:font></td>
+      </var:if>
     </tr>
     <tr><td colspan="2"></td></tr>
   </table>
 
   <!-- The notes list -->
   <table border="0" width="100%" cellpadding="1" cellspacing="0">
+   <var:if condition="printMode" const:negate="YES">
     <var:if condition="shouldShowQuickCreate">
       <tr var:bgcolor="config.colors_tableViewHeaderCell">
         <td colspan="3"><OGo:font><b>
@@ -52,6 +67,7 @@
         </td>
       </tr>
       <tr><td colspan="7"><small><hr size="1" /></small></td></tr>
+     </var:if>
     </var:if>
     
     <tr var:bgcolor="config.colors_tableViewHeaderCell">
@@ -94,7 +110,9 @@
           <entity name="nbsp"/>
         </OGo:font></td>
 
-        <td align="right" valign="top"><OGo:font>
+        <td align="right" valign="top">
+         <var:if condition="printMode" const:negate="YES">
+          <OGo:font>
           <var:switch selection="parent.name">
 
             <var:case const:key="SkyProject4Viewer">
@@ -125,9 +143,13 @@
               </var:if>
             </var:case>
           </var:switch>
-        </OGo:font></td>
+        </OGo:font>
+        </var:if>
+        </td>
 
-        <td align="right" valign="top"><OGo:font>
+        <td align="right" valign="top">
+         <var:if condition="printMode" const:negate="YES">
+          <OGo:font>
           <var:if condition="isEditDisabled" const:negate="YES">
 	    <a var:action="editNote"
               ><img filename="icon_editnote.gif"
@@ -137,12 +159,15 @@
             <img filename="icon_editnote_inactive.gif"
 		 var:alt="labels.editNote" border="0" />
           </var:if></OGo:font>
-          <br />
+          </var:if>
+         <br />
         </td>
       </tr>
 
       <tr><td colspan="7"><small><hr size="1" /></small></td></tr>
     </var:foreach>
   </table>
- </form>
+  <var:if condition="printMode" const:negate="YES">
+    </form>
+  <var:if>
 </OGo:container>

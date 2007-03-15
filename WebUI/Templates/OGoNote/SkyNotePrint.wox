@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+>
+  <!-- title with new note link -->
+  <!-- TODO: can we use <OGo:page-head> ? => different color/clash with tv -->
+  <html>
+  <head><title><var:string value="title" /></title></head>
+  <body bgcolor="white" text="black" onload="javascript:window.print()">
+  <var:component className="SkyNoteList"
+    notes="notes"
+    note="note"
+    title="title"
+    labels="labels"
+    const:printMode="1" />
+  </body>
+  </html>
+</OGo:container>
+

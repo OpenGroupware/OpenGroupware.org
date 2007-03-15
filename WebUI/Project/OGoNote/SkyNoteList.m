@@ -19,42 +19,9 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/LSWContentPage.h>
-
-@class NSArray, NSString;
-@class EOGlobalID;
-
-@interface SkyNoteList : LSWContentPage
-{
-@private
-  EOGlobalID *projectId;
-  NSArray    *notes;
-  NSArray    *projects;
-  id         appointment;
-  id         project;
-  id         note;
-  id         rootDocument;
-  NSString   *title;
-  NSString   *newNoteTitle;
-  NSString   *newNoteBody;
-  struct {
-    int isProjectEnabled:1;
-    int reserved:31;
-  } snlFlags;
-}
-
-- (void)setNotes:(NSArray *)_notes;
-- (NSArray *)notes;
-- (void)setNote:(id)_note;
-- (id)note;
-- (void)setTitle:(NSString *)_title;
-- (NSString *)title;
-- (NSString *)noteContent;
-- (id)project;
-
-@end
-
+#include "SkyNoteList.h"
 #include <NGMime/NGMimeType.h>
+#include <NGObjWeb/WOResponse.h>
 #include "common.h"
 
 @interface SkyNoteList(PrivateMethodes)
@@ -216,6 +183,30 @@ static NGMimeType *eoNoteType    = nil;
                           keys:&aptId keyCount:1 zone:NULL];
   return aptGid;
 }
+- (BOOL)printMode {
+  return self->printMode ? YES : NO;
+}
+
+- (void)setPrintMode:(BOOL)_printMode {
+  self->printMode = _printMode;
+}
+
+- (id)printNotes {
+  WOResponse *r;
+
+    id page;
+
+  page = [self pageWithName:@"SkyNotePrint"];
+  [page takeValue:self->projectId   forKey:@"projectId"];
+  [page takeValue:self->title       forKey:@"title"];
+  [page takeValue:self->projects    forKey:@"projects"];
+  [page takeValue:self->notes       forKey:@"Notes"];
+  [page takeValue:self->note       forKey:@"note"];
+  r = [page generateResponse];
+  [r setHeader:@"text/html" forKey:@"content-type"];
+  return r;
+}
+
 
 - (BOOL)isAppointmentViewAllowed {
   NSString *perms;
