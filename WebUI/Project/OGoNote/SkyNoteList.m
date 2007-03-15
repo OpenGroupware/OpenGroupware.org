@@ -199,7 +199,6 @@ static NGMimeType *eoNoteType    = nil;
   page = [self pageWithName:@"SkyNotePrint"];
   [page takeValue:self->projectId   forKey:@"projectId"];
   [page takeValue:self->title       forKey:@"title"];
-  [page takeValue:self->projects    forKey:@"projects"];
   [page takeValue:self->notes       forKey:@"Notes"];
   [page takeValue:self->note       forKey:@"note"];
   r = [page generateResponse];

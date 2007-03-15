@@ -1,3 +1,8 @@
+2007-03-15   Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* Removed unused ivar "projects"
+	  "NSArray *projects;" in SkyNoteList.h and takeValue in SkyNoteList.m (v5.3.17)
+
 2007-03-14  Sebastian Reitenbach <reitenbach@rapideye.de>
 
 	* Added print view to note list tab for projects and appointments

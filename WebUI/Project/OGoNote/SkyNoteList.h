@@ -29,7 +29,6 @@
   BOOL       printMode;
   EOGlobalID *projectId;
   NSArray    *notes;
-  NSArray    *projects;
   id         appointment;
   id         project;
   id         note;
