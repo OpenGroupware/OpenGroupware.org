@@ -1,10 +1,12 @@
 2007-03-14 Frank Reppin  <frank@opengroupware.org>
 
-	* refixed another removal clash on directory created by ogo-gnustep-make
+	* refixed another 'deinstall' clash on directories created by ogo-gnustep-make
 	  but populated by ogo-libfoundation
 	* properly remove 'Tools/' and 'Library/' directory from ${PREFIX}
 	* updated sope-devel to r1455 (which fixes compile wtf in NGVcard)
 	* this is sope 4.7 now...
+	* bumped opengroupware-devel to opengroupware.org-trunk-r1894-200703141503
+	* deorbit pilot-link from build due to unforseen incompatiblities
 
 2007-03-12 Frank Reppin  <frank@opengroupware.org>
 

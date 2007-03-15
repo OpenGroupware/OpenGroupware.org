@@ -94,7 +94,6 @@ include/OGoDocuments/NGLocalFileDocument.h
 include/OGoDocuments/NGLocalFileGlobalID.h
 include/OGoDocuments/NGLocalFileManager.h
 include/OGoDocuments/SkyContext.h
-include/OGoDocuments/SkyDocument+JS.h
 include/OGoDocuments/SkyDocument.h
 include/OGoDocuments/SkyDocumentFileManager.h
 include/OGoDocuments/SkyDocumentManager.h
@@ -126,6 +125,7 @@ include/OGoFoundation/OGoContentPage.h
 include/OGoFoundation/OGoEditorPage.h
 include/OGoFoundation/OGoFoundation.h
 include/OGoFoundation/OGoHelpManager.h
+include/OGoFoundation/OGoListComponent.h
 include/OGoFoundation/OGoModuleManager.h
 include/OGoFoundation/OGoNavigation.h
 include/OGoFoundation/OGoObjectMailPage.h
@@ -784,6 +784,10 @@ share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/LSWAddressViewer.htm
 share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/LSWAddressViewer.wod
 share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/LSWFormLetterComponent.wox
 share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/LSWFullSearch.wox
+share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/OGoCompanyBulkOpPanel.wod
+share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/OGoCompanyBulkOpPanel.html
+share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/OGoPrintCompanyList.wod
+share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/OGoPrintCompanyList.html
 share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/SkyAddressEditor.html
 share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/SkyAddressEditor.wod
 share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/SkyAddressEditorComponent.html
@@ -912,6 +916,7 @@ share/opengroupware.org-%%OGO_VERSION%%/templates/EnterprisesUI/SkyEnterpriseVie
 share/opengroupware.org-%%OGO_VERSION%%/templates/EnterprisesUI/SkyEnterpriseViewer.wod
 share/opengroupware.org-%%OGO_VERSION%%/templates/EnterprisesUI/SkyWizardEnterpriseViewer.html
 share/opengroupware.org-%%OGO_VERSION%%/templates/EnterprisesUI/SkyWizardEnterpriseViewer.wod
+share/opengroupware.org-%%OGO_VERSION%%/templates/EnterprisesUI/GNUmakefile
 share/opengroupware.org-%%OGO_VERSION%%/templates/GNUmakefile
 share/opengroupware.org-%%OGO_VERSION%%/templates/GroupsUI/GNUmakefile
 share/opengroupware.org-%%OGO_VERSION%%/templates/GroupsUI/OGoGroupsPage.wox
@@ -1392,17 +1397,31 @@ share/opengroupware.org-%%OGO_VERSION%%/translations/Basque.lproj/RelatedLinksUI
 share/opengroupware.org-%%OGO_VERSION%%/translations/Basque.lproj/SkyInvoice.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/COPYRIGHT
 share/opengroupware.org-%%OGO_VERSION%%/translations/ChangeLog
-share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/AddressUI.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/AdminUI.strings
-share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/BaseUI.strings
-share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/ChangeLog
-share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/EnterprisesUI.strings
-share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/JobUI.strings
-share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/LDAPAccounts.strings
-share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/LSWMail.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/PersonsUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/OGoResourceScheduler.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/LSWProject.strings
-share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/NewsUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/OGoMailEditor.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/ChangeLog
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/OGoSchedulerViews.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/EnterprisesUI.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/PROJECTLEAD
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/LSWScheduler.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/OGoRecipientLists.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/LSWMail.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/BaseUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/JobUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/NewsUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/OGoProject.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/GroupsUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/OGoDocInlineViewers.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/OGoUIElements.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/LDAPAccounts.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/AddressUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/OGoScheduler.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/OGoSchedulerDock.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/OGoWebMail.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj/OGoProjectInfo.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/Dutch.lproj/AddressUI.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/Dutch.lproj/AdminUI.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/Dutch.lproj/BaseUI.strings
@@ -1470,6 +1489,40 @@ share/opengroupware.org-%%OGO_VERSION%%/translations/English.lproj/PreferencesUI
 share/opengroupware.org-%%OGO_VERSION%%/translations/English.lproj/RegUI.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/English.lproj/RelatedLinksUI.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/English.lproj/SkyInvoice.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/AdminUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoMailViewers.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/LSWProject.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoProjectZip.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/PreferencesUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoMailInfo.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/CfgAdminUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/BaseUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/LSWMail.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/CyrusAdminUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoDocInlineViewers.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/LDAPAccounts.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/AddressUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoScheduler.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoProjectInfo.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/PersonsUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoMailFilter.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoMailEditor.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoPalm.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoSchedulerViews.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/EnterprisesUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/PROJECTLEAD
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/LSWScheduler.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoRecipientLists.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/JobUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoNote.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/NewsUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoProject.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoUIElements.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/RelatedLinksUI.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/SkyInvoice.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoSchedulerDock.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoWebMail.strings
+share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj/OGoResourceScheduler.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/French.lproj/AddressUI.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/French.lproj/AdminUI.strings
 share/opengroupware.org-%%OGO_VERSION%%/translations/French.lproj/BaseUI.strings
@@ -1814,6 +1867,12 @@ share/opengroupware.org-%%OGO_VERSION%%/www/Danish.lproj/accept.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/Danish.lproj/accept_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/Danish.lproj/add.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/Danish.lproj/add_bottom_icon.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/Danish_orange.lproj/menu_enterprises_labeled.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/Danish_orange.lproj/menu_projects_labeled.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/Danish_orange.lproj/menu_persons_labeled.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/Danish_orange.lproj/menu_news_labeled.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/Danish_orange.lproj/menu_jobs_labeled.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/Danish_orange.lproj/menu_scheduler_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/LSWAppointmentEditor.js
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/OGo.css
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/WOStats.xsl
@@ -2177,6 +2236,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_image_bmp_16x
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_image_gif_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_image_jpeg_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_image_pjpeg_16x19.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_image_png_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_image_tiff_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_image_x_icon_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_message_delivery_status_16x19.gif
@@ -4509,6 +4569,7 @@ share/zidestore-1.5/PersonalFolderInfo.plist
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj
+@dirrm share/opengroupware.org-%%OGO_VERSION%%/www/Danish_orange.lproj
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/www/Danish.lproj
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/www
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/translations/ptBR.lproj
@@ -4522,6 +4583,7 @@ share/zidestore-1.5/PersonalFolderInfo.plist
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/translations/Hungarian.lproj
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/translations/German.lproj
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/translations/French.lproj
+@dirrm share/opengroupware.org-%%OGO_VERSION%%/translations/Finish.lproj
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/translations/English.lproj
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/translations/Dutch.lproj
 @dirrm share/opengroupware.org-%%OGO_VERSION%%/translations/Danish.lproj
