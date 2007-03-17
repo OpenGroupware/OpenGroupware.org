@@ -1,3 +1,27 @@
+2007-03-16  Per Jensen  <per@net-es.dk>
+
+	* Fixed 'cancel' translation in many files.
+
+	* OGoMailEditor.string, OGoWebMail.strings: fixed 'qouta' translation
+
+	* LSWscheduler.strings, OGoWebmail.strings, OGoMailEditor.strings:
+	  fixed 'forward' translation
+
+	* Added: OGOMailInfo.strings, OGoMailViewers.strings,
+	  OGoProjectZip.strings
+
+	* Added missing ";" to LSWMail.strings, EnterprisesUI.strings,
+	  OGoSchedulerDock.strings
+
+2007-03-12  Per Jensen  <per@net-es.dk>
+
+	* Added OGoMailFilter.strings
+
+	* fixed spell error in OGoMailEditor.strings
+
+	* removed OGoWebMail.strings -> OGoMailEditor.strings, added
+	  OGoWebMail.strings
+
 2007-03-10  Per Jensen  <per@net-es.dk>
 
 	* Updated PROJECTLEAD

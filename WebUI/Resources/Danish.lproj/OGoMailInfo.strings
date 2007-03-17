@@ -1,0 +1,37 @@
+// $Id: OGoMailInfo.strings,v 1.4 2004/02/13 00:28:46 helge Exp $
+
+mail_editor_type            = "Mailredigeringstype";
+mail_send_type              = "Send Mail som";
+DefaultAccessPreferences    = "Standard adgangs rettigheder";
+Imap                        = "Mails";
+LSWMailPreferences          = "Mail indstillinger";
+NO                          = "Nej";
+YES                         = "Ja";
+action_closeWindow          = "luk vindue";
+action_refresh              = "genindlæs";
+action_viewMail             = "se mail";
+activeMail                  = "Email";
+asIcon                      = "som ikon";
+cancelButtonLabel           = "annuller";
+external                    = "Ekstern";
+html                        = "Html";
+imapHost                    = "imap vært";
+imapPasswd1                 = "imap password";
+imapPasswd2                 = "gentag imap password";
+imapUser                    = "imap bruger navn";
+inactiveMail                = "Email (inaktiv)";
+internal                    = "Intern";
+label_newMail_multi         = "Du har %i nye mails";
+label_newMail_no            = "Du har ingen nye mails";
+label_newMail_single        = "Du har en ny mail";
+login                       = "Login";
+newMail                     = "Mail (ulæste)";
+plain                       = "Tekst";
+saveButtonLabel             = "gem";
+senderLength                = "Afsender længde";
+signature                   = "Signatur";
+subjectLength               = "Emne længde";
+viewAttachmentBodysInEditor = "Se vedlæg ved redigering";
+viewAttachmentsInline       = "Se vedlæg indlejret";
+viewImagesInline            = "Se billeder indlejret";
+viewStatus                  = "Se mail status";

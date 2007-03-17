@@ -86,7 +86,7 @@ bill					= "Fakturerings adresse";
 birthday				= "Fødselsdag";
 blockSize				= "Antal viste elementer";
 
-cancelButtonLabel			= "annuler";
+cancelButtonLabel			= "annuller";
 categoryLabel				= "Kategori";
 chooseEnterprise			= "Vælg virksomhed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 chooseMailingAddress			= "Vælg post adresse";
@@ -187,7 +187,7 @@ male					= "Mand";
 maxResults				= "Maks. antal resultater";
 middlename				= "Mellemnavn";
 moveFolder				= "Flyt mappe";
-name					= "Efternavn"
+name					= "Efternavn";
 name1					= "Navn 1";
 name2					= "Navn 2";
 name3					= "Navn 3";

@@ -1,0 +1,22 @@
+// $Id: OGoProjectZip.strings,v 1.3 2004/02/13 01:14:42 helge Exp $
+
+archiveFormat        = "arkiv format";
+targetFile           = "målfil";
+compressionLevel     = "kompressionsniveau";
+saveAttributes       = "gem egenskaber";
+targetDir            = "målfolder";
+fileName             = "Filnavn";
+size                 = "Størrelse";
+owner                = "Nuværende ejer";
+subject              = "Titel";
+releaseDate          = "Ændret";
+exclude              = "ekskluder";
+filePath             = "Sti";
+date                 = "Dato";
+remove               = "fjern arkiv fil";
+overwrite            = "overskriv eksisterende filer";
+restoreAttributes    = "prøv at retablere fil egenskaber";
+archiveContent       = "indhold af arkiv fil";
+cancel               = "annuller";
+unzip                = "unzip";
+zip                  = "zip";
