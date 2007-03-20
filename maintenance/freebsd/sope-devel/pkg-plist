@@ -474,60 +474,60 @@ include/XmlRpc/XmlRpc.h
 include/XmlRpc/XmlRpcCoder.h
 include/XmlRpc/XmlRpcMethodCall.h
 include/XmlRpc/XmlRpcMethodResponse.h
-lib/libDOM_d.so
-lib/libDOM_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libDOM_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBDOM_SUBMINOR%%
-lib/libEOControl_d.so
-lib/libEOControl_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libEOControl_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBEOCONTROL_SUBMINOR%%
-lib/libGDLAccess_d.so
-lib/libGDLAccess_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libGDLAccess_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBGDLACCESS_SUBMINOR%%
-lib/libGDLContentStore_d.so
-lib/libGDLContentStore_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libGDLContentStore_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBGDLCONTENTSTORE_SUBMINOR%%
-lib/libNGExtensions_d.so
-lib/libNGExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libNGExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGEXTENSIONS_SUBMINOR%%
-@unexec rm -f %D/lib/libNGLdap_d.so 2>/dev/null || true
-@unexec rm -f %D/lib/libNGLdap_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%% 2>/dev/null || true
-@unexec rm -f %D/lib/libNGLdap_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGLDAP_SUBMINOR%% 2>/dev/null || true
-lib/libNGMime_d.so
-lib/libNGMime_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libNGMime_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGMIME_SUBMINOR%%
-lib/libNGObjWeb_d.so
-lib/libNGObjWeb_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libNGObjWeb_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGOBJWEB_SUBMINOR%%
-lib/libNGStreams_d.so
-lib/libNGStreams_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libNGStreams_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGSTREAMS_SUBMINOR%%
-lib/libNGXmlRpc_d.so
-lib/libNGXmlRpc_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libNGXmlRpc_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGXMLRPC_SUBMINOR%%
-lib/libNGiCal_d.so
-lib/libNGiCal_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libNGiCal_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGICAL_SUBMINOR%%
-lib/libSaxObjC_d.so
-lib/libSaxObjC_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libSaxObjC_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBSAXOBJC_SUBMINOR%%
-lib/libSoOFS_d.so
-lib/libSoOFS_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libSoOFS_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBSOOFS_SUBMINOR%%
-lib/libWEExtensions_d.so
-lib/libWEExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libWEExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWEEXTENSIONS_SUBMINOR%%
-lib/libWEPrototype_d.so
-lib/libWEPrototype_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libWEPrototype_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWEPROTOTYPE_SUBMINOR%%
-lib/libWOExtensions_d.so
-lib/libWOExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libWOExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWOEXTENSIONS_SUBMINOR%%
-lib/libWOXML_d.so
-lib/libWOXML_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libWOXML_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWOXML_SUBMINOR%%
-lib/libXmlRpc_d.so
-lib/libXmlRpc_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-lib/libXmlRpc_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBXMLRPC_SUBMINOR%%
+lib/libDOM.so
+lib/libDOM.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libDOM.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBDOM_SUBMINOR%%
+lib/libEOControl.so
+lib/libEOControl.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libEOControl.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBEOCONTROL_SUBMINOR%%
+lib/libGDLAccess.so
+lib/libGDLAccess.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libGDLAccess.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBGDLACCESS_SUBMINOR%%
+lib/libGDLContentStore.so
+lib/libGDLContentStore.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libGDLContentStore.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBGDLCONTENTSTORE_SUBMINOR%%
+lib/libNGExtensions.so
+lib/libNGExtensions.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGExtensions.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGEXTENSIONS_SUBMINOR%%
+@unexec rm -f %D/lib/libNGLdap.so 2>/dev/null || true
+@unexec rm -f %D/lib/libNGLdap.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%% 2>/dev/null || true
+@unexec rm -f %D/lib/libNGLdap.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGLDAP_SUBMINOR%% 2>/dev/null || true
+lib/libNGMime.so
+lib/libNGMime.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGMime.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGMIME_SUBMINOR%%
+lib/libNGObjWeb.so
+lib/libNGObjWeb.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGObjWeb.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGOBJWEB_SUBMINOR%%
+lib/libNGStreams.so
+lib/libNGStreams.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGStreams.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGSTREAMS_SUBMINOR%%
+lib/libNGXmlRpc.so
+lib/libNGXmlRpc.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGXmlRpc.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGXMLRPC_SUBMINOR%%
+lib/libNGiCal.so
+lib/libNGiCal.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGiCal.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGICAL_SUBMINOR%%
+lib/libSaxObjC.so
+lib/libSaxObjC.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libSaxObjC.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBSAXOBJC_SUBMINOR%%
+lib/libSoOFS.so
+lib/libSoOFS.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libSoOFS.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBSOOFS_SUBMINOR%%
+lib/libWEExtensions.so
+lib/libWEExtensions.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libWEExtensions.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWEEXTENSIONS_SUBMINOR%%
+lib/libWEPrototype.so
+lib/libWEPrototype.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libWEPrototype.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWEPROTOTYPE_SUBMINOR%%
+lib/libWOExtensions.so
+lib/libWOExtensions.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libWOExtensions.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWOEXTENSIONS_SUBMINOR%%
+lib/libWOXML.so
+lib/libWOXML.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libWOXML.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWOXML_SUBMINOR%%
+lib/libXmlRpc.so
+lib/libXmlRpc.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libXmlRpc.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBXMLRPC_SUBMINOR%%
 @unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor/MySQL 2>/dev/null || true
 @unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor/Resources/Info-gnustep.plist 2>/dev/null || true
 @unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor/Resources/Version 2>/dev/null || true
@@ -579,15 +579,18 @@ lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/WOExtensi
 lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/bundle-info.plist
 lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/stamp.make
 sbin/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-share/nls/POSIX
-share/nls/en_US.US-ASCII
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/DAVPropMap.plist
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/Defaults.plist
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/Languages.plist
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
+OGo-GNUstep/System/Library/Makefiles/Additional/ngobjweb.make
+OGo-GNUstep/System/Library/Makefiles/woapp.make
+OGo-GNUstep/System/Library/Makefiles/wobundle.make
 @dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings
 @dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb
 @dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+@dirrmtry OGo-GNUstep/Library/Makefiles/Additional
+@dirrmtry OGo-GNUstep/Library/Makefiles
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/Resources
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEPrototype.wox/Resources

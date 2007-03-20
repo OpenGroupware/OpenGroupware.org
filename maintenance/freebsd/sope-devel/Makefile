@@ -14,8 +14,8 @@ DISTNAME=	sope-trunk-r1455-200703131500
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	SOPE is a framework for developing web applications and services
 
-BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make \
-		${LOCALBASE}/lib/libFoundation_d.so.1.1:${PORTSDIR}/devel/ogo-libfoundation \
+BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh:${PORTSDIR}/devel/ogo-gnustep-make \
+		${LOCALBASE}/lib/libFoundation.so.1.1:${PORTSDIR}/devel/ogo-libfoundation \
 		bash:${PORTSDIR}/shells/bash \
 		pkg-config:${PORTSDIR}/devel/pkg-config
 
@@ -151,12 +151,12 @@ MAN3=		JSAlertPanel.3 JSClipboard.3 JSConfirmPanel.3 JSImageFlyover.3 JSMenu.3 \
 MAN5=		sope-ngobjweb-defaults.5
 
 do-configure:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.sh; ./configure)
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ./configure)
 
 do-build:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
 
 do-install:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
 
 .include <bsd.port.post.mk>
