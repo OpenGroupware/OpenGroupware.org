@@ -15,7 +15,7 @@ DISTNAME=	libfoundation-trunk-r162-200701261110
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	The libFoundation required by the OGo suite
 
-BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make
+BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh:${PORTSDIR}/devel/ogo-gnustep-make
 
 DIST_SUBDIR=	ogo-suite
 
@@ -43,12 +43,12 @@ MAKE_ARGS+=     messages=yes
 .endif
 
 do-configure:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.sh; ./configure)
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ./configure)
 
 do-build:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
 
 do-install:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
 
 .include <bsd.port.mk>
