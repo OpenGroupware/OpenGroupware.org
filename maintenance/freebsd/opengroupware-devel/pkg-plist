@@ -245,84 +245,84 @@ include/ZSFrontend/SxRendererFactory.h
 include/ZSFrontend/SxSearchFolder.h
 include/ZSFrontend/SxStoreInfoFolder.h
 include/ZSFrontend/SxUserFolder.h
-lib/libLSAddress_d.so
-lib/libLSAddress_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libLSAddress_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBLSADDRESS_SUBMINOR%%
-lib/libLSFoundation_d.so
-lib/libLSFoundation_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libLSFoundation_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBLSFOUNDATION_SUBMINOR%%
-lib/libLSSearch_d.so
-lib/libLSSearch_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libLSSearch_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBLSSEARCH_SUBMINOR%%
-lib/libOGoAccounts_d.so
-lib/libOGoAccounts_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoAccounts_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOACCOUNTS_SUBMINOR%%
-lib/libOGoBase_d.so
-lib/libOGoBase_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoBase_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOBASE_SUBMINOR%%
-lib/libOGoContacts_d.so
-lib/libOGoContacts_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoContacts_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOCONTACTS_SUBMINOR%%
-lib/libOGoDatabaseProject_d.so
-lib/libOGoDatabaseProject_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoDatabaseProject_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGODATABASEPROJECT_SUBMINOR%%
-lib/libOGoDocuments_d.so
-lib/libOGoDocuments_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoDocuments_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGODOCUMENTS_SUBMINOR%%
-lib/libOGoFileSystemProject_d.so
-lib/libOGoFileSystemProject_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoFileSystemProject_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOFILESYSTEMPROJECT_SUBMINOR%%
-lib/libOGoFoundation_d.so
-lib/libOGoFoundation_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoFoundation_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOFOUNDATION_SUBMINOR%%
-lib/libOGoJobs_d.so
-lib/libOGoJobs_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoJobs_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOJOBS_SUBMINOR%%
-@unexec rm -f %D/lib/libOGoNHS_d.so 2>/dev/null || true
-@unexec rm -f %D/lib/libOGoNHS_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%% 2>/dev/null || true
-@unexec rm -f %D/lib/libOGoNHS_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGONHS_SUBMINOR%% 2>/dev/null || true
-@unexec rm -f %D/lib/libOGoPalmUI_d.so 2>/dev/null || true
-@unexec rm -f %D/lib/libOGoPalmUI_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%% 2>/dev/null || true
-@unexec rm -f %D/lib/libOGoPalmUI_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOPALMUI_SUBMINOR%% 2>/dev/null || true
-@unexec rm -f %D/lib/libOGoPalm_d.so 2>/dev/null || true
-@unexec rm -f %D/lib/libOGoPalm_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%% 2>/dev/null || true
-@unexec rm -f %D/lib/libOGoPalm_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOPALM_SUBMINOR%% 2>/dev/null || true
-lib/libOGoProject_d.so
-lib/libOGoProject_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoProject_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOPROJECT_SUBMINOR%%
-lib/libOGoRawDatabase_d.so
-lib/libOGoRawDatabase_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoRawDatabase_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGORAWDATABASE_SUBMINOR%%
-lib/libOGoSchedulerTools_d.so
-lib/libOGoSchedulerTools_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoSchedulerTools_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOSCHEDULERTOOLS_SUBMINOR%%
-lib/libOGoScheduler_d.so
-lib/libOGoScheduler_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoScheduler_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOSCHEDULER_SUBMINOR%%
-lib/libOGoWebMail_d.so
-lib/libOGoWebMail_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
-lib/libOGoWebMail_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOWEBMAIL_SUBMINOR%%
-@unexec rm -f %D/lib/libPPSync_d.so 2>/dev/null || true
-@unexec rm -f %D/lib/libPPSync_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%% 2>/dev/null || true
-@unexec rm -f %D/lib/libPPSync_d.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBPPSYNC_SUBMINOR%% 2>/dev/null || true
-lib/libZSAppointments_d.so
-lib/libZSAppointments_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
-lib/libZSAppointments_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSAPPOINTMENTS_SUBMINOR%%
-lib/libZSBackend_d.so
-lib/libZSBackend_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
-lib/libZSBackend_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSBACKEND_SUBMINOR%%
-lib/libZSContacts_d.so
-lib/libZSContacts_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
-lib/libZSContacts_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSCONTACTS_SUBMINOR%%
-lib/libZSFrontend_d.so
-lib/libZSFrontend_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
-lib/libZSFrontend_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSFRONTEND_SUBMINOR%%
-lib/libZSProjects_d.so
-lib/libZSProjects_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
-lib/libZSProjects_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSPROJECTS_SUBMINOR%%
-lib/libZSTasks_d.so
-lib/libZSTasks_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
-lib/libZSTasks_d.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSTASKS_SUBMINOR%%
+lib/libLSAddress.so
+lib/libLSAddress.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libLSAddress.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBLSADDRESS_SUBMINOR%%
+lib/libLSFoundation.so
+lib/libLSFoundation.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libLSFoundation.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBLSFOUNDATION_SUBMINOR%%
+lib/libLSSearch.so
+lib/libLSSearch.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libLSSearch.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBLSSEARCH_SUBMINOR%%
+lib/libOGoAccounts.so
+lib/libOGoAccounts.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoAccounts.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOACCOUNTS_SUBMINOR%%
+lib/libOGoBase.so
+lib/libOGoBase.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoBase.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOBASE_SUBMINOR%%
+lib/libOGoContacts.so
+lib/libOGoContacts.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoContacts.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOCONTACTS_SUBMINOR%%
+lib/libOGoDatabaseProject.so
+lib/libOGoDatabaseProject.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoDatabaseProject.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGODATABASEPROJECT_SUBMINOR%%
+lib/libOGoDocuments.so
+lib/libOGoDocuments.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoDocuments.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGODOCUMENTS_SUBMINOR%%
+lib/libOGoFileSystemProject.so
+lib/libOGoFileSystemProject.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoFileSystemProject.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOFILESYSTEMPROJECT_SUBMINOR%%
+lib/libOGoFoundation.so
+lib/libOGoFoundation.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoFoundation.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOFOUNDATION_SUBMINOR%%
+lib/libOGoJobs.so
+lib/libOGoJobs.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoJobs.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOJOBS_SUBMINOR%%
+@unexec rm -f %D/lib/libOGoNHS.so 2>/dev/null || true
+@unexec rm -f %D/lib/libOGoNHS.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%% 2>/dev/null || true
+@unexec rm -f %D/lib/libOGoNHS.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGONHS_SUBMINOR%% 2>/dev/null || true
+@unexec rm -f %D/lib/libOGoPalmUI.so 2>/dev/null || true
+@unexec rm -f %D/lib/libOGoPalmUI.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%% 2>/dev/null || true
+@unexec rm -f %D/lib/libOGoPalmUI.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOPALMUI_SUBMINOR%% 2>/dev/null || true
+@unexec rm -f %D/lib/libOGoPalm.so 2>/dev/null || true
+@unexec rm -f %D/lib/libOGoPalm.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%% 2>/dev/null || true
+@unexec rm -f %D/lib/libOGoPalm.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOPALM_SUBMINOR%% 2>/dev/null || true
+lib/libOGoProject.so
+lib/libOGoProject.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoProject.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOPROJECT_SUBMINOR%%
+lib/libOGoRawDatabase.so
+lib/libOGoRawDatabase.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoRawDatabase.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGORAWDATABASE_SUBMINOR%%
+lib/libOGoSchedulerTools.so
+lib/libOGoSchedulerTools.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoSchedulerTools.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOSCHEDULERTOOLS_SUBMINOR%%
+lib/libOGoScheduler.so
+lib/libOGoScheduler.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoScheduler.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOSCHEDULER_SUBMINOR%%
+lib/libOGoWebMail.so
+lib/libOGoWebMail.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%
+lib/libOGoWebMail.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBOGOWEBMAIL_SUBMINOR%%
+@unexec rm -f %D/lib/libPPSync.so 2>/dev/null || true
+@unexec rm -f %D/lib/libPPSync.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%% 2>/dev/null || true
+@unexec rm -f %D/lib/libPPSync.so.%%OGO_SHLIB_MAJOR%%.%%OGO_SHLIB_MINOR%%.%%LIBPPSYNC_SUBMINOR%% 2>/dev/null || true
+lib/libZSAppointments.so
+lib/libZSAppointments.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
+lib/libZSAppointments.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSAPPOINTMENTS_SUBMINOR%%
+lib/libZSBackend.so
+lib/libZSBackend.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
+lib/libZSBackend.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSBACKEND_SUBMINOR%%
+lib/libZSContacts.so
+lib/libZSContacts.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
+lib/libZSContacts.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSCONTACTS_SUBMINOR%%
+lib/libZSFrontend.so
+lib/libZSFrontend.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
+lib/libZSFrontend.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSFRONTEND_SUBMINOR%%
+lib/libZSProjects.so
+lib/libZSProjects.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
+lib/libZSProjects.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSPROJECTS_SUBMINOR%%
+lib/libZSTasks.so
+lib/libZSTasks.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%
+lib/libZSTasks.so.%%ZIDE_SHLIB_MAJOR%%.%%ZIDE_SHLIB_MINOR%%.%%LIBZSTASKS_SUBMINOR%%
 lib/opengroupware.org-%%OGO_VERSION%%/commands/LSAccount.cmd/LSAccount
 lib/opengroupware.org-%%OGO_VERSION%%/commands/LSAccount.cmd/Resources/Defaults.plist
 lib/opengroupware.org-%%OGO_VERSION%%/commands/LSAccount.cmd/Resources/Info-gnustep.plist
@@ -1887,8 +1887,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/annotation_inactive.gi
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/apt_10x10.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/apt_icon_birthday.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/apt_icon_call.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/apt_icon_default.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/apt_icon_duedate.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/apt_iconefault.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/apt_iconuedate.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/apt_icon_holiday.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/apt_icon_home.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/apt_icon_ill.gif
@@ -1962,7 +1962,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/delete_mail_inactive.g
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/delete_small.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/delete_small_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/deselected_checkbox.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/document_doc.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/documentoc.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/document_fax.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/document_fm.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/document_frm.gif
@@ -1979,8 +1979,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/document_zip.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/done.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/done_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/down_icon.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/download_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/download_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/downloadocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/downloadocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/downstairs.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/downstairs_blind.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/downward_sorted.gif
@@ -1996,8 +1996,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/edit_in_txt_editor.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/edit_in_txt_editor_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/edit_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/edit_preferences.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/edit_txt_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/edit_txt_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/edit_txtocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/edit_txtocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/email.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/email_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/empty_trash.gif
@@ -2061,11 +2061,11 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_catalog_26x21.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_clip.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_copy_mail.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_copy_pasteboard.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_delete_folder.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_delete_license.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_delete_mail.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_desktop_26x21.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_dial_16x19.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/iconelete_folder.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/iconelete_license.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/iconelete_mail.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/iconesktop_26x21.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/iconial_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_edc_26x21.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_edit.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_edit_folder.gif
@@ -2093,11 +2093,11 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_new_folder.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_new_mail.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_news_26x21.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palm_26x21.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palm_delete_date.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palm_delete_entry.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palm_detach_date.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palm_detach_entry.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palm_donothing.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palmeleteate.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palmelete_entry.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palmetachate.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palmetach_entry.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palmonothing.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palm_new_entry.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palm_palmoverskyrix.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_palm_skyrixoverpalm.gif
@@ -2108,12 +2108,12 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_participants.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_people.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_checked.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_checked_viewer.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_d.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_f.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_i.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_m.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_r.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_viewer_d.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_viewer.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_viewer_f.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_viewer_i.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/icon_permissions_viewer_m.gif
@@ -2166,7 +2166,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/invisible_space_94.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/last.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/last_blind.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/led_animated.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/led_dark.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/ledark.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/led_green.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/led_red.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/led_yellow.gif
@@ -2175,7 +2175,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/line_right.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/line_stretch.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/link_any_object.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/link_appointment.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/link_doc.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/linkoc.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/link_email.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/link_enterprise.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/link_extern.gif
@@ -2239,7 +2239,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_image_pjpeg_1
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_image_png_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_image_tiff_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_image_x_icon_16x19.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_message_delivery_status_16x19.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_messageelivery_status_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_message_rfc822_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_skyrix_form_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_skyrix_xtmpl_16x19.gif
@@ -2256,7 +2256,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_text_xul_16x1
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_video_mpeg_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_video_quicktime_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_video_x_msvideo_16x19.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_x_skyrix_filemanager_directory_16x19.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_x_skyrix_filemanagerirectory_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/mimeicon_x_skyrix_filemanager_link_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/minus.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/more.gif
@@ -2269,15 +2269,15 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/move_mail.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/move_mail_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/move_small.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/move_small_inactive.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/narrow_down_icon.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/narrowown_icon.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/narrow_up_icon.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/new.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/new_big.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/new_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/new_job.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/new_object_link.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/new_txt_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/new_txt_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/new_txtocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/new_txtocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/newdocument.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/newdocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/newfolder.gif
@@ -2397,7 +2397,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/tab_.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/tab_left.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/tab_selected.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/testwindow.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/this_day.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/thisay.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/this_month.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/this_week.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English.lproj/this_year.gif
@@ -2448,9 +2448,9 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_persons_label
 share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_projects_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_resources_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_scheduler_labeled.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_static_desk.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_static_desk_right.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_static_dummy.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_staticesk.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_staticesk_right.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_staticummy.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_static_home.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_static_home_right.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_OOo.lproj/menu_static_inbox.gif
@@ -2500,7 +2500,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/delete_mail.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/delete_mail_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/delete_small.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/delete_small_inactive.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/document_doc.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/documentoc.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/document_fax.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/document_frm.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/document_gif.gif
@@ -2516,8 +2516,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/document_zip.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/done.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/done_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/down_icon.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/download_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/download_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/downloadocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/downloadocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/downstairs.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/downward_sorted.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/edit.gif
@@ -2527,8 +2527,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/edit_folder_inact
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/edit_in_txt_editor_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/edit_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/edit_preferences.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/edit_txt_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/edit_txt_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/edit_txtocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/edit_txtocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/email.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/email_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/empty_trash.gif
@@ -2558,8 +2558,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/icon_bookmarks.gi
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/icon_bookmarks_26x21.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/icon_calendar.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/icon_catalog_26x21.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/icon_desktop.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/icon_desktop_26x21.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/iconesktop.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/iconesktop_26x21.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/icon_edit.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/icon_editnote.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/icon_editnote_inactive.gif
@@ -2611,13 +2611,13 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/invisible_space_3
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/invisible_space_46.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/invisible_space_6.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/invisible_space_94.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/job_status_done.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/job_statusone.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/job_status_processing.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/job_status_sleeping.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/last.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/last_blind.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/led_dark.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/led_dark_2.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/ledark.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/ledark_2.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/led_green.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/led_green_2.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/led_red.gif
@@ -2626,7 +2626,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/led_yellow.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/led_yellow_2.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/link_any_object.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/link_appointment.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/link_doc.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/linkoc.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/link_email.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/link_enterprise.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/link_extern.gif
@@ -2641,8 +2641,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_bookmarks.gi
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_bookmarks_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_catalog.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_catalog_labeled.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_desktop.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_desktop_labeled.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menuesktop.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menuesktop_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_edc_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_email.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_email_labeled.gif
@@ -2676,7 +2676,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_resources_la
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_scheduler.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_scheduler_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_static_custom.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_static_desk.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_staticesk.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_static_home.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_static_prefs.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/menu_static_skyrix.gif
@@ -2699,8 +2699,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/new_icon.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/new_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/new_job.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/new_object_link.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/new_txt_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/new_txt_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/new_txtocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/new_txtocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/newdocument.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/newdocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_blue.lproj/newfolder.gif
@@ -2816,7 +2816,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/downward_sorted.gi
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/license-nuvola.txt
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_bookmarks_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_bookmarks_labeled.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_desktop_labeled.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menuesktop_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_email_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_email_labeled.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_email_labeled_inactive.gif
@@ -2843,8 +2843,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_resources_lab
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_resources_labeled.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_scheduler_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_scheduler_labeled.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_static_desk.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_static_desk_right.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_staticesk.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_staticesk_right.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_static_home.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_static_home_right.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/menu_static_prefs.gif
@@ -2896,7 +2896,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/actions/he
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/actions/history.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/actions/identity.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/actions/kmixdocked.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/actions/mail_delete.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/actions/mailelete.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/actions/mail_find.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/actions/mail_forward.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/actions/mail_foward.png
@@ -2986,7 +2986,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/icons
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/iconthemes.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/important.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/indeximg.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/input_devices_settings.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/inputevices_settings.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/juk.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/kaddressbook.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/kalzium.png
@@ -3103,7 +3103,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/noatu
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/opera.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/package.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/package_applications.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/package_development.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/packageevelopment.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/package_editors.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/package_edutainment.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/apps/package_favourite.png
@@ -3187,7 +3187,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/filesystem
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/filesystems/folder_blue_open.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/filesystems/folder_cyan.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/filesystems/folder_cyan_open.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/filesystems/folder_download.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/filesystems/folderownload.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/filesystems/folder_favorite.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/filesystems/folder_font.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/filesystems/folder_games.png
@@ -3272,7 +3272,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/kivio_flw.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/kmultiple.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/koffice.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/kpovmodeler_doc.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/kpovmodeleroc.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/kpresenter_kpr.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/kspread_ksp.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/kugar_kud.png
@@ -3290,13 +3290,13 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/mime_koffice.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/mime_lyx.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/mime_temp.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/misc_doc.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/mozilla_doc.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/netscape_doc.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/miscoc.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/mozillaoc.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/netscapeoc.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/ooo_calc.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/ooo_calc_tpl.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/ooo_draw.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/ooo_draw_tpl.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/oooraw.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/oooraw_tpl.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/ooo_impress.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/ooo_impress_tpl.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/ooo_writer.png
@@ -3307,7 +3307,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/quicktime.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/readme.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/real.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/real_doc.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/realoc.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/recycled.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/resource.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/rpm.png
@@ -3342,7 +3342,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/vcard.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/vectorgfx.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/video.png
-share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/widget_doc.png
+share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/widgetoc.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/nuvolap/mimetypes/wordprocessing.png
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/previous.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_kde.lproj/previous_blind.gif
@@ -3364,8 +3364,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/annotation_inac
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/apt_10x10.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/apt_icon_birthday.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/apt_icon_call.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/apt_icon_default.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/apt_icon_duedate.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/apt_iconefault.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/apt_iconuedate.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/apt_icon_holiday.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/apt_icon_home.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/apt_icon_ill.gif
@@ -3430,7 +3430,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/delete_small.gi
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/delete_small_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/deselected_checkbox.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/detes_logo.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/document_doc.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/documentoc.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/document_fax.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/document_fm.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/document_frm.gif
@@ -3447,8 +3447,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/document_zip.gi
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/done.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/done_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/down_icon.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/download_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/download_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/downloadocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/downloadocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/downstairs.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/downstairs_blind.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/downward_sorted.gif
@@ -3464,8 +3464,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/edit_in_txt_edi
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/edit_in_txt_editor_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/edit_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/edit_preferences.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/edit_txt_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/edit_txt_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/edit_txtocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/edit_txtocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/email.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/email_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/empty_trash.gif
@@ -3533,12 +3533,12 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_catalog_26
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_clip.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_copy_mail.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_copy_pasteboard.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_delete_folder.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_delete_license.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_delete_mail.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_desktop.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_desktop_26x21.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_dial_16x19.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/iconelete_folder.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/iconelete_license.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/iconelete_mail.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/iconesktop.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/iconesktop_26x21.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/iconial_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_edc_26x21.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_edit.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_edit_folder.gif
@@ -3570,11 +3570,11 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_new_folder
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_new_mail.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_news_26x21.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palm_26x21.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palm_delete_date.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palm_delete_entry.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palm_detach_date.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palm_detach_entry.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palm_donothing.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palmeleteate.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palmelete_entry.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palmetachate.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palmetach_entry.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palmonothing.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palm_new_entry.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palm_palmoverskyrix.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_palm_skyrixoverpalm.gif
@@ -3585,12 +3585,12 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_participan
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_people.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_checked.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_checked_viewer.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_d.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_f.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_i.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_m.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_r.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_viewer_d.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_viewer.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_viewer_f.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_viewer_i.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/icon_permissions_viewer_m.gif
@@ -3646,14 +3646,14 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/invisible_space
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/invisible_space_46.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/invisible_space_6.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/invisible_space_94.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/job_status_done.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/job_statusone.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/job_status_processing.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/job_status_sleeping.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/last.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/last_blind.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/led_animated.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/led_dark.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/led_dark_2.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/ledark.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/ledark_2.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/led_green.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/led_green_2.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/led_red.gif
@@ -3667,7 +3667,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/line_right.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/line_stretch.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/link_any_object.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/link_appointment.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/link_doc.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/linkoc.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/link_email.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/link_enterprise.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/link_extern.gif
@@ -3687,8 +3687,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_bookmarks.
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_bookmarks_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_catalog.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_catalog_labeled.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_desktop.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_desktop_labeled.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menuesktop.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menuesktop_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_edc_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_email.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_email_inactive.gif
@@ -3725,8 +3725,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_resources_
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_scheduler.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_scheduler_labeled.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_static_custom.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_static_desk.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_static_desk_right.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_staticesk.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_staticesk_right.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_static_home.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_static_home_right.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/menu_static_prefs.gif
@@ -3769,7 +3769,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_image_
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_image_pjpeg_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_image_tiff_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_image_x_icon_16x19.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_message_delivery_status_16x19.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_messageelivery_status_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_message_rfc822_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_skyrix_form_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_skyrix_xtmpl_16x19.gif
@@ -3785,7 +3785,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_text_x
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_video_mpeg_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_video_quicktime_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_video_x_msvideo_16x19.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_x_skyrix_filemanager_directory_16x19.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_x_skyrix_filemanagerirectory_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/mimeicon_x_skyrix_filemanager_link_16x19.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/minus.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/more.gif
@@ -3798,7 +3798,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/move_mail.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/move_mail_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/move_small.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/move_small_inactive.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/narrow_down_icon.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/narrowown_icon.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/narrow_up_icon.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/new.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/new_big.gif
@@ -3806,8 +3806,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/new_icon.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/new_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/new_job.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/new_object_link.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/new_txt_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/new_txt_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/new_txtocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/new_txtocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/newdocument.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/newdocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/newfolder.gif
@@ -3940,7 +3940,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/tab_.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/tab_left.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/tab_selected.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/testwindow.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/this_day.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/thisay.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/this_month.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/this_week.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/English_orange.lproj/this_year.gif
@@ -4020,8 +4020,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/delete_small.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/delete_small_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/done.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/done_inactive.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/download_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/download_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/downloadocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/downloadocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/edit.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/edit_attributes.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/edit_folder.gif
@@ -4078,8 +4078,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/new_big.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/new_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/new_job.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/new_object_link.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/new_txt_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/new_txt_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/new_txtocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/new_txtocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/newdocument.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/newdocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/newfolder.gif
@@ -4146,7 +4146,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/show_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/show_unread.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/skycalendar.html
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/skycalendar.js
-share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/this_day.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/thisay.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/this_month.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/this_week.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German.lproj/this_year.gif
@@ -4195,8 +4195,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/delete_small.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/delete_small_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/done.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/done_inactive.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/download_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/download_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/downloadocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/downloadocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/edit.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/edit_attributes.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/edit_folder.gif
@@ -4258,8 +4258,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/new_big.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/new_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/new_job.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/new_object_link.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/new_txt_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/new_txt_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/new_txtocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/new_txtocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/newdocument.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/newdocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/newfolder.gif
@@ -4323,7 +4323,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/show_errors_inacti
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/show_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/show_unread.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/skycalendar.html
-share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/this_day.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/thisay.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/this_week.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/this_year.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_blue.lproj/undo.gif
@@ -4380,8 +4380,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/delete_small.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/delete_small_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/done.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/done_inactive.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/download_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/download_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/downloadocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/downloadocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/edit.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/edit_attributes.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/edit_folder.gif
@@ -4449,8 +4449,8 @@ share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/new_big.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/new_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/new_job.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/new_object_link.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/new_txt_document.gif
-share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/new_txt_document_inactive.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/new_txtocument.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/new_txtocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/newdocument.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/newdocument_inactive.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/newfolder.gif
@@ -4516,7 +4516,7 @@ share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/show_errors_inac
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/show_inactiv.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/show_unread.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/skycalendar.html
-share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/this_day.gif
+share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/thisay.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/this_month.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/this_week.gif
 share/opengroupware.org-%%OGO_VERSION%%/www/German_orange.lproj/this_year.gif

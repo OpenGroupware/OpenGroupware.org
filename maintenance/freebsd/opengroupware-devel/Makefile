@@ -14,8 +14,8 @@ DISTNAME=	opengroupware.org-trunk-r1894-200703141503
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	OpenGroupware suite
 
-BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make \
-		${LOCALBASE}/lib/libFoundation_d.so.1.1:${PORTSDIR}/devel/ogo-libfoundation \
+BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh:${PORTSDIR}/devel/ogo-gnustep-make \
+		${LOCALBASE}/lib/libFoundation.so.1.1:${PORTSDIR}/devel/ogo-libfoundation \
 		bash:${PORTSDIR}/shells/bash \
 		pkg-config:${PORTSDIR}/devel/pkg-config
 
@@ -166,11 +166,11 @@ pre-everything::
 .endif
 
 do-configure:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ./configure)
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ./configure)
 
 do-build:
-.if (defined(WITH_SOPE_DEVEL) && ((!exists(${LOCALBASE}/lib/libGDLAccess_d.so.${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL_MINOR})) || (!exists(${LOCALBASE}/lib/libNGLdap_d.so.${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL_MINOR})) || (!exists(${LOCALBASE}/lib/libNGObjWeb_d.so.${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL_MINOR})))) || \
-	(defined(WITH_SOPE_44) && (!exists(${LOCALBASE}/lib/libGDLAccess_d.so.${SOPE44_MAJOR}.${SOPE44_MINOR}) || !exists(${LOCALBASE}/lib/libNGLdap_d.so.${SOPE44_MAJOR}.${SOPE44_MINOR}) || !exists(${LOCALBASE}/lib/libNGObjWeb_d.so.${SOPE44_MAJOR}.${SOPE44_MINOR})))
+.if (defined(WITH_SOPE_DEVEL) && ((!exists(${LOCALBASE}/lib/libGDLAccess.so.${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL_MINOR})) || (!exists(${LOCALBASE}/lib/libNGLdap.so.${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL_MINOR})) || (!exists(${LOCALBASE}/lib/libNGObjWeb.so.${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL_MINOR})))) || \
+	(defined(WITH_SOPE_44) && (!exists(${LOCALBASE}/lib/libGDLAccess.so.${SOPE44_MAJOR}.${SOPE44_MINOR}) || !exists(${LOCALBASE}/lib/libNGLdap.so.${SOPE44_MAJOR}.${SOPE44_MINOR}) || !exists(${LOCALBASE}/lib/libNGObjWeb.so.${SOPE44_MAJOR}.${SOPE44_MINOR})))
 	@${ECHO_MSG} "#########################################################################"
 	@${ECHO_MSG} "# WARNING!!!   WARNING!!!   WARNING!!!   WARNING!!!   WARNING!!!        #"
 	@${ECHO_MSG} "#                                                                       #"
@@ -188,10 +188,10 @@ do-build:
 	@${ECHO_MSG} "#########################################################################"
 	@exit 1
 .endif
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
 
 do-install:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
 	# the following procedure is required because we use 'patch-aa'
 	# (and patch-aa is required or we'll end up with a link into WRKSRC in our final installation :/)
 	${MKDIR} ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/templates
