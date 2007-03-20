@@ -5,6 +5,9 @@
 	* added patch-aa to ogo-gnustep-make/files in order to fix compilation
 	  on amd64 (for ports depending on ogo-gnustep-make)... it detected amd64
 	  as x86_64 which isn't quite correct (since amd64 == amd64)
+	* although we're still compiling with 'debug=yes'... the resulting libraries
+	  are not labeled as '_d' in order to expose them as debug libraries...
+	  and thus we now skip this label (see pkg-plist changes)
 
 2007-03-14 Frank Reppin  <frank@opengroupware.org>
 
