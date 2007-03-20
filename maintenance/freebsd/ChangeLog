@@ -8,6 +8,8 @@
 	* although we're still compiling with 'debug=yes'... the resulting libraries
 	  are not labeled as '_d' in order to expose them as debug libraries...
 	  and thus we now skip this label (see pkg-plist changes)
+	* broke several pkg-plist entries due to my incompetence when it comes to
+	  to substitute several '_d' entries with their new value... will fix this tomorrow
 
 2007-03-14 Frank Reppin  <frank@opengroupware.org>
 
