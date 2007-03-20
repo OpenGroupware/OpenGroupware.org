@@ -6,7 +6,7 @@
 #
 
 PORTNAME=	gnustep_make
-PORTVERSION=	1.10.0
+PORTVERSION=	1.13.0
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/thirdparty/ogo-gnustep-make/ \
@@ -32,7 +32,8 @@ CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--with-library-combo=gnu-fd-nil \
 		--with-network-root=${PREFIX} \
 		--with-local-root=${PREFIX} \
-		--without-system-root
+		--without-system-root \
+		--with-config-file=${PREFIX}/etc/GNUstep.conf
 
 .if defined(SHOW_MESSAGES)
 MAKE_ARGS+=	messages=yes

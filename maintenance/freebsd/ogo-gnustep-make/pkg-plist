@@ -1,124 +1,122 @@
-.GNUsteprc
-Library/Makefiles/GNUstep-reset.sh
-Library/Makefiles/GNUstep.csh
-Library/Makefiles/GNUstep.sh
-Library/Makefiles/Instance/Documentation/autogsdoc.make
-Library/Makefiles/Instance/Documentation/gsdoc.make
-Library/Makefiles/Instance/Documentation/install_files.make
-Library/Makefiles/Instance/Documentation/javadoc.make
-Library/Makefiles/Instance/Documentation/latex.make
-Library/Makefiles/Instance/Documentation/texi.make
-Library/Makefiles/Instance/Shared/bundle.make
-Library/Makefiles/Instance/Shared/headers.make
-Library/Makefiles/Instance/Shared/java.make
-Library/Makefiles/Instance/Shared/stamp-string.make
-Library/Makefiles/Instance/Shared/strings.make
-Library/Makefiles/Instance/application.make
-Library/Makefiles/Instance/bundle.make
-Library/Makefiles/Instance/clibrary.make
-Library/Makefiles/Instance/ctool.make
-Library/Makefiles/Instance/documentation.make
-Library/Makefiles/Instance/framework.make
-Library/Makefiles/Instance/gswapp.make
-Library/Makefiles/Instance/gswbundle.make
-Library/Makefiles/Instance/java-tool.make
-Library/Makefiles/Instance/java.make
-Library/Makefiles/Instance/library.make
-Library/Makefiles/Instance/objc.make
-Library/Makefiles/Instance/palette.make
-Library/Makefiles/Instance/resource-set.make
-Library/Makefiles/Instance/rules.make
-Library/Makefiles/Instance/service.make
-Library/Makefiles/Instance/subproject.make
-Library/Makefiles/Instance/test-application.make
-Library/Makefiles/Instance/test-library.make
-Library/Makefiles/Instance/test-tool.make
-Library/Makefiles/Instance/tool.make
-Library/Makefiles/Master/aggregate.make
-Library/Makefiles/Master/application.make
-Library/Makefiles/Master/bundle.make
-Library/Makefiles/Master/clibrary.make
-Library/Makefiles/Master/ctool.make
-Library/Makefiles/Master/documentation.make
-Library/Makefiles/Master/framework.make
-Library/Makefiles/Master/gswapp.make
-Library/Makefiles/Master/gswbundle.make
-Library/Makefiles/Master/java-tool.make
-Library/Makefiles/Master/java.make
-Library/Makefiles/Master/library.make
-Library/Makefiles/Master/objc.make
-Library/Makefiles/Master/palette.make
-Library/Makefiles/Master/resource-set.make
-Library/Makefiles/Master/rpm.make
-Library/Makefiles/Master/rules.make
-Library/Makefiles/Master/service.make
-Library/Makefiles/Master/source-distribution.make
-Library/Makefiles/Master/subproject.make
-Library/Makefiles/Master/test-application.make
-Library/Makefiles/Master/test-library.make
-Library/Makefiles/Master/test-tool.make
-Library/Makefiles/Master/tool.make
-Library/Makefiles/aggregate.make
-Library/Makefiles/application.make
-Library/Makefiles/bundle.make
-Library/Makefiles/clean_cpu.sh
-Library/Makefiles/clean_os.sh
-Library/Makefiles/clean_vendor.sh
-Library/Makefiles/clibrary.make
-Library/Makefiles/common.make
-Library/Makefiles/config.guess
-Library/Makefiles/config.make
-Library/Makefiles/config.sub
-Library/Makefiles/cpu.sh
-Library/Makefiles/ctool.make
-Library/Makefiles/documentation.make
-Library/Makefiles/executable.template
-Library/Makefiles/fixpath.sh
-Library/Makefiles/framework.make
-Library/Makefiles/gswapp.make
-Library/Makefiles/gswbundle.make
-Library/Makefiles/install-sh
-Library/Makefiles/java-executable.template
-Library/Makefiles/java-tool.make
-Library/Makefiles/java.make
-Library/Makefiles/jni.make
-Library/Makefiles/ld_lib_path.csh
-Library/Makefiles/ld_lib_path.sh
-Library/Makefiles/library-combo.make
-Library/Makefiles/library.make
-Library/Makefiles/messages.make
-Library/Makefiles/mkinstalldirs
-Library/Makefiles/names.make
-Library/Makefiles/native-library.make
-Library/Makefiles/objc.make
-Library/Makefiles/os.sh
-Library/Makefiles/palette.make
-Library/Makefiles/relative_path.sh
-Library/Makefiles/resource-set.make
-Library/Makefiles/rules.make
-Library/Makefiles/service.make
-Library/Makefiles/spec-debug-alone-rules.template
-Library/Makefiles/spec-debug-rules.template
-Library/Makefiles/spec-rules.template
-Library/Makefiles/strip_makefiles.sh
-Library/Makefiles/subproject.make
-Library/Makefiles/tar-exclude-list
-Library/Makefiles/target.make
-Library/Makefiles/test-application.make
-Library/Makefiles/test-library.make
-Library/Makefiles/test-tool.make
-Library/Makefiles/tool.make
-Library/Makefiles/transform_paths.sh
-Library/Makefiles/user_home
-Library/Makefiles/vendor.sh
-Library/Makefiles/which_lib
-Makefiles
-Tools/debugapp
-Tools/openapp
-Tools/opentool
-share/config.site
+etc/GNUstep.conf
 share/nls/POSIX
 share/nls/en_US.US-ASCII
+System/Tools/openapp
+System/Tools/debugapp
+System/Tools/opentool
+System/Library/Makefiles/Master/aggregate.make
+System/Library/Makefiles/Master/source-distribution.make
+System/Library/Makefiles/Master/rpm.make
+System/Library/Makefiles/Master/rules.make
+System/Library/Makefiles/Master/application.make
+System/Library/Makefiles/Master/bundle.make
+System/Library/Makefiles/Master/clibrary.make
+System/Library/Makefiles/Master/ctool.make
+System/Library/Makefiles/Master/documentation.make
+System/Library/Makefiles/Master/framework.make
+System/Library/Makefiles/Master/gswapp.make
+System/Library/Makefiles/Master/gswbundle.make
+System/Library/Makefiles/Master/library.make
+System/Library/Makefiles/Master/objc.make
+System/Library/Makefiles/Master/java.make
+System/Library/Makefiles/Master/java-tool.make
+System/Library/Makefiles/Master/palette.make
+System/Library/Makefiles/Master/resource-set.make
+System/Library/Makefiles/Master/service.make
+System/Library/Makefiles/Master/subproject.make
+System/Library/Makefiles/Master/test-application.make
+System/Library/Makefiles/Master/test-library.make
+System/Library/Makefiles/Master/test-tool.make
+System/Library/Makefiles/Master/tool.make
+System/Library/Makefiles/Instance/Shared/bundle.make
+System/Library/Makefiles/Instance/Shared/headers.make
+System/Library/Makefiles/Instance/Shared/java.make
+System/Library/Makefiles/Instance/Shared/stamp-string.make
+System/Library/Makefiles/Instance/Shared/strings.make
+System/Library/Makefiles/Instance/Documentation/autogsdoc.make
+System/Library/Makefiles/Instance/Documentation/gsdoc.make
+System/Library/Makefiles/Instance/Documentation/install_files.make
+System/Library/Makefiles/Instance/Documentation/javadoc.make
+System/Library/Makefiles/Instance/Documentation/latex.make
+System/Library/Makefiles/Instance/Documentation/texi.make
+System/Library/Makefiles/Instance/rules.make
+System/Library/Makefiles/Instance/application.make
+System/Library/Makefiles/Instance/bundle.make
+System/Library/Makefiles/Instance/clibrary.make
+System/Library/Makefiles/Instance/ctool.make
+System/Library/Makefiles/Instance/documentation.make
+System/Library/Makefiles/Instance/framework.make
+System/Library/Makefiles/Instance/gswapp.make
+System/Library/Makefiles/Instance/gswbundle.make
+System/Library/Makefiles/Instance/library.make
+System/Library/Makefiles/Instance/objc.make
+System/Library/Makefiles/Instance/java.make
+System/Library/Makefiles/Instance/java-tool.make
+System/Library/Makefiles/Instance/palette.make
+System/Library/Makefiles/Instance/resource-set.make
+System/Library/Makefiles/Instance/service.make
+System/Library/Makefiles/Instance/subproject.make
+System/Library/Makefiles/Instance/test-application.make
+System/Library/Makefiles/Instance/tool.make
+System/Library/Makefiles/Instance/test-library.make
+System/Library/Makefiles/Instance/test-tool.make
+System/Library/Makefiles/which_lib
+System/Library/Makefiles/config.guess
+System/Library/Makefiles/config.sub
+System/Library/Makefiles/install-sh
+System/Library/Makefiles/mkinstalldirs
+System/Library/Makefiles/clean_cpu.sh
+System/Library/Makefiles/clean_os.sh
+System/Library/Makefiles/clean_vendor.sh
+System/Library/Makefiles/cpu.sh
+System/Library/Makefiles/GNUstep-reset.sh
+System/Library/Makefiles/ld_lib_path.sh
+System/Library/Makefiles/os.sh
+System/Library/Makefiles/transform_paths.sh
+System/Library/Makefiles/vendor.sh
+System/Library/Makefiles/ld_lib_path.csh
+System/Library/Makefiles/relative_path.sh
+System/Library/Makefiles/strip_makefiles.sh
+System/Library/Makefiles/GNUstep.sh
+System/Library/Makefiles/GNUstep.csh
+System/Library/Makefiles/fixpath.sh
+System/Library/Makefiles/aggregate.make
+System/Library/Makefiles/application.make
+System/Library/Makefiles/bundle.make
+System/Library/Makefiles/service.make
+System/Library/Makefiles/common.make
+System/Library/Makefiles/library-combo.make
+System/Library/Makefiles/java.make
+System/Library/Makefiles/jni.make
+System/Library/Makefiles/library.make
+System/Library/Makefiles/messages.make
+System/Library/Makefiles/rules.make
+System/Library/Makefiles/target.make
+System/Library/Makefiles/names.make
+System/Library/Makefiles/resource-set.make
+System/Library/Makefiles/tool.make
+System/Library/Makefiles/ctool.make
+System/Library/Makefiles/test-library.make
+System/Library/Makefiles/objc.make
+System/Library/Makefiles/test-application.make
+System/Library/Makefiles/test-tool.make
+System/Library/Makefiles/subproject.make
+System/Library/Makefiles/palette.make
+System/Library/Makefiles/gswapp.make
+System/Library/Makefiles/gswbundle.make
+System/Library/Makefiles/clibrary.make
+System/Library/Makefiles/documentation.make
+System/Library/Makefiles/java-executable.template
+System/Library/Makefiles/java-tool.make
+System/Library/Makefiles/framework.make
+System/Library/Makefiles/native-library.make
+System/Library/Makefiles/spec-rules.template
+System/Library/Makefiles/spec-debug-rules.template
+System/Library/Makefiles/spec-debug-alone-rules.template
+System/Library/Makefiles/tar-exclude-list
+System/Library/Makefiles/executable.template
+System/Library/Makefiles/config.make
+System/share/config.site
 @dirrm www
 @dirrm share/xml
 @dirrm share/skel
@@ -470,13 +468,11 @@ share/nls/en_US.US-ASCII
 @dirrm man/en.ISO8859-1/cat9/i386
 @dirrm man/en.ISO8859-1/cat9
 @dirrm man/en.ISO8859-1/cat8/i386
-@dirrmtry man/en.ISO8859-1/cat8/alpha
 @dirrm man/en.ISO8859-1/cat8
 @dirrm man/en.ISO8859-1/cat7
 @dirrm man/en.ISO8859-1/cat6
 @dirrm man/en.ISO8859-1/cat5
 @dirrm man/en.ISO8859-1/cat4/i386
-@dirrmtry man/en.ISO8859-1/cat4/alpha
 @dirrm man/en.ISO8859-1/cat4
 @dirrm man/en.ISO8859-1/cat3
 @dirrm man/en.ISO8859-1/cat2
@@ -519,9 +515,9 @@ share/nls/en_US.US-ASCII
 @dirrm man/cat1
 @dirrm man
 @dirrm libexec
-@dirrmtry libdata/ldconfig
-@dirrmtry libdata/ldconfig32
 @dirrm libdata/pkgconfig
+@dirrm libdata/ldconfig32
+@dirrm libdata/ldconfig
 @dirrm libdata
 @dirrm lib
 @dirrm info
@@ -530,38 +526,39 @@ share/nls/en_US.US-ASCII
 @dirrm etc/pam.d
 @dirrm etc
 @dirrm bin
-@dirrm Tools/Resources
-@dirrm Tools/Java
-@dirrm Tools
-@dirrm Library/Sounds
-@dirrm Library/Services
-@dirrm Library/PostScript
-@dirrmtry Library/Makefiles/amd64
-@dirrmtry Library/Makefiles/ix86
-@dirrm Library/Makefiles/Master
-@dirrm Library/Makefiles/Instance/Shared
-@dirrm Library/Makefiles/Instance/Documentation
-@dirrm Library/Makefiles/Instance
-@dirrm Library/Makefiles/Auxiliary
-@dirrmtry Library/Makefiles/Additional
-@dirrmtry Library/Makefiles
-@dirrm Library/Libraries/Resources
-@dirrm Library/Libraries/Java
-@dirrm Library/Libraries
-@dirrm Library/KeyBindings
-@dirrm Library/Images
-@dirrm Library/Headers
-@dirrm Library/Frameworks
-@dirrm Library/Fonts
-@dirrm Library/Documentation/man
-@dirrm Library/Documentation/info
-@dirrm Library/Documentation/User
-@dirrm Library/Documentation/Developer
-@dirrm Library/Documentation
-@dirrm Library/DocTemplates
-@dirrm Library/Colors
-@dirrm Library/ColorPickers
-@dirrm Library/Bundles
-@dirrm Library/ApplicationSupport
-@dirrmtry Library
-@dirrm Applications
+@dirrm System/share
+@dirrm System/Tools/Resources
+@dirrm System/Tools/Java
+@dirrm System/Tools
+@dirrm System/Library/Sounds
+@dirrm System/Library/Services
+@dirrm System/Library/PostScript
+@dirrm System/Library/Makefiles/amd64
+@dirrm System/Library/Makefiles/Master
+@dirrm System/Library/Makefiles/Instance/Shared
+@dirrm System/Library/Makefiles/Instance/Documentation
+@dirrm System/Library/Makefiles/Instance
+@dirrm System/Library/Makefiles/Auxiliary
+@dirrmtry System/Library/Makefiles/Additional
+@dirrmtry System/Library/Makefiles
+@dirrm System/Library/Libraries/Resources
+@dirrm System/Library/Libraries/Java
+@dirrm System/Library/Libraries
+@dirrm System/Library/KeyBindings
+@dirrm System/Library/Images
+@dirrm System/Library/Headers
+@dirrm System/Library/Frameworks
+@dirrm System/Library/Fonts
+@dirrm System/Library/Documentation/man
+@dirrm System/Library/Documentation/info
+@dirrm System/Library/Documentation/User
+@dirrm System/Library/Documentation/Developer
+@dirrm System/Library/Documentation
+@dirrm System/Library/DocTemplates
+@dirrm System/Library/Colors
+@dirrm System/Library/ColorPickers
+@dirrm System/Library/Bundles
+@dirrm System/Library/ApplicationSupport
+@dirrm System/Library
+@dirrm System/Applications
+@dirrm System
