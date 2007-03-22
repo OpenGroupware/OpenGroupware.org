@@ -559,6 +559,6 @@ System/share/config.site
 @dirrm System/Library/ColorPickers
 @dirrm System/Library/Bundles
 @dirrm System/Library/ApplicationSupport
-@dirrm System/Library
+@dirrmtry System/Library
 @dirrm System/Applications
-@dirrm System
+@dirrmtry System

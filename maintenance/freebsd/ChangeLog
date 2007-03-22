@@ -1,3 +1,10 @@
+2007-03-22 Frank Reppin  <frank@opengroupware.org>
+
+	* fixed pkg-plist files I'd broken (but still some woes in deinstall/reinstall)
+	  wrt ogo-gnustep-make (Additional/ dir created by ogo-gnustep-make
+	  but not populated by it... which _might_ run @dirrmtry into an undefined
+	  stage on certain install/deinstall operations)
+
 2007-03-20 Frank Reppin  <frank@opengroupware.org>
 
 	* bumped ogo-gnustep-make to version 1.13.0 (current stable)
@@ -9,7 +16,7 @@
 	  are not labeled as '_d' in order to expose them as debug libraries...
 	  and thus we now skip this label (see pkg-plist changes)
 	* broke several pkg-plist entries due to my incompetence when it comes to
-	  to substitute several '_d' entries with their new value... will fix this tomorrow
+	  to substitute several '_d' entries with their new value... will fix this tomorrow :)
 
 2007-03-14 Frank Reppin  <frank@opengroupware.org>
 

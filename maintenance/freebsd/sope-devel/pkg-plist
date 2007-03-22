@@ -579,18 +579,15 @@ lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/WOExtensi
 lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/bundle-info.plist
 lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/stamp.make
 sbin/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+share/nls/POSIX
+share/nls/en_US.US-ASCII
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/DAVPropMap.plist
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/Defaults.plist
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/Languages.plist
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
-OGo-GNUstep/System/Library/Makefiles/Additional/ngobjweb.make
-OGo-GNUstep/System/Library/Makefiles/woapp.make
-OGo-GNUstep/System/Library/Makefiles/wobundle.make
 @dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings
 @dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb
 @dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-@dirrmtry OGo-GNUstep/Library/Makefiles/Additional
-@dirrmtry OGo-GNUstep/Library/Makefiles
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/Resources
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEPrototype.wox/Resources

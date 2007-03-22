@@ -281,10 +281,11 @@ share/libFoundation/TimeZoneInfo/WET
 @dirrm Library/Headers/libFoundation/Foundation
 @dirrm Library/Headers/libFoundation
 @dirrm Library/Headers
-@dirrm Library/Libraries
-@dirrm Library
-@dirrmtry OGo-GNUstep/Library/Makefiles/Additional
-@dirrmtry OGo-GNUstep/Library/Makefiles
-@dirrmtry OGo-GNUstep/Library
+@dirrmtry Library/Libraries
+@dirrmtry Library
+@dirrmtry OGo-GNUstep/System/Library/Makefiles/Additional
+@dirrmtry OGo-GNUstep/System/Library/Makefiles
+@dirrmtry OGo-GNUstep/System/Library
+@dirrmtry OGo-GNUstep/System
 @dirrmtry OGo-GNUstep
 @dirrm Tools
