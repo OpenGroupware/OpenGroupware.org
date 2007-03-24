@@ -203,7 +203,7 @@
   static NSArray *pTitleAttrs = nil;
   if (pTitleAttrs == nil) {
     pTitleAttrs =
-      [[NSArray alloc] initWithObjects:@"number", @"description", nil];
+      [[NSArray alloc] initWithObjects:@"description", @"number", nil];
   }
   return [self _fetchLabelWithGIDCommandDomain:@"enterprise"
                attributes:pTitleAttrs inSession:_sn];
