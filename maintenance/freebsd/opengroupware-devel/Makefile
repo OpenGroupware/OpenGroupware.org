@@ -111,10 +111,10 @@ OPTIONS=	SOPE_DEVEL	"link with sope-devel (sope-${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL
 		PGSQLSERVER_HERE  "use PostgreSQL Server ${DEFAULT_PGSQL_VER} on this host?" on
 
 STRAY_OGO_DIRS=	Library/ZideStore-${ZIDE_SHLIB_MAJOR}.${ZIDE_SHLIB_MINOR} \
-		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/WebUI \
-		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/DataSources \
-		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/Commands \
-		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR} \
+		Library/OpenGroupware.org-${OGO_VERSION}/WebUI \
+		Library/OpenGroupware.org-${OGO_VERSION}/DataSources \
+		Library/OpenGroupware.org-${OGO_VERSION}/Commands \
+		Library/OpenGroupware.org-${OGO_VERSION} \
 		Library/Libraries \
 		Library/Headers/ZSFrontend \
 		Library/Headers/ZSBackend \
@@ -133,11 +133,9 @@ STRAY_OGO_DIRS=	Library/ZideStore-${ZIDE_SHLIB_MAJOR}.${ZIDE_SHLIB_MINOR} \
 		Library/Headers/OGoBase \
 		Library/Headers/OGoAccounts \
 		Library/Headers/LSFoundation \
-		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/DataSources \
-		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/Commands \
-		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/WebUI \
 		Library/Headers \
-		Library
+		Library \
+		Tools
 
 .include <bsd.port.pre.mk>
 
