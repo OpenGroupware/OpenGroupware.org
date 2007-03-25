@@ -771,8 +771,6 @@ lib/zidestore-1.5/ZSCommon.zsp/stamp.make
 sbin/ogo-webui-%%OGO_VERSION%%
 sbin/ogo-xmlrpcd-%%OGO_VERSION%%
 sbin/ogo-zidestore-1.5
-share/nls/POSIX
-share/nls/en_US.US-ASCII
 share/opengroupware.org-%%OGO_VERSION%%/Holidays.plist
 share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/ChangeLog
 share/opengroupware.org-%%OGO_VERSION%%/templates/AddressUI/GNUmakefile
@@ -4879,33 +4877,6 @@ share/zidestore-1.5/PersonalFolderInfo.plist
 @dirrm include/OGoBase
 @dirrm include/OGoAccounts
 @dirrm include/LSFoundation
-@dirrm Library/ZideStore-%%ZIDE_VERSION%%
-@dirrm Library/OpenGroupware.org-%%OGO_VERSION%%/WebUI
-@dirrm Library/OpenGroupware.org-%%OGO_VERSION%%/DataSources
-@dirrm Library/OpenGroupware.org-%%OGO_VERSION%%/Commands
-@dirrm Library/OpenGroupware.org-%%OGO_VERSION%%
-@dirrm Library/Headers/ZSFrontend
-@dirrm Library/Headers/ZSBackend
-@dirrmtry Library/Headers/PPSync
-@dirrm Library/Headers/OGoWebMail
-@dirrm Library/Headers/OGoSchedulerTools
-@dirrm Library/Headers/OGoScheduler
-@dirrm Library/Headers/OGoRawDatabase
-@dirrm Library/Headers/OGoProject
-@dirrmtry Library/Headers/OGoPalmUI
-@dirrmtry Library/Headers/OGoPalm
-@dirrmtry Library/Headers/OGoNHS
-@dirrm Library/Headers/OGoJobs
-@dirrm Library/Headers/OGoFoundation
-@dirrm Library/Headers/OGoFileSystemProject
-@dirrm Library/Headers/OGoDocuments
-@dirrm Library/Headers/OGoDatabaseProject
-@dirrm Library/Headers/OGoContacts
-@dirrm Library/Headers/OGoBase
-@dirrm Library/Headers/OGoAccounts
-@dirrm Library/Headers/LSFoundation
-@dirrmtry Library/Headers
-@dirrmtry Library
 %%PORTDOCS%%%%EXAMPLESDIR%%/ogo-webui-apache.conf
 %%PORTDOCS%%%%EXAMPLESDIR%%/ogo-xmlrpcd-apache.conf
 %%PORTDOCS%%%%EXAMPLESDIR%%/ogo-zidestore-apache.conf
