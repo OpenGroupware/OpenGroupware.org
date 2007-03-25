@@ -118,6 +118,7 @@ STRAY_OGO_DIRS=	Library/ZideStore-${ZIDE_SHLIB_MAJOR}.${ZIDE_SHLIB_MINOR} \
 		Library/Libraries \
 		Library/Headers/ZSFrontend \
 		Library/Headers/ZSBackend \
+		Library/Headers/WebUI \
 		Library/Headers/OGoWebMail \
 		Library/Headers/OGoSchedulerTools \
 		Library/Headers/OGoScheduler \
@@ -132,6 +133,9 @@ STRAY_OGO_DIRS=	Library/ZideStore-${ZIDE_SHLIB_MAJOR}.${ZIDE_SHLIB_MINOR} \
 		Library/Headers/OGoBase \
 		Library/Headers/OGoAccounts \
 		Library/Headers/LSFoundation \
+		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/DataSources \
+		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/Commands \
+		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/WebUI \
 		Library/Headers \
 		Library
 
@@ -217,6 +221,12 @@ do-build:
 
 do-install:
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+	@for STRAY_OGO_DIR in ${STRAY_OGO_DIRS}; do \
+	  if [ -d ${LOCALBASE}/$${STRAY_OGO_DIR} ]; then \
+	    ${ECHO_MSG} "removing stray OGo directory '${LOCALBASE}/$${STRAY_OGO_DIR}'..."; \
+	    ${RMDIR} ${LOCALBASE}/$${STRAY_OGO_DIR}; \
+	  fi \
+	done
 	# the following procedure is required because we use 'patch-aa'
 	# (and patch-aa is required or we'll end up with a link into WRKSRC in our final installation :/)
 	${MKDIR} ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/templates
