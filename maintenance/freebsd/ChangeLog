@@ -1,6 +1,6 @@
 2007-03-25 Frank Reppin  <frank@opengroupware.org>
 
-	* sope-devel is r1467 now
+	* sope-devel is r1467 now (remove stray dirs here as well)
 	* cleanup ogo-libfoundation install stage
 	  ... we now make sure that the 'Additional/' dir is present
 	  prior installing and we also clean up stray files/dirs
