@@ -1,6 +1,3 @@
-Library/Headers/libFoundation/extensions/exceptions/FoundationException.h
-Library/Headers/libFoundation/extensions/exceptions/GeneralExceptions.h
-Library/Headers/libFoundation/extensions/exceptions/NSCoderExceptions.h
 bin/Defaults
 include/Foundation/Foundation.h
 include/Foundation/NSAccount.h
@@ -253,8 +250,6 @@ share/libFoundation/TimeZoneInfo/UTC
 share/libFoundation/TimeZoneInfo/Universal
 share/libFoundation/TimeZoneInfo/W-SU
 share/libFoundation/TimeZoneInfo/WET
-@unexec rm -f %D/share/nls/POSIX 2>/dev/null || true
-@unexec rm -f %D/share/nls/en_US.US-ASCII 2>/dev/null || true
 @dirrm share/libFoundation/TimeZoneInfo/US
 @dirrm share/libFoundation/TimeZoneInfo/SystemV
 @dirrm share/libFoundation/TimeZoneInfo/Europe
@@ -269,23 +264,8 @@ share/libFoundation/TimeZoneInfo/WET
 @dirrm include/extensions
 @dirrm include/Foundation/exceptions
 @dirrm include/Foundation
-@dirrmtry Library/Headers/libFoundation/ix86/freebsd/GNU
-@dirrmtry Library/Headers/libFoundation/ix86/freebsd
-@dirrmtry Library/Headers/libFoundation/ix86
-@dirrmtry Library/Headers/libFoundation/amd64/freebsd/GNU
-@dirrmtry Library/Headers/libFoundation/amd64/freebsd
-@dirrmtry Library/Headers/libFoundation/amd64
-@dirrm Library/Headers/libFoundation/extensions/exceptions
-@dirrm Library/Headers/libFoundation/extensions
-@dirrm Library/Headers/libFoundation/Foundation/exceptions
-@dirrm Library/Headers/libFoundation/Foundation
-@dirrm Library/Headers/libFoundation
-@dirrm Library/Headers
-@dirrmtry Library/Libraries
-@dirrmtry Library
 @dirrmtry OGo-GNUstep/System/Library/Makefiles/Additional
 @dirrmtry OGo-GNUstep/System/Library/Makefiles
 @dirrmtry OGo-GNUstep/System/Library
 @dirrmtry OGo-GNUstep/System
 @dirrmtry OGo-GNUstep
-@dirrm Tools

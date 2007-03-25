@@ -38,6 +38,23 @@ MAKE_ARGS=	debug=yes \
 		GNUSTEP_INSTALLATION_DIR=${PREFIX} \
 		FHS_INSTALL_ROOT=${PREFIX}
 
+STRAY_LF_FILES=	Library/Headers/libFoundation/extensions/exceptions/NSCoderExceptions.h \
+		Library/Headers/libFoundation/extensions/exceptions/GeneralExceptions.h \
+		Library/Headers/libFoundation/extensions/exceptions/FoundationException.h
+
+STRAY_LF_DIRS=	Tools \
+		Library/Libraries \
+		Library/Headers/libFoundation/extensions/exceptions \
+		Library/Headers/libFoundation/extensions \
+		Library/Headers/libFoundation/amd64/freebsd/GNU \
+		Library/Headers/libFoundation/amd64/freebsd \
+		Library/Headers/libFoundation/amd64 \
+		Library/Headers/libFoundation/Foundation/exceptions \
+		Library/Headers/libFoundation/Foundation \
+		Library/Headers/libFoundation \
+		Library/Headers \
+		Library
+
 .if defined(SHOW_MESSAGES)
 MAKE_ARGS+=     messages=yes
 .endif
@@ -49,6 +66,22 @@ do-build:
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
 
 do-install:
+	@if [ ! -d "${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/Additional" ]; then \
+	  ${ECHO_MSG} "creating directory '${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/Additional'"; \
+	  ${MKDIR} ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/Additional; \
+	fi
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+	@for STRAY_LF_FILE in ${STRAY_LF_FILES}; do \
+	  if [ -f ${LOCALBASE}/$${STRAY_LF_FILE} ]; then \
+  	    ${ECHO_MSG} "removing stray libfoundation file '${LOCALBASE}/$${STRAY_LF_FILE}'..."; \
+	    ${RM} ${LOCALBASE}/$${STRAY_LF_FILE}; \
+	  fi \
+	done
+	@for STRAY_LF_DIR in ${STRAY_LF_DIRS}; do \
+	  if [ -d ${LOCALBASE}/$${STRAY_LF_DIR} ]; then \
+  	    ${ECHO_MSG} "removing stray libfoundation directory '${LOCALBASE}/$${STRAY_LF_DIR}'..."; \
+	    ${RMDIR} ${LOCALBASE}/$${STRAY_LF_DIR}; \
+	  fi \
+	done
 
 .include <bsd.port.mk>
