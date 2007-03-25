@@ -1,3 +1,11 @@
+2007-03-25 Frank Reppin  <frank@opengroupware.org>
+
+	* sope-devel is r1467 now
+	* cleanup ogo-libfoundation install stage
+	  ... we now make sure that the 'Additional/' dir is present
+	  prior installing and we also clean up stray files/dirs
+	  leftover after moving things into FHS
+
 2007-03-22 Frank Reppin  <frank@opengroupware.org>
 
 	* fixed pkg-plist files I'd broken (but still some woes in deinstall/reinstall)
