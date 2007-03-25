@@ -110,6 +110,31 @@ OPTIONS=	SOPE_DEVEL	"link with sope-devel (sope-${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL
 		PDA_SUPPORT     "build with support for PDA" off \
 		PGSQLSERVER_HERE  "use PostgreSQL Server ${DEFAULT_PGSQL_VER} on this host?" on
 
+STRAY_OGO_DIRS=	Library/ZideStore-${ZIDE_SHLIB_MAJOR}.${ZIDE_SHLIB_MINOR} \
+		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/WebUI \
+		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/DataSources \
+		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR}/Commands \
+		Library/OpenGroupware.org-${OGO_SHLIB_MAJOR}.${OGO_SHLIB_MINOR} \
+		Library/Libraries \
+		Library/Headers/ZSFrontend \
+		Library/Headers/ZSBackend \
+		Library/Headers/OGoWebMail \
+		Library/Headers/OGoSchedulerTools \
+		Library/Headers/OGoScheduler \
+		Library/Headers/OGoRawDatabase \
+		Library/Headers/OGoProject \
+		Library/Headers/OGoJobs \
+		Library/Headers/OGoFoundation \
+		Library/Headers/OGoFileSystemProject \
+		Library/Headers/OGoDocuments \
+		Library/Headers/OGoDatabaseProject \
+		Library/Headers/OGoContacts \
+		Library/Headers/OGoBase \
+		Library/Headers/OGoAccounts \
+		Library/Headers/LSFoundation \
+		Library/Headers \
+		Library
+
 .include <bsd.port.pre.mk>
 
 WRKSRC=		${WRKDIR}/opengroupware.org
