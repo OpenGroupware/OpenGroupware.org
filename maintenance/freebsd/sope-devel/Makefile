@@ -47,6 +47,35 @@ LIBWOEXTENSIONS_SUBMINOR=	31
 LIBWOXML_SUBMINOR=	9
 LIBXMLRPC_SUBMINOR=	31
 
+STRAY_SOPE_DIRS=	Library/WOxElemBuilders-${SHLIB_MAJOR}.${SHLIB_MINOR} \
+			Library/SoProducts-${SHLIB_MAJOR}.${SHLIB_MINOR} \
+			Library/SaxDrivers-${SHLIB_MAJOR}.${SHLIB_MINOR} \
+			Library/Libraries \
+			Library/Headers/XmlRpc \
+			Library/Headers/WOXML \
+			Library/Headers/WOExtensions \
+			Library/Headers/WEExtensions \
+			Library/Headers/SoOFS \
+			Library/Headers/SaxObjC \
+			Library/Headers/NGiCal \
+			Library/Headers/NGXmlRpc \
+			Library/Headers/NGStreams \
+			Library/Headers/NGObjWeb \
+			Library/Headers/NGMime \
+			Library/Headers/NGMail \
+			Library/Headers/NGLdap \
+			Library/Headers/NGImap4 \
+			Library/Headers/NGHttp \
+			Library/Headers/NGExtensions \
+			Library/Headers/GDLContentStore \
+			Library/Headers/GDLAccess \
+			Library/Headers/EOControl \
+			Library/Headers/DOM \
+			Library/Headers \
+			Library/GDLAdaptors-${SHLIB_MAJOR}.${SHLIB_MINOR} \
+			Library \
+			Tools
+
 PLIST_SUB=	SHLIB_MAJOR="${SHLIB_MAJOR}" \
 		SHLIB_MINOR="${SHLIB_MINOR}" \
 		LIBDOM_SUBMINOR="${LIBDOM_SUBMINOR}" \
@@ -162,5 +191,11 @@ do-install:
 	  ${MKDIR} ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/Additional; \
 	fi
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+	@for STRAY_SOPE_DIR in ${STRAY_SOPE_DIRS}; do \
+	  if [ -d ${LOCALBASE}/$${STRAY_LF_DIR} ]; then \
+	  ${ECHO_MSG} "removing stray SOPE  directory '${LOCALBASE}/$${STRAY_SOPE_DIR}'..."; \
+	  ${RMDIR} ${LOCALBASE}/$${STRAY_SOPE_DIR}; \
+	  fi \
+	done
 
 .include <bsd.port.post.mk>
