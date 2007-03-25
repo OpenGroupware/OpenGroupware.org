@@ -9,7 +9,7 @@ PORTVERSION=	4.7
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/sope/
-DISTNAME=	sope-trunk-r1455-200703131500
+DISTNAME=	sope-trunk-r1467-200703191100
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	SOPE is a framework for developing web applications and services
@@ -35,15 +35,15 @@ LIBGDLCONTENTSTORE_SUBMINOR=	40
 LIBNGEXTENSIONS_SUBMINOR=	191
 LIBNGLDAP_SUBMINOR=	30
 LIBNGMIME_SUBMINOR=	242
-LIBNGOBJWEB_SUBMINOR=	4
+LIBNGOBJWEB_SUBMINOR=	6
 LIBNGSTREAMS_SUBMINOR=	51
 LIBNGXMLRPC_SUBMINOR=	16
 LIBNGICAL_SUBMINOR=	81
 LIBSAXOBJC_SUBMINOR=	65
 LIBSOOFS_SUBMINOR=	25
-LIBWEEXTENSIONS_SUBMINOR=	92
-LIBWEPROTOTYPE_SUBMINOR=	8
-LIBWOEXTENSIONS_SUBMINOR=	30
+LIBWEEXTENSIONS_SUBMINOR=	93
+LIBWEPROTOTYPE_SUBMINOR=	9
+LIBWOEXTENSIONS_SUBMINOR=	31
 LIBWOXML_SUBMINOR=	9
 LIBXMLRPC_SUBMINOR=	31
 
@@ -157,6 +157,10 @@ do-build:
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
 
 do-install:
+	@if [ ! -d "${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/Additional" ]; then \
+	  ${ECHO_MSG} "creating directory '${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/Additional'"; \
+	  ${MKDIR} ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/Additional; \
+	fi
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/System/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
 
 .include <bsd.port.post.mk>
