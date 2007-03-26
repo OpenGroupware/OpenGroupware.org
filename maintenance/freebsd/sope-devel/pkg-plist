@@ -579,12 +579,18 @@ lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/WOExtensi
 lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/bundle-info.plist
 lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/stamp.make
 sbin/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-share/nls/POSIX
-share/nls/en_US.US-ASCII
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/DAVPropMap.plist
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/Defaults.plist
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/Languages.plist
 share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
+OGo-GNUstep/System/Library/Makefiles/Additional/ngobjweb.make
+OGo-GNUstep/System/Library/Makefiles/woapp.make
+OGo-GNUstep/System/Library/Makefiles/wobundle.make
+@dirrmtry OGo-GNUstep/System/Library/Makefiles/Additional
+@dirrmtry OGo-GNUstep/System/Library/Makefiles 
+@dirrmtry OGo-GNUstep/System/Library
+@dirrmtry OGo-GNUstep/System
+@dirrmtry OGo-GNUstep
 @dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings
 @dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb
 @dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
@@ -635,30 +641,3 @@ share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
 @dirrm include/GDLAccess
 @dirrm include/EOControl
 @dirrm include/DOM
-@dirrm Library/WOxElemBuilders-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-@dirrm Library/SoProducts-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-@dirrm Library/SaxDrivers-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-@dirrmtry Library/Libraries
-@dirrm Library/Headers/XmlRpc
-@dirrm Library/Headers/WOXML
-@dirrm Library/Headers/WOExtensions
-@dirrm Library/Headers/WEExtensions
-@dirrm Library/Headers/SoOFS
-@dirrm Library/Headers/SaxObjC
-@dirrm Library/Headers/NGiCal
-@dirrm Library/Headers/NGXmlRpc
-@dirrm Library/Headers/NGStreams
-@dirrm Library/Headers/NGObjWeb
-@dirrm Library/Headers/NGMime
-@dirrm Library/Headers/NGMail
-@dirrmtry Library/Headers/NGLdap
-@dirrm Library/Headers/NGImap4
-@dirrm Library/Headers/NGHttp
-@dirrm Library/Headers/NGExtensions
-@dirrm Library/Headers/GDLContentStore
-@dirrm Library/Headers/GDLAccess
-@dirrm Library/Headers/EOControl
-@dirrm Library/Headers/DOM
-@dirrmtry Library/Headers
-@dirrmtry Library
-@dirrmtry Library/GDLAdaptors-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%

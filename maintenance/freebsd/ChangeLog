@@ -1,3 +1,8 @@
+2007-03-26 Frank Reppin  <frank@opengroupware.org>
+
+	* don't strip
+	* properly deorbit files installed by sope-devel
+
 2007-03-25 Frank Reppin  <frank@opengroupware.org>
 
 	* opengroupware-devel is r1910 now... and we deorbit stray dirs
