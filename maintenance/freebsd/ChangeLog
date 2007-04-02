@@ -1,3 +1,8 @@
+2007-04-02 Frank Reppin  <frank@opengroupware.org>
+
+	* switch default apache port to www/apache22
+	* minor adjustments in mod_ngobjweb/
+
 2007-03-26 Frank Reppin  <frank@opengroupware.org>
 
 	* don't strip
