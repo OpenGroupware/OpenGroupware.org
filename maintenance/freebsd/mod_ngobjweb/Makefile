@@ -9,7 +9,7 @@ PORTVERSION=	1.0
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/sope/
-DISTNAME=	sope-mod_ngobjweb-trunk-r1313-200607111102
+DISTNAME=	sope-mod_ngobjweb-trunk-r1467-200703191103
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	Apache mod for forwarding HTTP requests to SOPE appl. server instances
@@ -17,7 +17,6 @@ COMMENT=	Apache mod for forwarding HTTP requests to SOPE appl. server instances
 DIST_SUBDIR=	ogo-suite
 
 WRKSRC=		${WRKDIR}/sope-mod_ngobjweb
-USE_APACHE=	yes
 USE_GMAKE=	yes
 MAKEFILE=	GNUmakefile
 SUB_FILES=	pkg-message pkg-deinstall
@@ -27,16 +26,21 @@ DOCS=		COPYRIGHT CHANGES README ChangeLog
 
 .include <bsd.port.pre.mk>
 
-.if exists(${LOCALBASE}/include/apache2/httpd.h) || (!exists(${LOCALBASE}/include/apache/httpd.h) && \
-	!exists(${LOCALBASE}/include/apache21/httpd.h) && !exists(${LOCALBASE}/include/apache22/httpd.h))
+#defaults to www/apache22 if none installed...
+.if exists(${LOCALBASE}/include/apache22/httpd.h) || (!exists(${LOCALBASE}/include/apache/httpd.h) && \
+	!exists(${LOCALBASE}/include/apache2/httpd.h) && !exists(${LOCALBASE}/include/apache21/httpd.h))
+APACHE_PORT?=	www/apache22
+USE_APACHE?=	2.2
+.elif exists(${LOCALBASE}/include/apache2/httpd.h)
 APACHE_PORT?=	www/apache20
 WITH_APACHE2=	yes
+USE_APACHE?=	2.0
 .elif exists(${LOCALBASE}/include/apache21/httpd.h)
 APACHE_PORT?=	www/apache21
-.elif exists(${LOCALBASE}/include/apache22/httpd.h)
-APACHE_PORT?=	www/apache22
+USE_APACHE?=	2.1
 .else
 APACHE_PORT?=	www/apache13
+USE_APACHE?=	1.3
 .endif
 
 # apache20
@@ -72,7 +76,7 @@ AP_LIBEXEC!=	${APXS} -q LIBEXECDIR
 AP_LIBEXEC?=	${LOCALBASE}/libexec/apache22
 .endif
 AP_MOD_DIR?=	${AP_LIBEXEC:S/${PREFIX}//}
-AP_RC?=		${LOCALBASE}/etc/rc.d/apache22.sh
+AP_RC?=		${LOCALBASE}/etc/rc.d/apache22
 AP_RCCONF=	"apache22_enable=\"YES\""
 PLIST_SUB=	APACHE=apache22
 # apache13
