@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -28,7 +28,6 @@
 
 @interface LSWImapMailFilterEditor : OGoContentPage
 {
-@protected
   NSMutableArray      *filters;
   NSMutableDictionary *folders;
   NSMutableDictionary *filter;
@@ -44,6 +43,7 @@
   int  index;
   int  oldFilterPos;
   BOOL isInNewMode;
+  BOOL keepDuringForward;
   
   enum {
     Action_Move,

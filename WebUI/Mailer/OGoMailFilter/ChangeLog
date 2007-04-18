@@ -1,3 +1,8 @@
+2007-04-18  Andreas Scherbaum  <ads@skyrix.com>
+
+	* LSWImapMailFilterEditor.m: added option to keep mail when forwarding
+	  using Sieve filters (v5.3.8)
+
 2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoMailFilterManager.m: fixed some gcc 4.1 warnings (v5.3.7)

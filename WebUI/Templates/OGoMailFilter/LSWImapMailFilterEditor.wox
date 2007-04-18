@@ -94,6 +94,12 @@
                 <td><input type="text" name="fwdAddress"
                            var:value="filter.forwardAddress" /></td>
               </tr>
+              <tr>
+                <td> </td>
+                <td><OGo:font><OGo:label key="keepDuringForward"/></OGo:font></td>
+                <td><input type="checkbox" name="keepDuringForward"
+                     var:checked="filter.keepDuringForward" /></td>
+              </tr>
             </table>
           </OGo:font>
         </OGo:attribute>

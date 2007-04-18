@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
   Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
@@ -77,6 +77,7 @@ static NSDictionary *OGoFilterEditor_FieldLabels = nil;
     self->filters     =
       [[LSWImapMailFilterManager filterForUser:account] mutableCopy];
     self->action = Action_Move;
+    self->keepDuringForward = NO;
   }
   return self;
 }
@@ -108,6 +109,13 @@ static NSDictionary *OGoFilterEditor_FieldLabels = nil;
 }
 - (BOOL)selectionMove {
   return (self->action == Action_Move) ? YES : NO;
+}
+
+- (void)setKeepDuringForward:(BOOL)_b {
+  self->keepDuringForward = _b ? YES : NO;
+}
+- (BOOL)keepDuringForward {
+  return (self->keepDuringForward) ? YES : NO;
 }
 
 /* defaults */
@@ -168,6 +176,7 @@ static NSDictionary *OGoFilterEditor_FieldLabels = nil;
   self->action       = Action_Move;
   self->oldFilterPos = -1;
   self->isInNewMode  = YES;
+  self->keepDuringForward = NO;
   
   self->filter = [[NSMutableDictionary alloc] initWithCapacity:16];
   [self->filter setObject:[NSNumber numberWithInt:0] forKey:@"filterPos"];
