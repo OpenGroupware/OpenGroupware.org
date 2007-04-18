@@ -1,3 +1,8 @@
+2007-04-18  Andreas Scherbaum  <ads@skyrix.com>
+
+	* sky_install_sieve.m: added ability to generate 'keep' Sieve feature
+	  (OGo bug #594)
+
 2007-01-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* sky_install_sieve.m: added 'SieveFilenameSeparator' default to

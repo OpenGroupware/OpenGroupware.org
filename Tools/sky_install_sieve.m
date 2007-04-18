@@ -276,6 +276,10 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
     
     [sieveFilter appendString:(str != nil ? str : (NSString *)@"")];
     [sieveFilter appendString:@"\";\n "];
+    if ([[aFilter objectForKey:@"keepDuringForward"] boolValue]) {
+      // add keep option, if set
+      [sieveFilter appendString:@"keep;\n "];
+    }
   }
   [sieveFilter appendString:@"}\n"];
 }
