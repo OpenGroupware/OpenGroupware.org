@@ -529,6 +529,7 @@ sub collect_patchinfo {
       chomp;
       $new_major = $_ if ($_ =~ s/^MAJOR_VERSION=//);
       $new_minor = $_ if ($_ =~ s/^MINOR_VERSION=//);
+      $new_minor =~ s/\s+#.*//g if(defined $new_minor);
       $new_svnrev = $_ if ($_ =~ s/^SVN_REVISION:=//g);
     }
     close(SOPE);
