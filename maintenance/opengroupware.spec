@@ -366,6 +366,15 @@ AutoReqProv:  off
 %description webui-resource-fr
 This package contains the French translation for OpenGroupware.org's web UI.
 ##
+%package webui-resource-fi
+Summary:      Finish translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+Requires:     ogo-webui-app
+AutoReqProv:  off
+
+%description webui-resource-fi
+This package contains the Finish translation for OpenGroupware.org's web UI.
+##
 %package webui-resource-de
 Summary:      German translation for OpenGroupware.org's web UI
 Group:        Development/Libraries
@@ -1259,6 +1268,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %files theme-orange
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-%{ogo_v}/templates/Themes/orange
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/Danish_orange.lproj
 %{prefix}/share/opengroupware.org-%{ogo_v}/www/English_orange.lproj
 %{prefix}/share/opengroupware.org-%{ogo_v}/www/German_orange.lproj
 
@@ -1410,6 +1420,10 @@ rm -fr ${RPM_BUILD_ROOT}
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-%{ogo_v}/translations/English.lproj
 
+%files webui-resource-fi
+%defattr(-,root,root,-)
+%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Finish.lproj
+
 %files webui-resource-fr
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-%{ogo_v}/translations/French.lproj
@@ -1488,6 +1502,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Thu Apr 19 2007 Frank Reppin <frank@opengroupware.org>
+- added webui-resources-fi
+- added Danish.lproj to theme-orange
 * Wed Oct 25 2006 Frank Reppin <frank@opengroupware.org>
 - added ogo-qsearch-persons to tools
 * Mon Jan 30 2006 Frank Reppin <frank@opengroupware.org>
