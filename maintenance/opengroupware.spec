@@ -1,5 +1,5 @@
 %define smaj 4
-%define smin 5
+%define smin 7
 %define lfmaj 1
 %define lfmin 1
 %define ogo_v 1.1
