@@ -651,5 +651,31 @@ static BOOL       LSCoreOnCommandException = NO;
 - (BOOL)preferredExecutantsEnabled {
   return PreferredAccountsEnabled;
 }
+/* direct activation */
+
+- (id<WOActionResults>)showDelegatedJobsAction {
+  OGoContentPage *page;
+  
+  [self setTabKey:@"delegatedJobs"];
+  if ((page = (id)[self tabClicked]) == nil)
+    page = self;
+  return page;
+}
+- (id<WOActionResults>)showToDoListAction {
+  OGoContentPage *page;
+  
+  [self setTabKey:@"toDoList"];
+  if ((page = (id)[self tabClicked]) == nil)
+    page = self;
+  return page;
+}
+- (id<WOActionResults>)showArchivedJobsAction {
+  OGoContentPage *page;
+  
+  [self setTabKey:@"archivedJobs"];
+  if ((page = (id)[self tabClicked]) == nil)
+    page = self;
+  return page;
+}
 
 @end /* LSWJobs */

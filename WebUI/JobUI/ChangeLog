@@ -1,3 +1,9 @@
+2007-04-26 Olivier Hallot <olivier@ig.com.br>
+
+	* LSWJobs.m: enhanced with direct actions, links can
+	  now invoke specific tabs in the Jobs application
+	  (v5.3.54) (#1735)
+
 2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.53
