@@ -42,6 +42,7 @@
     [self setAptType:     [_coder decodeStringForKey:@"aptType"]];
     [self setAccessTeamId:[_coder decodeStringForKey:@"accessTeamId"]];
     [self setWriteAccess: [_coder decodeArrayForKey:@"writeAccess"]];
+    [self setNotificationTime: [_coder decodeObjectForKey:@"notificationTime"]];
 
     tmp = [_coder decodeArrayForKey:@"resourceNames"];
     if ([tmp isNotEmpty])
@@ -68,6 +69,7 @@
   [_coder encodeString:[self aptType]        forKey:@"aptType"];
   [_coder encodeObject:[self accessTeamId]   forKey:@"accessTeamId"];
   [_coder encodeArray:[self writeAccess]     forKey:@"writeAccess"];
+  [_coder encodeObject:[self notificationTime] forKey:@"notificationTime"];
 
   if ([(tmp = [self resourceNames]) isNotEmpty])
     tmp = [tmp componentsSeparatedByString:@", "];

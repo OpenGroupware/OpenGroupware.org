@@ -1,3 +1,12 @@
+2007-04-26  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* Actions.subproj/DirectAction+Appointment.m: added notificationTime
+	  to _takeValuesDict array. (v5.3.82) (#1792)
+
+	* XmlRpcCoding.subproj/SkyAppointmentDocument+XmlRpcCoding.m: added
+	  notificationTime to appointment encoding/decoding (v5.3.82) 
+	  (#1792)
+
 2006-09-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Actions.subproj/DirectAction+Appointment.m: added new
