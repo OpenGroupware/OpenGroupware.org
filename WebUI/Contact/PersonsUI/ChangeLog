@@ -1,3 +1,8 @@
+2007-07-25  Olivier Hallot <olivier@ig.com.br>
+
+	* LSWPersons.m: Enhanced with additional direct actions
+          (v5.3.75) Bug#1732
+
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWPersons.m: added action to open mail panel based on a list

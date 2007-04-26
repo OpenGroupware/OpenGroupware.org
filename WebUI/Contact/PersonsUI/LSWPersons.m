@@ -154,7 +154,7 @@ static BOOL       hasSkyInfolineGathering = NO;
 
 - (id)init {
   id p;
-
+  
   /* this component is a session-singleton */
   if ((p = [self persistentInstance]) != nil) {
     [self release];
@@ -592,6 +592,30 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 - (id)newPerson {
   return [[self session] 
 	   instantiateComponentForCommand:@"new" type:personDocType];
+}
+- (id<WOActionResults>)showPersonFavoritesAction {
+  OGoContentPage *page;
+  
+  [self setTabKey:@"_favorites_"];
+  if ((page = (id)[self tabClicked]) == nil)
+    page = self;
+  return page;
+}
+- (id<WOActionResults>)showPersonSearchAction {
+  OGoContentPage *page;
+  
+  [self setTabKey:@"personSearch"];
+  if ((page = (id)[self tabClicked]) == nil)
+    page = self;
+  return page;
+}
+- (id<WOActionResults>)showFullSearchAction {
+  OGoContentPage *page;
+  
+  [self setTabKey:@"search"];
+  if ((page = (id)[self tabClicked]) == nil)
+    page = self;
+  return page;
 }
 
 - (id)import {

@@ -684,4 +684,39 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   return [[self context] contextID];
 }
 
+/* Direct activation (as in LSWPersons) */
+- (id<WOActionResults>)showAdvancedSearchAction {
+  OGoContentPage *page;
+  
+  [self setTabKey:@"advancedSearch"];
+  if ((page = (id)[self tabClicked]) == nil)
+    page = self;
+  return page;
+}
+- (id<WOActionResults>)showEnterpriseFavoritesAction {
+  OGoContentPage *page;
+  
+  [self setTabKey:@"_favorites_"];
+  if ((page = (id)[self tabClicked]) == nil)
+    page = self;
+  return page;
+}
+- (id<WOActionResults>)showEnterpriseSearchAction {
+  OGoContentPage *page;
+  
+  [self setTabKey:@"enterpriseSearch"];
+  if ((page = (id)[self tabClicked]) == nil)
+    page = self;
+  return page;
+}
+- (id<WOActionResults>)showFullSearchAction {
+  OGoContentPage *page;
+  
+  [self setTabKey:@"search"];
+  if ((page = (id)[self tabClicked]) == nil)
+    page = self;
+  return page;
+}
+
+
 @end /* LSWEnterprises */
