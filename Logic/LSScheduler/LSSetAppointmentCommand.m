@@ -270,6 +270,8 @@ static NSArray  *startDateOrderings = nil;
 }
 
 - (void)_prepareForExecutionInContext:(id)_context {
+  id acl;
+  
   /* check permissions */
   [self assert:[self _checkPermissionsInContext:_context]
         format:@"no access to edit appointment"];
@@ -279,6 +281,50 @@ static NSArray  *startDateOrderings = nil;
   if (!self->isWarningIgnored)
     [self _checkConflictsInContext:_context];
 
+  
+  /* fixup ACL values */
+  
+  // TBD: DUP in ::new
+  acl = [self valueForKey:@"writeAccessList"];
+  if ([acl isKindOfClass:[NSArray class]]) {
+    if ([acl isNotEmpty]) {
+      NSArray *aclList = acl;
+      int i;
+      
+      acl = [[NSMutableString alloc] initWithCapacity:16];
+      for (i = 0; i < [aclList count]; i++) {
+	id       obj = [aclList objectAtIndex:i];
+	NSNumber *pkey;
+
+	if ([obj isKindOfClass:[NSNumber class]])
+	  pkey = obj;
+	else if ([obj isKindOfClass:[EOKeyGlobalID class]])
+	  pkey = [((EOKeyGlobalID *)obj) keyValues][0];
+	else if ([obj isKindOfClass:[NSString class]])
+	  pkey = obj;
+	else
+	  pkey = [[aclList objectAtIndex:i] valueForKey:@"companyId"];
+	
+	if (![pkey isNotNull]) {
+	  [self errorWithFormat:
+		  @"got object w/o company-id in writeAccessList: %@",aclList];
+	  continue;
+	}
+	
+	if ([acl isNotEmpty]) [acl appendString:@","];
+	[acl appendString:[pkey stringValue]];
+      }
+    }
+    else
+      acl = [[NSNull null] retain];
+    
+    [self takeValue:acl forKey:@"writeAccessList"];
+    [acl release]; acl = nil;
+  }
+  
+  
+  /* further checks in super */
+  
   [super _prepareForExecutionInContext:_context];
 }
 

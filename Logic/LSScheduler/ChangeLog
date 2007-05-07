@@ -1,3 +1,9 @@
+2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSSetAppointmentCommand.m/LSNewAppointmentCommand.m: now allows
+	  arrays of ids/gids/company-eos in the 'writeAccessList' parameter
+	  (v5.3.100)
+
 2007-02-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* removed unused/deprecated LSGetDateForADayCommand (aka
