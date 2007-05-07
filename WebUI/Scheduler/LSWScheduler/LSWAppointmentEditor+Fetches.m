@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -102,11 +103,12 @@
   if (_pkey == nil) return nil;
   
   res = [self runCommand:@"account::get", @"companyId", _pkey, nil];
-  if ([res count] == 0)
+  if (![res isNotEmpty])
     res = [self runCommand:@"team::get", @"companyId", _pkey, nil];
+  if (![res isNotEmpty])
+    [self warnWithFormat:@"got no account/team for ID: %@", _pkey];
   
-  res = ([res count] > 0) ? [res lastObject] : nil;
-  return res;
+  return [res isNotEmpty] ? [res lastObject] : nil;
 }
 
 - (id)_fetchAppointmentForPrimaryKey:(id)_pkey {

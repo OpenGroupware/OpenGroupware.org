@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2006-2007 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -439,8 +439,11 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   NSMutableArray *wa;
   NSString *list;
   
-  wa = [[self defaultWriteAccessAccounts] mutableCopy];
-  [wa addObjectsFromArray:[self defaultWriteAccessTeams]];
+  if ((wa = [[self defaultWriteAccessAccounts] mutableCopy]) != nil)
+    [wa addObjectsFromArray:[self defaultWriteAccessTeams]];
+  else
+    wa = [[self defaultWriteAccessTeams] mutableCopy];
+  
   list = [wa componentsJoinedByString:@","];
   [wa release]; wa = nil;
   return list;
@@ -1673,6 +1676,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (NSString *)_accessList {
+  // DEPRECATED: now directly available in set/new commands
   NSMutableString *accessList;
   NSEnumerator    *enumerator;
   id              obj;
@@ -1750,15 +1754,13 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
      Some of the parameters are directly bound in the template, but some are
      just setup here.
   */
-  NSString *accessList;
-  id       apmt;
-  
-  apmt = [self snapshot];
+  id apmt = [self snapshot];
   
   /* write access rights */
   
-  if ((accessList = [self _accessList]) != nil)
-    [apmt takeValue:accessList forKey:@"writeAccessList"];
+  [apmt takeValue:([self->selectedAccessMembers isNotEmpty]
+		   ? (id)self->selectedAccessMembers : (id)[NSNull null])
+	forKey:@"writeAccessList"];
   
   /* transfer participants */
 
