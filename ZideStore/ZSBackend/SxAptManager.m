@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2007 SKYRIX Software A
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -281,7 +282,7 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
   if ([user hasPrefix:@"SMTP:"])
     user = [user substringFromIndex:5];
 
-  if (![user length]) {
+  if (![user isNotEmpty]) {
     [self logWithFormat:@"invalid user for freebusy: %@", _login];
     return nil;
   }
@@ -313,7 +314,7 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
                  @"toDate",    _to,
                  @"companies", [NSArray arrayWithObject:account],
                nil];
-  if ([dates count] == 0) {
+  if (![dates isNotEmpty]) {
     [self rollback];
     return [NSArray array];
   }
@@ -562,7 +563,7 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
   participants =
     [[[_eo valueForKey:@"participants"] mutableCopy] autorelease];
 
-  if (![participants count]) {
+  if (![participants isNotEmpty]) {
     [self logWithFormat:@"got no old participants object !"];
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
 			reason:@"could not locate participants for object!"];
@@ -639,7 +640,7 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
   
   /* check preconditions */
   
-  if ([_record count] == 0) {
+  if (![_record isNotEmpty]) {
     return [NSException exceptionWithHTTPStatus:200 /* OK */
 			reason:@"got no attributes to update"];
   }
@@ -655,7 +656,7 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
     //     edit his participant status
 
     participants = [_record valueForKey:@"participants"];
-    if ([participants count]) {
+    if ([participants isNotEmpty]) {
       unsigned int cnt, i;
       id currentId;
       currentId = [[[self commandContext] valueForKey:LSAccountKey]
@@ -679,7 +680,7 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
   
   /* add log */
   
-  if ([_log length] > 0)
+  if ([_log isNotEmpty])
     [_record setObject:_log forKey:@"logText"];
   
   /* execute */
@@ -716,14 +717,14 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
   NSException *error = nil;
   id          object = nil;
   
-  if ([_record count] == 0) {
+  if (![_record isNotEmpty]) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
 			reason:@"missing properties for apt to create !"];
   }
   
   /* add log */
   
-  if ([_log length] > 0)
+  if ([_log isNotEmpty])
     [_record setObject:_log forKey:@"logText"];
   
   /* execute */
@@ -746,7 +747,7 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
   
   /* handle errors and return */
   
-  if (error) {
+  if (error != nil) {
     [self rollback];
     return error;
   }
