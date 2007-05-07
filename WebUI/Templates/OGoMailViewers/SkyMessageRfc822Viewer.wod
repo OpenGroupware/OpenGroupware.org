@@ -1,10 +1,10 @@
-// $Id: SkyMessageRfc822Viewer.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 // -- header
 
 PartHeaderRow: WOGenericContainer {
-  elementName = "TR";
-  BGCOLOR     = config.colors_partHeader;
+  elementName = "tr";
+  bgcolor     = config.colors_partHeader;
 }
 
 IsRoot:    WOConditional { condition = isRootPart; }
