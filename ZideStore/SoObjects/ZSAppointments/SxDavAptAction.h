@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -54,7 +54,6 @@
 - (NSException *)processKeywordsInContext:(id)_ctx;
 - (NSException *)processFBTypeInContext:(id)_ctx;
 
-
-@end /* SxDavAptAction */
+@end
 
 #endif /* __Appointments_SxDavAptAction_H__ */

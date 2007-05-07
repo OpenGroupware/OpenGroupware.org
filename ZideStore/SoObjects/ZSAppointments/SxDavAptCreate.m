@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -180,7 +181,7 @@ static NSNumber *yesNum = nil;
   }
   
   tmp = [self->props objectForKey:@"cdoIsRecurring"];
-  if (tmp) {
+  if ([tmp isNotEmpty]) {
     NSString *state;
     int      rtype;
     
@@ -199,8 +200,8 @@ static NSNumber *yesNum = nil;
     [self->keys removeObject:@"importance"];
   }
   
-  if ((tmp = [self->props objectForKey:@"rtfCompressed"])) {
-    if ([tmp length]) {
+  if ((tmp = [self->props objectForKey:@"rtfCompressed"]) != nil) {
+    if ([tmp isNotEmpty]) {
       NSString *s;
 
       s = [[tmp stringByDecodingBase64] plainTextStringByDecodingRTF];
@@ -224,11 +225,11 @@ static NSNumber *yesNum = nil;
   if ((error = [self processAssociatedContactsInContext:_ctx])) return error;
   if ((error = [self processKeywordsInContext:_ctx]))           return error;
   if ((error = [self processFBTypeInContext:_ctx]))             return error;
-
-  if ((tmp = [[self appointment] pkeyOfGroupInContext:_ctx])) 
+  
+  if ((tmp = [[self appointment] pkeyOfGroupInContext:_ctx]) != nil)
     [self->changeSet setObject:tmp forKey:@"accessTeamId"];
   
-  /* ignore conflicts TODO: add conflict panel in ZideLook */
+  /* ignore conflicts */
   [self->changeSet setObject:yesNum forKey:@"isWarningIgnored"];
   
   /* add log */
@@ -239,7 +240,7 @@ static NSNumber *yesNum = nil;
                   createWithEOAttributes:self->changeSet 
                   log:[self createdLogText]];
   if ([error isKindOfClass:[NSException class]]) {
-    [self logWithFormat:@"appointment creation failed: %@", error];
+    [self warnWithFormat:@"appointment creation failed: %@", error];
     return error;
   }
   
@@ -248,7 +249,7 @@ static NSNumber *yesNum = nil;
     [(WOContext *)_ctx setObject:tmp forKey:@"SxNewObjectID"];
   }
   else
-    [self logWithFormat:@"ERROR: missing dateId !"];
+    [self warnWithFormat:@"got no dateId in result: %@", tmp];
   
   return nil; /* nil says, everything's OK */  
 }

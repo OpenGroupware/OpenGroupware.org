@@ -1,6 +1,7 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
-
+  Copyright (C) 2002-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
+  
   This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under

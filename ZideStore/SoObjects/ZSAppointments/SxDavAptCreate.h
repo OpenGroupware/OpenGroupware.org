@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -28,6 +28,6 @@
 {
 }
 
-@end /* SxDavAptCreate */
+@end
 
 #endif /* __Appointments_SxDavAptCreate_H__ */

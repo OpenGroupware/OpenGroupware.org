@@ -126,7 +126,7 @@
 - (id)childForNewKey:(NSString *)_key inContext:(id)_ctx {
   id obj;
   
-  [self logWithFormat:@"childForNewKey: %@", _key];
+  [self debugWithFormat:@"childForNewKey: %@", _key];
   
   obj = [[self recordClassForKey:_key] alloc];
   obj = [obj initNewWithName:_key inFolder:self];
@@ -264,8 +264,7 @@
 - (SxAptSetIdentifier *)aptSetID {
   NSString *g;
   
-  g = [self group];
-  return [g length] > 0 
+  return [(g = [self group]) isNotEmpty]
     ? ([self isOverview]
        ? [SxAptSetIdentifier overviewSetForGroup:g]
        : [SxAptSetIdentifier aptSetForGroup:g])

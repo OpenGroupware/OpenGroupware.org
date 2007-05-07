@@ -1,3 +1,7 @@
+2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* minor code cleanups (v1.5.109)
+
 2007-02-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAppointmentFolder.m: added CalDAV marker to WebDAV resource type,
