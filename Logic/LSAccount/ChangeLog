@@ -1,3 +1,8 @@
+2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetTeamForAccountCommand.m: detect and log an edge condition
+	  (no accounts/objects passed in?) (v5.3.25)
+
 2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble: explicitly link libNGiCal to please MacOS

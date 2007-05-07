@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -38,7 +39,7 @@
 
 @implementation LSGetTeamForAccountCommand
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Person";
@@ -65,24 +66,41 @@
     return;
   }
   
-  cacheKey = ([self fetchGlobalIDs])
+  cacheKey = [self fetchGlobalIDs]
     ? @"_cache_account_teamGIDs"
     : @"_cache_account_teams";
   
   companyId = [self member];
-  companyId = ([companyId isKindOfClass:[EOKeyGlobalID class]])
-    ? [companyId keyValues][0]
-    : [companyId valueForKey:@"companyId"];
-
-  cacheKey    = [cacheKey stringByAppendingString:[companyId stringValue]];
-  cachedTeams = [_context valueForKey:cacheKey];
+  if ([companyId isNotNull]) {
+    // TBD: this arbitary object => primary key thing needs to be generalized
+    //      to work with strings, numbers, gids, objects ...
+    companyId = ([companyId isKindOfClass:[EOKeyGlobalID class]])
+      ? [companyId keyValues][0]
+      : [companyId valueForKey:@"companyId"];
+    if (![companyId isNotNull]) {
+      [self warnWithFormat:@"got no companyId from member: %@", [self member]];
+      cacheKey = nil;
+    }
+  }
+  else {
+    [self warnWithFormat:@"got no member?"];
+    cacheKey = nil;
+  }
   
-  if (cachedTeams) {
+  if (cacheKey != nil) {
+    cacheKey    = [cacheKey stringByAppendingString:[companyId stringValue]];
+    cachedTeams = [_context valueForKey:cacheKey];
+  }
+  
+  if (cachedTeams != nil) {
     [self setReturnValue:cachedTeams];
   }
   else {
+    /* perform query and cache result */
     [super _executeInContext:_context];
-    [_context takeValue:[self returnValue] forKey:cacheKey];
+    
+    if (cacheKey != nil)
+      [_context takeValue:[self returnValue] forKey:cacheKey];
   }
 }
 
