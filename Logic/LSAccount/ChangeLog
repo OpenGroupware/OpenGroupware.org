@@ -1,5 +1,10 @@
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSGetAccountCommand.m: only attempt to load advanced account
+	  attributes if we found a basic record (v5.3.26)
+
+2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
+
 	* LSGetTeamForAccountCommand.m: detect and log an edge condition
 	  (no accounts/objects passed in?) (v5.3.25)
 

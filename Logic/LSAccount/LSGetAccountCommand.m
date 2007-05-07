@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -19,9 +20,9 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <GDLAccess/EOSQLQualifier.h>
 #include <LSGetAccountCommand.h>
+#include "common.h"
 
 @implementation LSGetAccountCommand
 
@@ -45,24 +46,30 @@
 }
 
 - (void)_executeInContext:(id)_context {
+  id obj;
+  
   [super _executeInContext:_context];
   
-  /* set teams for result accounts(s) in key 'teams' */
+  if ([(obj = [self object]) isNotNull]) {
+    /* found a matching account */
   
-  LSRunCommandV(_context, @"account", @"teams",
-                @"accounts",   [self object],
-                @"returnType", intObj(LSDBReturnType_ManyObjects), nil);
+    /* set teams for result accounts(s) in key 'teams' */
   
-  /* set extended attributes for result account(s) */
+    LSRunCommandV(_context, @"account", @"teams",
+		  @"accounts",   [self object],
+		  @"returnType", intObj(LSDBReturnType_ManyObjects), nil);
   
-  LSRunCommandV(_context, @"person", @"get-extattrs",
-                @"objects", [self object],
-                @"relationKey", @"companyValue", nil);
+    /* set extended attributes for result account(s) */
   
-  /* get telephones */
-  LSRunCommandV(_context, @"person", @"get-telephones",
-                @"objects", [self object],
-                @"relationKey", @"telephones", nil);
+    LSRunCommandV(_context, @"person", @"get-extattrs",
+		  @"objects", [self object],
+		  @"relationKey", @"companyValue", nil);
+  
+    /* get telephones */
+    LSRunCommandV(_context, @"person", @"get-telephones",
+		  @"objects", [self object],
+		  @"relationKey", @"telephones", nil);
+  }
 }
 
 /* record initializer */
