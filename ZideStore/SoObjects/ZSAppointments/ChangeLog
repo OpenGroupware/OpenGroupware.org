@@ -1,5 +1,19 @@
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v1.5.110
+
+	* SxAppointmentFolder.m: added a method which returns the default write
+	  ACL for new appointments created inside the folder. This ACL consists
+	  of the group which belongs to the folder (thereby giving all group
+	  members write access) and of the ACL which is configured by the user
+	  in his preferences. (SX #2033)
+	
+	* SxDavAptCreate.m, SxAppointment.m: apply ACL returned by the
+	  appointment folders -defaultWriteAccessListInContext: on newly
+	  created appointments (SX #2033)
+
+2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
+
 	* minor code cleanups (v1.5.109)
 
 2007-02-08  Helge Hess  <helge.hess@opengroupware.org>

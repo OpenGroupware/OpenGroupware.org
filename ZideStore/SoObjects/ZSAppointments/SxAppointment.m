@@ -81,6 +81,8 @@ static BOOL embedViewURL             = NO;
 /* accessors */
 
 - (void)setGroup:(NSString *)_group {
+  // TBD: why is that? shouldn't we just ask the container for the group?
+  //      => possibly we invoke this object in other contexts
   ASSIGNCOPY(self->group, _group);
 }
 - (NSString *)group {
@@ -354,11 +356,17 @@ static BOOL embedViewURL             = NO;
   SX_NEWKEY(@"importance");
   SX_NEWKEY(@"lastModified");
   SX_NEWKEY(@"sensitivity");
-  
+
   /* read-access-group */
   
   if ([(tmp = [self pkeyOfGroupInContext:_ctx]) isNotNull])
     [changeSet setObject:tmp forKey:@"accessTeamId"];
+  
+  /* write access */
+  
+  tmp = [[self container] defaultWriteAccessListInContext:_ctx];
+  if ([tmp isNotEmpty])
+    [changeSet setObject:tmp forKey:@"writeAccessList"];
   
   /* conflicts */
   

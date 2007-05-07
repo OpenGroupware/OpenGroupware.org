@@ -29,7 +29,7 @@
   SxAppointmentFolder
   
   This class is a virtual folder on the appointment/meeting database. The
-  selection is made based on the "read access group" in SKYRiX. That is,
+  selection is made based on the "read access group" in OGo. That is,
   each group will have a virtual folder and each individual will have a
   private folder (if the read access group is not set [private meeting]).
 */
@@ -55,6 +55,8 @@
 
 - (NSCalendarDate *)defaultStartDate;
 - (NSCalendarDate *)defaultEndDate;
+
+- (NSArray *)defaultWriteAccessListInContext:(id)_ctx;
 
 @end
 

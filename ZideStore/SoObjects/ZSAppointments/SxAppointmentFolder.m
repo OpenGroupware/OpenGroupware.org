@@ -46,6 +46,15 @@
 
 @implementation SxAppointmentFolder
 
+static BOOL addGroupToWriteACL = YES;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  addGroupToWriteACL = 
+    [ud boolForKey:@"ZLCreateGroupAppointmentsWithoutGroupWriteAccess"]?NO:YES;
+}
+
 + (NSString *)entityName {
   return @"Date";
 }
@@ -62,6 +71,13 @@
 }
 - (NSString *)group {
   return self->group;
+}
+
+- (EOKeyGlobalID *)globalIDOfGroupInContext:(id)_ctx {
+  NSString *g;
+  if ((g = [self group]) == nil) return nil;
+  return [[self aptManagerInContext:_ctx] 
+                globalIDForGroupWithName:[self group]];
 }
 
 - (void)setIsOverview:(BOOL)_flag {
@@ -99,6 +115,44 @@
   return NO;
 #endif
 }
+
+
+/* calendar ACLs */
+
+- (NSArray *)defaultWriteAccessListInContext:(id)_ctx {
+  /*
+    Retrieves the default ACL from the preferences. The user can configure
+    those in the WebUI scheduler preferences.
+    Also checks for the global-auto-group ACL.
+  */
+  NSMutableArray *acl;
+  NSUserDefaults *ud;
+  NSArray        *defTeams, *defAccounts;
+  EOKeyGlobalID  *groupGID = nil;
+  
+  if ([[self group] isNotNull] && addGroupToWriteACL)
+    groupGID = [self globalIDOfGroupInContext:_ctx];
+  
+  ud = [[self commandContextInContext:_ctx] userDefaults];
+  defTeams    = [ud arrayForKey:@"scheduler_write_access_teams"];
+  defAccounts = [ud arrayForKey:@"scheduler_write_access_accounts"];
+  if (![defTeams    isNotEmpty]) defTeams    = nil;
+  if (![defAccounts isNotEmpty]) defAccounts = nil;
+  
+  if (defTeams != nil && defAccounts == nil && groupGID == nil)
+    return defTeams;
+  if (defAccounts != nil && defTeams == nil && groupGID == nil)
+    return defAccounts;
+  if (defTeams == nil && defAccounts == nil && groupGID != nil)
+    return [NSArray arrayWithObjects:&groupGID count:1];
+  
+  acl = [NSMutableArray arrayWithCapacity:16];
+  if (groupGID    != nil) [acl addObject:groupGID];
+  if (defTeams    != nil) [acl addObjectsFromArray:defTeams];
+  if (defAccounts != nil) [acl addObjectsFromArray:defAccounts];
+  return acl;
+}
+
 
 /* factory */
 
@@ -175,6 +229,7 @@
   
   return nil;
 }
+
 
 /* DAV properties */
 
@@ -322,21 +377,22 @@
 }
 
 - (void)fetchOwnerForAppointment:(id)_apt inContext:(id)_ctx {
-  id ownerId = [_apt valueForKey:@"ownerId"];
-  id ids[1];
-  id gid;
-  if (ownerId != nil) {
-    SxContactManager *cm =
-      [SxContactManager managerWithContext:
-                        [self commandContextInContext:_ctx]];
-    ids[0] = ownerId;
-    gid = [EOKeyGlobalID globalIDWithEntityName:@"Person"
-                         keys:ids keyCount:1 zone:NULL];
-
-    gid = [cm accountForGlobalID:gid];
-    if (gid != nil)
-      [_apt takeValue:gid forKey:@"owner"];
+  SxContactManager *cm;
+  EOKeyGlobalID *gid;
+  NSNumber *ownerId;
+  
+  if ((ownerId = [_apt valueForKey:@"ownerId"]) == nil) {
+    [self warnWithFormat:@"appointment has no owner: %@", _apt];
+    return;
   }
+  
+  cm = [SxContactManager managerWithContext:
+			  [self commandContextInContext:_ctx]];
+  gid = [EOKeyGlobalID globalIDWithEntityName:@"Person"
+		       keys:&ownerId keyCount:1 zone:NULL];
+    
+  if ((gid = [cm accountForGlobalID:gid]) != nil)
+    [_apt takeValue:gid forKey:@"owner"];
 }
 
 - (id)performInitialKOrgExchangeQuery:(EOFetchSpecification *)_fs 
@@ -375,7 +431,7 @@
   // TODO: need to wrap iCal data in MIME
   
   if ((cmdctx = [self commandContextInContext:_ctx]) == nil) {
-    return [NSException exceptionWithHTTPStatus:500
+    return [NSException exceptionWithHTTPStatus:500 /* server error */
 			reason:@"missing command context"];
   }
   [self logWithFormat:@"ctx: %@", cmdctx];

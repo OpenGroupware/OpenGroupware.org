@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=109
+SUBMINOR_VERSION:=110
 
 # v1.5.108 requires libSaxObjC  v4.5.63
 # v1.5.105 requires libSaxObjC  v4.5.56

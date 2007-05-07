@@ -22,6 +22,7 @@
 
 #include "SxDavAptCreate.h"
 #include "SxAppointment.h"
+#include "SxAppointmentFolder.h"
 #include "common.h"
 
 #include <ZSBackend/NSString+rtf.h>
@@ -226,10 +227,19 @@ static NSNumber *yesNum = nil;
   if ((error = [self processKeywordsInContext:_ctx]))           return error;
   if ((error = [self processFBTypeInContext:_ctx]))             return error;
   
+  /* read-access-group */
+  
   if ((tmp = [[self appointment] pkeyOfGroupInContext:_ctx]) != nil)
     [self->changeSet setObject:tmp forKey:@"accessTeamId"];
   
-  /* ignore conflicts */
+  /* write access */
+  
+  tmp = [[[self appointment] container] defaultWriteAccessListInContext:_ctx];
+  if ([tmp isNotEmpty])
+    [changeSet setObject:tmp forKey:@"writeAccessList"];
+  
+  /* conflicts */
+  
   [self->changeSet setObject:yesNum forKey:@"isWarningIgnored"];
   
   /* add log */
