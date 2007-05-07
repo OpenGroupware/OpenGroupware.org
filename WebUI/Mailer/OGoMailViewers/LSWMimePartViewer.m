@@ -347,8 +347,8 @@ static int ShowBodySize = -1;
     _str = [NSString stringWithCStringNoCopy:(char *)c length:len
 		     freeWhenDone:YES];
 #else
-    _str = [NSString stringWithCString:c length:len];
-    if (c) free(c); c = NULL;
+    _str = [NSString stringWithCString:(char *)c length:len];
+    if (c != NULL) free(c); c = NULL;
 #endif
   }
   else
@@ -645,14 +645,26 @@ static int ShowBodySize = -1;
      detection of filenames and filetypes in case the browser does not
      properly work on the content disposition field.
   */
+  // TBD: DUP in LSWPartBodyViewer?
   NSString *name;
-  
-  if ((name = [[[self->part contentType] parametersAsDictionary]
-                            objectForKey:@"name"]))
-    return [@"get/" stringByAppendingString:[name stringValue]];
-  
+
+  /* first check whether we are supposed to generate custom names */
+
   if (CreateMailDownloadFileNamesDisable)
     return @"get";
+
+  /* check whether an attachment has a name assigned */
+  
+  name = [[[self->part contentType] parametersAsDictionary]
+	               objectForKey:@"name"];
+  if ([name isNotEmpty]) {
+    /* be sure to escape the URL */
+    name = [[name stringValue] stringByEscapingURL];
+    return [@"get/" stringByAppendingString:name];
+  }
+  
+  
+  /* no escaping, a MIME subtype should always be urlsafe */
   
   name = [[self->part contentType] subType];
   return [@"get/download." stringByAppendingString:name];

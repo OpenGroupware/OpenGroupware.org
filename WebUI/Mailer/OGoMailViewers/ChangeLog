@@ -1,5 +1,18 @@
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v5.3.30
+
+	* LSWMimePartViewer.m, LSWPartBodyViewer.m: properly escape attachment
+	  names which are appended to a IMAP4 download URL (OGo Bug #1159)
+	  (v5.3.31)
+
+	* LSWPartBodyViewer.m: code cleanups
+
+	* OGoMailDownloadAction.m: improved error handling if the form
+	  parameters for a download could not be found
+
+2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
+	
 	* OGoMailDownloadAction.m: code cleanups, use -isNotEmpty (v5.3.29)
 
 2007-02-23  Helge Hess  <helge.hess@opengroupware.org>

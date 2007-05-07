@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -88,9 +89,7 @@
 }
 
 - (void)setPartOfBody:(id)_part {
-  id tmp = self->partOfBody;
-  self->partOfBody = RETAIN(_part);
-  RELEASE(tmp);
+  ASSIGN(self->partOfBody, _part);
 }
 - (id)partOfBody {
   return self->partOfBody;
@@ -108,28 +107,40 @@
   return [self->body isKindOfClass:[NSURL class]];
 }
 
+static int CreateMailDownloadFileNamesDisable = -1;
+
 - (id)downloadPartActionName {
+  // TBD: DUP in LSWMimePartViewer?
   NSString *name;
 
-  if ((name = [[[partOfBody contentType] parametersAsDictionary]
-                            objectForKey:@"name"])) {
-    return [NSString stringWithFormat:@"get/%@", name];
+  /* first check whether we are supposed to generate custom names */
+  
+  if (CreateMailDownloadFileNamesDisable == -1) {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
+    CreateMailDownloadFileNamesDisable =
+      [ud boolForKey:@"CreateMailDownloadFileNamesDisable"] ? 1 : 0;
   }
-  else {
-    int static CreateMailDownloadFileNamesDisable = -1;
 
-    if (CreateMailDownloadFileNamesDisable == -1) {
-      CreateMailDownloadFileNamesDisable =
-        [[NSUserDefaults standardUserDefaults]
-                         boolForKey:@"CreateMailDownloadFileNamesDisable"]?1:0;
-    }
-    if (CreateMailDownloadFileNamesDisable)
-      return @"get";
-    else
-      return [NSString stringWithFormat:@"get/download.%@",
-                       [[partOfBody contentType] subType]];
+  if (CreateMailDownloadFileNamesDisable)
+    return @"get";
+  
+  /* check whether an attachment has a name assigned */
+  
+  name = [[[partOfBody contentType] parametersAsDictionary] 
+	   objectForKey:@"name"];
+  if ([name isNotEmpty]) {
+    /* be sure to escape the URL */
+    name = [[name stringValue] stringByEscapingURL];
+    return [@"get/" stringByAppendingString:name];
   }
+  
+  /* no escaping, a MIME subtype should always be urlsafe */
+  
+  name = [[partOfBody contentType] subType];
+  return [@"get/download." stringByAppendingString:name];
 }
+
 - (NSString *)url {
   return [self->body absoluteString];
 }
@@ -156,20 +167,25 @@
   bodyKey = ([self hasUrl]) ? @"url" : @"data";
 
   return [NSDictionary dictionaryWithObjectsAndKeys:
-                       [self body], bodyKey,
-                       [self mimeTypeString], @"mimeType",
-                       [self encoding], @"encoding",
-                       name, @"name", nil];
+			 [self body],           bodyKey,
+                         [self mimeTypeString], @"mimeType",
+                         [self encoding],       @"encoding",
+                         name,                  @"name", 
+		       nil];
 }
 
 
 @end /* LSWPartBodyViewer */
 
+
 @implementation LSWAppOctetBodyViewer
+
 - (BOOL)isDownloadable {
   return YES;
 }
+
 @end /* LSWAppOctetBodyViewer */
+
 
 @implementation LSWMultipartBodyViewer
 
@@ -178,9 +194,7 @@
   [super dealloc];
 }
 
-// notifications
-
-// accessors
+/* accessors */
 
 - (NSArray *)parts {
   if ([self->body isKindOfClass:[NSURL class]]) {
@@ -215,6 +229,7 @@
 }
 
 @end /* LSWMultipartBodyViewer */
+
 
 @implementation LSWMultipartMixedBodyViewer
 @end /* LSWMultipartMixedBodyViewer */

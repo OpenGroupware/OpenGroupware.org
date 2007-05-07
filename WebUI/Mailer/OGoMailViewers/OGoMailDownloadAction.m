@@ -285,11 +285,21 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
       return [self errorResponse:@"could not fetch message for specified URL"];
     }
   }
+  else if ((tmp = [req formValueForKey:@"data_key"]) != nil) {
+    WOSession *sn = [self existingSession];
+    
+    if (sn == nil) {
+      [self errorWithFormat:@"missing session to resolve 'data_key'!"];
+      return nil;
+    }
+    else {
+      data = [[[sn valueForKey:tmp] retain] autorelease];
+      [sn removeObjectForKey:tmp];
+    }
+  }
   else {
-    tmp = [req formValueForKey:@"data_key"];
-
-    data = [[[[self session] valueForKey:tmp] retain] autorelease];
-    [(OGoSession *)[self session] removeObjectForKey:tmp];
+    [self errorWithFormat:@"missing 'url' or 'data_key' form parameters?!"];
+    return nil;
   }
   
   data = [self encodeDataOrUseIt:data withEncoding:encoding];
