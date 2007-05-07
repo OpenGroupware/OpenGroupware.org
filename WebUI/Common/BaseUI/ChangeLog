@@ -1,3 +1,7 @@
+2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* WODirectAction+Mails.m: code cleanups, use -isNotEmpty (v5.3.128)
+
 2006-11-20  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.127

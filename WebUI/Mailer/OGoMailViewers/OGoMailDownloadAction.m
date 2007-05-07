@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -62,9 +63,9 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   NSString *filename;
   
   filename = [[self request] formValueForKey:@"filename"];
-  if ([filename length] == 0)
+  if (![filename isNotEmpty])
     filename = [_type valueOfParameter:@"name"];
-  if ([filename length] == 0)
+  if (![filename isNotEmpty])
     filename = @"download";
   return filename;
 }
@@ -73,9 +74,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   NSString *s;
   
   s = [[self request] formValueForKey:@"url"];
-  if ([s length] == 0)
-    return nil;
-  return [NSURL URLWithString:s];
+  return [s isNotEmpty] ? [NSURL URLWithString:s] : nil;
 }
 
 /* backend operations */
@@ -84,7 +83,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   NGMimePartParser *parser;
   NSData *result;
 
-  if ([_encoding length] == 0) /* nothing to encode */
+  if (![_encoding isNotEmpty]) /* nothing to encode */
     return _data;
   
   parser    = [[NGMimePartParser alloc] init];
@@ -119,7 +118,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
     return self->imap4handler;
   
   if ((sn = [self existingSession]) == nil) {
-    [self logWithFormat:@"ERROR: could not retrieve IMAP4 client object due to"
+    [self errorWithFormat:@"could not retrieve IMAP4 client object due to"
           @" missing session."];
     return nil;
   }
@@ -127,7 +126,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   if (HandlerClass == Nil) {
     HandlerClass = NSClassFromString(@"SkyImapContextHandler");
     if (HandlerClass == Nil)
-      [self logWithFormat:@"ERROR: did not find SkyImapContextHandler class!"];
+      [self errorWithFormat:@"did not find SkyImapContextHandler class!"];
   }
   self->imap4handler = [[HandlerClass imapContextHandlerForSession:sn] retain];
   return self->imap4handler;
@@ -142,14 +141,13 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   NGImap4Folder *folder;
   
   path = [[[self urlAsNSURL] path] stringByDeletingLastPathComponent];
-  if ([path length] == 0) {
-    [self logWithFormat:@"WARNING: missing folder path in URL: %@",
-            [self urlAsNSURL]];
+  if (![path isNotEmpty]) {
+    [self warnWithFormat:@"missing folder path in URL: %@", [self urlAsNSURL]];
     return nil;
   }
   
   if ((folder = [[self imapContext] folderWithName:path]) == nil) {
-    [self logWithFormat:@"WARNING: got no folder for path '%@' from URL: %@",
+    [self warnWithFormat:@"got no folder for path '%@' from URL: %@",
             path, [self urlAsNSURL]];
     return nil;
   }
@@ -158,8 +156,8 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   if (RootFolderClass == Nil)
     RootFolderClass = NSClassFromString(@"NGImap4ServerRoot");
   if ([folder isKindOfClass:RootFolderClass]) {
-    [self logWithFormat:@"WARNING: could not load folder for URL: %@",
-          [self urlAsNSURL]];
+    [self warnWithFormat:@"could not load folder for URL: %@", 
+	    [self urlAsNSURL]];
     return nil;
   }
   
@@ -213,14 +211,15 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
     
     changed  = NO;
     filename = [req formValueForKey:@"filename"];
-    if ([filename length] == 0)
+    if (![filename isNotEmpty])
       filename = [type valueOfParameter:@"name"];
     
-    if ([filename length] > 0) {
+    if ([filename isNotEmpty]) {
       const unsigned char *cstr;
       unsigned char       *buf;
       int                 i, clen;
       
+      // TBD: whats done here? why cString?
       cstr = (unsigned char *)[filename cString];
       clen = [filename cStringLength];
       buf = alloca(clen + 3);
@@ -252,8 +251,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
     return [self missingSession:@"get"];
   }
 
-  tmp = [req formValueForKey:@"url"];
-  if ([tmp length] > 0) {
+  if ([(tmp = [req formValueForKey:@"url"]) isNotEmpty]) {
     /* 
        Example Query URL:
          /OpenGroupware.woa/x/SkyImapDownloadAction/get/FLOSS_Final0.pdf
@@ -279,8 +277,8 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
     partName = [[[url query] componentsSeparatedByString:@"="] lastObject];
     data = [folder blobForUid:msguid part:partName];
     if (data == nil) {
-      [self logWithFormat:
-              @"ERROR: could not fetch BLOB of uid %d, part '%@'\n"
+      [self errorWithFormat:
+              @"could not fetch BLOB of uid %d, part '%@'\n"
               @"  folder: %@\n"
               @"  path:   '%@'",
               msguid, partName, folder, path];
@@ -297,7 +295,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   data = [self encodeDataOrUseIt:data withEncoding:encoding];
   
   if (!_inline) {
-    if ([filename length] == 0)
+    if (![filename isNotEmpty])
       filename = [self filenameForContentDispositionWithMIMEType:type];
     
     contentDisp = [NSString stringWithFormat:@"attachment;filename=\"%@\"",

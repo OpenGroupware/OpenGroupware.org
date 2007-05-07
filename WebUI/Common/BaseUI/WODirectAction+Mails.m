@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -87,6 +88,7 @@
   return _mailer;
 }
 
+
 - (WOComponent *)_activateMailEditorWithIMAP4Context:(id)ctx {
   /* TODO: split up this big method */
   static NSDictionary *mimeTypes = nil;
@@ -120,7 +122,7 @@
   enumerator = [[req formValuesForKey:@"__attachment__"] objectEnumerator];
   enumerator = [[req formValueKeys] objectEnumerator];
   
-  while ((key = [enumerator nextObject])) {
+  while ((key = [enumerator nextObject]) != nil) {
     NGMimeType   *mt;
     NSString     *fn, *ft, *type, *stype, *mimetype;
     NSDictionary *para;
@@ -139,7 +141,7 @@
                         fn, @"name", nil];
     mimetype = nil;
         
-    if ([ft length] > 0)
+    if ([ft isNotEmpty])
       mimetype = [mimeTypes valueForKey:ft];
 
     type  = nil;
@@ -163,19 +165,20 @@
     d  = [req formValueForKey:key];
 
     if ([d isKindOfClass:[NSString class]])
-	d = [d dataByDecodingBase64];
+      d = [d dataByDecodingBase64];
     else if ([d isKindOfClass:[NSData class]])
-	d = [d dataByDecodingBase64];
+      d = [d dataByDecodingBase64];
     else {
-	[self logWithFormat:@"unexpected data type for mail action: %@", 
+      [self logWithFormat:@"unexpected data type for mail action: %@", 
 	      NSStringFromClass([d class])];
     }
-    if (d)
+    if (d != nil)
       [editorPage addMimePart:d type:mt name:fn];
   }
   [[[self session] navigation] enterPage:editorPage];
   return editorPage;
 }
+
 
 - (id<WOActionResults>)mailAction {
   NSString    *folderName;
@@ -187,7 +190,7 @@
   
   ctx = [page imapContext];
   
-  if ([folderName length] > 0) { /* show folder */
+  if ([folderName isNotEmpty]) { /* show folder */
     if (ctx == nil) /* to view the folder, login is required */
       return page;
     
@@ -198,6 +201,7 @@
   
   return [self _activateMailEditorWithIMAP4Context:ctx];
 }
+
 
 static NSArray  *AllPrefKeys  = nil;
 static NSString *FolderKey    = nil;
@@ -218,13 +222,11 @@ static NSString *SignatureKey = nil;
                             @"mail_pref_expand_specialFolder",
                             nil];
   }
-  if (FolderKey == nil) {
-    FolderKey = [@"mail_pref_expand_specialFolder" retain];
-  }
-  if (SignatureKey == nil) {
-    SignatureKey = [@"mail_pref_expand_signature" retain];
-  }
-
+  if (FolderKey == nil)
+    FolderKey = [@"mail_pref_expand_specialFolder" copy];
+  if (SignatureKey == nil)
+    SignatureKey = [@"mail_pref_expand_signature" copy];
+  
   key  = [[self request] formValueForKey:@"key"];
   page = [self pageWithName:@"LSWMailPreferences"];
   [page setAccount:[[self session] activeAccount]];
@@ -243,20 +245,11 @@ static NSString *SignatureKey = nil;
     
     enumerator = [AllPrefKeys objectEnumerator];
     ud         = [[self session] userDefaults];
-    while ((obj = [enumerator nextObject])) {
-      if (key) {
-        if ([obj isEqualToString:key])
-          [ud setBool:YES forKey:obj];
-        else
-          [ud setBool:NO forKey:obj];
-      }
-      else {
-        [ud setBool:YES forKey:obj];
-      }
-    }
+    
+    while ((obj = [enumerator nextObject]) != nil)
+      [ud setBool:(key != nil ? [obj isEqualToString:key] : YES) forKey:obj];
   }
   [[[self session] navigation] enterPage:page];
-
   return page;
 }
 
