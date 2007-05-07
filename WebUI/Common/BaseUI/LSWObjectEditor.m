@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2006-2007 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -228,6 +228,7 @@
 - (NSArray *)currentValues {
   NSDictionary *values, *dict;
   NSArray      *valueKeys;
+  id storedValue;
   
   dict = [self->map isNotNull]
     ? [self->map objectForKey:self->currentKey]
@@ -235,14 +236,37 @@
   
   values    = [dict valueForKey:@"values"];
   valueKeys = [dict valueForKey:@"valueKeys"];
+  
+  if (values != nil) {
+    /* also allow arrays in values ... */
+    if ([values respondsToSelector:@selector(allKeys)])
+      valueKeys = [values allKeys];
+    else if ([values isKindOfClass:[NSArray class]])
+      valueKeys = (NSArray *)values;
+  }
 
-  if (values != nil)
-    return [[values allKeys] sortedArrayUsingSelector:@selector(compare:)];
+  /* sort results, *before* adding extra values */
+
+  valueKeys = [valueKeys sortedArrayUsingSelector:@selector(compare:)];
   
-  if (valueKeys != nil)
-    return [valueKeys sortedArrayUsingSelector:@selector(compare:)];
+  /* ensure that the currently saved value is in the popup */
   
-  return nil;
+  if ([(storedValue = [self attributeValue]) isNotEmpty]) {
+    if ([valueKeys isNotEmpty]) {
+      if (![valueKeys containsObject:storedValue]) {
+	valueKeys = [[valueKeys mutableCopy] autorelease];
+
+	/* insert value as the first element */
+	[(NSMutableArray *)valueKeys insertObject:storedValue atIndex:0];
+      }
+      // else: contained
+    }
+    else
+      valueKeys = [NSArray arrayWithObjects:&storedValue count:1];
+  }
+  
+  /* return */
+  return valueKeys;
 }
 
 - (NSString *)currentLabel {

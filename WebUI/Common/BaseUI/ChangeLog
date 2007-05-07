@@ -1,5 +1,13 @@
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSWObjectEditor.m: changed code to preserve values which are not
+	  configured for a popup. For example if a salutation value is stored
+	  in the database which is not known to OGo, it will be preserved in
+	  the popup (eg if the record got written by Outlook or Sunbird)
+	  (SX #2154) (v5.3.129)
+
+2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
+
 	* WODirectAction+Mails.m: code cleanups, use -isNotEmpty (v5.3.128)
 
 2006-11-20  Helge Hess  <helge.hess@opengroupware.org>

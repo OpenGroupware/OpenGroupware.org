@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -27,6 +28,8 @@
 @class NSArray, NSDictionary, NSString;
 
 /*
+  DEPRECATED
+
   Usage:
     TODO: document bindings
     - attributeKeys
@@ -76,6 +79,8 @@
 }
 
 - (int)currentTypeCode;
+
+- (id)attributeValue;
 
 @end
 
