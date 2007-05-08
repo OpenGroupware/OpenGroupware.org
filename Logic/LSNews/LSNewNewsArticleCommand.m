@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -24,6 +25,9 @@
 
 @implementation LSNewNewsArticleCommand
 
+static NSString *LSAttachmentPath = nil;
+static NSString *LSNewsImagesPath = nil;
+
 - (void)dealloc {
   [self->data            release];
   [self->filePath        release];
@@ -35,14 +39,14 @@
 /* run */
 
 - (BOOL)_resetIndexArticles {
-  NSString         *expr      = nil;
-  EOAdaptorChannel *adChannel = nil;
+  NSString         *expr;
+  EOAdaptorChannel *adChannel;
   id obj;
 
   obj = [self object];
 
   adChannel = [[self databaseChannel] adaptorChannel];
-
+  
   expr =[NSString stringWithFormat:
                   @"UPDATE news_article SET is_index_article = 0 where "
                   @"news_article_id <> %@",
@@ -52,17 +56,27 @@
 }
 
 - (void)_executeInContext:(id)_context {
-  BOOL           isOk      = NO;
-  NSString       *fileName = nil;
-  NSUserDefaults *defaults;
-  NSString       *path;
-  id             obj;
-
-  defaults = [_context userDefaults];
-  path     = [defaults stringForKey:@"LSAttachmentPath"];
+  id obj;
+  
+  /* setup some globals */
+  
+  if (LSAttachmentPath == nil) {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    LSAttachmentPath = [[ud stringForKey:@"LSAttachmentPath"] copy];
+    LSNewsImagesPath = [[ud stringForKey:@"LSNewsImagesPath"] copy];
+    
+    if (![LSAttachmentPath isNotEmpty])
+      [self errorWithFormat:@"LSAttachmentPath is not set!"];
+    if (![LSNewsImagesPath isNotEmpty])
+      [self errorWithFormat:@"LSNewsImagesPath is not set!"];
+  }
+  
+  /* super will create the record which we then retrieve using -object */
   
   [super _executeInContext:_context];
   obj = [self object];
+  
+  /* continue */
 
   if ([[obj valueForKey:@"isIndexArticle"] boolValue])
     [self _resetIndexArticles];
@@ -73,7 +87,7 @@
 		     @"isIndexArticle", [NSNumber numberWithBool:YES],
 		     nil) retain];
   }
-
+  
   LSRunCommandV(_context, @"newsArticle", @"set-related-Articles",
                 @"object", obj,
                 @"relatedArticles", self->relatedArticles, nil);
@@ -82,22 +96,41 @@
   /* save attachement */
 
   if ([self->fileContent isNotNull]) {
-    fileName = [NSString stringWithFormat:@"%@/%@.txt",
-                           path, [obj valueForKey:@"newsArticleId"]];
+    NSString *fileName;
+
+    fileName = [[obj valueForKey:@"newsArticleId"] stringValue];
+    fileName = [fileName stringByAppendingPathExtension:@"txt"];
+
+    fileName = [LSAttachmentPath stringByAppendingPathComponent:fileName];
     
-    isOk = [self->fileContent writeToFile:fileName atomically:YES];
-    [self assert:isOk reason:@"error during save of news article attachment"];
+    if (fileName == nil ||
+	![self->fileContent writeToFile:fileName atomically:YES]) {
+      [self errorWithFormat:
+	      @"could not write news article content (size=%d) to: %@",
+	      [self->fileContent length], fileName];
+      
+      [self assert:NO reason:@"Could not save news article content!"];
+    }
   }
   
   if ([self->data isNotNull] && [self->filePath isNotNull]) {
-    path     = [defaults stringForKey:@"LSNewsImagesPath"];
-    fileName = [NSString stringWithFormat:@"%@/%@.%@",
-                         path, [obj valueForKey:@"newsArticleId"],
-                         [self->filePath pathExtension]];
+    NSString *fileName;
     
-    isOk = [self->data writeToFile:fileName atomically:YES];
+    fileName = [[obj valueForKey:@"newsArticleId"] stringValue];
+    fileName = [fileName stringByAppendingPathExtension:
+			   [self->filePath pathExtension]];
+    
+    fileName = [LSNewsImagesPath stringByAppendingPathComponent:fileName];
 
-    [self assert:isOk reason:@"error during save of news article picture"];
+    
+    if (fileName == nil ||
+	![self->fileContent writeToFile:fileName atomically:YES]) {
+      [self errorWithFormat:
+	      @"could not write news article image (size=%d) to: %@",
+	      [self->data length], fileName];
+      
+      [self assert:NO reason:@"Could not save news article image!"];
+    }
   }
 }
 
