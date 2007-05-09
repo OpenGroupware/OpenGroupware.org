@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2006-2007 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -118,7 +118,7 @@ static EOGlobalID *_globalID(id _obj) {
   
   gid           = _globalID(_obj);
   companiesEnum = [_companies objectEnumerator];
-  while ((obj = [companiesEnum nextObject])) {
+  while ((obj = [companiesEnum nextObject]) != nil) {
     if (obj == _obj)
       return; /* exact match, found */
     if ([_globalID(obj) isEqual:gid])
@@ -204,41 +204,44 @@ static int compareTeams(id team1, id team2, void *context) {
   tgids           = calloc(aCnt + 1, sizeof(id));
   aCnt            = 0;
   tCnt            = 0;
-  enumerator      = [self->accessList keyEnumerator];
-        
-  while ((obj = [enumerator nextObject])) {
-    if ([[obj entityName] isEqualToString:@"Team"])
-      tgids[tCnt++] = obj;
-    else if ([[obj entityName] isEqualToString:@"Person"])
-      agids[aCnt++] = obj;
+
+  enumerator = [self->accessList keyEnumerator];
+  while ((obj = [enumerator nextObject]) != nil) {
+    if ([[obj entityName] isEqualToString:@"Team"]) {
+      tgids[tCnt] = obj;
+      tCnt++;
+    }
+    else if ([[obj entityName] isEqualToString:@"Person"]) {
+      agids[aCnt] = obj;
+      aCnt++;
+    }
     else
-      NSLog(@"WARNING[%s]: unexpected gid %@", __PRETTY_FUNCTION__, obj);
+      [self warnWithFormat:@"%s: unexpected gid %@", __PRETTY_FUNCTION__, obj];
   }
   if (tCnt > 0) {
     NSArray *a;
         
     tmpArray = [[NSArray alloc] initWithObjects:tgids count:tCnt];
     a        = [self _fetchTeamEOsForGIDs:tmpArray];
-    [tmpArray release]; tmpArray = nil;
-        
     [self->companies addObjectsFromArray:a];
+    [tmpArray release]; tmpArray = nil;
   }
   if (aCnt > 0) {
     NSArray *a;
         
     tmpArray = [[NSArray alloc] initWithObjects:agids count:aCnt];
     a = [self _fetchPersonEOsForGIDs:tmpArray];
-    [tmpArray release]; tmpArray = nil;
-        
     [self->companies addObjectsFromArray:a];
+    [tmpArray release]; tmpArray = nil;
   }
+  
   enumerator = [self->companies objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     NSMutableDictionary *dict;
     NSString            *right;
     int                 rCnt, i;
-        
-    dict = [NSMutableDictionary dictionaryWithCapacity:16];
+    
+    dict = [[NSMutableDictionary alloc] initWithCapacity:16];
     [(NSMutableDictionary *)obj setObject:dict forKey:@"accessRights"];
 
     right = [self->accessList objectForKey:[obj globalID]];
@@ -248,9 +251,11 @@ static int compareTeams(id team1, id team2, void *context) {
       k = [right substringWithRange:NSMakeRange(i, 1)];
       [dict setObject:yesNum forKey:k];
     }
+    
+    [dict release]; dict = nil;
   }
-  if (tgids) free(tgids); tgids = NULL;
-  if (agids) free(agids); agids = NULL;
+  if (tgids != NULL) free(tgids); tgids = NULL;
+  if (agids != NULL) free(agids); agids = NULL;
 }
 
 - (void)_processSearchString {
@@ -261,16 +266,18 @@ static int compareTeams(id team1, id team2, void *context) {
 
   searchResult = [self _fetchAccountGIDsMatching:self->searchString];
   searchResult = [self _fetchCoreInfoForPersonGIDs:searchResult];
-        
+  
   enumerator = [searchResult objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
-    NSMutableDictionary *md;
+  while ((obj = [enumerator nextObject]) != nil) {
+    NSMutableDictionary *md, *rec;
           
-    md = [obj mutableCopy];
-    [md setObject:[NSMutableDictionary dictionaryWithCapacity:4]
-	forKey:@"accessRights"];
+    md  = [obj mutableCopy];
+    rec = [[NSMutableDictionary alloc] initWithCapacity:4];
+    [md setObject:rec forKey:@"accessRights"];
+    [rec release]; rec = nil;
+    
     [self _addObj:md toCompanies:self->companies];
-    [md release];
+    [md release]; md = nil;
   }
   [self _sortCompanies];
 }
@@ -282,9 +289,11 @@ static int compareTeams(id team1, id team2, void *context) {
   id searchResult;
 
   if (![[self->team valueForKey:@"accessRights"] isNotNull]) {
-    [self->team
-	 takeValue:[NSMutableDictionary dictionaryWithCapacity:4]
-         forKey:@"accessRights"];
+    NSMutableDictionary *rec;
+    
+    rec = [[NSMutableDictionary alloc] initWithCapacity:4];
+    [self->team takeValue:rec forKey:@"accessRights"];
+    [rec release]; rec = nil;
   }
   
   if (![self->companies containsObject:self->team])
@@ -294,14 +303,16 @@ static int compareTeams(id team1, id team2, void *context) {
   searchResult = [self _fetchCoreInfoForPersonGIDs:searchResult];
 
   enumerator = [searchResult objectEnumerator];
-  while ((pCoreInfo = [enumerator nextObject])) {
-    NSMutableDictionary *md;
+  while ((pCoreInfo = [enumerator nextObject]) != nil) {
+    NSMutableDictionary *md, *rec;
       
-    md = [pCoreInfo mutableCopy];
-    [md setObject:[NSMutableDictionary dictionaryWithCapacity:4]
-        forKey:@"accessRights"];
+    md  = [pCoreInfo mutableCopy];
+    rec = [[NSMutableDictionary alloc] initWithCapacity:4];
+    [md setObject:rec forKey:@"accessRights"];
+    [rec release]; rec = nil;
+    
     [self _addObj:md toCompanies:self->companies];
-    [md release];
+    [md release]; md = nil;
   }
   [self _sortCompanies];
 }
@@ -314,11 +325,11 @@ static int compareTeams(id team1, id team2, void *context) {
   int     cCnt, i,tCnt, pCnt;
   
   tCnt    = [self->companies count];
-  teams   = calloc(tCnt + 1, sizeof(id));
-  persons = calloc(tCnt + 1, sizeof(id));
+  teams   = calloc(tCnt + 3 /* some extra security */, sizeof(id));
+  persons = calloc(pCnt + 3 /* some extra security */, sizeof(id));
   tCnt    = 0;
   pCnt    = 0;
-      
+  
   for (i = 0,  cCnt = [self->companies count]; i < cCnt; i++) {
     NSMutableDictionary *dict;
     NSEnumerator        *keyEnum;
@@ -340,8 +351,8 @@ static int compareTeams(id team1, id team2, void *context) {
       if (![o boolValue])
         continue;
       
-      if (str == nil)
-        str = [NSMutableString stringWithCapacity:16];
+      if (str == nil) 
+	str = [[NSMutableString alloc] initWithCapacity:16];
       [str appendString:key];
     }
     if (str == nil) {
@@ -349,23 +360,30 @@ static int compareTeams(id team1, id team2, void *context) {
       [self->accessList removeObjectForKey:_globalID(obj)];
     }
     else { /* start sort and set obj in accessList */
-      if ([[obj valueForKey:@"isTeam"] boolValue])
-        teams[tCnt++] = obj;
-      else
-        persons[pCnt++] = obj;
-          
+      if ([[obj valueForKey:@"isTeam"] boolValue]) {
+        teams[tCnt] = obj;
+	tCnt++;
+      }
+      else {
+        persons[pCnt] = obj;
+	pCnt++;
+      }
+      
+      // TBD: should we make the 'str' immutable?
       [self->accessList setObject:str forKey:_globalID(obj)];
+      [str release]; str = nil;
     }
   }
   [self->companies removeAllObjects];
       
   tmpArray = [[NSArray alloc] initWithObjects:teams count:tCnt];
   [self->companies addObjectsFromArray:tmpArray];
-  [tmpArray release];
+  [tmpArray release]; tmpArray = nil;
+  
   tmpArray = [[NSArray alloc] initWithObjects:persons count:pCnt];
   [self->companies addObjectsFromArray:tmpArray];
-  [tmpArray release]; tmpArray = NULL;
-      
+  [tmpArray release]; tmpArray = nil;
+  
   if (teams   != NULL) free(teams);   teams   = NULL;
   if (persons != NULL) free(persons); persons = NULL;
   
@@ -387,12 +405,11 @@ static int compareTeams(id team1, id team2, void *context) {
     return;
     
   if (self->isViewerMode) {
-    [self->companies release];
-    self->companies = nil;
+    [self->companies release]; self->companies = nil;
   }
   if (self->accessList == nil)
-    self->accessList = [[NSMutableDictionary alloc] init];
-    
+    self->accessList = [[NSMutableDictionary alloc] initWithCapacity:2];
+  
   self->syncState = YES;
       
   if (self->companies == nil) /* first loop, TODO: what is that? */
@@ -430,7 +447,7 @@ static int compareTeams(id team1, id team2, void *context) {
 /* /actions */
 
 - (BOOL)hasAccountSelection {
-  return [self->companies count];
+  return [self->companies isNotEmpty];
 }
 
 - (BOOL)isTeam {

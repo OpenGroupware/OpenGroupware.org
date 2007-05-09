@@ -1,3 +1,7 @@
+2007-05-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAccessList.m: code cleanups. Fixed a potential crasher (v5.3.50)
+
 2007-02-15  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyDialNumber.m: does not escape the full URL anymore, instead added
