@@ -199,9 +199,12 @@ static int compareTeams(id team1, id team2, void *context) {
   id           obj;
       
   self->companies = [[NSMutableArray alloc] initWithCapacity:64];
+
+  /* be careful, aCnt is the maxsize of the array */
   aCnt            = [self->accessList count];
-  agids           = calloc(aCnt + 1, sizeof(id));
-  tgids           = calloc(aCnt + 1, sizeof(id));
+  agids           = calloc(aCnt + 3, sizeof(id));
+  tgids           = calloc(aCnt + 3, sizeof(id));
+  
   aCnt            = 0;
   tCnt            = 0;
 
@@ -324,9 +327,10 @@ static int compareTeams(id team1, id team2, void *context) {
   id      *teams, *persons, obj;
   int     cCnt, i,tCnt, pCnt;
   
+  /* be careful, yes, we use the tCnt as the max size, its not the teamCount */
   tCnt    = [self->companies count];
   teams   = calloc(tCnt + 3 /* some extra security */, sizeof(id));
-  persons = calloc(pCnt + 3 /* some extra security */, sizeof(id));
+  persons = calloc(tCnt + 3 /* some extra security */, sizeof(id));
   tCnt    = 0;
   pCnt    = 0;
   
