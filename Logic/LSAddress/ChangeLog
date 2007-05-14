@@ -1,3 +1,8 @@
+2007-05-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSSetVCardCommand.m: properly retrieve 'orgnam' key from Org: vCard
+	  fields (was retrieving incorrect 'orgname') (v5.3.93)
+
 2006-10-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSBuildConverterDataCommand.m: do not use -isNotEmpty for prefix/

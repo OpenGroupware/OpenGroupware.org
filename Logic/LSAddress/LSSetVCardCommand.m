@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2005 SKYRIX Software AG
+  Copyright (C) 2005-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -498,8 +499,8 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   
   [self mapVKey:@"nickname" to:@"description"];
   
-  org = [_vc valueForKey:@"org"]; // NGVCardOrg
-  [self mapValue:[org valueForKey:@"orgname"] to:@"associatedCompany"];
+  org = [_vc valueForKey:@"org"]; // NGVCardOrg: BEWARE: it *is* 'orgnam', no e
+  [self mapValue:[org valueForKey:@"orgnam"] to:@"associatedCompany"];
   [self appendOrg:_vc];
   
   /* finish up */
