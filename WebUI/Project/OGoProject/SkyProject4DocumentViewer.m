@@ -315,16 +315,17 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   Class              class;
     
   dgid = _object;
-  if ((class = NSClassFromString(@"SkyProjectFileManager")) == Nil)
+  if ((class = NSClassFromString(@"SkyProjectFileManager")) == Nil) {
+    [self warnWithFormat:@"did not find SkyProjectFileManager class!"];
     return nil;
+  }
   
   pgid = [class projectGlobalIDForDocumentGlobalID:dgid
                 context:[(OGoSession *)[self session] commandContext]];
   if (pgid == nil) {
-      [self debugWithFormat:
-              @"did not find project gid "
-              @"for document %@", dgid];
-      return nil;        
+    [self debugWithFormat:
+            @"did not find project gid for document %@", dgid];
+    return nil;        
   }
     
   fm = [[[class alloc] initWithContext:
@@ -989,7 +990,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
 
   class = [self dbFileManagerClass];
   ctx   = [(OGoSession *)[self session] commandContext];
-      
+  
   pgid1 = [class projectGlobalIDForDocumentGlobalID:
 		       [self documentId] context:ctx];
   

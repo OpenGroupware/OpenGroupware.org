@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -327,7 +328,7 @@
 
     ds = [fm dataSourceAtPath:@"."];
     self->document = [[ds createObject] retain];
-    if ([self->subject  length])
+    if ([self->subject  isNotEmpty])
       [self->document takeValue:self->subject forKey:@"NSFileSubject"];
   }
   return self->document;
@@ -357,20 +358,18 @@
 - (NSString *)windowTitle {
   NSString *path;
   NSString *edit;
-
+  
   edit = [[self labels] valueForKey:@"EditFileAtPath"];
+  edit = [edit isNotEmpty] ? edit : (NSString *)@"Edit file at path ";
   
-  edit = (edit != nil)
-    ? edit
-    : (NSString *)@"Edit file at path ";
-  
-  path = ([self fileId] != nil)
+  path = [[self fileId] isNotEmpty]
     ? [[self fileManager] pathForGlobalID:[self fileId]]
     : [[self fileManager] pathForGlobalID:[self folderId]];
   
-  path = [edit stringByAppendingString:path];
+  if ([path isNotEmpty]) /* eg if we copy mails to projects this is null */
+    edit = [edit stringByAppendingString:path];
   
-  return path;
+  return edit;
 }
 
 - (BOOL)showTitle {
@@ -378,7 +377,7 @@
                 isKindOfClass:NSClassFromString(@"SkyProjectFileManager")];
 }
 - (BOOL)showFilename {
-  return [self fileId] ? NO : YES;
+  return ([self fileId] != nil) ? NO : YES;
 }
 
 - (BOOL)isEditorPage {
@@ -417,7 +416,7 @@
   l     = [self labels];
   fname = [self fileName];
 
-  if (![fname length]) {
+  if (![fname isNotEmpty]) {
     [self setErrorString:[l valueForKey:@"missing filename"]];
     return nil;
   }
@@ -431,7 +430,7 @@
   ldocument = [self document];
   
   fp    = [fm pathForGlobalID:[self folderId]];
-  if (![fp length])
+  if (![fp isNotEmpty])
     fp = @"/";
   
   fname = [fp stringByAppendingPathComponent:fname];
@@ -443,12 +442,12 @@
   }
   [ldocument takeValue:fname forKey:@"NSFilePath"];
   
-  if ([self->subject length])
+  if ([self->subject isNotEmpty])
     [ldocument takeValue:self->subject forKey:@"NSFileSubject"];
   
-  if ([self->text length])
+  if ([self->text isNotEmpty])
     [ldocument setContentString:self->text];
-  else if ([self->blob length])
+  else if ([self->blob isNotEmpty])
     [ldocument setContent:self->blob];
     
 
@@ -470,7 +469,7 @@
   SkyProjectFileManager *fm;
   SkyProjectDocument    *ldocument;
 
-  if (!(ldocument = [self document]))
+  if ((ldocument = [self document]) == nil)
     return [self _createFile];
   
   if ([ldocument isNew]) {
@@ -551,13 +550,13 @@
 
   if ((fm = [self fileManager]) == nil)
     return [self save];
-
-  if (!(fname   = [self fileName]))
+  
+  if ((fname = [self fileName]) == nil)
     fname = @"";
   if ((s = [self subject]) == nil)
     s = @"";
   
-  d = [NSDictionary dictionaryWithObjectsAndKeys:
+  d = [[NSDictionary alloc] initWithObjectsAndKeys:
                         s,          @"NSFileSubject",
                         fname,      @"NSFileName",
                         [NSNumber numberWithInt:[self->blob length]],
@@ -567,6 +566,9 @@
   
   [page takeValue:[NSArray arrayWithObject:d] forKey:@"newDocuments"];
   [page takeValue:fm                          forKey:@"fileManager"];
+  [d release]; d = nil;
+  
+  // TBD: check whether thats necessary
   [self enterPage:page];
   return page;
 }
@@ -618,7 +620,7 @@
 /* page form restore */
 
 - (void)setFolderPath:(NSString *)_path {
-  ASSIGN(self->folderPath, _path);
+  ASSIGNCOPY(self->folderPath, _path);
 }
 
 - (NSString *)projectId {
@@ -633,7 +635,7 @@
 }
 
 - (void)setProjectId:(id)_pid {
-  ASSIGN(self->projectId, _pid);
+  ASSIGNCOPY(self->projectId, _pid);
 }
 
 - (void)prepareForRestorePage {
@@ -649,9 +651,9 @@
     return;
   }
 
-  if (!self->folderPath)
+  if (self->folderPath == nil)
     self->folderPath = @"/";
-
+  
   gid = [EOKeyGlobalID globalIDWithEntityName:@"Project"
                        keys:&self->projectId keyCount:1 zone:NULL];
 
