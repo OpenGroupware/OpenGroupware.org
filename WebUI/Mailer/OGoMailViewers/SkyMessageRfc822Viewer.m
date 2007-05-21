@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -83,27 +84,29 @@
 /* returns a retained StringObject */
 
 - (NSString *)_receiverForHeaderFieldWithName:(NSString *)_fieldName {
+  // Note: this method returns a retained object
   NSMutableString *receiver;
   NSString        *str;
   NSEnumerator    *enumerator;
-
-  receiver =  [[NSMutableString allocWithZone:[self zone]] init];
+  
+  receiver = [[NSMutableString alloc] initWithCapacity:512];
+  
   enumerator = [self->part valuesOfHeaderFieldWithName:_fieldName];
-  [receiver setString:[enumerator nextObject]];
-
-  while ((str = [enumerator nextObject])) {
-    [receiver appendString:@", "];
+  while ((str = [enumerator nextObject]) != nil) {
+    if ([receiver isNotEmpty])
+      [receiver appendString:@", "];
+    
     [receiver appendString:str];
   }
-  return receiver;
+  str = [receiver copy];
+  [receiver release];
+  return str;
 }
 
 - (id)objectForSessionCache:(NSString *)_key {
   NSMutableDictionary *cache;
-
-  cache = [[self session] valueForKey:@"ShowBodyHeaders"];
-
-  if (!cache) {
+  
+  if ((cache = [[self session] valueForKey:@"ShowBodyHeaders"]) == nil) {
     cache = [NSMutableDictionary dictionaryWithCapacity:64];
     [[self session] takeValue:cache forKey:@"ShowBodyHeaders"];
   }
@@ -113,15 +116,16 @@
 - (void)setObject:(id)_obj forSessionCache:(NSString *)_key {
   NSMutableDictionary *cache;
 
-  cache = [[self session] valueForKey:@"ShowBodyHeaders"];
-
-  if (!cache) {
+  if ((cache = [[self session] valueForKey:@"ShowBodyHeaders"]) == nil) {
     cache = [NSMutableDictionary dictionaryWithCapacity:64];
     [[self session] takeValue:cache forKey:@"ShowBodyHeaders"];
   }
   [cache setObject:_obj forKey:[[self partKey] stringByAppendingString:_key]];
 }
 
+- (void)setIsToCollapsed:(BOOL)_bool {
+  [self setObject:[NSNumber numberWithBool:_bool] forSessionCache:@"to"];
+}
 - (BOOL)isToCollapsed {
   id o;
 
@@ -131,10 +135,9 @@
   return YES;
 }
 
-- (void)setIsToCollapsed:(BOOL)_bool {
-  [self setObject:[NSNumber numberWithBool:_bool] forSessionCache:@"to"];
+- (void)setIsCcCollapsed:(BOOL)_bool {
+  [self setObject:[NSNumber numberWithBool:_bool] forSessionCache:@"cc"];
 }
-
 - (BOOL)isCcCollapsed {
   id o;
 
@@ -144,22 +147,18 @@
   return YES;
 }
 
-- (void)setIsCcCollapsed:(BOOL)_bool {
-  [self setObject:[NSNumber numberWithBool:_bool] forSessionCache:@"cc"];
-}
-
-
 - (NSString *)to {
   if (self->to == nil) {
     self->to = [self _receiverForHeaderFieldWithName:@"to"];
   }
   if ([self->to length] < MAX_LENGTH) return self->to;
 
-  if ([self isToCollapsed])
+  if ([self isToCollapsed]) {
     return [[self->to substringToIndex:MAX_LENGTH]
                       stringByAppendingString:@".."];
-  else
-    return self->to;
+  }
+
+  return self->to;
 }
 
 - (NSString *)cc {
@@ -168,11 +167,12 @@
   }
   if ([self->cc length] < MAX_LENGTH) return self->cc;
 
-  if ([self isCcCollapsed])
+  if ([self isCcCollapsed]) {
     return [[self->cc substringToIndex:MAX_LENGTH]
                       stringByAppendingString:@".."];
-  else
-    return self->cc;
+  }
+  
+  return self->cc;
 }
 
 - (BOOL)showToCollapser {
@@ -225,8 +225,8 @@
 - (BOOL)isRfcType {
   static NGMimeType *rfc822 = nil;
   NGMimeType *contentType;
-
-  if (rfc822 == nil)
+  
+  if (rfc822 == nil) // THREAD
     rfc822 = [[NGMimeType mimeType:@"message/rfc822"] retain];
   
   contentType = [self->part contentType];
@@ -245,11 +245,11 @@
 
 
 - (BOOL)hasCC {
-  return [[self cc] length] > 0 ? YES : NO;
+  return [[self cc] isNotEmpty];
 }
 
 - (BOOL)hasOrganization {
-  return [[self organization] length] > 0 ? YES : NO;
+  return [[self organization] isNotEmpty];
 }
 
 - (BOOL)isProjectApplicationAvailable {
@@ -262,6 +262,7 @@
 }
 
 - (BOOL)hasContentLength {
-  return [[self contentLength] intValue]?YES:NO;
+  return [[self contentLength] intValue] > 0 ? YES : NO;
 }
+
 @end /* SkyMessageRfc822Viewer */

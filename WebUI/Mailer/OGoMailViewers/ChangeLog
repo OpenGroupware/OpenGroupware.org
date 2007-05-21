@@ -1,3 +1,8 @@
+2007-05-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyMessageRfc822Viewer.m: fixed an exception on MacOS, minor code
+	  cleanups (v5.3.31)
+
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.30
