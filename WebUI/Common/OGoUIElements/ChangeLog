@@ -1,3 +1,7 @@
+2007-05-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAccessList.m: fixed a potential retain count issue (v5.3.52)
+
 2007-05-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAccessList.m: reverted last changed, restored correct code ;-)

@@ -199,7 +199,7 @@ static int compareTeams(id team1, id team2, void *context) {
   id           obj;
       
   self->companies = [[NSMutableArray alloc] initWithCapacity:64];
-
+  
   /* be careful, aCnt is the maxsize of the array */
   aCnt            = [self->accessList count];
   agids           = calloc(aCnt + 3, sizeof(id));
@@ -323,7 +323,8 @@ static int compareTeams(id team1, id team2, void *context) {
 - (void)_cleanupCompanyRecords {
   /* remove empty entries from companies remove accessRights and sort */
   // TODO: clean up this mess
-  NSArray *tmpArray;
+  // TBD: sometimes OGo crashes in this method
+  NSArray *tmpArray, *retainedEOs;
   id      *teams, *persons, obj;
   int     cCnt, i,tCnt, pCnt;
   
@@ -378,8 +379,11 @@ static int compareTeams(id team1, id team2, void *context) {
       [str release]; str = nil;
     }
   }
-  [self->companies removeAllObjects];
-      
+  
+  /* keep EOs around to avoid them being deallocated! */
+  retainedEOs = self->companies; self->companies = nil;
+  self->companies = [[NSMutableArray alloc] initWithCapacity:(1 + tCnt+pCnt)];
+  
   tmpArray = [[NSArray alloc] initWithObjects:teams count:tCnt];
   [self->companies addObjectsFromArray:tmpArray];
   [tmpArray release]; tmpArray = nil;
@@ -387,12 +391,16 @@ static int compareTeams(id team1, id team2, void *context) {
   tmpArray = [[NSArray alloc] initWithObjects:persons count:pCnt];
   [self->companies addObjectsFromArray:tmpArray];
   [tmpArray release]; tmpArray = nil;
+
+  /* free EOs */
+  [retainedEOs release]; retainedEOs = nil;
   
   if (teams   != NULL) free(teams);   teams   = NULL;
   if (persons != NULL) free(persons); persons = NULL;
   
-  if (![self->searchString isNotNull])
-    self->searchString = @"";
+  if (![self->searchString isNotNull]) {
+    ASSIGN(self->searchString, @"");
+  }
   
   if ([self->searchString isNotEmpty]) {
     /* add search accounts to companies; set accessRights */
@@ -409,8 +417,10 @@ static int compareTeams(id team1, id team2, void *context) {
     return;
     
   if (self->isViewerMode) {
-    [self->companies release]; self->companies = nil;
+    [self->companies autorelease];
+    self->companies = nil;
   }
+  
   if (self->accessList == nil)
     self->accessList = [[NSMutableDictionary alloc] initWithCapacity:2];
   
