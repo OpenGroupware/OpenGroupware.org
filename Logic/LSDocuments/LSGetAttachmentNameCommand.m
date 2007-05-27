@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -84,6 +84,7 @@ static BOOL UseFoldersForIDRanges        = NO;
 }
 
 - (NSString *)_nameOfAttachmentForObj:(id)_obj inContext:(id)_ctx {
+  /* this is the OLD algorithm which does flat storage in one folder */
   NSUserDefaults *defaults;
   NSString       *path, *fileName ;
 
@@ -118,7 +119,7 @@ static BOOL UseFoldersForIDRanges        = NO;
   defaults   = [_ctx userDefaults];
   path       = [defaults stringForKey:@"LSAttachmentPath"];
   fileName   = [self _attachmentNameForObj:_obj context:_ctx];
-
+  
   pid = [self->projectId isNotNull] 
     ? self->projectId
     : (NSNumber *)[_obj valueForKey:@"projectId"];
@@ -217,12 +218,14 @@ static BOOL UseFoldersForIDRanges        = NO;
 }
 
 - (NSString *)_attachmentNameForObj:(id)_obj context:(id)_ctx {
+  /* extracts the primary key of the object and attaches the filetype */
   NSString *fileName, *entityName, *fileExt;
 
   entityName = [self _entityNameFor:_obj];
   fileExt    = [_obj valueForKey:@"fileType"];
   
   if ([entityName isEqualToString:@"DocumentEditing"]) {
+    /* special handling because documentId is set as the primary key? */
     fileName = [[_obj valueForKey:@"documentEditingId"] stringValue];
   }
   else { 
@@ -248,7 +251,7 @@ static BOOL UseFoldersForIDRanges        = NO;
   if ([[obj valueForKey:@"attachmentName"] isNotNull])
     /* already has a cached name */
     return;
-    
+  
   str = [self _nameOfAttachmentForObj:obj inContext:_context];
   
   if (!UseFlatDocumentFileStructure) {

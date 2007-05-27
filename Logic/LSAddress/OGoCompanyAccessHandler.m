@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -119,8 +119,10 @@ static BOOL debugOn = YES;
   if (debugOn) 
     [self debugWithFormat:@"  fetch teams for person pkey: %@", _pkeyOrGID];
   
-  acc = [NSDictionary dictionaryWithObject:_pkeyOrGID forKey:@"companyId"];
-
+  /* account::teams requires a mutable dictionary */
+  acc = [NSMutableDictionary dictionaryWithObject:_pkeyOrGID 
+			     forKey:@"companyId"];
+  
   teamIds = [[self context] runCommand:@"account::teams", @"account", acc,nil];
   if (_gids) {
     teamIds = [teamIds map:@selector(globalID)];

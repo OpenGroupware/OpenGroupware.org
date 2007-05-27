@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -467,8 +468,23 @@ static int compareGroups(id group1, id group2, void *context) {
 - (void)setMember:(id)_member {
   NSArray *m;
 
-  m = [NSArray arrayWithObject:_member];
-  ASSIGN(self->members, m);
+  if (_member == nil) {
+    [self errorWithFormat:@"got passed a null member!"];
+    return;
+  }
+
+#if !NeXT_Foundation_LIBRARY // NSCFDictionary ...
+  if ([_member isKindOfClass:[NSDictionary class]]) {
+    if ([!_member isKindOfClass:[NSMutableDictionary class]]) {
+      [self warnWithFormat:@"%s: got passed a non-mutable member dictionary!",
+	    __PRETTY_FUNCTION__];
+    }
+  }
+#endif
+  
+  m = [[NSArray alloc] initWithObjects:&_member count:1];
+  [self->members release]; self->members = nil;
+  self->members = m;
 }
 - (id)member {
   return [self->members lastObject];

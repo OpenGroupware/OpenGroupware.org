@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -48,15 +48,20 @@
 - (NSString *)_fileType {
   // TODO: DUP code with LSNewNoteCommand!
   NSString *fileType = nil;
+  NSRange r;
+  
+  if (![self->filePath isNotEmpty])
+    return @"txt";
 
-  if (self->filePath == nil)
+  // TBD: search backwards
+  r = [self->filePath rangeOfString:@"."];
+  if (r.length == 0)
     return @"txt";
   
   fileType = [[self->filePath componentsSeparatedByString:@"."] lastObject];
-
   if ([self->filePath isEqualToString:fileType])
     return @"txt";
-
+  
   return [fileType lowercaseString];
 }
 

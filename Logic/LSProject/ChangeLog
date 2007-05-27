@@ -1,3 +1,7 @@
+2007-05-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSSetNoteCommand.m: minor code cleanups (v5.3.41)
+
 2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* some code cleanups, fixed some gcc4 warnings, use -warnWithFormat:
