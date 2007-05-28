@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -57,12 +57,53 @@
         reason:@"no entity set for primary key generation"];
 }
 
+- (unsigned int)keyBatchSize {
+  return 10; // IMPORTANT: this MUST match the key generator algorithm!!
+}
+
 - (void)_executeInContext:(id)_context {
-  EOAdaptorChannel *adChannel = [self databaseAdaptorChannel];
+  EOAdaptorChannel *adChannel;
   NSDictionary     *pkey      = nil;
   int              cntPk      = 1;
+  int              avail      = 0;
+  NSNumber         *baseKey   = nil;
+  
+  /* check key cache for more keys */
+  
+  if ((baseKey = [_context valueForKey:@"__sysNewKey_base"]) != nil) {
+    avail = [[_context valueForKey:@"__sysNewKey_avail"] intValue];
+    if (avail > 0) {
+      unsigned int value = [baseKey unsignedIntValue];
+      value += [self keyBatchSize] - avail;
+      
+#warning HH LOG
+      NSLog(@"REUSED KEY %@, next: %d", baseKey, value);
 
+      /* reduce availability */
+      avail--;
+      if (avail > 0) {
+	[_context takeValue:[NSNumber numberWithInt:avail] 
+		  forKey:@"__sysNewKey_avail"];
+      }
+      else {
+	[_context takeValue:nil forKey:@"__sysNewKey_base"];
+	[_context takeValue:nil forKey:@"__sysNewKey_avail"];
+      }
+      
+      [self setReturnValue:[NSNumber numberWithUnsignedInt:value]];
+      return;
+    }
+    
+    [_context takeValue:nil forKey:@"__sysNewKey_base"];
+    [_context takeValue:nil forKey:@"__sysNewKey_avail"];
+    baseKey = nil;
+  }
+  
+  /* retrieve new keys from adaptor */
+  
+  adChannel = [self databaseAdaptorChannel];
 #if 1
+  // TBD: why is that?
   while (YES) {
     if (cntPk > 1)
       [self warnWithFormat:@"get primary key record failed %d times!", cntPk];
@@ -82,7 +123,20 @@
 #endif  
   [self assert:([pkey count] == 1) reason:@"generated invalid primary key."];
 
-  [self setReturnValue:[[pkey objectEnumerator] nextObject]];
+  baseKey = [[pkey objectEnumerator] nextObject];
+  [self setReturnValue:baseKey];
+  
+  
+  /* cache base key sequence for subsequent calls */
+  
+  avail = [self keyBatchSize] - 1;
+  if (avail > 0) {
+    // Note: at least on PG we don't need to care about ROLLBACKs, the sequence
+    //       is serialized across transactions
+    [_context takeValue:baseKey forKey:@"__sysNewKey_base"];
+    [_context takeValue:[NSNumber numberWithInt:avail] 
+	      forKey:@"__sysNewKey_avail"];
+  }
 }
 
 - (void)_executeCommandsInContext:(id)_context {

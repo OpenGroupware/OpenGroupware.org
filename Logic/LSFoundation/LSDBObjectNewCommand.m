@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2006-2007 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -89,6 +89,49 @@
   [obj takeValuesFromDictionary:recordDict];
 }
 
+- (void)prepareChangeTrackingFields {
+  /* this can be called by subclasses on demand */
+  EOEntity    *e;
+  EOAttribute *a;
+  NSCalendarDate *now = nil; /* OGo often expects an NSCalendarDate */
+  
+  if ((e = [self entity]) == nil) {
+    [self warnWithFormat:@"new-command has no assigned entity?!"];
+    return;
+  }
+  
+  if ([self->recordDict objectForKey:@"objectVersion"] == nil) {
+    if ((a = [e attributeNamed:@"objectVersion"]) != nil) {
+      [self->recordDict
+	   setObject:[NSNumber numberWithUnsignedInt:1]
+	   forKey:@"objectVersion"];
+    }
+  }
+  
+  if ([self->recordDict objectForKey:@"lastModified"] == nil) {
+    if ((a = [e attributeNamed:@"lastModified"]) != nil) {
+      NSNumber *lastMod;
+    
+      if (now == nil) now = [NSCalendarDate date];
+      lastMod = [NSNumber numberWithDouble:[now timeIntervalSince1970]];
+      [self->recordDict setObject:lastMod forKey:@"lastModified"];
+    }
+  }
+  
+  if ([self->recordDict objectForKey:@"creationDate"] == nil) {
+    if ((a = [e attributeNamed:@"creationDate"]) != nil) {
+      if (now == nil) now = [NSCalendarDate date];
+      [self->recordDict setObject:now forKey:@"creationDate"];
+    }
+  }
+  if ([self->recordDict objectForKey:@"lastmodifiedDate"] == nil) {
+    if ((a = [e attributeNamed:@"lastmodifiedDate"]) != nil) {
+      if (now == nil) now = [NSCalendarDate date];
+      [self->recordDict setObject:now forKey:@"lastmodifiedDate"];
+    }
+  }
+}
+
 - (BOOL)shouldInsertObjectInObjInfoTable:(id)_object {
   NSString *en;
   
@@ -96,10 +139,8 @@
     return NO;
   
   en = [self entityName];
-  if ([en hasSuffix:@"Assignment"])
-    return NO;
-  if ([en isEqualToString:@"CompanyValue"])
-    return NO;
+  if ([en hasSuffix:@"Assignment"])         return NO;
+  if ([en isEqualToString:@"CompanyValue"]) return NO;
   
   return YES;
 }

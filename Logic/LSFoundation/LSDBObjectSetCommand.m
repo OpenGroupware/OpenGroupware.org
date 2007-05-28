@@ -184,7 +184,7 @@
   if ((a = [e attributeNamed:@"lastModified"]) != nil) {
     NSNumber *lastMod;
     
-    if (now == nil) now = [NSDate date];
+    if (now == nil) now = [NSCalendarDate date];
     lastMod = [NSNumber numberWithDouble:[now timeIntervalSince1970]];
     
     [self takeValue:lastMod forKey:@"lastModified"];
@@ -192,7 +192,7 @@
   }
   
   if ((a = [e attributeNamed:@"lastmodifiedDate"]) != nil) {
-    if (now == nil) now = [NSDate date];
+    if (now == nil) now = [NSCalendarDate date];
     
     [self takeValue:now forKey:@"lastmodifiedDate"];
     [obj  takeValue:now forKey:@"lastmodifiedDate"];

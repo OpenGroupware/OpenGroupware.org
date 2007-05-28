@@ -1,4 +1,18 @@
 2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.130
+
+	* LSDBObjectNewKeyCommand.m: properly use the key range returned by the
+	  sequence (returns batches of 10 keys)
+
+	* LSDBObjectNewCommand.m: added -prepareChangeTrackingFields method to
+	  allow subclasses to automagically update objectVersion and
+	  lastModified/lastmodifiedDate/creationDate attributes
+	
+	* LSDBObjectSetCommand.m: changed to use NSCalendarDate for change
+	  tracking fields to avoid issues with GDL1
+	
+2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* LSDBObjectSetCommand.m: added -bumpChangeTrackingFields method to
 	  allow subclasses to automagically update objectVersion and
