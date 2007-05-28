@@ -1,5 +1,10 @@
 2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSWLabelHandler.m: and yet another change to make it working with
+	  Cocoa which requires both (v5.3.108)
+
+2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
+
 	* LSWLabelHandler.m: implement -setValue:forKey: for gnustep-base
 	  compatibility (v5.3.107)
 

@@ -121,15 +121,12 @@ static __inline__ void chRemove(LSWLabelHandler *table, id key);
   return YES;
 }
 
-#if !NG_USE_KVC_FALLBACK /* only override on libFoundation */
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
-  // cannot set values, ignore ...
+  // old style
 }
-#else /* use fallback methods on other Foundation libraries */
 - (void)setValue:(id)_value forUndefinedKey:(NSString *)_key {
-  // cannot set values, ignore ...
+  // new style
 }
-#endif
 
 static inline NSString *_computedKey(LSWLabelHandler *self, NSString *_key) {
   /* check for computed keys */
