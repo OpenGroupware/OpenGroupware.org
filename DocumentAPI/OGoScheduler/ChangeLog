@@ -1,3 +1,9 @@
+2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkySchedulerConflictDataSource.m: fixed an exception on MacOS due to
+	  creative use of KVC. Changed to use -isNotEmpty and other small code
+	  cleanups (v5.3.40)
+
 2006-09-20  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAppointmentDataSource.m: use -errorWithFormat: (v5.3.39)

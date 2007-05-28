@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -24,6 +25,7 @@
 #include "common.h"
 #include "SkyAppointmentQualifier.h"
 #include <EOControl/EOSortOrdering.h>
+#include <NGExtensions/NGCalendarDateRange.h>
 #include "OGoCycleDateCalculator.h"
 
 @implementation SkySchedulerConflictDataSource
@@ -129,10 +131,12 @@ static int      LSMaxAptCycles = 0;
                                    keepTime:YES];
   }
   
-  tmp = [NSDictionary dictionaryWithObjectsAndKeys:
-			sD, @"startDate", eD, @"endDate",
-		        dateId, @"dateId", nil];
-  return tmp ? [NSArray arrayWithObject:tmp] : nil;
+  tmp = [[NSDictionary alloc] initWithObjectsAndKeys:
+				sD, @"startDate", eD, @"endDate",
+			        dateId, @"dateId", nil];
+  apt = [NSArray arrayWithObjects:&tmp count:1];
+  [tmp release]; tmp = nil;
+  return apt;
 }
 
 /* accessors */
@@ -176,7 +180,7 @@ static int      LSMaxAptCycles = 0;
 - (BOOL)hasConflicts {
   // TODO: hm, hm. Should be done by the client, not a DS method!
   [self errorWithFormat:@"Called deprecated method: %s", __PRETTY_FUNCTION__];
-  return ([[self fetchObjects] count] > 0) ? YES : NO;
+  return [[self fetchObjects] isNotEmpty];
 }
 
 /* source datasource */
@@ -248,7 +252,9 @@ static int      LSMaxAptCycles = 0;
   NSArray      *lconflicts;
   NSDictionary *args;
   
-  if ([[_apt valueForKey:@"dateId"] isNotNull]) {
+  /* _apt can be an NGCalendarDateRange or a dict or an EO */
+  if (![_apt isKindOfClass:[NGCalendarDateRange class]] &&
+      [[_apt valueForKey:@"dateId"] isNotNull]) {
     args = [[NSDictionary alloc] initWithObjectsAndKeys:
                            _startDate,    @"begin",
                            _endDate,      @"end",
@@ -283,9 +289,9 @@ static int      LSMaxAptCycles = 0;
   
   if (_gids == nil)
     return nil;
-  if ([_gids count] == 0)
+  if (![_gids isNotEmpty])
     return emptyArray;
-
+  
   args = [NSDictionary dictionaryWithObjectsAndKeys:
                            _gids,                  @"gids",
                            startDateSortOrderings, @"sortOrderings",
@@ -353,7 +359,7 @@ static int      LSMaxAptCycles = 0;
                        from:startDate to:endDate
                        onAppointment:aptSlot];
     
-    if ([lconflicts count] > 0)
+    if ([lconflicts isNotEmpty])
       [gids addObjectsFromArray:lconflicts];
     
     /* I _think_ that this the stuff below is to support Palm DS */
@@ -366,7 +372,7 @@ static int      LSMaxAptCycles = 0;
                             [self->dataSources objectAtIndex:k]
                           forDate:aptSlot participants:participants 
                           resources:a];
-      if ([llconflicts count] > 0)
+      if ([llconflicts isNotEmpty])
         [cs addObjectsFromArray:llconflicts];
     }
   }
@@ -400,7 +406,7 @@ static int      LSMaxAptCycles = 0;
   
   /* fetch appointments for global-ids */
   
-  if ([gids count] > 0) {
+  if ([gids isNotEmpty]) {
     [cs addObjectsFromArray:
           [self _fetchAppointmentsForGIDs:gids timeZone:tz]];
   }
