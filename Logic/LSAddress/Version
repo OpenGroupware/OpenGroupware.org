@@ -1,6 +1,7 @@
 # version file
 
-SUBMINOR_VERSION:=94
+SUBMINOR_VERSION:=95
 
+# v5.3.95 requires libLSFoundation v5.3.129
 # v5.3.80 requires OGoModel        v5.3.17
 # v5.1.43 requires libNGExtensions v4.3.113

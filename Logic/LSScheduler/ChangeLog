@@ -1,3 +1,9 @@
+2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSSetAppointmentCommand.m: changed to use the new
+	  -bumpChangeTrackingFields method in LSDBObjectSetCommand
+	  (v5.3.101)
+
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSSetAppointmentCommand.m/LSNewAppointmentCommand.m: now allows

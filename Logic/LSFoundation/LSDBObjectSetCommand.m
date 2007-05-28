@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -150,6 +151,54 @@
     [self assert:NO reason:@"Save failed! Record was edited by another user!"];
 
   [self setReturnValue:obj];
+}
+
+- (void)bumpChangeTrackingFields {
+  /* this can be called by subclasses on demand */
+  EOEntity    *e;
+  EOAttribute *a;
+  NSDate      *now = nil;
+  id          obj;
+  
+  if ((obj = [self object]) == nil)
+    [self warnWithFormat:@"missing object !!!"];
+  
+  if ((e = [self entity]) == nil) /* try to retrieve from object */
+    e = [obj valueForKey:@"entity"];
+  
+  if (e == nil) {
+    [self warnWithFormat:@"command has no assigned entity?!"];
+    return;
+  }
+  
+  if ((a = [e attributeNamed:@"objectVersion"]) != nil) {
+    NSNumber *v = [obj valueForKey:@"objectVersion"];
+    v = [NSNumber numberWithUnsignedInt:
+		    ([v isNotNull] ? ([v unsignedIntValue] + 1) : 1)];
+    
+    // TBD: not sure what is *really* necessary
+    [self takeValue:v forKey:@"objectVersion"];
+    [obj  takeValue:v forKey:@"objectVersion"];
+  }
+
+  if ((a = [e attributeNamed:@"lastModified"]) != nil) {
+    NSNumber *lastMod;
+    
+    if (now == nil) now = [NSDate date];
+    lastMod = [NSNumber numberWithDouble:[now timeIntervalSince1970]];
+    
+    [self takeValue:lastMod forKey:@"lastModified"];
+    [obj  takeValue:lastMod forKey:@"lastModified"];
+  }
+  
+  if ((a = [e attributeNamed:@"lastmodifiedDate"]) != nil) {
+    if (now == nil) now = [NSDate date];
+    
+    [self takeValue:now forKey:@"lastmodifiedDate"];
+    [obj  takeValue:now forKey:@"lastmodifiedDate"];
+  }
+  
+  // dbStatus is already set in _prepareForExecutionInContext:
 }
 
 /* accessors */

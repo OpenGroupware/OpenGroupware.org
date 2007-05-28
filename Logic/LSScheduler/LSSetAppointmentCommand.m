@@ -379,7 +379,7 @@ static NSArray  *startDateOrderings = nil;
   tzsD = [[[sD timeZoneDetail] retain] autorelease];
   tzeD = [[[eD timeZoneDetail] retain] autorelease];
   
-  [self _increaseVersion];
+  [self bumpChangeTrackingFields];
 
   [super _executeInContext:_context];
   
@@ -426,25 +426,6 @@ static NSArray  *startDateOrderings = nil;
     la = [obj valueForKey:@"logAction"];
   
   [self addLogText:lt andAction:la inContext:_context];
-}
-
-- (void)_increaseVersion {
-  id  obj;
-  int objVer;
-  id  lastMod;
-  
-  if ((obj = [self object]) == nil)
-    [self warnWithFormat:@"missing object !!!"];
-  
-  objVer = [[obj valueForKey:@"objectVersion"] intValue] + 1;
-
-  lastMod = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
-
-  [self takeValue:[NSNumber numberWithInt:objVer] forKey:@"objectVersion"];
-  [obj  takeValue:[NSNumber numberWithInt:objVer] forKey:@"objectVersion"];
-
-  [self takeValue:lastMod forKey:@"lastModified"];
-  [obj  takeValue:lastMod forKey:@"lastModified"];
 }
 
 /* record initializer */

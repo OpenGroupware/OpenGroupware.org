@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -21,10 +22,6 @@
 
 #include "LSSetCompanyCommand.h"
 #include "common.h"
-
-@interface LSSetCompanyCommand(PrivateMethodes)
-- (void)_increaseVersion;
-@end
 
 @interface LSSetCompanyCommand(ExtendedAttributes)
 - (NSDictionary *)_fetchDefaultExtendedAttributes:(id)_context;
@@ -331,7 +328,7 @@ static NSString *autoNumberPrefix = @"OGo";
     }
   }
 
-  [self _increaseVersion];
+  [self bumpChangeTrackingFields];
   
   [super _executeInContext:_context];
 
@@ -432,18 +429,6 @@ static NSString *autoNumberPrefix = @"OGo";
     return [NSNumber numberWithBool:[self deleteImage]];
 
   return [super valueForKey:_key];
-}
-
-/* PrivateMethodes */
-
-- (void)_increaseVersion {
-  id  obj    = nil;
-  int vCount = 0;
-
-  obj = [self object];
-  vCount = [[obj valueForKey:@"objectVersion"] intValue] + 1;
-
-  [obj takeValue:[NSNumber numberWithInt:vCount] forKey:@"objectVersion"];
 }
 
 /* ExtendedAttributes */

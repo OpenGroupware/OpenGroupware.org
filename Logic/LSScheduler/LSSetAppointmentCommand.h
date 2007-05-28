@@ -46,8 +46,6 @@
   NSDictionary *customAttributes;
 }
 
-- (void)_increaseVersion;
-
 @end
 
 #endif /* __LSScheduler_LSSetAppointmentCommand_H__ */

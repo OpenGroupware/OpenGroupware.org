@@ -365,8 +365,14 @@
 /* key-value coding */
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
+  // old style
   [self setObject:_value forKey:_key];
 }
+- (void)setValue:(id)_value forUndefinedKey:(NSString *)_key {
+  // new style
+  [self setObject:_value forKey:_key];
+}
+
 - (id)valueForKey:(NSString *)_key {
   return [self objectForKey:_key];
 }
