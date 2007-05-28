@@ -1543,6 +1543,7 @@
         dateId,
         currentOwnerId,
         status,
+        objectVersion,
         firstOwnerId,
         fileSize,
         creationDate,
@@ -1566,6 +1567,7 @@
         dateId,
         currentOwnerId,
         status,
+        objectVersion,
         firstOwnerId,
         fileSize,
         creationDate,
@@ -1715,6 +1717,14 @@
           valueClassName = "NSString";
           allowsNull     = Y;
           width          = 255;
+        },
+        {
+          name           = "objectVersion";
+          columnName     = "object_version";
+          externalType   = "INT";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
         },
         {
           name           = "parentDocumentId";
@@ -4313,10 +4323,12 @@
         dateId,
         currentOwnerId,
         status,
+        objectVersion,
         firstOwnerId,
         creationDate,
         documentId,
         dbStatus,
+        lastmodifiedDate,
         isNote,
       );
       classProperties = (
@@ -4330,10 +4342,12 @@
         dateId,
         currentOwnerId,
         status,
+        objectVersion,
         firstOwnerId,
         creationDate,
         documentId,
         dbStatus,
+        lastmodifiedDate,
         isNote,
         toParentDocument,
         toDate,
@@ -4420,6 +4434,22 @@
         {
           name           = "isNote";
           columnName     = "is_note";
+          externalType   = "INT";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
+        },
+        {
+          name           = "lastmodifiedDate";
+          columnName     = "lastmodified_date";
+          externalType   = "DATE";
+          valueClassName = "NSCalendarDate";
+          allowsNull     = Y;
+          calendarFormat = "%Y-%m-%d %H:%M:%S";
+        },
+        {
+          name           = "objectVersion";
+          columnName     = "object_version";
           externalType   = "INT";
           valueClassName = "NSNumber";
           valueType      = i;

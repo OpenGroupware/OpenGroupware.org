@@ -1,3 +1,12 @@
+2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.19
+
+	* OGoModel.py (Doc): expose 'objectVersion' property to Doc entity
+
+	* OGoModel.py (Note): expose 'objectVersion' and 'lastModified'
+	  properties to Note entity
+
 2005-12-01  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoModel.py (Date): bumped length of type field to 255 (v5.3.18)

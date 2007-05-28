@@ -2194,6 +2194,12 @@ Note = {
       valueClass: 'NSCalendarDate',
       flags:      [ lock, property, allowsNull, ],
     },
+    "lastmodifiedDate": {
+      column:     "lastmodified_date",
+      coltype:    't_datetime',
+      valueClass: 'NSCalendarDate',
+      flags:      [ lock, property, allowsNull, ],
+    },
     "status": {
       column:     "status",
       coltype:    't_tinystring',
@@ -2206,6 +2212,13 @@ Note = {
       coltype:    't_tinystring',
       valueClass: 'NSString',
       width:      50,
+      flags:      [ lock, property, allowsNull, ],
+    },
+    "objectVersion": {
+      column:     "object_version",
+      coltype:    't_int',
+      valueClass: 'NSNumber',
+      valueType:  'i',
       flags:      [ lock, property, allowsNull, ],
     },
     
@@ -2397,6 +2410,13 @@ Doc = {
       coltype:    't_tinystring',
       valueClass: 'NSString',
       width:      50,
+      flags:      [ lock, property, allowsNull, ],
+    },
+    "objectVersion": {
+      column:     "object_version",
+      coltype:    't_int',
+      valueClass: 'NSNumber',
+      valueType:  'i',
       flags:      [ lock, property, allowsNull, ],
     },
     

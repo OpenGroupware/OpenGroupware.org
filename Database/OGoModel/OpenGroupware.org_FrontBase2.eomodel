@@ -1543,6 +1543,7 @@
         dateId,
         currentOwnerId,
         status,
+        objectVersion,
         firstOwnerId,
         fileSize,
         creationDate,
@@ -1566,6 +1567,7 @@
         dateId,
         currentOwnerId,
         status,
+        objectVersion,
         firstOwnerId,
         fileSize,
         creationDate,
@@ -1715,6 +1717,14 @@
           valueClassName = "NSString";
           allowsNull     = Y;
           width          = 255;
+        },
+        {
+          name           = "objectVersion";
+          columnName     = "object_version";
+          externalType   = "t_int";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
         },
         {
           name           = "parentDocumentId";
@@ -4313,10 +4323,12 @@
         dateId,
         currentOwnerId,
         status,
+        objectVersion,
         firstOwnerId,
         creationDate,
         documentId,
         dbStatus,
+        lastmodifiedDate,
         isNote,
       );
       classProperties = (
@@ -4330,10 +4342,12 @@
         dateId,
         currentOwnerId,
         status,
+        objectVersion,
         firstOwnerId,
         creationDate,
         documentId,
         dbStatus,
+        lastmodifiedDate,
         isNote,
         toParentDocument,
         toDate,
@@ -4421,6 +4435,22 @@
           name           = "isNote";
           columnName     = "is_note";
           externalType   = "t_bool";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
+        },
+        {
+          name           = "lastmodifiedDate";
+          columnName     = "lastmodified_date";
+          externalType   = "t_datetime";
+          valueClassName = "NSCalendarDate";
+          allowsNull     = Y;
+          calendarFormat = "%b %d %Y %I:%M:%S:000%p";
+        },
+        {
+          name           = "objectVersion";
+          columnName     = "object_version";
+          externalType   = "t_int";
           valueClassName = "NSNumber";
           valueType      = i;
           allowsNull     = Y;
