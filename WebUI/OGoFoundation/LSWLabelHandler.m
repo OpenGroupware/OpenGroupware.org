@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -34,6 +35,11 @@ struct _NSMapNode {
     struct _NSMapNode *next;
 };
 #endif
+
+#if !LIB_FOUNDATION_LIBRARY
+#  define NG_USE_KVC_FALLBACK 1
+#endif
+
 
 @interface WOResourceManager(Labels)
 - (NSString *)labelForKey:(NSString *)_key component:(WOComponent *)_component;
@@ -115,9 +121,15 @@ static __inline__ void chRemove(LSWLabelHandler *table, id key);
   return YES;
 }
 
+#if !NG_USE_KVC_FALLBACK /* only override on libFoundation */
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
   // cannot set values, ignore ...
 }
+#else /* use fallback methods on other Foundation libraries */
+- (void)setValue:(id)_value forUndefinedKey:(NSString *)_key {
+  // cannot set values, ignore ...
+}
+#endif
 
 static inline NSString *_computedKey(LSWLabelHandler *self, NSString *_key) {
   /* check for computed keys */
@@ -336,11 +348,3 @@ static __inline__ void chRemove(LSWLabelHandler *table, id key) {
 }
 
 @end /* LSWLabelHandler */
-
-@implementation LSWLabelHandler(JSSupport)
-
-- (id)valueForJSPropertyNamed:(NSString *)_key {
-  return [self valueForKey:_key];
-}
-
-@end /* LSWLabelHandler(JSSupport) */
