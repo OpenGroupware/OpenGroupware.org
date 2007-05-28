@@ -1,3 +1,7 @@
+2007-05-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoModel.py (Project): expose 'objectVersion' property (v5.3.20)
+
 2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.19

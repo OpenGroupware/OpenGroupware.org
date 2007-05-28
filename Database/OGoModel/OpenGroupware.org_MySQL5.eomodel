@@ -5512,6 +5512,7 @@
         dbStatus,
         isFake,
         teamId,
+        objectVersion,
         ownerId,
       );
       classProperties = (
@@ -5526,6 +5527,7 @@
         dbStatus,
         isFake,
         teamId,
+        objectVersion,
         ownerId,
         toProjectInfo,
         toProjectCompanyAssignment,
@@ -5583,6 +5585,14 @@
           valueClassName = "NSString";
           allowsNull     = Y;
           width          = 100;
+        },
+        {
+          name           = "objectVersion";
+          columnName     = "object_version";
+          externalType   = "INT";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
         },
         {
           name           = "ownerId";

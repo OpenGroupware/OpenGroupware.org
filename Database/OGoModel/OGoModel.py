@@ -1254,6 +1254,13 @@ Project = {
       width:      100,
       flags:      [ property, allowsNull, ],
     },
+    "objectVersion": {
+      column:     "object_version",
+      coltype:    't_int',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ lock, property, allowsNull, ],
+    },
     
     # relationships
     
