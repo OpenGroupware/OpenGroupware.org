@@ -69,7 +69,8 @@ static BOOL _checkJobs(id self, id _context, NSArray *_jobs) {
   id result;
   
   result = [NSNumber numberWithBool:
-		       _checkJobs(self, _context, [[self object] valueForKey:@"jobs"])];
+		       _checkJobs(self, _context, 
+				  [[self object] valueForKey:@"jobs"])];
   [self setReturnValue:result];
 }
 

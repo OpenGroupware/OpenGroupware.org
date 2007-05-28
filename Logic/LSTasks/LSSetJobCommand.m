@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -25,22 +26,15 @@
 {
 }
 
-@end /* LSSetJobCommand */
+@end
 
-#import <Foundation/Foundation.h>
+#include "common.h"
 
 @implementation LSSetJobCommand
 
 - (void)_prepareForExecutionInContext:(id)_context {
-  id  obj;
-  int objVersion;
-
-  obj        = [self object];
-  objVersion = [[obj valueForKey:@"objectVersion"] intValue] + 1;
-
-  [obj takeValue:[NSNumber numberWithInt:objVersion] forKey:@"objectVersion"];
-
   [super _prepareForExecutionInContext:_context];
+  [self bumpChangeTrackingFields];
 }
 
 - (NSString *)entityName {
