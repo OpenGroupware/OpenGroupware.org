@@ -167,7 +167,6 @@
       <tr><td colspan="7"><small><hr size="1" /></small></td></tr>
     </var:foreach>
   </table>
-  <var:if condition="printMode" const:negate="YES">
+
     </form>
-  <var:if>
 </OGo:container>

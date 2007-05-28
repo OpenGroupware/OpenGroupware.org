@@ -1,3 +1,8 @@
+2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoNote/SkyNoteList.wox: fixed invalid XML in .wox file (removed
+	  conditional around closing form tag)
+
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoMailViewers: minor template cleanups
