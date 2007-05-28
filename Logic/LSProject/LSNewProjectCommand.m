@@ -156,13 +156,13 @@
   
   [self _checkStartDateIsBeforeEndDate];
   [self _checkForHistoryProject];
+  [self prepareChangeTrackingFields];
+
   [super _prepareForExecutionInContext:_context];
   
   n = [self->recordDict valueForKey:@"number"];
   if (![n isNotNull])
     [self _autoAssignProjectNumber];
-  
-  [self prepareChangeTrackingFields];
 }
 
 - (void)postProjectDidChange {
