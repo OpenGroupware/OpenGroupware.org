@@ -1,3 +1,7 @@
+2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyObjectField.m: removed a superflous log (v5.3.130)
+
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWObjectEditor.m: changed code to preserve values which are not

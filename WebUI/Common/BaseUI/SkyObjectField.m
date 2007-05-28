@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software A
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2000-2007 SKYRIX Software A
+  Copyright (C) 2006-2007 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -298,9 +298,6 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
   tmp  = [self hrefAttributeInContext:_ctx];
   tmp  = [tmp isNotEmpty] ? tmp : data;
 
-#warning DEBUG LOG
-  [self logWithFormat:@"X: %@", tmp];
-  
   if (![tmp hasPrefix:@"/"] && ([tmp rangeOfString:@"://"].length == 0)) {
     tmp = [tmp isNotEmpty]
       ? [@"http://" stringByAppendingString:tmp] : (NSString *)@"";
