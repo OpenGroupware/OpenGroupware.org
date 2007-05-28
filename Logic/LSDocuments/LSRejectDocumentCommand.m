@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -81,6 +82,13 @@
         reason:@"document is released!"];
   
   [obj takeValue:@"released" forKey:@"status"];
+  
+  /*
+    Note: this is funny because we bump our values. Not sure whether thats
+          necessary, but its a safer choice for caching to make consumers
+	  aware that something indeed did change.
+  */
+  [self bumpChangeTrackingFields];
 }
 
 - (void)_executeInContext:(id)_context {
@@ -88,7 +96,7 @@
   [self _clearDocumentEditingInContext:_context];
 }
 
-// initialize records
+/* initialize records */
 
 - (NSString *)entityName {
   return @"Doc";

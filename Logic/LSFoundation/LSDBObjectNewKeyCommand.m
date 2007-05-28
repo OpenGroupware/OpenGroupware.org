@@ -76,9 +76,6 @@
       unsigned int value = [baseKey unsignedIntValue];
       value += [self keyBatchSize] - avail;
       
-#warning HH LOG
-      NSLog(@"REUSED KEY %@, next: %d", baseKey, value);
-
       /* reduce availability */
       avail--;
       if (avail > 0) {

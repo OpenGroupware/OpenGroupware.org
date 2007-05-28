@@ -1,6 +1,7 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
-
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
+  
   This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
@@ -94,12 +95,14 @@
     [self takeValue:accountId forKey:@"currentOwnerId"];
   }
 
-  if (self->project != nil) {
+  if ([self->project isNotNull]) {
     [self takeValue:[self->project valueForKey:@"projectId"]
           forKey:@"projectId"];
   }
   [self takeValue:[NSCalendarDate date] forKey:@"creationDate"];
   
+  [self prepareChangeTrackingFields];
+
   [super _prepareForExecutionInContext:_context];
 
   obj = [self object];
@@ -107,8 +110,8 @@
   [obj takeValue:[NSNumber numberWithBool:YES] forKey:@"isNote"];
   [obj takeValue:[NSNumber numberWithBool:NO]  forKey:@"isFolder"];
   [obj takeValue:[self _fileType] forKey:@"fileType"];
-
-  if (self->project != nil) {
+  
+  if ([self->project isNotNull]) {
     [obj takeValue:[self->folder valueForKey:@"documentId"]
          forKey:@"parentDocumentId"];
   }

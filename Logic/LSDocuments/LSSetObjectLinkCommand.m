@@ -1,6 +1,7 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
-
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
+  
   This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
@@ -46,8 +47,10 @@
     [self takeValue:[self->folder valueForKey:@"documentId"]
           forKey:@"parentDocumentId"];
   }
-  [self takeValue:[NSCalendarDate date] forKey:@"lastmodifiedDate"];
+  
   [super _prepareForExecutionInContext:_context];
+
+  [self bumpChangeTrackingFields];
 }
 
 /* accessors */

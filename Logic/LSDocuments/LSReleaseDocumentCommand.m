@@ -1,6 +1,7 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
-
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
+  
   This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
@@ -29,18 +30,21 @@
 @implementation LSReleaseDocumentCommand
 
 - (id)_checkedOutVersionForVersionId:(NSNumber *)_vers
-  inContext:(id)_context {
-  id      obj       = [self object];
-  NSArray *versions = [obj valueForKey:@"toDocumentVersion"];
-  int     i, cnt    = [versions count];
-  id      vers      = nil;
+  inContext:(id)_context
+{
+  id      obj;
+  NSArray *versions;
+  int     i, cnt;
+  id      vers;
+
+  obj      = [self object];
+  versions = [obj valueForKey:@"toDocumentVersion"];
+  cnt      = [versions count];
   
   for (i = 0; i < cnt; i++) {
     vers = [versions objectAtIndex:i];
-
-    if ([[vers valueForKey:@"version"] isEqual:_vers]) {
+    if ([[vers valueForKey:@"version"] isEqual:_vers])
       break;
-    }
   }
   return vers;
 }
@@ -127,6 +131,8 @@
   [obj takeValue:[editing valueForKey:@"fileSize"] forKey:@"fileSize"];
   [obj takeValue:[editing valueForKey:@"currentOwnerId"]
        forKey:@"currentOwnerId"];
+  
+  [self bumpChangeTrackingFields];
 }
 
 - (void)_executeInContext:(id)_context {
@@ -138,11 +144,11 @@
   NSUserDefaults *defaults;
   NSFileManager  *manager;
 
-   obj      = [self object];
-   editing  = [obj valueForKey:@"toDocumentEditing"];
-   now      = [NSCalendarDate date];
-   defaults = [_context userDefaults];
-   manager  = [NSFileManager defaultManager];
+  obj      = [self object];
+  editing  = [obj valueForKey:@"toDocumentEditing"];
+  now      = [NSCalendarDate date];
+  defaults = [_context userDefaults];
+  manager  = [NSFileManager defaultManager];
   
   [obj takeValue:now forKey:@"lastmodifiedDate"];
 

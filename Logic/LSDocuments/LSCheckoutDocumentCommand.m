@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -52,6 +53,7 @@
   id obj;
 
   if (![_docId isNotNull]) return nil;
+  
   obj = LSRunCommandV(_ctx, @"documentEditing", @"get",
 		      @"documentId",       _docId,
 		      @"checkPermissions", [NSNumber numberWithBool:NO],
@@ -97,6 +99,7 @@
   id obj;
   
   [super _prepareForExecutionInContext:_context];
+  
   obj = [self object];
   // check constraints 
   [self assert:(![[obj valueForKey:@"isFolder"] boolValue]) 
@@ -129,6 +132,7 @@
   [editing takeValue:[doc valueForKey:@"status"]   forKey:@"status"];
   [editing takeValue:[NSNumber numberWithBool:YES] forKey:@"isAttachChanged"];
   [editing takeValue:[NSCalendarDate date]         forKey:@"checkoutDate"];
+  [editing takeValue:[NSNumber numberWithInt:1]    forKey:@"objectVersion"];
   [editing takeValue:[NSNumber numberWithInt:0]    forKey:@"version"];
   [editing takeValue:[doc valueForKey:@"currentOwnerId"]
            forKey:@"currentOwnerId"];
@@ -161,10 +165,12 @@
   NSNumber *accountId;
   id       obj, account;
   id       editing;
-  
+
   obj       = [self object];
   account   = [_context valueForKey:LSAccountKey];
   accountId = [account valueForKey:@"companyId"];
+
+  /* validate type */
   
   if ([[obj valueForKey:@"isObjectLink"] boolValue]) {
     [self logWithFormat:@"try to checkout object link"];
@@ -174,16 +180,34 @@
     [self logWithFormat:@"try to checkout folder"];
     return;
   }
-  [obj takeValue:@"edited" forKey:@"status"];
-  [super _executeInContext:_context];
+  
+  /* first update master document */
 
+  [obj takeValue:@"edited" forKey:@"status"];
+  [self bumpChangeTrackingFields];
+  [super _executeInContext:_context];
+  
+
+  /* locate editing object or create a new one */
+  
   editing = [self _getEditingEOForDocId:[obj valueForKey:@"documentId"]
 		  inContext:_context];
-  
   if (editing == nil) {
     [self _newDocumentEditingInContext:_context];
     return;
   }
+
+  /* update editing object_version */
+  
+  {
+    id           v   = [editing valueForKey:@"objectVersion"];
+    unsigned int ver = [v isNotNull] ? [v unsignedIntValue] : 0;
+    ver++;
+    [editing takeValue:[NSNumber numberWithUnsignedInt:ver] 
+	     forKey:@"objectVersion"];
+  }
+  
+  /* update editing */
   
   {
     BOOL           isOk;

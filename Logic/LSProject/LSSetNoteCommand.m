@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -104,16 +105,20 @@
     [self takeValue:accountId forKey:@"currentOwnerId"];
     fileType = [self _fileType];
   }
-  if (self->project != nil)
+  if (self->project != nil) {
     [self takeValue:[self->project valueForKey:@"projectId"]
           forKey:@"projectId"];
+  }
+  
   [super _prepareForExecutionInContext:_context];
 
   [self assert:
         ([[[self object] valueForKey:@"fileType"] isEqualToString:fileType])
         reason:@"wrong filetype for upload!"];
-
+  
   [[self object] takeValue:fileType forKey:@"fileType"];
+  
+  [self bumpChangeTrackingFields];
 }
 
 - (void)_saveAttachmentInContext:(id)_context {
@@ -161,6 +166,7 @@
 }
 
 - (void)setFileContent:(NSString *)_fileContent {
+  /* Note content is not supposed to be big, so we copy it */
   ASSIGNCOPY(self->fileContent, _fileContent);
 }
 - (NSString *)fileContent {

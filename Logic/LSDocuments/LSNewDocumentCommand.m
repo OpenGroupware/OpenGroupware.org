@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -76,11 +77,12 @@
   [editing takeValue:[doc valueForKey:@"status"]   forKey:@"status"];
   [editing takeValue:[NSNumber numberWithBool:YES] forKey:@"isAttachChanged"];
   [editing takeValue:[NSCalendarDate date]         forKey:@"checkoutDate"];
+  [editing takeValue:[NSNumber numberWithInt:1]    forKey:@"objectVersion"];
   [editing takeValue:[NSNumber numberWithInt:0]    forKey:@"version"];
   [editing takeValue:[doc valueForKey:@"currentOwnerId"]
            forKey:@"currentOwnerId"];
   [editing takeValue:[doc valueForKey:@"projectId"] forKey:@"projectId"];
-
+  
   isOk = [[self databaseChannel] insertObject:editing];
 
   [self assert:isOk reason:[sybaseMessages description]];
@@ -134,9 +136,9 @@
   
   [self takeValue:[NSNumber numberWithBool:NO] forKey:@"isNote"];
   [self takeValue:[NSNumber numberWithInt:0]   forKey:@"versionCount"];
-  [self takeValue:[NSCalendarDate date]        forKey:@"creationDate"];
-  [self takeValue:[NSCalendarDate date]        forKey:@"lastmodifiedDate"];
-
+  
+  [self prepareChangeTrackingFields];
+  
   isFolder = [[self valueForKey:@"isFolder"] boolValue];
   if (!isFolder && ![[self valueForKey:@"isObjectLink"] boolValue]) {
     [self takeValue:@"edited" forKey:@"status"];

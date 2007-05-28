@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -111,9 +112,11 @@
   
   [super _prepareForExecutionInContext:_context];
   
+  [self bumpChangeTrackingFields];
+  
   obj = [self object];
   
-  if (self->filePath) {
+  if ([self->filePath isNotEmpty]) {
     [self assert:[[obj valueForKey:@"fileType"]
 		       isEqualToString:[self _fileType]]
           format:@"wrong filetype for upload (expected %@, got %@) !",
@@ -139,9 +142,9 @@
   isOk = YES;
   obj  = [self object];
   
-  if (self->data != nil || self->fileContent != nil) {
+  if (self->data != nil || self->fileContent != nil)
     [obj takeValue:[NSNumber numberWithBool:YES] forKey:@"isAttachChanged"];
-  }
+  
   [super _executeInContext:_context];
   
   // save attachement
@@ -194,7 +197,7 @@
 }
 
 - (void)setFilePath:(NSString *)_filePath {
-  ASSIGN(self->filePath, _filePath);
+  ASSIGNCOPY(self->filePath, _filePath);
 }
 - (NSString *)filePath {
   return self->filePath;
