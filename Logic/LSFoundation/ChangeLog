@@ -1,3 +1,7 @@
+2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSDBFetchRelationCommand.m: minor code cleanups (v5.3.128)
+
 2006-11-14  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoContextManager.m: use CET instead of MET on MacOS (v5.3.127)

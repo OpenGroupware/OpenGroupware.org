@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -41,7 +42,7 @@ static int RelMaxSearchCount = 0;
 {
   self = [super initForOperation:_operation inDomain:_domain
 		initDictionary:_init];
-  if (self) {
+  if (self != nil) {
     self->sourceKey      = [[_init objectForKey:@"sourceKey"] copy];
     self->destinationKey = [[_init objectForKey:@"destinationKey"] copy];
     self->isToMany       = [[_init objectForKey:@"isToMany"] boolValue];
@@ -63,7 +64,7 @@ static int RelMaxSearchCount = 0;
 /* accessors */
 
 - (void)setCurrentIds:(NSArray *)_ids {
-  ASSIGN(self->currentIds, _ids);
+  ASSIGNCOPY(self->currentIds, _ids);
 }
 - (NSArray *)currentIds {
   return self->currentIds;
@@ -78,7 +79,7 @@ static int RelMaxSearchCount = 0;
   BOOL         isMany;
   id           item;
 
-  idSet    = [NSMutableSet set];
+  idSet    = [NSMutableSet setWithCapacity:64];
   listEnum = [[self object] objectEnumerator];
   srcKey   = [self sourceKey];
   relKey   = [self relationKey];
@@ -94,10 +95,10 @@ static int RelMaxSearchCount = 0;
     
     if (isMany && (relKey != nil)) {
       NSMutableArray *ma;
-
+      
       ma = [[NSMutableArray alloc] initWithCapacity:8];
       [item takeValue:ma forKey:relKey];
-      [ma release];
+      [ma release]; ma = nil;
     }
     
     [idSet addObject:pKey];
@@ -200,26 +201,26 @@ static int RelMaxSearchCount = 0;
 
     cnt = 0;
     while (cnt < allIdsCount) {
-      id  relObj, fKey;
+      id  relObj, fKey, tmp;
       int step;
       
       step = (allIdsCount-cnt > maxSet) ? maxSet : allIdsCount-cnt;
-
-      ASSIGN(self->currentIds,
-             [allIds subarrayWithRange:NSMakeRange(cnt, step)]);
+      
+      tmp = [allIds subarrayWithRange:NSMakeRange(cnt, step)];
+      ASSIGNCOPY(self->currentIds, tmp);
       
       [self assert:[channel selectObjectsDescribedByQualifier:[self _qualifier]
                             fetchOrder:nil]];
 
       if (isMany && (relKey != nil)) {
-        while ((relObj = [channel fetchWithZone:z])) {
+        while ((relObj = [channel fetchWithZone:z]) != nil) {
           id obj;
           
           fKey = [relObj  valueForKey:destKey];
           obj  = [objDict objectForKey:fKey];
           
           if (obj == nil) {
-            /* shouldn't happen anymore */
+            /* should not happen anymore */
             obj = [self _findObjectWithId:fKey];
             if (obj != nil)
               [objDict setObject:obj forKey:[obj valueForKey:srcKey]];
@@ -231,7 +232,7 @@ static int RelMaxSearchCount = 0;
         }
       }
       else {
-        while ((relObj = [channel fetchWithZone:z]))
+        while ((relObj = [channel fetchWithZone:z]) != nil)
           [allRelObjects addObject:relObj];
       }
       cnt += step;
@@ -343,7 +344,7 @@ static int RelMaxSearchCount = 0;
     [self setObject:array];
   }
   else if ([_key isEqualToString:@"object"])
-    [self setObject:[NSArray arrayWithObject:_value]];
+    [self setObject:_value != nil ? [NSArray arrayWithObject:_value] : nil];
   else if ([_key isEqualToString:@"relationKey"]) 
     [self setRelationKey:_value];
   else if ([_key isEqualToString:@"destinationEntityName"])
