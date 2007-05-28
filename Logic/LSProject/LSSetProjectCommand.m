@@ -177,11 +177,16 @@
    [self _checkStartDateIsBeforeEndDate];
    [super _prepareForExecutionInContext:_context];
 
+   [self bumpChangeTrackingFields];
    [self _checkForHistoryProject];
+
+   /* first check for owner/root, they always have access */
 
    if ([accountId isEqual:[[self object] valueForKey:@"ownerId"]] ||
        ([accountId intValue] == 10000))
      return;
+
+   /* then check companyAssignments */
    
 #if 0 // TODO: explain that!
    {
