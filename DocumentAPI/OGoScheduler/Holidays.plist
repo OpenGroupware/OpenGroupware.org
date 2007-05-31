@@ -1462,4 +1462,4 @@ custom_all = {
 //      "12-31" = "end_christmas_holiday";   // Weihnachtsferien
     };
   };
-};
+}

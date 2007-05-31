@@ -1,3 +1,7 @@
+2007-06-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Holidays.plist: removed trailing colon to please gstep-base (v5.3.41)
+
 2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkySchedulerConflictDataSource.m: fixed an exception on MacOS due to
