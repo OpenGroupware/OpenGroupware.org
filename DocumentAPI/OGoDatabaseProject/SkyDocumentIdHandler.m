@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2006-2007 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -220,8 +220,8 @@ static EOSQLQualifier *trueQualifier = nil;
   [ms appendFormat:@" item=#%i/%i min=%i,max=%i",
         self->itemCnt, self->itemSize, self->minId, self->maxId];
   
-  if (self->documents != nil) [ms appendFormat:@" d=0x%p", self->documents];
-  if (self->projects  != nil) [ms appendFormat:@" p=0x%p", self->projects];
+  if (self->documents != NULL) [ms appendFormat:@" d=0x%p", self->documents];
+  if (self->projects  != NULL) [ms appendFormat:@" p=0x%p", self->projects];
 }
 
 - (NSString *)description {
