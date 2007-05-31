@@ -1,3 +1,7 @@
+2007-06-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAccessList.m: fixed a compilation warning (v5.3.53)
+
 2007-05-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAccessList.m: fixed a potential retain count issue (v5.3.52)

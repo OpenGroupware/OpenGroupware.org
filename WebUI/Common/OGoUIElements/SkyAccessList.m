@@ -103,8 +103,8 @@ static NSNumber *yesNum = nil;
 
 static EOGlobalID *_globalID(id _obj) {
   return [_obj isKindOfClass:[NSDictionary class]]
-    ? [(NSDictionary *)_obj objectForKey:@"globalID"]
-    : [_obj globalID];
+    ? (EOGlobalID *)[(NSDictionary *)_obj objectForKey:@"globalID"]
+    : (EOGlobalID *)[_obj globalID];
 }
 
 - (void)_addObj:(id)_obj toCompanies:(NSMutableArray *)_companies {
