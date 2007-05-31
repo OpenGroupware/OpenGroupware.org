@@ -475,7 +475,7 @@ static int compareGroups(id group1, id group2, void *context) {
 
 #if !NeXT_Foundation_LIBRARY // NSCFDictionary ...
   if ([_member isKindOfClass:[NSDictionary class]]) {
-    if ([!_member isKindOfClass:[NSMutableDictionary class]]) {
+    if (![_member isKindOfClass:[NSMutableDictionary class]]) {
       [self warnWithFormat:@"%s: got passed a non-mutable member dictionary!",
 	    __PRETTY_FUNCTION__];
     }
