@@ -1,3 +1,7 @@
+2007-06-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAddress.m: fixed a gcc4 warning (v1.5.96)
+
 2007-02-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAddressFolder.m: tagged folders as CardDAV addressbook collections

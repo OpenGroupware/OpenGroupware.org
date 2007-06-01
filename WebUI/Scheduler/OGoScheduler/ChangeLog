@@ -1,3 +1,7 @@
+2007-06-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* WODirectAction+SchedulerViews.m: fixed a gstep-base warning (v5.3.59)
+
 2006-08-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Defaults.plist: added 'globalID' to formletter attributes, this is

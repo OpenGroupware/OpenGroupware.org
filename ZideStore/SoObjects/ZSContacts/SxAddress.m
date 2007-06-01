@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -549,7 +549,7 @@ static BOOL debugEO = NO;
   id          ep;
   Class       rc;
   
-  ua = [[_ctx request] headerForKey:@"user-agent"];
+  ua = [[(WOContext *)_ctx request] headerForKey:@"user-agent"];
   
   rc = ([ua hasPrefix:@"Evolution/"])
     ? [self evolutionParserClass]

@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2002-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2002-2007 SKYRIX Software AG
+  Copyright (C) 2006-2007 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -24,6 +24,7 @@
 #include "SxProjectFolder.h"
 #include <OGoDocuments/NGLocalFileManager.h>
 #include "common.h"
+#include <time.h>
 
 @implementation SxDocumentFolder
 

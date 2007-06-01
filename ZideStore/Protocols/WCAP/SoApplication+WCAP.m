@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -91,7 +91,7 @@ static BOOL debugWCAP = YES;
   NSString    *sid;
   BOOL ok;
   
-  sid = [[_ctx request] formValueForKey:@"id"];
+  sid = [[(WOContext *)_ctx request] formValueForKey:@"id"];
   if ([sid length] == 0)
     ok = NO;
   else
@@ -120,7 +120,7 @@ static BOOL debugWCAP = YES;
   
   /* try to create session */
   
-  rq = [_ctx request];
+  rq = [(WOContext *)_ctx request];
   sn = [self wcapCreateSessionForUser:[rq formValueForKey:@"user"]
              password:[rq formValueForKey:@"password"]
              language:[rq formValueForKey:@"lang"]
@@ -149,7 +149,7 @@ static BOOL debugWCAP = YES;
   id           sn, user, pwd;
   SxUserFolder *userFolder;
   
-  sid = [[_ctx request] formValueForKey:@"id"];
+  sid = [[(WOContext *)_ctx request] formValueForKey:@"id"];
   if (debugWCAP)
     [self logWithFormat:@"lookup WCAP method: '%@' (sid=%@) ...", _key, sid];
   

@@ -1,3 +1,12 @@
+2007-06-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.54
+
+	* SkyTextEditor.m: allow empty strings in -setText:
+
+	* SkyExternalLink.m, OGoUIElementsBuilder.m: fixed some gcc4
+	  compilation warnings, changed to use isNotEmpty
+
 2007-06-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAccessList.m: fixed a compilation warning (v5.3.53)

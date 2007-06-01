@@ -99,7 +99,7 @@
   WOResponse *response;
   NSString   *data;
   
-  response = [WOResponse responseWithRequest:[_ctx request]];
+  response = [WOResponse responseWithRequest:[(WOContext *)_ctx request]];
   
   if ((data = [self rssStringForFolder:_folder inContext:_ctx]) != nil) {
     NSData *contentData;

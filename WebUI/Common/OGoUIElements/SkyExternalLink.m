@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -113,11 +114,11 @@ static BOOL     validateLinks    = NO;
 
 /* is a valid external link? */
 - (BOOL)isLinkValid:(NSString *)_link {
-  if ([_link length] == 0) 
+  if (![_link isNotEmpty]) 
     return NO;
   if ([self checkIfValid]) {
     NSURL *url = [NSURL URLWithString:_link];
-    if ([[url host] length] == 0) {
+    if (![[url host] isNotEmpty]) {
 #if 0
       NSLog(@"%s: did't find host in external link: %@",
             __PRETTY_FUNCTION__, _link);
@@ -139,8 +140,10 @@ static BOOL     validateLinks    = NO;
   comp  = [_ctx component];
   link  = [self->href stringValueInComponent:comp];
   
-  if (![link hasPrefix:@"/"] && ([link rangeOfString:@"://"].length == 0))
-    link = [link length] > 0 ? [@"http://" stringByAppendingString:link] : nil;
+  if (![link hasPrefix:@"/"] && ([link rangeOfString:@"://"].length == 0)) {
+    link = [link isNotEmpty] 
+      ? (id)[@"http://" stringByAppendingString:link] : nil;
+  }
   
   valid = [self isLinkValid:link];
   
@@ -153,7 +156,7 @@ static BOOL     validateLinks    = NO;
     
     da = [self externalLinkAction];
     // use an external server to redirect links
-    if ([da length] > 0) {
+    if ([da isNotEmpty]) {
       da = [da stringByAppendingString:@"?url="];
       da = [da stringByAppendingString:[link stringByEscapingURL]];
     }
@@ -172,14 +175,14 @@ static BOOL     validateLinks    = NO;
     /* appending target */
     [_response appendContentString:@" target=\""];
     ta = [self->target stringValueInComponent:comp];
-    if ([ta length] == 0) ta = @"OGo External Link Frame";
+    if (![ta isNotEmpty]) ta = @"OGo External Link Frame";
     [_response appendContentString:ta];
     [_response appendContentCharacter:'\"'];
       
     /* appending title */
     [_response appendContentString:@" title=\""];
     ti = [self->title stringValueInComponent:comp];
-    if ([ti length] == 0)
+    if (![ti isNotEmpty])
       ti = [@"External Link: " stringByAppendingString:link];
     [_response appendContentString:ti];
     [_response appendContentCharacter:'\"'];
@@ -190,14 +193,14 @@ static BOOL     validateLinks    = NO;
       
     /* append string */
     s = [self->string stringValueInComponent:comp];
-    if ([s length] > 0) [_response appendContentHTMLString:s];
+    if ([s isNotEmpty]) [_response appendContentHTMLString:s];
 
     /* append embedded content */
     [self->template appendToResponse:_response inContext:_ctx];
   }
   else if (![self hideInvalidLinks]) {
     s = [self->string stringValueInComponent:comp];
-    if ([s length] > 0) [_response appendContentHTMLString:s];
+    if ([s isNotEmpty]) [_response appendContentHTMLString:s];
   }
   
   if (valid) {

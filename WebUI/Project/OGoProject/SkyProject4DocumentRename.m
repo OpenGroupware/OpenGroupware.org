@@ -117,7 +117,7 @@
   p = (r.length == 0) ? NSNotFound : r.location;
   
   for (i = p; i != NSNotFound; i = p2) {
-    // TODO: replace with -rangeOfString:
+#warning TODO: replace with -rangeOfString:
     p2 = [self->newFileName indexOfString:@"." fromIndex:i+1];
     if (p2 != NSNotFound)
       p = p2;

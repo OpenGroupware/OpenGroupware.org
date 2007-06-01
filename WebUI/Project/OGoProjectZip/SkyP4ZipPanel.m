@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -106,7 +106,7 @@
   if ([mType isEqualToString:@"x-skyrix/filemanager-link"]) {
     NSArray  *comps = [fname componentsSeparatedByString:@"."];
     
-    return ([comps count]) ? [comps objectAtIndex:0] : fname;
+    return [comps isNotEmpty] ? (NSString *)[comps objectAtIndex:0] : fname;
   }
   return fname;
 }
@@ -138,7 +138,7 @@
 }
 
 - (void)setFormat:(NSString *)_format {
-  ASSIGN(self->format, _format);
+  ASSIGNCOPY(self->format, _format);
 }
 - (NSString *)format {
   return self->format;
@@ -159,7 +159,7 @@
 }
 
 - (void)setClickedFolderPath:(NSString *)_path {
-  ASSIGN(self->clickedFolderPath, _path);
+  ASSIGNCOPY(self->clickedFolderPath, _path);
 }
 - (NSString *)clickedFolderPath {
   return self->clickedFolderPath;
@@ -188,10 +188,10 @@
 }
 
 - (id)zip {
-  NSMutableArray *pathsToZip2   = nil;
-  NSString       *fmt           = nil;
-  NSString       *archiveFile   = nil;
-  NSString       *pathExtension = nil;
+  NSMutableArray *pathsToZip2;
+  NSString       *fmt;
+  NSString       *archiveFile;
+  NSString       *pathExtension;
 
   pathsToZip2 = [NSMutableArray arrayWithArray:[self pathsToZip]];
   [pathsToZip2 removeObjectsInArray:[self->excludedPathes allObjects]];
@@ -203,29 +203,29 @@
   if ([fmt isEqualToString:@"zip"]) {
     NGFileManagerZipTool *zipTool = nil;
 
-    if ([pathExtension length] == 0) {
+    if (![pathExtension isNotEmpty])
       archiveFile = [archiveFile stringByAppendingPathExtension:@"zip"];
-    }
+    
     zipTool = [[NGFileManagerZipTool alloc] init];
     [zipTool setSourceFileManager:[self fileManager]];
     [zipTool setTargetFileManager:[self fileManager]];
     [zipTool setSaveAttributes:   [self saveAttributes]];
     [zipTool zipPaths:pathsToZip2 toPath:archiveFile
              compressionLevel:[self compressionLevel]];
-    RELEASE(zipTool);
+    [zipTool release]; zipTool = nil;
   }
   else if ([fmt isEqualToString:@"tar"]) {
     NGFileManagerTarTool *tarTool = nil;
 
-    if ([pathExtension length] == 0) {
+    if (![pathExtension isNotEmpty])
       archiveFile = [archiveFile stringByAppendingPathExtension:@"tar"];
-    }
+    
     tarTool = [[NGFileManagerTarTool alloc] init];
     [tarTool setSourceFileManager:[self fileManager]];
     [tarTool setTargetFileManager:[self fileManager]];
     [tarTool setSaveAttributes:   [self saveAttributes]];
     [tarTool tarPaths:pathsToZip2 toPath:archiveFile];
-    [tarTool release];
+    [tarTool release]; tarTool = nil;
   }
 
   return [[(OGoSession *)[self session] navigation] leavePage];

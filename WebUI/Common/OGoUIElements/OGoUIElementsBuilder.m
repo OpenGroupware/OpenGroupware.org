@@ -197,7 +197,7 @@ static WOAssociation *yesAssoc         = nil;
     /* mode b: arbitary subelements */
     // TODO: check whether returned children array are retained!
     children = [_el hasChildNodes]
-      ? [_b buildNodes:[_el childNodes] templateBuilder:_b]
+      ? (id)[_b buildNodes:[_el childNodes] templateBuilder:_b]
       : nil;
   }
   
@@ -257,7 +257,7 @@ static WOAssociation *yesAssoc         = nil;
   /* component content */
   
   children = [_el hasChildNodes]
-    ? [_b buildNodes:[_el childNodes] templateBuilder:_b]
+    ? (id)[_b buildNodes:[_el childNodes] templateBuilder:_b]
     : nil;
   
   /* build associations */

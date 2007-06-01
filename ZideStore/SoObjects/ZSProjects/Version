@@ -1,5 +1,5 @@
 # version file
 
-SUBMINOR_VERSION:=106
+SUBMINOR_VERSION:=107
 
 # v1.3.91 requires libZSFrontend v1.3.101

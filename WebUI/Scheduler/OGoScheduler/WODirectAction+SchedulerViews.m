@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -303,7 +303,7 @@
     pKeys[i] = [NSNumber numberWithInt:[[oids objectAtIndex:i] intValue]];
   
   gid = [EOKeyGlobalID globalIDWithEntityName:[gid entityName]
-		       keys:pKeys keyCount:cnt zone:nil];
+		       keys:pKeys keyCount:cnt zone:NULL];
   if (pKeys != NULL) free(pKeys);
   
   return gid;

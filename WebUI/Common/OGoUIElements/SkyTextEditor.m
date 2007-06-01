@@ -45,8 +45,6 @@
 /* accessors */
 
 - (void)setText:(NSString *)_text {
-  if (([_text length] == 0) && ([self->text length] == 0))
-    return;
   if ([_text isEqualToString:self->text])
     return;
   
@@ -60,11 +58,14 @@
 }
 
 - (BOOL)hasName {
-  return [self->name length]?YES:NO;
+  return [self->name isNotEmpty];
 }
 
 - (void)setWrap:(NSString *)_wrap {
-  ASSIGN(self->wrap, _wrap);
+  ASSIGNCOPY(self->wrap, _wrap);
+}
+- (NSString *)wrap {
+  return self->wrap;
 }
 
 - (void)setName:(NSString *)_n {
@@ -75,7 +76,7 @@
 }
 
 - (NSString *)validationText {
-  return [self text] ? [self text] : @"";
+  return [self text] != nil ? [self text] : (NSString *)@"";
 }
 
 - (void)setNoSizeControls:(BOOL)_flag {

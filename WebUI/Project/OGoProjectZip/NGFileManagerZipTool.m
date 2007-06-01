@@ -158,8 +158,8 @@ static int ZipDebug = -1;
 
 @implementation NGFileManagerUnzipTool
 
-- (NSException *)unzipPath:_zipfile toPath:_toPath {
-  NSData *zipData = nil;
+- (NSException *)unzipPath:(NSString *)_zipfile toPath:(NSString *)_toPath {
+  NSData *zipData;
 
   zipData = [[self sourceFileManager] contentsAtPath:_zipfile];
   NSAssert([zipData length], @"zipfile contains no data");
@@ -168,7 +168,7 @@ static int ZipDebug = -1;
   return nil;
 }
 
-- (NSException *)unzipData:(NSData *)_data toPath:_toPath {
+- (NSException *)unzipData:(NSData *)_data toPath:(NSString *)_toPath {
   id<NSObject,NGFileManager> oldSourceFm  = nil;
   NSFileManager              *localFm     = nil;
   NGUnixTool                 *unixTool    = nil;
@@ -177,17 +177,19 @@ static int ZipDebug = -1;
   NSFileHandle               *nullHandle  = nil;
   NSTask                     *unzipTask   = nil;
   int                        result;
-
-  localFm     = [NSFileManager defaultManager];
-  unixTool    = GetNGUnixTool();
   
-  if (!(tmpPath = [unixTool _uniquePath])) {
+  localFm  = [NSFileManager defaultManager];
+  unixTool = GetNGUnixTool();
+  
+  if ((tmpPath = [unixTool _uniquePath]) == nil) {
     return [NSException exceptionWithName:@"couldntcreatetempfile"
-                        reason:@"couldn`t create temporary file" userInfo:nil];
+                        reason:@"could not create temporary file"
+			userInfo:nil];
   }
-  if (!(tmpZipFile = [unixTool _uniquePath])) {
+  if ((tmpZipFile = [unixTool _uniquePath]) == nil) {
     return [NSException exceptionWithName:@"couldntcreatetempfile"
-                        reason:@"couldn`t create temporary file" userInfo:nil];
+                        reason:@"could not create temporary file"
+			userInfo:nil];
   }
   tmpZipFile  = [tmpZipFile stringByAppendingPathExtension:@"zip"];
   [localFm createDirectoryAtPath:tmpPath attributes:nil];
@@ -213,7 +215,7 @@ static int ZipDebug = -1;
   [unixTool _removeLocalPath:tmpPath];
   [localFm removeFileAtPath:tmpZipFile handler:nil];
 
-  [unzipTask release];
+  [unzipTask release]; unzipTask = nil;
 
   if (result != 0) {
     return [NSException exceptionWithName:@"unzipFailure"
@@ -225,10 +227,11 @@ static int ZipDebug = -1;
 
 @end /* NGFileManagerUnzipTool */
 
+
 @implementation NGFileManagerZipInfo
 
 - (void)dealloc {
-  RELEASE(self->fileManager);
+  [self->fileManager release];
   [super dealloc];
 }
 
@@ -240,9 +243,9 @@ static int ZipDebug = -1;
 }
 
 - (NSDictionary *)infoOnZippedData:(NSData *)_data {
-  NSString            *tmpZipFile    = nil;
-  NSFileManager       *localFm       = nil;
-  NGUnixTool          *unixTool      = nil;
+  NSString            *tmpZipFile;
+  NSFileManager       *localFm;
+  NGUnixTool          *unixTool;
   NSTask              *zipInfoTask   = nil;
   NSPipe              *zipInfoPipe   = nil;
   NSFileHandle        *zipInfoHandle = nil;
@@ -251,7 +254,7 @@ static int ZipDebug = -1;
   NSString            *tmpString     = nil;
   NSEnumerator        *enumer        = nil;
   NSString            *infoString    = nil;
-  NSMutableDictionary *info          = nil;
+  NSMutableDictionary *info;
   int                 result;
 
   localFm       = [NSFileManager defaultManager];
@@ -261,10 +264,11 @@ static int ZipDebug = -1;
   }
   tmpZipFile    = [tmpZipFile stringByAppendingPathExtension:@"zip"];
   
+  // TBD: return value?!
   [localFm createFileAtPath:tmpZipFile contents:_data attributes:nil];
 
-  info          = [[NSMutableDictionary alloc] init];
-
+  info          = [[NSMutableDictionary alloc] initWithCapacity:8];
+  
   zipInfoPipe   = [NSPipe pipe];
   zipInfoHandle = [zipInfoPipe fileHandleForReading];
   nullHandle    = [NSFileHandle fileHandleForWritingAtPath:@"/dev/null"];
@@ -292,7 +296,7 @@ static int ZipDebug = -1;
                               objectEnumerator];
   [tmpString release]; tmpString = nil;
 
-  while ((infoString = [enumer nextObject])) {
+  while ((infoString = [enumer nextObject]) != nil) {
     NSArray      *infoParts         = nil;
     NSEnumerator *enumer2           = nil;
     NSString     *part              = nil;
@@ -302,7 +306,7 @@ static int ZipDebug = -1;
     infoParts = [NSArray array];
     enumer2   = [[infoString componentsSeparatedByString:@" "]
                              objectEnumerator];
-    while ((part = [enumer2 nextObject])) {
+    while ((part = [enumer2 nextObject]) != nil) {
       if ([part length] > 0) {
         infoParts = [infoParts arrayByAddingObject:part];
       }
@@ -334,7 +338,7 @@ static int ZipDebug = -1;
   [localFm removeFileAtPath:tmpZipFile handler:nil];
 
   if (result != 0) {
-    RELEASE(info);
+    [info release]; info = nil;
     return nil;
   }
 
@@ -348,16 +352,16 @@ static int ZipDebug = -1;
   return [self infoOnZippedData:data];
 }
 - (NSArray *)infoListOnZippedData:(NSData *)_data {
-  NSMutableArray *result    = nil;
-  NSEnumerator   *filenames = nil;
-  NSString       *filename  = nil;
-  NSDictionary   *infoDict  = nil;
+  NSMutableArray *result;
+  NSEnumerator   *filenames;
+  NSString       *filename;
+  NSDictionary   *infoDict;
 
-  result    = [[NSMutableArray alloc] init];
+  result    = [[NSMutableArray alloc] initWithCapacity:16];
   infoDict  = [self infoOnZippedData:_data];
   filenames = [infoDict keyEnumerator];
 
-  while ((filename = [filenames nextObject])) {
+  while ((filename = [filenames nextObject]) != nil) {
     NSMutableDictionary *attributes = nil;
 
     attributes = [NSMutableDictionary dictionaryWithDictionary:
@@ -366,11 +370,11 @@ static int ZipDebug = -1;
     [result addObject:attributes];
   }
   
-  return AUTORELEASE(result);
+  return [result autorelease];
 }
 
 - (NSArray *)infoListOnZipFileAtPath:(NSString *)_path {
-  NSData *data = nil;
+  NSData *data;
 
   data = [[self fileManager] contentsAtPath:_path];
   NSAssert([data length] > 0, @"zipfile does not exist or contains no data");

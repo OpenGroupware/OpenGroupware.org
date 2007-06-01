@@ -120,7 +120,7 @@ static NSString *GetPathToTarTool(void) {
 
 @implementation NGFileManagerUntarTool
 
-- (NSException *)untarPath:_tarfile toPath:_toPath {
+- (NSException *)untarPath:(NSString *)_tarfile toPath:(NSString *)_toPath {
   NSData *tarData = nil;
 
   tarData = [[self sourceFileManager] contentsAtPath:_tarfile];
@@ -129,7 +129,7 @@ static NSString *GetPathToTarTool(void) {
   return nil;
 }
 
-- (NSException *)untarData:(NSData *)_data toPath:_toPath {
+- (NSException *)untarData:(NSData *)_data toPath:(NSString *)_toPath {
   id<NSObject,NGFileManager> oldSourceFm  = nil;
   NSFileManager              *localFm     = nil;
   NGUnixTool                 *unixTool    = nil;
