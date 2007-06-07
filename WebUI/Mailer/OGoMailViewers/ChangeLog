@@ -1,3 +1,9 @@
+2007-06-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoMailDownloadAction.m: renamed methods which process the content
+	  transfer encoding to 'decode' (since they decode, not encode the
+	  content for download) (v5.3.32)
+
 2007-05-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyMessageRfc822Viewer.m: fixed an exception on MacOS, minor code
@@ -22,8 +28,8 @@
 
 2007-02-23  Helge Hess  <helge.hess@opengroupware.org>
 
-	* LSWTextPlainBodyViewer.m: do not print an error when 7bit/8bit/binary
-	  content-transfer-encodings are detected (v5.3.28)
+	* LSWTextPlainBodyViewer.m: do not print an error when 7bit/8bit/
+	  binary content-transfer-encodings are detected (v5.3.28)
 
 2006-11-02  Helge Hess  <helge.hess@opengroupware.org>
 

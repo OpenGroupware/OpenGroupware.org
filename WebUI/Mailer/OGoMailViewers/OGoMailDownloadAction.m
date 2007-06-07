@@ -77,22 +77,25 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   return [s isNotEmpty] ? [NSURL URLWithString:s] : nil;
 }
 
+
 /* backend operations */
 
-- (NSData *)encodeData:(NSData *)_data withEncoding:(NSString *)_encoding {
+- (NSData *)decodeData:(NSData *)_data withEncoding:(NSString *)_encoding {
   NGMimePartParser *parser;
   NSData *result;
 
   if (![_encoding isNotEmpty]) /* nothing to encode */
     return _data;
   
+  // TBD: in SOPE 4.7 we can use -dataByApplyingMimeContentTransferEncoding:
   parser    = [[NGMimePartParser alloc] init];
-  _encoding = [_encoding lowercaseString];
   result    = [[parser applyTransferEncoding:_encoding onData:_data] retain];
-  [parser release];
+  [parser release]; parser = nil;
+  
   return [result autorelease];
 }
-- (NSData *)encodeDataOrUseIt:(NSData *)_data 
+
+- (NSData *)decodeDataOrUseIt:(NSData *)_data 
   withEncoding:(NSString *)_encoding 
 {
   /* try to encode, if this fails, use raw data */
@@ -100,7 +103,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   
   if (_data == nil)
     return nil;
-  if ((tmp = [self encodeData:_data withEncoding:_encoding]) != nil)
+  if ((tmp = [self decodeData:_data withEncoding:_encoding]) != nil)
     return tmp;
   
   [self logWithFormat:@"encoding for '%@' failed on data 0x%p(len=%d)",
@@ -164,6 +167,35 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   return folder;
 }
 
+- (NSString *)stripProblematicCharactersFromFilename:(NSString *)filename {
+  // => this code replaces all non-char, non-digit, non-dot characters
+  //    in filenames with underlines
+  // TBD: fix cString
+  const unsigned char *cstr;
+  unsigned char       *buf;
+  int                 i, clen;
+  BOOL changed;
+  
+  cstr = (unsigned char *)[filename cString];
+  clen = [filename cStringLength];
+  
+  buf = alloca(clen + 3);
+  for (i = 0; i < clen; i++) {
+    if (isalnum(cstr[i]) || cstr[i] == '.')
+      buf[i] = cstr[i];
+    else {
+      changed = YES;
+      buf[i]  = '_';
+    }
+  }
+  if (changed) {
+    buf[clen] = '\0';
+    filename = [NSString stringWithCString:(char *)buf length:clen];
+  }
+
+  return filename;
+}
+
 /* reset action state */
 
 - (void)reset {
@@ -198,59 +230,46 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   WORequest      *req;
   NGMimeType     *type;
   NSString       *encoding, *contentDisp, *filename, *path, *tmp;
+
+  /* first check for a session */
+
+  if ((sn = [self existingSession]) == nil) {
+    [self logWithFormat:@"no session active !"];
+    return [self missingSession:@"get"];
+  }
+
+  /* next retrieve content-type and download filename */
   
-  filename = nil;
-  req      = [self request];
-  type     = [NGMimeType mimeType:[req formValueForKey:@"mimeType"]];
-  
+  req  = [self request];
+  type = [NGMimeType mimeType:[req formValueForKey:@"mimeType"]];
+
+
   if (UseOnly7BitHeadersForMailBlobDownload) {
     // TODO: move this code to a separate method
     // TODO: explain what exactly it does
-    /* modifies (at least): filename, args, type */
-    BOOL changed;
+    /* SIDEEFFECT: modifies (at least): filename, args, type */
     
-    changed  = NO;
     filename = [req formValueForKey:@"filename"];
     if (![filename isNotEmpty])
       filename = [type valueOfParameter:@"name"];
     
     if ([filename isNotEmpty]) {
-      const unsigned char *cstr;
-      unsigned char       *buf;
-      int                 i, clen;
+      NSString *newName;
       
-      // TBD: whats done here? why cString?
-      cstr = (unsigned char *)[filename cString];
-      clen = [filename cStringLength];
-      buf = alloca(clen + 3);
-      for (i = 0; i < clen; i++) {
-        if (isalnum(cstr[i]) || cstr[i] == '.')
-          buf[i] = cstr[i];
-        else {
-          changed = YES;
-          buf[i]  = '_';
-        }
+      newName = [self stripProblematicCharactersFromFilename:filename];
+      if (newName != filename) {
+	NSDictionary *args;
+	
+	args = [NSDictionary dictionaryWithObject:newName forKey:@"name"];
+	type = [NGMimeType mimeType:[type type] subType:[type subType]
+			   parameters:args];
       }
-      if (changed) {
-        buf[clen] = '\0';
-        filename = [NSString stringWithCString:(char *)buf length:clen];
-      }
-    }
-    if (changed) {
-      NSDictionary *args;
-
-      args = [NSDictionary dictionaryWithObject:filename forKey:@"name"];
-      type = [NGMimeType mimeType:[type type] subType:[type subType]
-                         parameters:args];
     }
   }
-  encoding = [req formValueForKey:@"encoding"];
   
-  if ((sn  = [self existingSession]) == nil) {
-    [self logWithFormat:@"no session active !"];
-    return [self missingSession:@"get"];
-  }
 
+  /* what now? */
+  
   if ([(tmp = [req formValueForKey:@"url"]) isNotEmpty]) {
     /* 
        Example Query URL:
@@ -269,7 +288,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
     imapCtx = [self imapContext];
     url     = [self urlAsNSURL];
     path    = [url path];
-
+    
     if ((folder = [self folderForURL]) == nil)
       return [self errorResponse:@"did not find folder for specified URL"];
     
@@ -282,27 +301,28 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
               @"  folder: %@\n"
               @"  path:   '%@'",
               msguid, partName, folder, path];
-      return [self errorResponse:@"could not fetch message for specified URL"];
+      return [self errorResponse:
+		     @"could not fetch message for specified URL"];
     }
   }
   else if ((tmp = [req formValueForKey:@"data_key"]) != nil) {
-    WOSession *sn = [self existingSession];
-    
-    if (sn == nil) {
-      [self errorWithFormat:@"missing session to resolve 'data_key'!"];
-      return nil;
-    }
-    else {
-      data = [[[sn valueForKey:tmp] retain] autorelease];
-      [sn removeObjectForKey:tmp];
-    }
+    data = [[[sn valueForKey:tmp] retain] autorelease];
+    [sn removeObjectForKey:tmp];
   }
   else {
     [self errorWithFormat:@"missing 'url' or 'data_key' form parameters?!"];
     return nil;
   }
   
-  data = [self encodeDataOrUseIt:data withEncoding:encoding];
+  
+  /* encode/decode data */
+  
+  /* eg 'quoted-printable' or 'base64' */
+  encoding = [req formValueForKey:@"encoding"];
+  data = [self decodeDataOrUseIt:data withEncoding:encoding];
+  
+  
+  /* apply content-disposition */
   
   if (!_inline) {
     if (![filename isNotEmpty])

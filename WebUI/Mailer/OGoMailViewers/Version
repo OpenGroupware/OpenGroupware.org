@@ -1,5 +1,5 @@
 # version file
 
-SUBMINOR_VERSION:=31
+SUBMINOR_VERSION:=32
 
 # v5.3.27 requires libNGExtensions v4.5.189
