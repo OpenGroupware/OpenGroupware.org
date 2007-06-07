@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -1094,7 +1094,7 @@ static NSString   *sendDateDateFmt = @"%Y-%m-%d %H:%M";
       fname = @"download";
     
     // TODO: construct URLs using WOContext methods!
-    name = [@"SkyImapDownloadAction/download/" stringByAppendingString:fname];
+    name = [@"OGoMailDownloadAction/download/" stringByAppendingString:fname];
     
     if ([obj objectForKey:@"url"]) {
       dict = [NSDictionary dictionaryWithObjectsAndKeys:
