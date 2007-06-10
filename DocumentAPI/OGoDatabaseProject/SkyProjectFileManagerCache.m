@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -717,6 +718,7 @@ static NSNumber *yesNum = nil;
     EOSQLQualifier      *qualifier;
     EOEntity            *entity;
     NSDictionary        *row;
+    NSException         *error;
     
 
     entity = [[[[self->context valueForKey:LSDatabaseKey] adaptor] model]
@@ -731,27 +733,30 @@ static NSNumber *yesNum = nil;
 
     qualifier = [[EOSQLQualifier alloc] initWithEntity:entity
                                         qualifierFormat:@"%A = %@",
-                                        @"isPerson", yesNum,nil];
+                                          @"isPerson", yesNum, nil];
 
-    if (![channel selectAttributes:personAttrs
-                  describedByQualifier:qualifier fetchOrder:nil lock:NO]) {
-      NSLog(@"ERROR[%s]: select failed for qualifier %@ attrs %@ ",
-            __PRETTY_FUNCTION__, qualifier, personAttrs);
+    error = [channel selectAttributesX:personAttrs
+                     describedByQualifier:qualifier fetchOrder:nil lock:NO]
+    if (error != nil) {
+      [self errorWithFormat:@"[%s]: select failed for qualifier %@ attrs %@: %@",
+              __PRETTY_FUNCTION__, qualifier, personAttrs, error);
+      [qualifier release]; qualifier = nil;
       [self rollbackTransaction];
       return nil;
     }
+    [qualifier release]; qualifier = nil;
     
     mdict = [[NSMutableDictionary alloc] initWithCapacity:255];
     
-    while ((row = [channel fetchAttributes:personAttrs withZone:NULL])) {
+    while ((row = [channel fetchAttributes:personAttrs withZone:NULL]) != nil) {
       NSString *l;
       NSNumber *cid;
 
       cid = [row valueForKey:@"companyId"];
 
       if (![cid isNotNull]) {
-        NSLog(@"ERROR[%s]: missing companyId for account ...",
-              __PRETTY_FUNCTION__);
+        [self errorWithFormat:@"[%s]: missing companyId for account ...",
+                __PRETTY_FUNCTION__);
         continue;
       }
       if (![(l = [row valueForKey:@"login"]) isNotNull])
@@ -760,8 +765,7 @@ static NSNumber *yesNum = nil;
       [mdict setObject:l forKey:cid];
     }
     dict = [[mdict copy] autorelease];
-    [mdict     release]; mdict     = nil;
-    [qualifier release]; qualifier = nil;
+    [mdict release]; mdict = nil;
     return dict;
 }
 
