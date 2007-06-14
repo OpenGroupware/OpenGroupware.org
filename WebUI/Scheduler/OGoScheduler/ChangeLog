@@ -1,3 +1,7 @@
+2007-06-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkySchedulerConflictPage.m: fixed a crasher on MacOS (v5.3.60)
+
 2007-06-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* WODirectAction+SchedulerViews.m: fixed a gstep-base warning (v5.3.59)

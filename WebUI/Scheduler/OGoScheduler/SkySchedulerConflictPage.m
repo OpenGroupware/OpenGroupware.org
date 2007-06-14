@@ -215,33 +215,47 @@ static NSNumber   *noNum      = nil;
   }
 }
 
-- (void)_addAccountGIDsAndTeams:(NSArray *)accounts
+- (void)_addAccountGIDsAndTeams:(NSArray *)_accountGIDs
   toGIDsSet:(NSMutableSet *)ms
 {
-  unsigned i, cnt;
+  unsigned     cnt;
   id teams;
   
-  if ([accounts count] == 0)
+  if (![_accountGIDs isNotEmpty])
     return;
-
-  cnt = [accounts count];
-  [ms addObjectsFromArray:accounts];
+  
+  cnt = [_accountGIDs count];
+  [ms addObjectsFromArray:_accountGIDs];
+  
+  /* fetch GIDs of teams of accounts */
+  // TBD: returns an array for one account and a dict for many? sigh.
   teams = [self runCommand:@"account::teams",
-                    @"accounts", accounts,
-                    @"fetchGlobalIDs", yesNum,
+		  @"accounts",       _accountGIDs,
+                  @"fetchGlobalIDs", yesNum,
                 nil];
-  if (cnt == 1) {
-      [ms addObjectsFromArray:teams];
+  
+  if ([teams isKindOfClass:[NSArray class]]) {
+    [ms addObjectsFromArray:teams];
+  }
+  else if ([teams isKindOfClass:[NSDictionary class]]) {
+    NSArray  *keys;
+    unsigned i;
+    
+    /* the keys are the GIDs of the accounts */
+    keys = [teams allKeys];
+    // [ms addObjectsFromArray:keys];
+    
+    for (i = 0, cnt = [keys count]; i < cnt; i++) {
+      id teamId = [keys objectAtIndex:i];
+
+      /* using -valueForKey: crashes on Cocoa (in -forward::) */
+      [ms addObjectsFromArray:[teams objectForKey:teamId]];
+    }
   }
   else {
-    NSArray *keys;
-    
-    keys = [teams allKeys];
-    //      [ms addObjectsFromArray:keys];
-    for (i = 0, cnt = [keys count]; i < cnt; i++) {
-      [ms addObjectsFromArray:
-            [teams valueForKey:[keys objectAtIndex:i]]];
-    }
+    /* should not happen */
+    [self errorWithFormat:@"%s: unexpectect command result: %@",
+	  __PRETTY_FUNCTION__, teams];
   }
 }
 
