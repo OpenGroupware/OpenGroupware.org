@@ -736,10 +736,10 @@ static NSNumber *yesNum = nil;
                                           @"isPerson", yesNum, nil];
 
     error = [channel selectAttributesX:personAttrs
-                     describedByQualifier:qualifier fetchOrder:nil lock:NO]
+                     describedByQualifier:qualifier fetchOrder:nil lock:NO];
     if (error != nil) {
       [self errorWithFormat:@"[%s]: select failed for qualifier %@ attrs %@: %@",
-              __PRETTY_FUNCTION__, qualifier, personAttrs, error);
+              __PRETTY_FUNCTION__, qualifier, personAttrs, error];
       [qualifier release]; qualifier = nil;
       [self rollbackTransaction];
       return nil;
@@ -756,7 +756,7 @@ static NSNumber *yesNum = nil;
 
       if (![cid isNotNull]) {
         [self errorWithFormat:@"[%s]: missing companyId for account ...",
-                __PRETTY_FUNCTION__);
+                __PRETTY_FUNCTION__];
         continue;
       }
       if (![(l = [row valueForKey:@"login"]) isNotNull])
