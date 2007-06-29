@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -186,6 +187,9 @@
   id l;
   
   i = [[self item] stringValue]; // Note: required on OSX 10.3
+  // Note: does not work anymore with label dictionaries which have values as
+  //       keys!! (eg minutes => label) [hence OGo bug #1797]
+
   l = [self labels];
   return l != nil ? (NSString *)[l valueForKey:i] : i;
 }
