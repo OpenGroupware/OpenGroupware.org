@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -156,18 +157,23 @@ static NSNumber *noNum = nil;
     md = [[NSMutableDictionary alloc] initWithCapacity:24];
     for (cnt = 0; cnt < 1440; cnt += 60) {
       NSNumber *k;
-      NSString *s;
+      NSString *s, *ks;
       char buf[16];
 	
       k = [NSNumber numberWithInt:cnt];
       [ma addObject:k];
+      
       sprintf(buf, "%02i:%02i", (cnt / 60), (cnt % 60));
-      s = [[NSString alloc] initWithCString:buf];
-      [md setObject:s forKey:k];
-      [s release];
+      s  = [[NSString alloc] initWithCString:buf];
+      sprintf(buf, "%i", cnt);
+      ks = [[NSString alloc] initWithCString:buf];
+      [md setObject:s forKey:ks];
+      [s  release]; s  = nil;
+      [ks release]; ks = nil;
     }
-    ASSIGN(self->minutes,          ma);
-    ASSIGN(self->labelsForMinutes, md);
+    ASSIGNCOPY(self->minutes,          ma);
+    ASSIGNCOPY(self->labelsForMinutes, md);
+    
     [ma release]; ma = nil;
     [md release]; md = nil;
     
@@ -1187,7 +1193,7 @@ static NSNumber *noNum = nil;
 }
 
 - (void)setLabelsForMinutes:(NSDictionary *)_labels {
-  ASSIGN(self->labelsForMinutes,_labels);
+  ASSIGNCOPY(self->labelsForMinutes,_labels);
 }
 - (NSDictionary *)labelsForMinutes {
   return self->labelsForMinutes;

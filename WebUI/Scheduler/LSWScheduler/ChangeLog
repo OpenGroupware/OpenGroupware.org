@@ -1,3 +1,8 @@
+2007-06-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWSchedulerPreferences.m: changed to use string-keys in label
+	  dictionaries (fixes OGo bug #1797) (v5.3.113)
+
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWAppointmentEditor.m: pass write ACL as list to commands (v5.3.112)

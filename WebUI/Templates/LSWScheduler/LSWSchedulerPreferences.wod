@@ -355,11 +355,11 @@ DayOverviewEnd: SkyDefaultEditField {
   valueList  = minutes;
 }
 DayOverviewInterval: SkyDefaultEditField {
-  labels     = {
-    7200 = "120";
-    3600 = "60";
-    1800 = "30";
-     900 = "15";
+  labels     = { /* note: keys must be strings */
+    "7200" = "120";
+    "3600" = "60";
+    "1800" = "30";
+    "900"  = "15";
   };
   label      = labels.scheduler_dayoverview_interval;
   isEditable = isDayOverviewIntervalEditable;
