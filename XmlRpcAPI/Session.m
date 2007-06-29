@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -26,7 +27,7 @@
 @implementation Session
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     [self setStoresIDsInCookies:NO];
   }
   return self;
@@ -155,23 +156,23 @@
     gid = [[self->commandContext documentManager] globalIDForURL:_code];
   }
   else {
-    EOFetchSpecification *fspec     = nil;
-    EOQualifier          *qualifier = nil;
-    id                   pds        = nil;
+    EOFetchSpecification *fspec;
+    EOQualifier          *qualifier;
+    EODataSource         *pds;
     id                   project    = nil;
     NSArray              *projects  = nil;
-    NSString             *pid       = nil;
+    NSString             *pid;
     NSDictionary         *hints;
     
     if (self->commandContext == nil) {
-      [self logWithFormat:@"ERROR(%@): missing commandContext.", self];
+      [self errorWithFormat:@"%@: missing commandContext.", self];
       return nil;
     }
     
     pid = _code;
     
-    if (pid == nil || [pid length] == 0) {
-      [self logWithFormat:@"ERROR: missing project number"];
+    if (![pid isNotEmpty]) {
+      [self errorWithFormat:@"missing project number"];
       return nil;
     }
     qualifier = [EOQualifier qualifierWithQualifierFormat:@"number=%@",
@@ -189,23 +190,22 @@
     [pds setFetchSpecification:fspec];
     projects = [pds fetchObjects];
   
-    if ([projects count] == 1)
-      project = [projects objectAtIndex:0];
-    else
-      project = nil;
+    project = [projects count] == 1
+      ? [projects objectAtIndex:0]
+      : nil;
     
     [fspec release]; fspec = nil;
     
     if (project == nil) {
-      NSLog(@"ERROR[%s] missing project", __PRETTY_FUNCTION__);
+      [self errorWithFormat:@"%s: missing project", __PRETTY_FUNCTION__];
       return nil;
     }
     gid = [project valueForKey:@"globalID"];
   }   
 
   if (gid == nil) {
-    [self logWithFormat:
-            @"ERROR(%s): found no global-id for project code: '%@'", 
+    [self errorWithFormat:
+            @"%s: found no global-id for project code: '%@'", 
             __PRETTY_FUNCTION__, _code];
     return nil;
   }

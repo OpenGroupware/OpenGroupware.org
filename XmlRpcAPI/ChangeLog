@@ -1,3 +1,7 @@
+2007-06-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Session.m: minor code cleanups (v5.3.83)
+
 2007-04-26  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* Actions.subproj/DirectAction+Appointment.m: added notificationTime
