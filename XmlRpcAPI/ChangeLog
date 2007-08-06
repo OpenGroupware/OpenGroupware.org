@@ -1,3 +1,8 @@
+2007-08-06  Tobias Kaefer  <tobias.kaefer@abas.de>
+
+	* Actions.subproj/DirectAction+Appointment.m: fixed accept() method to
+	  set the status to ACCEPTED (fixes OGo bug #1895) (v5.3.84)
+
 2007-06-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Session.m: minor code cleanups (v5.3.83)

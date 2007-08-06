@@ -765,7 +765,7 @@
 }
 
 - (id)appointment_acceptAction:(id)_apt {
-  return [self appointment_changeStatusAction:_apt:@"ACCEPT":nil:nil:nil];
+  return [self appointment_changeStatusAction:_apt:@"ACCEPTED":nil:nil:nil];
 }
 - (id)appointment_declineAction:(id)_apt {
   return [self appointment_changeStatusAction:_apt:@"DECLINED":nil:nil:nil];
