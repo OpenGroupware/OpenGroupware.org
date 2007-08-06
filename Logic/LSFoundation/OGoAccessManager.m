@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -318,8 +318,11 @@ static Class   StrClass = Nil;
   if (![_oids isNotEmpty]) /* nothing to check */
     return;
   
-  if ((handler = [self _accessHandlerForObjectID:[_oids lastObject]]) == nil)
-    [self warnWithFormat:@"found no access handler for %@",[_oids lastObject]];
+  if ((handler = [self _accessHandlerForObjectID:[_oids lastObject]]) == nil) {
+    /* not necessarily a problem, eg called on CompanyValue entities */
+    [self debugWithFormat:@"found no access handler for OID: %@",
+	    [_oids lastObject]];
+  }
   
   if (debugOn) {
     [self debugWithFormat:@"  check op '%@' account %@: %@",

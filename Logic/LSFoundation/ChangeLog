@@ -1,3 +1,8 @@
+2007-08-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoAccessManager.m: changed log on missing access handlers from warn
+	  to debug (v5.3.131)
+
 2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.130
