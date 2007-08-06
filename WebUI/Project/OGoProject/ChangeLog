@@ -1,3 +1,7 @@
+2007-08-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyP4DocumentRequestHandler.m: changed to use -isNotEmpty (v5.3.74)
+
 2007-05-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.73

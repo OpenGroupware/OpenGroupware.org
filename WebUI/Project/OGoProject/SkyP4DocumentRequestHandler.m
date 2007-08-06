@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -48,9 +49,9 @@
   NSString *href;
   NSString *qs;
   
-  if ([_pname length] == 0)
+  if (![_pname isNotEmpty])
     return nil;
-  if ([_path length] == 0)
+  if (![_path isNotEmpty])
     return nil;
   
   doEscape = YES;
@@ -88,13 +89,13 @@
       
     [mpath appendString:pcc];
       
-    if ([pe length] > 0) {
+    if ([pe isNotEmpty]) {
       [mpath appendString:@"."];
       [mpath appendString:pe];
     }
   }
   
-  if ([_versionTag length] > 0) {
+  if ([_versionTag isNotEmpty]) {
     [mpath appendString:@";"];
     [mpath appendString:
              doEscape ? [_versionTag stringByEscapingURL] : _versionTag];
@@ -147,7 +148,7 @@
 
   if (_gid == nil)
     return nil;
-  if ([_path length] == 0)
+  if (![_path isNotEmpty])
     return nil;
   
   doEscape = YES;
@@ -183,7 +184,7 @@
       
     [mpath appendString:pcc];
       
-    if ([pe length] > 0) {
+    if ([pe isNotEmpty]) {
       [mpath appendString:@"."];
 
       if (doEscape)
@@ -193,7 +194,7 @@
     }
   }
   
-  if ([_versionTag length] > 0) {
+  if ([_versionTag isNotEmpty]) {
     [mpath appendString:@";"];
     [mpath appendString:
              doEscape ? [_versionTag stringByEscapingURL] : _versionTag];
@@ -203,7 +204,7 @@
                    [[self session] sessionID],
                    [[WOApplication application] number]];
 
-  if ([_disposition isNotNull]) {
+  if ([_disposition isNotEmpty]) {
     qs = [qs stringByAppendingString:@"&disposition="];
     qs = [qs stringByAppendingString:_disposition];
   }
@@ -366,8 +367,8 @@ static NSCharacterSet *digits = nil;
   path = [_request requestHandlerPath];
   path = [path stringByUnescapingURL];
 
-  if ([path length] == 0) {
-    [response setStatus:404];
+  if (![path isNotEmpty]) {
+    [response setStatus:404 /* Not Found */];
     return response;
   }
 
@@ -415,14 +416,14 @@ static NSCharacterSet *digits = nil;
   [app debugWithFormat:@"shall download document '%@' from project '%@'",
          path, pname];
   
-  if ([pname length] == 0) {
-    [app logWithFormat:@"  missing project-id in download URL (%@)...",
+  if (![pname isNotEmpty]) {
+    [app warnWithFormat:@"  missing project-id in download URL (%@)...",
            [_request requestHandlerPath]];
-    [response setStatus:404];
+    [response setStatus:404 /* Not Found */];
     return response;
   }
   
-  if ([path length] == 0)
+  if (![path isNotEmpty])
     path = @"/";
   
   /* find project */
@@ -530,7 +531,7 @@ static NSCharacterSet *digits = nil;
     ? [_request headerForKey:@"x-webobjects-remote-user"]
     : (NSString *)nil;
   
-  if ([authUser length] == 0) {
+  if (![authUser isNotEmpty]) {
     /* missing auth */
     NSLog(@"%s: missing auth user (url=%@) ..",
           __PRETTY_FUNCTION__, [_request uri]);
@@ -565,7 +566,7 @@ static NSCharacterSet *digits = nil;
     return nil;
   }
   
-  if ([auth length] <= 0)
+  if (![auth isNotEmpty])
     return nil;
   
   lso = [[WOApplication application] lsoServer];
@@ -611,7 +612,7 @@ static NSCharacterSet *digits = nil;
     *(&session)   = nil;
     
     *(&sessionId) = [_request formValueForKey:WORequestValueSessionID];
-    if ([sessionId length] == 0) {
+    if (![sessionId isNotEmpty]) {
       *(&sessionId) = [_request cookieValueForKey:[app name]];
       
       if ([sessionId isEqual:@"nil"])
