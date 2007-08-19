@@ -1,0 +1,85 @@
+{
+  requires = ( ZSCommon );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  classes = {
+  };
+  
+  categories = {
+    SxFolder = {
+      methods = {
+      "zogi.getLoginAccount" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "getLoginAccount";
+        arguments = { positionalKeys = ( arg1 ); };
+       };
+      "zogi.getTypeOfObject" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "getTypeOfObject";
+        arguments = { positionalKeys = ( arg1 ); };
+       };
+      "zogi.getObjectsById" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "getObjectsByObjectId";
+        arguments = { positionalKeys = ( arg1, arg2 ); };
+       };
+      "zogi.getObjectById" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "getObjectByObjectId";
+        arguments = { positionalKeys = ( arg1, arg2 ); };
+       };
+      "zogi.putObject" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "putObject";
+        arguments = { positionalKeys = ( arg1 ); };
+       };
+      "zogi.deleteObject" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "deleteObject";
+        arguments = { positionalKeys = ( arg1, arg2 ); };
+       };
+      "zogi.getObjectVersionsById" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "getObjectVersionsByObjectId";
+        arguments = { positionalKeys = ( arg1 ); };
+       };
+      "zogi.searchForObjects" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "searchForObjects";
+        arguments = { positionalKeys = ( arg1, arg2, arg3 ); };
+       };
+      "zogi.getFavoritesByType" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "getFavoritesByType";
+        arguments = { positionalKeys = ( arg1, arg2 ); };
+       };
+      "zogi.flagFavorites" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "flagFavorites";
+        arguments = { positionalKeys = ( arg1 ); };
+       };
+      "zogi.unflagFavorites" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "unflagFavorites";
+        arguments = { positionalKeys = ( arg1 ); };
+       };
+      };
+    };
+  };
+}

@@ -7,6 +7,7 @@ SUBPROJECTS += \
 	EvoConnect	\
 	WCAP		\
 	RSS		\
+	zOGI		\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make
