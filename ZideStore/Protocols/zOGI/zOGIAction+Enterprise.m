@@ -57,6 +57,8 @@
        [self NIL:[eoEnterprise valueForKey:@"url"]], @"url",
        [self NIL:[eoEnterprise valueForKey:@"imAddress"]], @"imAddress",
        [self NIL:[eoEnterprise valueForKey:@"email"]], @"email",
+       [self NIL:[[eoEnterprise objectForKey:@"comment"]
+                     valueForKey:@"comment"]], @"comment",
        nil]];
      [self _addAddressesToCompany:[result objectAtIndex:count]];
      [self _addPhonesToCompany:[result objectAtIndex:count]];

@@ -1,4 +1,6 @@
 2007-08-19  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
-        * Initial commit of zOGI bundle to ZideStore
+	* Initial commit of zOGI bundle to ZideStore
+
+	* Corrected missing comment attribute in Enterprise entity
 
