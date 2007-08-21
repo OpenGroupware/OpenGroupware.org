@@ -93,7 +93,6 @@
   NSNumber  *companyId;
   id         assignments;
 
-  [self logWithFormat:@"_getCompanyAssignments:%@ key:%@", [_company class], _key];
   if ([_company isKindOfClass:[EOGenericRecord class]])
     companyId = [_company objectForKey:@"companyId"];
   else if (([_company isKindOfClass:[NSNumber class]]) ||
@@ -127,7 +126,6 @@
       ([_company isKindOfClass:[NSConcreteMutableDictionary class]]))
     [_company setObject:assignments forKey:@"*companyAssignments"];
  
-  [self logWithFormat:@"_getCompanyAssignments=%@", assignments]; 
   return assignments;
 }
 

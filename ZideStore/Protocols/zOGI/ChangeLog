@@ -1,3 +1,9 @@
+2007-08-21 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction.m: Debug messages can now be disabled/enabled with zOGIDebugEnabled default (v1.5.2)
+
+	* zOGIAction+Assignment.m: Removed superfluous log message (v1.5.2)
+
 2007-08-19  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* Initial commit of zOGI bundle to ZideStore

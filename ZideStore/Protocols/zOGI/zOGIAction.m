@@ -30,6 +30,8 @@
 
 @implementation zOGIAction
 
+static int zOGIDebugOn = -1;
+
 -(id)init
 {
   self = [super init];
@@ -54,8 +56,10 @@
 
 - (BOOL)isDebug 
 {
-  /* TODO: Make this a configuration option */
-  return YES;
+  if (zOGIDebugOn == -1)
+    zOGIDebugOn = [[NSUserDefaults standardUserDefaults]
+                      boolForKey:@"zOGIDebugEnabled"];
+  return zOGIDebugOn;
 }
 
 - (void)setArg1:(id)_arg 
@@ -178,7 +182,7 @@
         if ([gid class] == [EONull class])
           gid = nil;
         if ([self isDebug])
-          [self debugWithFormat:@"Returning EO from cache"];
+          [self logWithFormat:@"Returning EO from cache"];
       }
   } /* End if (tmp != nil) */
 
@@ -188,7 +192,7 @@
     return nil;
   } 
   if ([self isDebug])
-    [self debugWithFormat:@"EOId %@ from PKey %@", gid, tmp];
+    [self logWithFormat:@"EOId %@ from PKey %@", gid, tmp];
   return gid;
 } /* End _getEOForPKey */
 
