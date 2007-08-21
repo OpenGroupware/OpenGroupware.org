@@ -362,7 +362,7 @@
      }
   } /* End if-COMPANYVALUES-supplied-by-client */
 
-  /* Add snapshot and check verion if this is an update */
+  /* Add & test snapshot if event is an update */
   if ([_command isEqualToString:@"set"])
   {
     if ([self isDebug])
@@ -379,6 +379,9 @@
       return [NSException exceptionWithHTTPStatus:500
                 reason:@"Snapshot object for update could not be retrieved"];
     }
+    /* Object version check is not performed if ignoreVersion flag was provided
+       by the client.  But this is generally a bad idea and clients should ONLY
+       use this to offer an explicit force-overwrite option. */
     if (!([_flags containsObject:[NSString stringWithString:@"ignoreVersion"]]))
     {
       if ([_company objectForKey:@"version"] == nil)
@@ -389,8 +392,8 @@
       {
         if ([self isDebug])
         {
-          [self logWithFormat:@"Client object version: %@", [_company objectForKey:@"version"]];
-          [self logWithFormat:@"Server object version: %@", [eo objectForKey:@"objectVersion"]];
+          [self warnWithFormat:@"Client object version: %@", [_company objectForKey:@"version"]];
+          [self warnWithFormat:@"Server object version: %@", [eo objectForKey:@"objectVersion"]];
         }
         return [NSException exceptionWithHTTPStatus:500
                   reason:@"Client object is out of date"];
@@ -491,7 +494,8 @@
       {
         /* save contacts in business card mode */
         exception = [self _saveBusinessCards:[_company objectForKey:@"_CONTACTS"]
-                                enterpriseId:[company objectForKey:@"companyId"]];
+                                enterpriseId:[company objectForKey:@"companyId"]
+                                 defaultACLs:[_company objectForKey:@"_ACCESS"]];
         /* End save-contacts-in-business-card-mode */
       } else
         {

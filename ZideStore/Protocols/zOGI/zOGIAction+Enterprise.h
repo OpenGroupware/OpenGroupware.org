@@ -71,8 +71,8 @@
                                 objectId:(id)_objectId;
 
 -(NSException *)_saveBusinessCards:(NSArray *)_contacts
-                      enterpriseId:(id)_enterpriseId;
-
+                      enterpriseId:(id)_enterpriseId
+                       defaultACLs:(id)_defaultACLs;
 @end
 
 #endif /* __zOGIAction_Enterprise_H__ */

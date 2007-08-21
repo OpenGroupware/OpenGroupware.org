@@ -45,9 +45,12 @@
        @"Enterprise", @"entityName",
        [self ZERO:[eoEnterprise valueForKey:@"objectVersion"]], @"version",
        [eoEnterprise valueForKey:@"ownerId"], @"ownerObjectId",
-       [self NIL:[eoEnterprise valueForKey:@"associatedCategories"]], @"associatedCategories",
-       [self NIL:[eoEnterprise valueForKey:@"associatedContacts"]], @"associatedContacts",
-       [self NIL:[eoEnterprise valueForKey:@"associatedCompany"]], @"associatedCompany",
+       [self NIL:[eoEnterprise valueForKey:@"associatedCategories"]], 
+          @"associatedCategories",
+       [self NIL:[eoEnterprise valueForKey:@"associatedContacts"]], 
+          @"associatedContacts",
+       [self NIL:[eoEnterprise valueForKey:@"associatedCompany"]], 
+          @"associatedCompany",
        [self NIL:[eoEnterprise valueForKey:@"bank"]], @"bank",
        [self NIL:[eoEnterprise valueForKey:@"bankCode"]], @"bankCode",
        [self NIL:[eoEnterprise valueForKey:@"fileas"]], @"fileAs",
@@ -64,7 +67,8 @@
      [self _addPhonesToCompany:[result objectAtIndex:count]];
      /* Add flags */
      [[result objectAtIndex:count] 
-         setObject:[self _renderCompanyFlags:eoEnterprise entityName:@"Enterprise"]
+         setObject:[self _renderCompanyFlags:eoEnterprise 
+                                  entityName:@"Enterprise"]
             forKey:@"FLAGS"];
      /* Add detail if required */
      if([_detail intValue] > 0) 
@@ -75,7 +79,8 @@
          [self _addContactsToEnterprise:[result objectAtIndex:count]];
        if([_detail intValue] & zOGI_INCLUDE_PROJECTS)
          [self _addProjectsToEnterprise:[result objectAtIndex:count]];
-       [self _addObjectDetails:[result objectAtIndex:count] withDetail:_detail];
+       [self _addObjectDetails:[result objectAtIndex:count] 
+                    withDetail:_detail];
      } /* End detail-is-required */
      [self _stripInternalKeys:[result objectAtIndex:count]];
   } /* End rendering loop */
@@ -87,8 +92,8 @@
   NSArray       *enterprises;
 
   enterprises = [[[self getCTX] runCommand:@"enterprise::get-by-globalid",
-                                           @"gids", [self _getEOsForPKeys:_arg],
-                                           nil] retain];
+                                  @"gids", [self _getEOsForPKeys:_arg],
+                                  nil] retain];
   return enterprises;
 } /* End _getUnrenderedEnterprisesForKeys */
 
@@ -110,7 +115,8 @@
 
 -(id)_getEnterpriseForKeys:(id)_pk 
 {
-  return [self _getEnterprisesForKeys:_pk withDetail:[NSNumber numberWithInt:0]];
+  return [self _getEnterprisesForKeys:_pk 
+                           withDetail:[NSNumber numberWithInt:0]];
 }
 
 -(id)_getEnterpriseForKey:(id)_pk withDetail:(NSNumber *)_detail 
@@ -128,7 +134,8 @@
 
 -(id)_getEnterpriseForKey:(id)_pk 
 {
-  return [self _getEnterpriseForKey:_pk withDetail:[NSNumber numberWithInt:0]];
+  return [self _getEnterpriseForKey:_pk 
+                         withDetail:[NSNumber numberWithInt:0]];
 }
 
 -(void)_addProjectsToEnterprise:(NSMutableDictionary *)_enterprise 
@@ -140,18 +147,19 @@
   NSMutableDictionary *assignment;
 
   projects = [[self getCTX] runCommand:@"enterprise::get-project-assignments",
-                                       @"withArchived", [NSNumber numberWithBool:YES],
-                                       @"object", [_enterprise objectForKey:@"*eoObject"],
-                                       nil];
+                              @"withArchived", [NSNumber numberWithBool:YES],
+                              @"object", [_enterprise objectForKey:@"*eoObject"],
+                            nil];
   if (projects == nil) projects = [NSArray array];
   projectList = [NSMutableArray arrayWithCapacity:[projects count]];
   enumerator = [projects objectEnumerator];
   while ((eo = [enumerator nextObject]) != nil) 
   {
-    assignment = [self _renderAssignment:[eo valueForKey:@"projectCompanyAssignmentId"]
-                                  source:[eo valueForKey:@"companyId"]
-                                  target:[eo valueForKey:@"projectId"]
-                                      eo:eo];
+    assignment = 
+      [self _renderAssignment:[eo valueForKey:@"projectCompanyAssignmentId"]
+                       source:[eo valueForKey:@"companyId"]
+                       target:[eo valueForKey:@"projectId"]
+                           eo:eo];
     [projectList addObject:assignment];
   }
   [_enterprise setObject:projectList forKey:@"_PROJECTS"];
@@ -171,10 +179,11 @@
   enumerator = [assignments objectEnumerator];
   while ((eo = [enumerator nextObject]) != nil) 
   {
-    assignment = [self _renderAssignment:[eo valueForKey:@"companyAssignmentId"]
-                                  source:[eo valueForKey:@"companyId"]
-                                  target:[eo valueForKey:@"subCompanyId"]
-                                      eo:eo];
+    assignment = 
+      [self _renderAssignment:[eo valueForKey:@"companyAssignmentId"]
+                       source:[eo valueForKey:@"companyId"]
+                       target:[eo valueForKey:@"subCompanyId"]
+                           eo:eo];
     [contactList addObject:assignment];
   }
   [_enterprise setObject:contactList forKey:@"_CONTACTS"];
@@ -404,16 +413,29 @@
 /* Save contact entries */
 -(NSException *)_saveBusinessCards:(NSArray *)_contacts
                       enterpriseId:(id)_enterpriseId
+                       defaultACLs:(id)_defaultACLs
 {
-  NSEnumerator    *enumerator;
-  NSDictionary    *contact;
-  NSDictionary    *tmp;
+  NSEnumerator           *enumerator;
+  NSDictionary           *contact;
+  id                      tmp;
   
   if (_contacts == nil) 
     return nil;
   enumerator = [_contacts objectEnumerator];
   while((contact = [enumerator nextObject]) != nil)
   {
+    if([contact objectForKey:@"_ACCESS"] == nil)
+    {
+      /* Client provided no ACLs on subordinate Contact entity */
+      if (_defaultACLs != nil)
+      {
+        /* The client did provide ACLs for the entity, so the contact
+           will inherit these ACLs */
+        tmp = [NSMutableDictionary dictionaryWithCapacity:[contact count]];
+        [tmp setObject:_defaultACLs forKey:@"_ACCESS"];
+        contact = tmp;
+      }
+    }
     tmp = [self _createContact:contact 
                      withFlags:[NSArray arrayWithObject:@"noCommit"]];
     [[self getCTX] runCommand:@"companyassignment::new"
