@@ -1,3 +1,9 @@
+2007-08-22 Adam Tauno Williams <awilliam@whitemiceconsumting.com>
+
+	* zOGIAction+Task.m: Encode null values in isTeamJob, totalWork,
+	  sensitivity, notify, priority, actualWork, and
+	  percentComplete attributes as zero. (v1.5.4)
+
 2007-08-21 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction.m: Debug messages can now be disabled/enabled with 
