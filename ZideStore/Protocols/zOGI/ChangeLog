@@ -1,3 +1,12 @@
+2007-08-27 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Enterprise.m: Fix data-loss when creating 
+	   contacts via businessCard mode and inheriting ACLs.
+           (v1.5.5)
+
+	* zOGIAction+Company.m: No longer NIL encode phone number
+	   type field, phone numbers always have types. (v1.5.5)
+
 2007-08-22 Adam Tauno Williams <awilliam@whitemiceconsumting.com>
 
 	* zOGIAction+Task.m: Encode null values in isTeamJob, totalWork,

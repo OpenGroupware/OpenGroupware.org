@@ -421,17 +421,21 @@
   
   if (_contacts == nil) 
     return nil;
+  if ([self isDebug])
+   [self logWithFormat:@"saving business cards"];
   enumerator = [_contacts objectEnumerator];
   while((contact = [enumerator nextObject]) != nil)
   {
     if([contact objectForKey:@"_ACCESS"] == nil)
     {
+      if ([self isDebug])
+        [self logWithFormat:@"No ACLs for contact, inheriting from enterprise."];
       /* Client provided no ACLs on subordinate Contact entity */
       if (_defaultACLs != nil)
       {
         /* The client did provide ACLs for the entity, so the contact
            will inherit these ACLs */
-        tmp = [NSMutableDictionary dictionaryWithCapacity:[contact count]];
+        tmp = [NSMutableDictionary dictionaryWithDictionary:contact];
         [tmp setObject:_defaultACLs forKey:@"_ACCESS"];
         contact = tmp;
       }

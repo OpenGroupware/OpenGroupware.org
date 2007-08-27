@@ -132,7 +132,7 @@
        [self NIL:[phone valueForKey:@"info"]], @"info",
        [self NIL:[phone valueForKey:@"number"]], @"number",
        [self NIL:[phone valueForKey:@"realNumber"]], @"realNumber",
-       [self NIL:[phone valueForKey:@"type"]], @"type",
+       [phone valueForKey:@"type"], @"type",
        [self NIL:[phone valueForKey:@"url"]], @"url",
        nil]];
    }
