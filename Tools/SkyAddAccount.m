@@ -45,6 +45,8 @@
   return @"\t-login\t\taccount login\n"
     @"\t-firstname\t\account first name\n"
     @"\t-lastname\taccount last name\n"
+    @"\t-nickname\tnickname\n"
+    @"\t-email\t\temail (aka email1)\n"
     @"\t-phone\t\taccount phone\n"
     @"\t-mobile\t\taccount mobile phone\n"
     @"\t-fax\t\taccount fax number\n"
@@ -56,11 +58,11 @@
 }
 
 - (NSString *)versionInformation {
-  return @"1.0.1";
+  return @"1.0.2";
 }
 
 - (NSString *)toolDescription {
-  return @"This tool creates a new SKYRiX account.";
+  return @"This tool creates a new OGo account.";
 }
 
 - (int)runWithArguments:(NSArray *)_args {
@@ -77,7 +79,7 @@
     def   = [NSUserDefaults standardUserDefaults];
 
     if (!(obj = [def stringForKey:@"login"])) {
-      NSLog(@"Wrong parameterm, missing 'login'");
+      NSLog(@"Wrong parameter, missing 'login'");
       exit(5);
     }
     [dict setObject:obj forKey:@"login"];
@@ -87,6 +89,12 @@
     }
     if ((obj = [def stringForKey:@"lastname"])) {
       [dict setObject:obj forKey:@"name"];
+    }
+    if ((obj = [def stringForKey:@"email"])) {
+      [dict setObject:obj forKey:@"email1"];
+    }
+    if ((obj = [def stringForKey:@"nickname"])) {
+      [dict setObject:obj forKey:@"description"];
     }
     if ((obj = [def stringForKey:@"phone"])) {
       [tel addObject:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -163,5 +171,4 @@ int main(int argc, char **argv, char **env) {
   [NGExtensions class];
   return 0;
 }
-
 

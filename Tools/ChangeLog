@@ -1,3 +1,8 @@
+2007-09-06  Frank Reppin  <fr@skyrix.com>
+
+	* SkyAddAccount.m: minor enhancement to its functionality
+	  (added options for 'email1' and 'nickname')
+
 2007-04-18  Andreas Scherbaum  <ads@skyrix.com>
 
 	* sky_install_sieve.m: added ability to generate 'keep' Sieve feature
