@@ -1,3 +1,20 @@
+2007-09-10 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Appointment.m: Fix a double free (v1.5.6)
+
+	* zOGIAction+AppointmentConflicts.m: Code cleanup and debug
+	  entries claused by isDebug. (v1.5.6)
+
+	* zOGIAction+Team.m: Searching for teams now supports two
+	  modes - "all" and "mine".  Teams can render members in
+	  two modes depending upon detail level;  either as 
+	  Contact entities or as an array of member objectIds.
+	  (v1.5.6)
+
+	* zOGAction+Account.m: Account rendering supports including
+	  teams account is member of.  Also some minor code 
+	  clean-up.  (v1.5.6)
+
 2007-08-27 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Enterprise.m: Fix data-loss when creating 

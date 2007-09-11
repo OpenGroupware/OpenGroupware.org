@@ -31,6 +31,7 @@
 -(id)_getTeamsForKeys:(id)_arg withDetail:(NSNumber *)_detail;
 -(id)_getTeamForKey:(id)_arg withDetail:(NSNumber *)_detail;
 -(void)_addContactsToTeam:(NSMutableDictionary *)_team;
+-(NSArray *)_getTeamMembers:(id)_team;
 -(NSArray *)_searchForTeams:(id)_arg withDetail:(NSNumber *)_detail;
 
 @end

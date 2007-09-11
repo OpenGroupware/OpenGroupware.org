@@ -29,19 +29,27 @@
 
 -(id)_getConflictsForDate:(id)_appointment {
   NSArray         *conflictAttrs;
-  NSDictionary    *conflictList;
+  id               conflictList;
 
-  [self logWithFormat:@"_getConflictsForDate(%@)", _appointment];
+  if ([self isDebug])
+    [self logWithFormat:@"_getConflictsForDate(%@)", 
+       [_appointment valueForKey:@"dateId"]];
   /* TODO: Do we really need to get the conflict attirbutes from defaults? */
   conflictAttrs = [[[self _getDefaults]
                         arrayForKey:@"schedulerconflicts_conflictkeys"] copy];  
-  conflictList = [[[self getCTX] 
-                     runCommand:@"appointment::conflicts",
-                                @"appointment", _appointment,
-                                @"fetchConflictInfo", @"YES",
-                                @"fetchGlobalIDs", @"YES",
-                                @"conflictInfoAttributes", conflictAttrs,
-                                nil] copy];
+  conflictList = [[self getCTX] runCommand:@"appointment::conflicts",
+                                           @"appointment", _appointment,
+                                           @"fetchConflictInfo", @"YES",
+                                           @"fetchGlobalIDs", @"YES",  
+                                           @"conflictInfoAttributes", 
+                                              conflictAttrs,
+                                nil];
+  if ([self isDebug])
+  {
+    [self logWithFormat:@"conflict retrieval Logic complete"];
+    [self logWithFormat:@"_getConflictsForDate returning %@",
+       conflictList];
+  }
   return conflictList;
 }
 
@@ -57,12 +65,17 @@
   NSEnumerator          *conflictEnumerator;
   id                    resource;
 
+  if ([self isDebug])
+    [self logWithFormat:@"_renderConflictsForDate:(%@)", 
+       [_eo valueForKey:@"dateId"]];
+
   /* Get required bits from user defaults */
   aptAttrs = [[[[self getCTX] userDefaults]
                    arrayForKey:@"schedulerconflicts_fetchkeys"] copy];
 
   /* Getting conflict info */
-  conflictDates = [[self _getConflictsForDate:_eo] retain];
+  conflictDates = [self _getConflictsForDate:_eo];
+
 
   /* Initialize array of conflicts */
   conflicts = [[NSMutableArray alloc] initWithCapacity:[conflictDates count]];
@@ -72,6 +85,9 @@
   dateEnumerator = [[conflictDates allKeys] objectEnumerator];
   while ((conflictDate = [dateEnumerator nextObject]) != nil) 
   {
+    if ([self isDebug])
+      [self logWithFormat:@"processing conflict with date %@",
+         [conflictDate valueForKey:@"dateId"]];
     conflictEnumerator = [[conflictDates objectForKey:conflictDate] objectEnumerator];
       while ((conflict = [conflictEnumerator nextObject]) != nil)
       {

@@ -391,7 +391,7 @@
     [dict takeValue:aptTypes     forKey:@"aptTypes"];
   */
   gids = [[self getCTX] runCommand:@"appointment::query" arguments:args];
-  [args release];
+  // [args release]; - causes a signal 6 when conflicts are involved (?)
   args = nil;
   // If we found nothing then just quit now
   if ([gids count] == 0)

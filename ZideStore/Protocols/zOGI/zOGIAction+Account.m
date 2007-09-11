@@ -21,6 +21,7 @@
 
 #include "zOGIAction.h"
 #include "zOGIAction+Account.h"
+#include "zOGIAction+Team.h"
 #include "zOGIAction+Object.h"
 
 @implementation zOGIAction(Account)
@@ -46,14 +47,21 @@
        [eoAccount valueForKey:@"login"], @"login",
        nil]];
     if([_detail intValue] > 0)
-      for (count = 0; count < [result count]; count++)
-      {  
-        [self _addObjectDetails:[result objectAtIndex:count] withDetail:_detail];
+    {
+      [self _addObjectDetails:[result objectAtIndex:count] 
+                   withDetail:_detail];
+      if ([_detail intValue] & zOGI_INCLUDE_MEMBERSHIP)
+      {
+        [[result objectAtIndex:count] 
+            setObject:[self _searchForTeams:@"mine" 
+                                 withDetail:[NSNumber numberWithInt:128]]
+               forKey:@"_TEAMS"];
       }
+    }
     [self _stripInternalKeys:[result objectAtIndex:count]];
   } /* End for-each-account loop */
   return result;
-} /* End _renderAccounts */
+} /* end _renderAccounts */
 
 /* Get specified accounts from logic layer */
 -(NSArray *)_getUnrenderedAccountsForKeys:(id)_arg 
@@ -64,33 +72,33 @@
                                         @"gids", [self _getEOsForPKeys:_arg],
                                         nil] retain];
   return accounts;
-} /* End _getUnrenderedAccountsForKeys */
+} /* end _getUnrenderedAccountsForKeys */
 
 /* Get rendered accounts at specified detail level */
 -(id)_getAccountsForKeys:(id)_arg withDetail:(NSNumber *)_detail 
 {
   return [self _renderAccounts:[self _getUnrenderedAccountsForKeys:_arg] 
                      withDetail:_detail];
-} /* End _getAccountsForKeys */
+} /* end _getAccountsForKeys */
 
 /* Get rendered accounts at default detail level (0) */
 -(id)_getAccountsForKeys:(id)_arg 
 {
   return [self _renderAccounts:[self _getUnrenderedAccountsForKeys:_arg] 
                      withDetail:[NSNumber numberWithInt:0]];
-} /* End _getAccountsForKeys */
+} /* end _getAccountsForKeys */
 
 /* Get one rendered account at specified detail level */
 -(id)_getAccountForKey:(id)_pk withDetail:(NSNumber *)_detail 
 {
   return [[self _getAccountsForKeys:_pk withDetail:_detail] objectAtIndex:0];
-} /* End _getAccountForKey */
+} /* end _getAccountForKey */
 
 /* Get one rendered account at detail detail level (0) */
 -(id)_getAccountForKey:(id)_pk 
 {
   return [[self _getAccountsForKeys:_pk] objectAtIndex:0];
-} /* End _getAccountForKey */
+} /* end _getAccountForKey */
 
 /* Get rendered account for current account at specified detail level */
 -(id)_getLoginAccount:(NSNumber *)_detail 
@@ -100,6 +108,6 @@
   account   = [[self getCTX] valueForKey:LSAccountKey];
   return [self _getAccountForKey:[account valueForKey:@"companyId"] 
                        withDetail:_detail];
-} /* End _getLoginAccount */
+} /* end _getLoginAccount */
 
-@end /* End zOGIAction(Account) */
+@end /* end zOGIAction(Account) */
