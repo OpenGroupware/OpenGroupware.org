@@ -39,7 +39,7 @@
        [self NIL:[eoResource valueForKey:@"email"]], @"email",
        [self NIL:[eoResource valueForKey:@"emailSubject"]], @"emailSubject",
        [self NIL:[eoResource valueForKey:@"name"]], @"name",
-       [self NIL:[eoResource valueForKey:@"notificationTime"]], @"notificationTime",
+       [self ZERO:[eoResource valueForKey:@"notificationTime"]], @"notificationTime",
        nil]];
      if([_detail intValue] > 0)
        [[result objectAtIndex:count] setObject:eoResource forKey:@"*eoObject"];
@@ -103,24 +103,35 @@
     key = [keys objectAtIndex:count];
     value = [_query objectForKey:key];
     if ([key isEqualToString:@"objectId"]) {
-      [query setObject:value forKey:@"projectId"];
-    } else if ([key isEqualToString:@"ownerObjectId"]) {
-      [query setObject:value forKey:@"ownerId"];
-    } else if ([key isEqualToString:@"placeHolder"]) {
-      [query setObject:value forKey:@"isFake"];
-    } else if ([key isEqualToString:@"placeHolder"]) {
-      [query setObject:value forKey:@"isFake"];
+      [query setObject:value forKey:@"appointmentResourceId"];
     } else if ([key isEqualToString:@"conjunction"]) {
       /* TODO: Verify this is AND or OR */
       [query setObject:value forKey:@"operator"];
     } else [query setObject:value forKey:key];
    }
-  if ([query objectForKey:@"operator"] == nil)
-    result = [[self getCTX] runCommand:@"appointmentresource::get" 
-                             arguments:query];
-   else
-     result = [[self getCTX] runCommand:@"appointmentresource::extended-search"
-                              arguments:query];
+  if ([query count] == 0)
+  {
+    if ([self isDebug])
+      [self logWithFormat:@"retrieving all resources, empty criteria"];
+    result = [[self getCTX] runCommand:@"appointmentresource::get",
+                  @"returnType",
+                  [NSNumber numberWithInt:LSDBReturnType_ManyObjects],
+                  nil];
+  } else if ([query objectForKey:@"operator"] == nil)
+    {
+      if ([self isDebug])
+        [self logWithFormat:@"performing fuzzy search for resources"];
+      [query setObject:[NSNumber numberWithInt:LSDBReturnType_ManyObjects]
+                forKey:@"returnType"];
+      result = [[self getCTX] runCommand:@"appointmentresource::get" 
+                               arguments:query];
+    } else
+      {
+        if ([self isDebug])
+          [self logWithFormat:@"performing exact search for resources"];
+        result = [[self getCTX] runCommand:@"appointmentresource::extended-search"
+                                arguments:query];
+      }
   return [self _renderResources:result withDetail:_detail];
 }
 

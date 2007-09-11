@@ -1,3 +1,10 @@
+2007-09-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Resource.m: Improved searching.  Sending an
+	  empty criteria will return all defined resources. Also
+	  returns a null notificationTime attribute as a zero
+	  rather than an empty string. (v1.5.8)
+
 2007-09-10 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Appointment.m: Fix a double free (v1.5.6)
