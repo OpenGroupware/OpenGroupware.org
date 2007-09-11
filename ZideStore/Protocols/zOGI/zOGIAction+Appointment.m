@@ -41,6 +41,7 @@
   NSCalendarDate       *startDate;
   NSCalendarDate       *endDate;
   id                    tmp;
+  id                    resources;
   NSString             *permissions;
 
   if (eoAppointment == nil) return [[NSDictionary alloc] init];
@@ -102,6 +103,16 @@
     [appointment setObject:[eoAppointment valueForKey:@"type"]
                  forKey:@"cycleType"];
    }
+  /* Add resources */
+  if([eoAppointment valueForKey:@"resourceNames"] != nil) {
+    if ([self isDebug])
+      [self logWithFormat:@"appointment resources: %@",
+         [eoAppointment valueForKey:@"resourceNames"]];    
+    tmp = [[eoAppointment valueForKey:@"resourceNames"] 
+              componentsSeparatedByString:@", "];
+    resources = [self _renderNamedResources:tmp];  
+  } else resources = [NSConcreteEmptyArray new];
+  [appointment setObject:resources forKey:@"_RESOURCES"];
   /* Add writers */
   if ([(tmp = [eoAppointment valueForKey:@"writeAccessList"]) isNotEmpty]) {
     if([tmp length] == 0)

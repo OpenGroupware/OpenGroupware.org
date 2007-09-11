@@ -50,7 +50,7 @@
      }
    }
   return result;
-}
+} /* end _renderResources */
 
 /* Retrieves a resource by its *EXACT* name.
    _arg is the resource name 
@@ -67,7 +67,27 @@
      return [res lastObject];
     }
   return nil;
-}
+} /* end _getResourceByName */
+
+/* Render resources whose names are provided in list */
+-(NSArray *)_renderNamedResources:(NSArray *)_names {
+  NSMutableArray      *resources;
+  id                   resource;
+  NSEnumerator        *enumerator;
+  NSString            *name;
+
+  enumerator = [_names objectEnumerator];
+  resources = [NSMutableArray arrayWithCapacity:[_names count]];
+  while ((name = [enumerator nextObject]) != nil) {
+    resource = [self _getResourceByName:name];
+    if (resource == nil)
+      [self warnWithFormat:@"Unknown resource requested by name '%@'",
+         name];
+    else [resources addObject:resource];
+  }
+  return [self _renderResources:resources 
+                     withDetail:[NSNumber numberWithInt:0]];
+} /* end _renderNamedResources */
 
 -(NSArray *)_getUnrenderedResourcesForKeys:(id)_arg {
   NSArray       *resources;
@@ -76,7 +96,7 @@
                                         @"gids", [self _getEOsForPKeys:_arg],
                                         nil] retain];
   return resources;
-}
+} /* end _getUnrenderedResourcesForKeys */
 
 -(id)_getResourcesForKeys:(id)_arg withDetail:(NSNumber *)_detail {
   return [self _renderResources:[self _getUnrenderedResourcesForKeys:_arg] 

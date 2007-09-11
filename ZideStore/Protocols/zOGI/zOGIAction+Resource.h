@@ -28,6 +28,7 @@
 -(id)_getResourceByName:(NSString *)_arg;
 -(id)_getResourcesForKeys:(id)_arg withDetail:(NSNumber *)_detail;
 -(id)_getResourceForKey:(id)_arg withDetail:(NSNumber *)_detail;
+-(NSArray *)_renderNamedResources:(NSArray *)_names;
 -(id)_searchForResources:(NSDictionary *)_query 
               withDetail:(NSNumber *)_detail;
 @end
