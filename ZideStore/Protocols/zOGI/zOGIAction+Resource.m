@@ -58,6 +58,10 @@
 -(id)_getResourceByName:(NSString *)_arg {
   id             res;
 
+  if ([_arg length] == 0) {
+    [self warnWithFormat:@"A get resource request was made without a name"];  
+    return nil;
+  }
   res = [[self getCTX] runCommand:@"appointmentresource::get",
                    @"name", _arg,
                    @"returnType",
@@ -97,6 +101,17 @@
                                         nil] retain];
   return resources;
 } /* end _getUnrenderedResourcesForKeys */
+
+-(NSDictionary *)_getUnrenderedResourceForKey:(id)_arg {
+  id	resource;
+
+  resource = [[[self getCTX] runCommand:@"appointmentresource::get-by-globalid",
+                                        @"gid", [self _getEOForPKey:_arg],
+                                        @"returnType", intObj(LSDBReturnType_OneObject),
+                                        nil] retain];
+  return [resource lastObject];
+} /* end _getUnrenderedResourceForKey */
+
 
 -(id)_getResourcesForKeys:(id)_arg withDetail:(NSNumber *)_detail {
   return [self _renderResources:[self _getUnrenderedResourcesForKeys:_arg] 

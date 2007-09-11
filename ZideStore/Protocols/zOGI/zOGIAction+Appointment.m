@@ -463,7 +463,10 @@
            withCommand:(NSString *)_command
              withFlags:(NSArray *)_flags 
 {
-  id           appointment, exception;
+  id                     appointment, exception; 
+  NSDictionary          *resource, *eoResource;
+  NSEnumerator	        *enumerator;
+  NSMutableString       *resourceNames;
 
   exception = nil;
  
@@ -473,12 +476,30 @@
   if ([appointment isKindOfClass:[NSException class]])
     return appointment;
   [appointment setObject:[self _getTimeZone] forKey:@"timeZone"];
-  /* perform logic command */
+  /* translate resources */
+  if ([_appointment valueForKey:@"_RESOURCES"] != nil) {
+    resourceNames = [NSMutableString new];
+    enumerator = [[_appointment objectForKey:@"_RESOURCES"] objectEnumerator];
+    while((resource = [enumerator nextObject]) != nil) {
+      eoResource = [self _getUnrenderedResourceForKey:[resource objectForKey:@"objectId"]]; 
+      if (eoResource != nil) {
+        if ([self isDebug])
+          [self logWithFormat:@"retrieved resource %@ for objectId %@",
+             eoResource,
+             [resource objectForKey:@"objectId"]];
+        if ([resourceNames length] > 0)
+          [resourceNames appendString:@", "];
+        [resourceNames appendString:[eoResource objectForKey:@"name"]];
+        [eoResource release];
+      }
+    }
+    [appointment setObject:resourceNames forKey:@"resourceNames"];
+  }
 
+  /* perform logic command */
   appointment = [[self getCTX] runCommand:_command
                                 arguments:appointment];
-  if ([appointment valueForKey:@"dateId"] == nil) 
-  {
+  if ([appointment valueForKey:@"dateId"] == nil) {
     exception = [NSException exceptionWithHTTPStatus:500
                              reason:@"Failure to write appointment"];
   }
@@ -498,8 +519,7 @@
   if (exception == nil)
     exception = [self _saveNotes:[_appointment objectForKey:@"_NOTES"] 
                        forObject:[appointment objectForKey:@"dateId"]];
-  if (exception != nil) 
-  {
+  if (exception != nil) {
     if ([self isDebug])
       [self logWithFormat:@"exception occured, rolling back appointment"];
     [[self getCTX] rollback];
@@ -509,13 +529,11 @@
   /* Save complete */
   if ([self isDebug])
     [self logWithFormat:@"saving date %@ complete", [appointment objectForKey:@"dateId"]];
-  if ([_flags containsObject:[NSString stringWithString:@"noCommit"]])
-  {
+  if ([_flags containsObject:[NSString stringWithString:@"noCommit"]]) {
     /* database commit has been disabled by the noCommit flag */
     if ([self isDebug])
       [self logWithFormat:@"commit disabled via flag!"];
-  } else
-    {
+  } else {
       /* committing database transaction */
       [[self getCTX] commit];
     }

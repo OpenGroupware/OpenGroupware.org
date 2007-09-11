@@ -27,6 +27,7 @@
 @interface zOGIAction(Resource)
 -(id)_getResourceByName:(NSString *)_arg;
 -(id)_getResourcesForKeys:(id)_arg withDetail:(NSNumber *)_detail;
+-(NSDictionary *)_getUnrenderedResourceForKey:(id)_arg;
 -(id)_getResourceForKey:(id)_arg withDetail:(NSNumber *)_detail;
 -(NSArray *)_renderNamedResources:(NSArray *)_names;
 -(id)_searchForResources:(NSDictionary *)_query 

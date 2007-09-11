@@ -1,5 +1,12 @@
 2007-09-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* zOGIAction+Appointment.m: Resources can now be
+	  assigned to appointments via the _RESOURCES key.
+	  (v1.5.10)
+
+	* zOGIAction+Resource.m: Added member to get
+	  eo record of a resource by objectId. (v1.5.10)
+
 	* zOGIAction+Resource.m: Added _renderNamedResources
 	  method for use by appointment rendering. (v1.5.9)
 
