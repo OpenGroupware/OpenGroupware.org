@@ -81,7 +81,6 @@
   if (members != nil) {
     memberList = [self _renderContacts:members withDetail:0];
    } else { memberList = [NSArray new]; }
-  [members release];
   [_team setObject:memberList forKey:@"_CONTACTS"];
 }
 
@@ -101,7 +100,6 @@
     [memberList 
        addObject:[[members objectAtIndex:count] valueForKey:@"companyId"]];
   }
-  [members release];
   return memberList;
 } /* end _getTeamMembers */
 

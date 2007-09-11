@@ -11,6 +11,8 @@
 	  Contact entities or as an array of member objectIds.
 	  (v1.5.6)
 
+	* zOGIAction+Team.m: Fix a double free (v1.5.7)
+
 	* zOGAction+Account.m: Account rendering supports including
 	  teams account is member of.  Also some minor code 
 	  clean-up.  (v1.5.6)
