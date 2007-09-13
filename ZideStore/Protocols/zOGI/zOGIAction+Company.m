@@ -447,7 +447,8 @@
 
   /* Save ACLs */
   exception = [self _saveACLs:[_company objectForKey:@"_ACCESS"]
-                    forObject:[company objectForKey:@"companyId"]];
+                    forObject:[company objectForKey:@"companyId"]
+                   entityName:_entity];
   if (exception != nil) 
   {
     if ([self isDebug])

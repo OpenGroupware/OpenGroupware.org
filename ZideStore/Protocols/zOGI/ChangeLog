@@ -1,3 +1,17 @@
+2007-09-13 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Object.m: Project ACLs are now reported
+	  correctly,  preperation for saving Project ACLs. Minor
+	  code cleanups. (v1.5.11)
+
+	* zOGIAction+Project.m: Participant reporting removed
+	  from Projects as it is redundant.  Project rendering
+	  uses bulk Logic operations;  also include the WRITE
+	  or READONLY flags in result. (v1.5.11)
+
+	* zOGIAction+Company.m: Updated to use the signature
+	  of revised saveACLs method. (v1.5.11)
+
 2007-09-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Appointment.m: Resources can now be

@@ -30,24 +30,43 @@
 -(NSMutableArray *)_renderProjects:(NSArray *)_projects 
                         withDetail:(NSNumber *)_detail 
 {
-  NSMutableArray      *result;
+  NSMutableArray      *result, *flags;
   NSDictionary        *eoProject;
   int                  count;
   NSString            *comment;
+  id permissions;
 
   result = [NSMutableArray arrayWithCapacity:[_projects count]];
+  [[self getCTX] runCommand:@"project::get-root-document",
+                            @"objects",  _projects,
+                            @"relationKey", @"rootDocument", 
+                            nil];
+  [[self getCTX] runCommand:@"project::get-comment",
+                            @"objects", _projects,
+                            @"relationKey", @"comment",
+                            nil];
+  [[self getCTX] runCommand:@"project::get-company-assignments",
+                            @"objects", _projects,
+                            @"relationKey", @"companyAssignments", nil];
+
   for (count = 0; count < [_projects count]; count++) 
   {
     eoProject = [_projects objectAtIndex:count];
-    [[self getCTX] runCommand:@"project::get-root-document",
-                              @"object", eoProject,
-                              @"relationKey", @"rootDocument", 
-                              nil];
-    [[self getCTX] runCommand:@"project::get-comment",
-                              @"object", eoProject, 
-                              @"relationKey", @"comment", 
-                              nil];
+    flags = [[NSMutableArray alloc] initWithCapacity:6];
+
+    /* setup access flags */ 
+    permissions = [[self getCTX] runCommand:@"project::check-write-permission",
+                             @"object", [NSArray arrayWithObject:eoProject],
+                             nil];
+    if([permissions count])
+      [flags addObject:@"WRITE"];
+    else 
+      [flags addObject:@"READONLY"];
+
+    /* get comment from eo object */
     comment = [[eoProject objectForKey:@"comment"] objectForKey:@"comment"];
+
+    /* render project */
     [result addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys: 
        [eoProject valueForKey:@"projectId"], @"objectId",
        @"Project", @"entityName",
@@ -55,7 +74,7 @@
        [self NIL:[eoProject valueForKey:@"ownerId"]], @"ownerObjectId",
        [self NIL:[eoProject valueForKey:@"kind"]], @"kind",
        comment, @"comment",
-       [self NIL:[eoProject valueForKey:@"isFake"]], @"placeHolder",
+       [self ZERO:[eoProject valueForKey:@"isFake"]], @"placeHolder",
        [[eoProject valueForKey:@"rootDocument"] valueForKey:@"documentId"], 
          @"folderObjectId",
        [self NIL:[eoProject valueForKey:@"number"]], @"number",
@@ -63,6 +82,7 @@
        [self NIL:[eoProject valueForKey:@"endDate"]], @"endDate",
        [self NIL:[eoProject valueForKey:@"name"]], @"name",
        [self NIL:[eoProject valueForKey:@"status"]], @"status",
+       flags, @"FLAGS", 
        nil]];
     if([_detail intValue] > 0)
     {
@@ -71,8 +91,6 @@
         [self _addTasksToProject:[result objectAtIndex:count]];
       if([_detail intValue] & zOGI_INCLUDE_NOTATIONS)
         [self _addNotesToProject:[result objectAtIndex:count]];
-      if([_detail intValue] & zOGI_INCLUDE_PARTICIPANTS)
-        [self _addParticipantsToProject:[result objectAtIndex:count]];
       if([_detail intValue] & zOGI_INCLUDE_CONTACTS)
         [self _addContactsToProject:[result objectAtIndex:count]];
       if([_detail intValue] & zOGI_INCLUDE_ENTERPRISES)
@@ -155,19 +173,16 @@
   return [_eoProject valueForKey:@"companyAssignments"];
 }
 
-/* Add the _CONTACTS key to the project
-   Uses _getProjectAssignments */
+/* Add the _CONTACTS key to the project */
 -(void)_addContactsToProject:(NSMutableDictionary *)_project 
 {
-  NSArray             *assignments;
   NSEnumerator        *enumerator;
   EOGenericRecord     *eo;
   NSMutableArray      *contactList;
   NSMutableDictionary *assignment;
 
-  assignments = [self _getProjectAssignments:[_project objectForKey:@"*eoObject"]];
-  contactList = [[NSMutableArray alloc]initWithCapacity:[assignments count]];
-  enumerator = [assignments objectEnumerator];
+  contactList = [[NSMutableArray alloc]initWithCapacity:16];
+  enumerator = [[[_project objectForKey:@"*eoObject"] objectForKey:@"companyAssignments"] objectEnumerator];
   while ((eo = [enumerator nextObject]) != nil) 
   {
     if (([[self _getEntityNameForPKey:[eo valueForKey:@"companyId"]] 
@@ -184,26 +199,20 @@
   [_project setObject:contactList forKey:@"_CONTACTS"];
 } /* End _addContactsToProject */
 
-/* Add the _ENTERPRISES key to the project
-   Uses _getProjectAssignments */
+/* Add the _ENTERPRISES key to the project */
 -(void)_addEnterprisesToProject:(NSMutableDictionary *)_project 
 {
-  NSArray             *assignments;
   NSEnumerator        *enumerator;
   EOGenericRecord     *eo;
   NSMutableArray      *enterpriseList;
   NSMutableDictionary *assignment;
 
-  assignments = [self _getProjectAssignments:[_project objectForKey:@"*eoObject"]];
-  enterpriseList = [[NSMutableArray alloc]initWithCapacity:[assignments count]];
-  enumerator = [assignments objectEnumerator];
-
-  while ((eo = [enumerator nextObject]) != nil) 
-  {
+  enterpriseList = [[NSMutableArray alloc]initWithCapacity:16];
+  enumerator = [[[_project objectForKey:@"*eoObject"] objectForKey:@"companyAssignments"] objectEnumerator];
+  while ((eo = [enumerator nextObject]) != nil) {
     if (([[self _getEntityNameForPKey:[eo valueForKey:@"companyId"]]
               isEqualToString:@"Enterprise"]) &&
-        ([[eo valueForKey:@"hasAccess"] intValue] == 0)) 
-    {
+        ([[eo valueForKey:@"hasAccess"] intValue] == 0)) {
       assignment = [self _renderAssignment:[eo valueForKey:@"projectCompanyAssignmentId"]
                                     source:[eo valueForKey:@"projectId"]
                                     target:[eo valueForKey:@"companyId"]
@@ -213,40 +222,6 @@
   } /* End loop-through-assignees */
   [_project setObject:enterpriseList forKey:@"_ENTERPRISES"];
 } /* End _addEnterprisesToProject */
-
--(void)_addParticipantsToProject:(NSMutableDictionary *)_project 
-{
-  NSArray         *assignments;
-  NSEnumerator    *enumerator;
-  EOGenericRecord *assignment;
-  NSMutableArray  *memberList;
-  NSString        *entityName;
-  NSNumber        *companyId;
-
-  assignments = [self _getProjectAssignments:[_project objectForKey:@"*eoObject"]];
-  memberList = [[NSMutableArray alloc]initWithCapacity:[assignments count]];
-  enumerator = [assignments objectEnumerator];
-  while ((assignment = [enumerator nextObject]) != nil) 
-  { 
-    /* What is going on here? */
-    if ([[assignment valueForKey:@"hasAccess"] intValue] == 1) 
-    {
-      companyId = [assignment valueForKey:@"companyId"];
-      entityName = [self _izeEntityName:[self _getEntityNameForPKey:companyId]];
-      [memberList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-         companyId, @"targetObjectId",
-         [self NIL:[assignment valueForKey:@"accessRight"]], @"accessRight",
-         [self NIL:[assignment valueForKey:@"info"]], @"info",
-         [assignment valueForKey:@"projectId"], @"sourceObjectId",
-         @"Project", @"sourceEntityname",
-         [assignment valueForKey:@"projectCompanyAssignmentId"], @"objectId",
-         @"assignment", @"entityName",
-         entityName, @"targetEntityName",
-         nil]];
-    }
-  }
-  [_project setObject:memberList forKey:@"_PARTICIPANTS"];
-} /* End _addParticipantsToProject */
 
 /* Add _NOTES Key To Project */
 -(void)_addNotesToProject:(NSMutableDictionary *)_project 
@@ -273,8 +248,7 @@
     tasks = [NSArray array];
   taskList = [[NSMutableArray alloc] initWithCapacity:[tasks count]];
   enumerator = [tasks objectEnumerator];
-  while ((task = [enumerator nextObject]) != nil) 
-  {
+  while ((task = [enumerator nextObject]) != nil) {
     [taskList addObject:[self _renderTaskFromEO:task]];
   }
   [_project setObject:taskList forKey:@"_TASKS"];

@@ -34,7 +34,6 @@
 -(id)_getProjectForKey:(id)_pk;
 -(void)_addContactsToProject:(NSMutableDictionary *)_project;
 -(void)_addEnterprisesToProject:(NSMutableDictionary *)_project;
--(void)_addParticipantsToProject:(NSMutableDictionary *)_project;
 -(void)_addNotesToProject:(NSMutableDictionary *)_project;
 -(void)_addTasksToProject:(NSMutableDictionary *)_project;
 -(NSArray *)_getFavoriteProjects:(NSNumber *)_detail;

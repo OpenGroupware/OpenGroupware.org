@@ -33,7 +33,8 @@
               withDetail:(NSNumber *)_detail;
 -(NSException *)_addACLsToObject:(NSMutableDictionary *)_object;
 -(NSException *)_saveACLs:(NSArray *)_acls 
-                forObject:(id)_objectId;
+                forObject:(id)_objectId
+               entityName:(id)_entityName;
 -(void)_addLinksToObject:(NSMutableDictionary *)_object;
 -(void)_addLogsToObject:(NSMutableDictionary *)_object;
 -(id)_translateObjectLink:(NSDictionary *)_link 

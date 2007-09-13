@@ -82,7 +82,8 @@
 } /* End _addObjectDetails */
 
 /* Add ACLs from Access Manager to object
-   FYI: I think these only currently apply to teams, contacts, and enterprises
+   FYI: Contacts & enterprises get ACLs from object_acl,  projects get
+        ACLs from project<->company assignments.  Wierd.
    TODO: This doesn't actually catch any errors or produce any exceptions */
 -(NSException *)_addACLsToObject:(NSMutableDictionary *)_object
 {
@@ -94,33 +95,73 @@
   id                   key; /* Is an EOGLobalId */
 
   results = [NSMutableArray arrayWithCapacity:16];
-  accessManager = [[self getCTX] accessManager];
-  tmp = [self _getEOsForPKeys:[_object objectForKey:@"objectId"]];
-  acls = [accessManager allowedOperationsForObjectIds:tmp];
-  if ([acls count] > 0)
-  {
-    tmp = [acls objectForKey:[[acls allKeys] objectAtIndex:0]];
-    enumerator = [[tmp allKeys] objectEnumerator];
-    while ((key = [enumerator nextObject]) != nil)
+  if ([[_object objectForKey:@"entityName"] isEqualToString:@"Project"]) {
+    if ([self isDebug])
+      [self logWithFormat:@"Rendering project ACLs for %@",
+        [_object valueForKey:@"objectId"]]; 
+    tmp = [_object objectForKey:@"*eoObject"];
+    enumerator = [[tmp objectForKey:@"companyAssignments"] objectEnumerator];
+    while ((tmp = [enumerator nextObject]) != nil) {
+      if ([[tmp valueForKey:@"hasAccess"] intValue] == 1) {
+        key = [self _getEntityNameForPKey:[tmp valueForKey:@"companyId"]];
+        [results addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                              @"acl", @"entityName",
+                              [_object objectForKey:@"objectId"],
+                                 @"parentObjectId", 
+                              [tmp valueForKey:@"projectCompanyAssignmentId"],
+                                 @"objectId",
+                              [self _izeEntityName:key],
+                                 @"targetEntityName",
+                              [tmp valueForKey:@"companyId"],
+                                 @"targetObjectId",
+                              [tmp valueForKey:@"accessRight"],
+                                 @"operations",
+                              [tmp valueForKey:@"info"], @"info",
+                              nil]];
+      } /* end project-assignment-is-an-ACL */
+    } /* end while */
+    if ([self isDebug])
+      [self logWithFormat:@"Found %d project ACLs for %@", 
+        [results count],
+        [_object valueForKey:@"objectId"]]; 
+    /* end entity-is-a-project */
+  } else
     {
-      [results addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                            @"acl", @"entityName",
-                            [_object objectForKey:@"objectId"],
-                               @"parentObjectId",
-                            [self _izeEntityName:[key entityName]],
-                               @"targetEntityName",
-                            [[key keyValuesArray] objectAtIndex: 0],
-                                @"targetObjectId",
-                            [tmp objectForKey:key], @"operations",
-                            nil]];
-    } /* End acl-key-enumerator-loop */
-    key = nil;
-    enumerator = nil;
-  } /* End if-there-are-acls */
-  tmp = nil;
+      accessManager = [[self getCTX] accessManager];
+      tmp = [self _getEOsForPKeys:[_object objectForKey:@"objectId"]];
+      acls = [accessManager allowedOperationsForObjectIds:tmp];
+      if ([acls count] > 0) {
+        if ([self isDebug])
+          [self logWithFormat:@"Rendering company ACLs for object %@", 
+             [_object objectForKey:@"objectId"]];
+        tmp = [acls objectForKey:[[acls allKeys] objectAtIndex:0]];
+        enumerator = [[tmp allKeys] objectEnumerator];
+        while ((key = [enumerator nextObject]) != nil) {
+          [results addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                @"acl", @"entityName",
+                                [_object objectForKey:@"objectId"],
+                                   @"parentObjectId",
+                                [self _izeEntityName:[key entityName]],
+                                   @"targetEntityName",
+                                [[key keyValuesArray] objectAtIndex: 0],
+                                    @"targetObjectId",
+                                [tmp objectForKey:key], @"operations",
+                                @"", @"info",
+                                nil]];
+        } /* end while */
+        if ([self isDebug])
+          [self logWithFormat:@"Found %d company ACLs for object %@",
+             [results count],
+             [_object objectForKey:@"objectId"]];
+      } else {
+          if ([self isDebug])
+            [self logWithFormat:@"Found no company ACLs for object %@", 
+               [_object objectForKey:@"objectId"]];
+        }
+    } /* end not-a-project-assuming-a-company-object */
   [_object setObject:results forKey:@"_ACCESS"];
   return nil;
-} /* End _addACLs */
+} /* end _addACLs */
 
 /* Add _OBJECTLINKS information to an object */
 -(void)_addLinksToObject:(NSMutableDictionary *)_object 
@@ -234,7 +275,6 @@
                                               fromObject:_objectId]];
      } // End objectId == 0
    } // End while clientLink = [clientEnumerator nextObject]
-  //[clientEnumerator release];
   /* Loop through links on server to finds ones modified by client
      or removed by the client;  if the client provided _OBJECTLINKS on
      and object put then we assume that links no longer provided should
@@ -288,7 +328,9 @@
     nil];
 }
 
--(NSException *)_saveACLs:(NSArray *)_acls forObject:(id)_objectId
+-(NSException *)_saveACLs:(NSArray *)_acls 
+                forObject:(id)_objectId
+               entityName:(id)_entityName
 {
   SkyAccessManager    *accessManager;
   NSMutableDictionary *acls;
@@ -298,18 +340,28 @@
 
   if (_acls == nil)
     return nil;
-  accessManager = [[self getCTX] accessManager];
-  objectKey = [self _getEOForPKey:_objectId];
-  acls = [NSMutableDictionary dictionaryWithCapacity:[_acls count]];
-  enumerator = [_acls objectEnumerator];
-  while ((acl = [enumerator nextObject]) != nil)
-    [acls setObject:[acl objectForKey:@"operations"]
-             forKey:[self _getEOForPKey:[acl objectForKey:@"targetObjectId"]]];
-  [accessManager setOperations:acls onObjectID:objectKey];
+  if ([_entityName isEqualToString:@"Project"]) {
+    /* saving project ACLs */
+    if ([self isDebug])
+      [self logWithFormat:@"saving project ACLs for %@", _objectId];
+    /* TODO: Implement */
+  } else {
+      /* assuming this is a company object */
+      if ([self isDebug])
+        [self logWithFormat:@"saving company ACLs for %@", _objectId];
+      accessManager = [[self getCTX] accessManager];
+      objectKey = [self _getEOForPKey:_objectId];
+      acls = [NSMutableDictionary dictionaryWithCapacity:[_acls count]];
+      enumerator = [_acls objectEnumerator];
+      while ((acl = [enumerator nextObject]) != nil)
+        [acls setObject:[acl objectForKey:@"operations"]
+                 forKey:[self _getEOForPKey:[acl objectForKey:@"targetObjectId"]]];
+      [accessManager setOperations:acls onObjectID:objectKey];
+    }
   acls = nil;
   enumerator = nil;
   return nil;
-} /* End _saveACLs */
+} /* end _saveACLs */
 
 /* Remove objectId from favorite contacts list */
 -(void)_unfavoriteObject:(id)_objectId defaultKey:(NSString *)_key
