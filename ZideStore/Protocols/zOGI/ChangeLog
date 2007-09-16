@@ -1,7 +1,10 @@
 2007-09-14 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* zOGIAction+Appointment.m: Fix bug in handling of participants
+	  criteria when searching for appointments. (v1.5.15)
+
 	* product.plist: Registered zogi.getNotifications method.
-	  (v.1.5.14)
+	  (v1.5.14)
 
 	* zOGIAction+Appointment.m: Search appointments now supports
 	  appointment types qualification. (v1.5.13)

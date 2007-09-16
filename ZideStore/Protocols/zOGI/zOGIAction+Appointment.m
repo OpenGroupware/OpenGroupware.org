@@ -363,6 +363,7 @@
                         reason:@"No start date specified in query"];
   }
   [startDate setTimeZone:[self _getTimeZone]];
+
   /* Setup & Validate End Date */
   endDate = nil;
   if ([_query objectForKey:@"endDate"] == nil)
@@ -373,25 +374,39 @@
     // \todo Throw exception for unhandle startDate data type
   }
   [endDate setTimeZone:[self _getTimeZone]];
+
   /* setup participant restraint */
-  tmp = [_query objectForKey:@"participants"];
-  if (tmp == nil) {
+  if([_query objectForKey:@"participants"] == nil) {
     /* no participants provided - assume self */
+    if ([self isDebug])
+      [self logWithFormat:@"no participants specified, assuming self"];
     tmp = [NSArray arrayWithObject:[self _getCompanyId]];
-  } else { 
-      /* parse provided participants */
-      if (([tmp isKindOfClass:[NSConcreteArray class]]) ||
-          ([tmp isKindOfClass:[NSConcreteSingleObjectArray class]]))
-        tmp = tmp;
-      else if ([tmp isKindOfClass:[NSNumber class]])
-        tmp = [NSArray arrayWithObject:tmp];
-      else if ([tmp isKindOfClass:[NSString class]]) {
+  } else {
+      /* participants were specified */
+      tmp = [_query objectForKey:@"participants"];
+      if ([tmp isKindOfClass:[NSString class]]) {
+        /* blow up string into an array */
         tmp = [tmp componentsSeparatedByString:@","];
-      } else return [NSException exceptionWithHTTPStatus:500
-                       reason:@"Participant specified using unsupported type"];
+      } else if ([tmp isKindOfClass:[NSNumber class]]) {
+          tmp = [NSArray arrayWithObject:tmp];
+        }
+    } /* end process participants */
+
+  /* participant setup complete, get EOs if we have an array */
+  if ([tmp isKindOfClass:[NSArray class]]) {
+    /* generate participants from array */
+    participants = [self _getEOsForPKeys:tmp];
+    if ([self isDebug])
+      [self logWithFormat:@"participants for appointments query = %@",
+         participants];
+  } else {
+      [self warnWithFormat:@"appointment query with participants of type %@",
+         [tmp class]];
+      return [NSException exceptionWithHTTPStatus:500
+                reason:@"Participant specified using unsupported type"];
     }
-  participants = [self _getEOsForPKeys:tmp];
   tmp = nil;
+
   /* Do Query */
   args = [NSMutableDictionary dictionaryWithCapacity:5];
   [args takeValue:startDate forKey:@"fromDate"];
@@ -409,10 +424,10 @@
   }
   gids = [[self getCTX] runCommand:@"appointment::query" arguments:args];
   args = nil;
-  // If we found nothing then just quit now
+
+  /* process quert results */
   if ([gids count] == 0)
     return [[NSArray alloc] init];
-  // Render and return results
   return [self _getDatesForKeys:gids withDetail:_detail];
 } /* end _searchForAppointments */
 
