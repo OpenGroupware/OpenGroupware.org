@@ -79,6 +79,12 @@
         actionName = "unflagFavorites";
         arguments = { positionalKeys = ( arg1 ); };
        };
+      "zogi.getNotifications" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "getNotifications";
+        arguments = { positionalKeys = ( arg1, arg2 ); };
+       }
       };
     };
   };

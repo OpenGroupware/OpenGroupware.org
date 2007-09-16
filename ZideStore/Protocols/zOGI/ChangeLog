@@ -1,5 +1,8 @@
 2007-09-14 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* product.plist: Registered zogi.getNotifications method.
+	  (v.1.5.14)
+
 	* zOGIAction+Appointment.m: Search appointments now supports
 	  appointment types qualification. (v1.5.13)
 
