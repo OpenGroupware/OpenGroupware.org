@@ -400,9 +400,13 @@
   /*
   if (resources != nil)
     [dict takeValue:resources    forKey:@"resourceNames"];
-  if (aptTypes != nil)
-    [dict takeValue:aptTypes     forKey:@"aptTypes"];
-  */
+   */
+  if ([_query objectForKey:@"appointmentType"] != nil) {
+    tmp = [_query objectForKey:@"appointmentType"];
+    if ([tmp isKindOfClass:[NSString class]])
+      tmp = [tmp componentsSeparatedByString:@","];
+    [args takeValue:tmp forKey:@"aptTypes"];
+  }
   gids = [[self getCTX] runCommand:@"appointment::query" arguments:args];
   args = nil;
   // If we found nothing then just quit now

@@ -1,5 +1,8 @@
 2007-09-14 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* zOGIAction+Appointment.m: Search appointments now supports
+	  appointment types qualification. (v1.5.13)
+
 	* zOGIAction+Contact.m: Code cleanup and added comments. (v1.5.12)
 
 	* zOGIAction+Account.m: Code cleanup and added comments. Can now return
