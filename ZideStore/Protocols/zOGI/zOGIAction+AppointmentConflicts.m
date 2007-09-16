@@ -44,14 +44,13 @@
                                            @"conflictInfoAttributes", 
                                               conflictAttrs,
                                 nil];
-  if ([self isDebug])
-  {
+  if ([self isDebug]) {
     [self logWithFormat:@"conflict retrieval Logic complete"];
     [self logWithFormat:@"_getConflictsForDate returning %@",
        conflictList];
   }
   return conflictList;
-}
+} /* end _getConflictsForDate */
 
 /* Create an array of conflicts with the provided appointment */
 -(NSArray *)_renderConflictsForDate:(id)_eo {
@@ -76,48 +75,43 @@
   /* Getting conflict info */
   conflictDates = [self _getConflictsForDate:_eo];
 
-
   /* Initialize array of conflicts */
   conflicts = [[NSMutableArray alloc] initWithCapacity:[conflictDates count]];
 
   /* Initialize dictionary for results with summary
      of conflicting appointments */
   dateEnumerator = [[conflictDates allKeys] objectEnumerator];
-  while ((conflictDate = [dateEnumerator nextObject]) != nil) 
-  {
+  while ((conflictDate = [dateEnumerator nextObject]) != nil) {
     if ([self isDebug])
       [self logWithFormat:@"processing conflict with date %@",
          [conflictDate valueForKey:@"dateId"]];
-    conflictEnumerator = [[conflictDates objectForKey:conflictDate] objectEnumerator];
-      while ((conflict = [conflictEnumerator nextObject]) != nil)
-      {
+    conflictEnumerator = [[conflictDates objectForKey:conflictDate] 
+                             objectEnumerator];
+      while ((conflict = [conflictEnumerator nextObject]) != nil) {
         renderedConflict = [NSMutableDictionary new];
-        [renderedConflict setObject:@"appointmentConflict" forKey:@"entityName"];
+        [renderedConflict 
+           setObject:@"appointmentConflict" forKey:@"entityName"];
         [renderedConflict setObject:[self _getPKeyForEO:(id)conflictDate]
                              forKey:@"appointmentObjectId"];
         [renderedConflict setObject:[conflict objectForKey:@"partStatus"]
                              forKey:@"status"];
-        if([conflict objectForKey:@"companyId"] == nil)
-        {
-         // Resource
+        if([conflict objectForKey:@"companyId"] == nil) {
+          /* resource conflict */
           [renderedConflict setObject:@"Resource" 
                                forKey:@"conflictingEntityName"];
  
           resource = [self _getResourceByName:[conflict
                                              objectForKey:@"resourceName"]];
-          if (resource == nil)
-          {
+          if (resource == nil) {
              [self warnWithFormat:@"could not resolve pkey for resource %@",
                 [conflict objectForKey:@"resourceName"]];
-          } else 
-            {
+          } else {
               [renderedConflict 
                  setObject:[resource valueForKey:@"appointmentResourceId"]
                     forKey:@"conflictingObjectId"];
             } 
-        } else
-          {
-           // Contact / Team
+        } else {
+           /* contact or team conflict */
            [renderedConflict setObject:[conflict objectForKey:@"companyId"]
                                 forKey:@"conflictingObjectId"];
            if([conflict objectForKey:@"isTeam"] == nil)
@@ -127,9 +121,9 @@
                                        forKey:@"conflictingEntityName"];
           }
         [conflicts addObject:renderedConflict];
-      }
-  }
+      } /* end conflicting-entity-while-loop */
+  } /* end conflicted-appointment-while-loop */
   return conflicts;
-}
+} /* end _renderConflictsForDate */
 
 @end /* zOGIAction(AppointmentConflicts */

@@ -28,9 +28,7 @@
 
 /* Render accounts
    _accounts must be an array of EOGenericRecords of account objects */
--(id)_renderAccounts:(NSArray *)_accounts 
-          withDetail:(NSNumber *)_detail 
-{
+-(id)_renderAccounts:(NSArray *)_accounts withDetail:(NSNumber *)_detail {
   NSMutableArray      *result;
   NSDictionary        *eoAccount;
   int                  count;
@@ -63,9 +61,8 @@
   return result;
 } /* end _renderAccounts */
 
-/* Get specified accounts from logic layer */
--(NSArray *)_getUnrenderedAccountsForKeys:(id)_arg 
-{
+/* Get specified accounts from Logic */
+-(NSArray *)_getUnrenderedAccountsForKeys:(id)_arg {
   NSArray       *accounts;
 
   accounts = [[[self getCTX] runCommand:@"person::get-by-globalid",
@@ -75,39 +72,39 @@
 } /* end _getUnrenderedAccountsForKeys */
 
 /* Get rendered accounts at specified detail level */
--(id)_getAccountsForKeys:(id)_arg withDetail:(NSNumber *)_detail 
-{
+-(id)_getAccountsForKeys:(id)_arg withDetail:(NSNumber *)_detail {
   return [self _renderAccounts:[self _getUnrenderedAccountsForKeys:_arg] 
                      withDetail:_detail];
 } /* end _getAccountsForKeys */
 
 /* Get rendered accounts at default detail level (0) */
--(id)_getAccountsForKeys:(id)_arg 
-{
+-(id)_getAccountsForKeys:(id)_arg {
   return [self _renderAccounts:[self _getUnrenderedAccountsForKeys:_arg] 
                      withDetail:[NSNumber numberWithInt:0]];
 } /* end _getAccountsForKeys */
 
 /* Get one rendered account at specified detail level */
--(id)_getAccountForKey:(id)_pk withDetail:(NSNumber *)_detail 
-{
+-(id)_getAccountForKey:(id)_pk withDetail:(NSNumber *)_detail {
   return [[self _getAccountsForKeys:_pk withDetail:_detail] objectAtIndex:0];
 } /* end _getAccountForKey */
 
 /* Get one rendered account at detail detail level (0) */
--(id)_getAccountForKey:(id)_pk 
-{
+-(id)_getAccountForKey:(id)_pk {
   return [[self _getAccountsForKeys:_pk] objectAtIndex:0];
 } /* end _getAccountForKey */
 
 /* Get rendered account for current account at specified detail level */
--(id)_getLoginAccount:(NSNumber *)_detail 
-{
-  id       account;
+-(id)_getLoginAccount:(NSNumber *)_detail {
+  NSMutableDictionary     *account;
 
-  account   = [[self getCTX] valueForKey:LSAccountKey];
-  return [self _getAccountForKey:[account valueForKey:@"companyId"] 
-                       withDetail:_detail];
+  account = [self _getAccountForKey:[self _getCompanyId]
+                         withDetail:_detail];
+
+  /* TODO: Implement returning the user's defaults
+     [account setObject:[self _getDefaults] forKey:@"_DEFAULTS"];
+     This fails because SOPE cannot encode the LSUserDefaults
+     class;  perhaps we can add an encoding category? */
+  return account;
 } /* end _getLoginAccount */
 
 @end /* end zOGIAction(Account) */

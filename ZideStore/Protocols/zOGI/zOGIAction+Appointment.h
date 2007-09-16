@@ -30,8 +30,8 @@
                          withDetail:(NSNumber *)_detail;
 -(NSArray *)_renderAppointments:(NSArray *)_appointments 
                      withDetail:(NSNumber *)_detail;
--(NSArray *)_getUnrenderedDatesForKeys:(id)_arg;
--(NSArray *)_getUnrenderedDateForKey:(id)_arg;
+-(NSMutableArray *)_getUnrenderedDatesForKeys:(id)_arg;
+-(NSMutableDictionary *)_getUnrenderedDateForKey:(id)_arg;
 -(id)_getDatesForKeys:(id)_arg 
            withDetail:(NSNumber* )_detail;
 -(id)_getDatesForKeys:(id)_arg;

@@ -57,6 +57,7 @@
   endDate = [eoAppointment valueForKey:@"endDate"];
   [endDate setTimeZone:[self _getTimeZone]];
   if ([permissions rangeOfString:@"v"].length > 0) {
+    /* render appointment in visible mode */
     [flags addObject:@"VISIBLE"];
     appointment = [NSMutableDictionary dictionaryWithObjectsAndKeys:
       [eoAppointment valueForKey:@"dateId"], @"objectId",
@@ -65,12 +66,14 @@
       [eoAppointment valueForKey:@"ownerId"], @"ownerObjectId",
       endDate, @"end", startDate, @"start",
       [self NIL:[eoAppointment valueForKey:@"title"]], @"title",
-      [self NIL:[eoAppointment valueForKey:@"notificationTime"]], @"notification",
+      [self NIL:[eoAppointment valueForKey:@"notificationTime"]], 
+         @"notification",
       [self NIL:[eoAppointment valueForKey:@"location"]], @"location",
       [self NIL:[eoAppointment valueForKey:@"keywords"]], @"keywords",
       [self NIL:[eoAppointment valueForKey:@"aptType"]], @"appointmentType",
       [self NIL:[eoAppointment valueForKey:@"comment"]], @"comment",
-      [self NIL:[eoAppointment valueForKey:@"accessTeamId"]], @"readAccessTeamObjectId",
+      [self NIL:[eoAppointment valueForKey:@"accessTeamId"]], 
+         @"readAccessTeamObjectId",
       nil];
     /* Add object details */
     [appointment setObject:eoAppointment forKey:@"*eoObject"];
@@ -82,6 +85,7 @@
       [self _addConflictsToDate:appointment];
     [self _addObjectDetails:appointment withDetail:_detail];
    } else {
+       /* render appointment in non-visible mode */
        [flags addObject:@"NONVISIBLE"];
        appointment = [NSMutableDictionary dictionaryWithObjectsAndKeys:
          [eoAppointment valueForKey:@"dateId"], @"objectId",
@@ -134,7 +138,7 @@
   [appointment setObject:flags forKey:@"FLAGS"];
   /* Return Rendered Appointment */
   return appointment;
- }
+} /* end _renderAppointment */
 
 /*
 	Construct an array of ZOGI appointments from an array of EOGenericRecords
@@ -159,26 +163,26 @@
                                     withDetail:_detail]];
    }
   return result;
- } // End of _renderAppointments
+} /* end _renderAppointments */
 
 /*
   Return an array of EOGenericRecords for appointment objects.  _arg is
   expected to be an array of objects that can be turned into EOGlobalIDs via
   the _getEOsForPKeys method.
  */
--(NSArray *)_getUnrenderedDatesForKeys:(id)_arg {
+-(NSMutableArray *)_getUnrenderedDatesForKeys:(id)_arg {
   return [[[self getCTX] runCommand:@"appointment::get-by-globalid",
                                     @"gids", [self _getEOsForPKeys:_arg],
                                     @"timeZone", [self _getTimeZone],
                                     nil] mutableCopy];
-} // End of _getUnrenderedDatesForKeys
+} /* end _getUnrenderedDatesForKeys */
 
 /*
   Singular instance of _getUnrenderedDatesForKeys;  still returns an array
   however so that it can be used with methods that also handle bulk actions.
   This array is guaranteed to be single-valued.
  */
--(NSArray *)_getUnrenderedDateForKey:(id)_arg {
+-(NSMutableDictionary *)_getUnrenderedDateForKey:(id)_arg {
   id               result;
 
   result = [self _getUnrenderedDatesForKeys:_arg];
@@ -188,23 +192,20 @@
     if([result count] == 1)
       return [result objectAtIndex:0];
   return nil;
-} // End of _getUnrenderedDateForKey
+} /* end _getUnrenderedDateForKey */
 
 /*
   Get an array of ZOGI Appointment dictionaries at the specified detail.
  */
--(id)_getDatesForKeys:(id)_arg withDetail:(NSNumber *)_detail 
-{
-
-  return [self _renderAppointments:[self _getUnrenderedDatesForKeys:_arg] 
+-(id)_getDatesForKeys:(id)_arg withDetail:(NSNumber *)_detail {
+  return [self _renderAppointments:[self _getUnrenderedDatesForKeys:_arg]
                         withDetail:_detail];
-} /* End of _getDatesForKeys */
+} /* end _getDatesForKeys */
 
 /* Get an array of ZOGI Appointment dictionaries with no detail. */
--(id)_getDatesForKeys:(id)_pk 
-{
+-(id)_getDatesForKeys:(id)_pk {
   return [self _getDatesForKeys:_pk withDetail:[NSNumber numberWithInt:0]];
-} /* End of _getDatesForKeys */
+} /* end _getDatesForKeys */
 
 /* Get a ZOGI Appointment dictionary with specified detail. */
 -(id)_getDateForKey:(id)_pk withDetail:(NSNumber *)_detail 
@@ -221,8 +222,7 @@
 } /* End of _getDateForKey */
 
 /* Get a ZOGI Appointment dictionary with no detail. */
--(id)_getDateForKey:(id)_pk 
-{
+-(id)_getDateForKey:(id)_pk {
   return [self _getDateForKey:_pk withDetail:[NSNumber numberWithInt:0]];
 } /* End of _getDateForKey */
 
@@ -300,7 +300,7 @@
         }
    }
   [_appointment setObject:participantList forKey:@"_PARTICIPANTS"];
- } // End _addParticipantsToDate
+} /* end _addParticipantsToDate */
 
 /*
   Adds the _CONFLICTS key to the provided appointment dictionary. This
@@ -313,7 +313,7 @@
     setObject:
       [self _renderConflictsForDate:[_appointment valueForKey:@"*eoObject"]]
     forKey:@"_CONFLICTS"];
- } // End _addConflictsToDate
+} /* end _addConflictsToDate */
 
 /* 
   This provides a method to set all the status information for a participant
@@ -334,7 +334,7 @@
   if (_rsvp     != nil) [args setObject:_rsvp     forKey:@"rsvp"];
   return [[self getCTX] runCommand:@"appointment::change-attendee-status"
                                     arguments:args];
- } // End _setParticipantStatus
+} /* end _setParticipantStatus */
 
 /*
   Search For Appointments
@@ -353,15 +353,15 @@
   NSCalendarDate        *startDate, *endDate;
   NSMutableDictionary   *args;
   NSArray               *participants, *gids;
-  id                    tmp;
+  id                     tmp;
 
   /* Setup & Validate Start Date */
   startDate = [self _makeCalendarDate:[_query objectForKey:@"startDate"]];
   if (startDate == nil) {
-   // \todo Throw exception for unhandle startDate data type
-   return [NSException exceptionWithHTTPStatus:500
-                       reason:@"No start date specified in query"];
-   }
+    // \todo Throw exception for unhandle startDate data type
+    return [NSException exceptionWithHTTPStatus:500
+                        reason:@"No start date specified in query"];
+  }
   [startDate setTimeZone:[self _getTimeZone]];
   /* Setup & Validate End Date */
   endDate = nil;
@@ -370,14 +370,16 @@
   else
     endDate = [self _makeCalendarDate:[_query objectForKey:@"endDate"]];
   if (endDate == nil) {
-   // \todo Throw exception for unhandle startDate data type
-   }
+    // \todo Throw exception for unhandle startDate data type
+  }
   [endDate setTimeZone:[self _getTimeZone]];
-  /* Setup Participant List */
+  /* setup participant restraint */
   tmp = [_query objectForKey:@"participants"];
   if (tmp == nil) {
+    /* no participants provided - assume self */
     tmp = [NSArray arrayWithObject:[self _getCompanyId]];
   } else { 
+      /* parse provided participants */
       if (([tmp isKindOfClass:[NSConcreteArray class]]) ||
           ([tmp isKindOfClass:[NSConcreteSingleObjectArray class]]))
         tmp = tmp;
@@ -385,9 +387,9 @@
         tmp = [NSArray arrayWithObject:tmp];
       else if ([tmp isKindOfClass:[NSString class]]) {
         tmp = [tmp componentsSeparatedByString:@","];
-       } else return [NSException exceptionWithHTTPStatus:500
-                        reason:@"Participant specified using unsupported type"];
-     }
+      } else return [NSException exceptionWithHTTPStatus:500
+                       reason:@"Participant specified using unsupported type"];
+    }
   participants = [self _getEOsForPKeys:tmp];
   tmp = nil;
   /* Do Query */
@@ -402,14 +404,13 @@
     [dict takeValue:aptTypes     forKey:@"aptTypes"];
   */
   gids = [[self getCTX] runCommand:@"appointment::query" arguments:args];
-  // [args release]; - causes a signal 6 when conflicts are involved (?)
   args = nil;
   // If we found nothing then just quit now
   if ([gids count] == 0)
     return [[NSArray alloc] init];
   // Render and return results
   return [self _getDatesForKeys:gids withDetail:_detail];
-}
+} /* end _searchForAppointments */
 
 /*
   _createAppointment creates a new appointment from the provided dictionary.
@@ -420,7 +421,7 @@
   return [self _writeAppointment:_appointment
                      withCommand:@"appointment::new"
                        withFlags:_flags];
- } // End _createAppointment
+} /* end _createAppointment */
 
 /*
   Update appointment
@@ -431,7 +432,7 @@
   return [self _writeAppointment:_appointment
                      withCommand:@"appointment::set"
                        withFlags:_flags];
- } // End _updateAppointment
+} /* end _updateAppointment */
 
 /* 
   Delete an appointment or a set of related appointments
@@ -455,14 +456,13 @@
       }
   [[self getCTX] commit];
   return [NSNumber numberWithBool:YES];
- } // End _deleteAppointment
+} /* end _deleteAppointment */
 
 /* Write an appointment to the database
    TODO: Check for version conflicts */
 -(id)_writeAppointment:(NSDictionary *)_appointment
            withCommand:(NSString *)_command
-             withFlags:(NSArray *)_flags 
-{
+             withFlags:(NSArray *)_flags {
   id                     appointment, exception; 
   NSDictionary          *resource, *eoResource;
   NSEnumerator	        *enumerator;
@@ -541,7 +541,7 @@
   /* render appointment and return */
   return [self _getDateForKey:[appointment objectForKey:@"dateId"]
                    withDetail:[NSNumber numberWithInt:65535]];
- } // End _writeAppointment
+} /* end _writeAppointment */
 
 /*
   Translate participants from a ZOGI dictionary to what the OpenGroupware
@@ -598,7 +598,7 @@
     [participants addObject:participant];
    } // End for count < [_participants count]
   return participants;
- } // End _translateParticipants
+} /* End _translateParticipants */
 
 /*
   Translate a ZOGI dictionary into a dictionary that corresponds to an
@@ -708,12 +708,11 @@
     [appointment setObject:[NSNumber numberWithInt:0] 
                     forKey:@"isWarningIgnored"];
   return appointment;
- } // End _translateAppointment
+} /* end _translateAppointment */
 
 -(id)_setParticipantStatus:(NSDictionary *)_status
                   objectId:(NSString *)_objectId
-                 withFlags:(NSArray *)_flags 
-{
+                 withFlags:(NSArray *)_flags {
   NSMutableDictionary *args;
   id                   appointment;
   id                   result;
@@ -746,13 +745,12 @@
 
   result = [[self getCTX] runCommand:@"appointment::change-attendee-status"
                            arguments:args];
-  if ([result intValue] == 1)
-  {
+  if ([result intValue] == 1) {
     [[self getCTX] commit];
   }
 
   return [self _getDateForKey:_objectId 
                    withDetail:[NSNumber numberWithInt:65535]];
-}
+} /* end _setParticipantStatus */
 
 @end /* End zOGIAction(Appointment) */

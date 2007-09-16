@@ -59,6 +59,8 @@
 -(id)_deleteProject:(id)_objectId
           withFlags:(NSArray *)_flags;
 
+-(NSArray *)_diffProjectPartners:(NSArray *)_list1 with:(NSArray *)_list2;
+
 @end
 
 #endif /* __zOGIAction_Project_H__ */

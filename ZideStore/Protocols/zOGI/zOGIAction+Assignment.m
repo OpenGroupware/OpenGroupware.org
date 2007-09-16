@@ -67,7 +67,7 @@
        [assignment setObject:[NSNull null] forKey:@"info"];
       }
   return assignment;
-}
+} /* end _renderAssignment */
 
 /* _getCompanyAssignments
    Concerning the _company parameter:
@@ -83,7 +83,7 @@
    5.) If _company is a string then the intValue of the string will be used
   
    Results:
-   If _company is a mutable directionary then the results will be stored
+   If _company is a mutable dictionary then the results will be stored
    in the "*companyAssignments" of that dictionary and the entire dictionary
    will be returned;  otherwise the results of the  logic command
    "companyassignment::get" are returned unmodified.  The result of this
@@ -115,9 +115,9 @@
                     _key, companyId,
                     @"returnType", intObj(LSDBReturnType_ManyObjects),
                     nil];
-  if ([assignments isKindOfClass:[NSException class]])
-  {
-    [self logWithFormat:@"Logic exception retrieving company assignments", assignments];
+  if ([assignments isKindOfClass:[NSException class]]) {
+    [self warnWithFormat:@"Logic exception retrieving company assignments", 
+       assignments];
     return assignments;
   }
   if (assignments == nil)
@@ -127,7 +127,7 @@
     [_company setObject:assignments forKey:@"*companyAssignments"];
  
   return assignments;
-}
+} /* end _getCompanyAssignments */
 
 /* Store the provided enterprise relationship  */
 -(NSException *)_saveCompanyAssignments:(NSArray *)_assignments 
@@ -149,33 +149,32 @@
     [self logWithFormat:@"saving company assignments for %@", _objectId];
 
   /* If the provided enterprises array is empty then just delete them all */
-  if ([_assignments count] == 0)
-  {
+  if ([_assignments count] == 0) {
     if ([self isDebug])
       [self logWithFormat:@"client supplied no company assignments"];
     assignments = [self _getCompanyAssignments:_objectId key:_key];
     if ([assignments isKindOfClass:[NSException class]])
       return assignments;
-    if ([assignments count] > 0)
-    {
+    if ([assignments count] > 0) {
       if ([self isDebug])
-        [self logWithFormat:@"deleting all company assignments for %@", _objectId];
+        [self logWithFormat:@"deleting all company assignments for %@",
+           _objectId];
       serverEnumerator = [assignments objectEnumerator];
-      while ((serverRecord = [serverEnumerator nextObject]) != nil) 
-      {
-        if ([[self _getEntityNameForPKey:[serverRecord valueForKey:@"companyId"]]
-                isEqualToString:_targetEntity]) 
-        {
+      while ((serverRecord = [serverEnumerator nextObject]) != nil) {
+        if ([[self _getEntityNameForPKey:[serverRecord 
+                                            valueForKey:@"companyId"]]
+                isEqualToString:_targetEntity]) {
           [[self getCTX] runCommand:@"companyassignment::delete",
                           @"object", serverRecord, nil];
         } /* End if-assignment-is-correct-type */
       } /* End delete-all-assignments loop */
     } else if ([self isDebug])
-        [self logWithFormat:@"there are no company assignments for %@", _objectId];
-  } else 
-    {
+        [self logWithFormat:@"there are no company assignments for %@", 
+           _objectId];
+  } else {
       if ([self isDebug])
-        [self logWithFormat:@"syncronizing company assignments for %@: scanning", _objectId];
+        [self logWithFormat:@"syncing company assignments for %@: scanning", 
+           _objectId];
       /* Sigh... we have real work to do, process client-->server changes */
       inserts = [[NSMutableArray alloc] initWithCapacity:16];
       deletes = [[NSMutableArray alloc] initWithCapacity:16];
@@ -184,13 +183,11 @@
         return assignments;
       /* Scan for records on the server that are not on the client */
       serverEnumerator = [assignments objectEnumerator];
-      while ((serverRecord = [serverEnumerator nextObject]) != nil)
-      {
+      while ((serverRecord = [serverEnumerator nextObject]) != nil) {
         isFound = 0;
         clientEnumerator = [_assignments objectEnumerator];
         while (((clientRecord = [clientEnumerator nextObject]) != nil) &&
-               (isFound == 0))
-        { 
+               (isFound == 0)) {
           if ([[clientRecord objectForKey:@"targetObjectId"] intValue] ==
              [[serverRecord objectForKey:@"companyId"] intValue])
             isFound = 1;
@@ -202,12 +199,10 @@
 
       /* Scan for records on the client that are not on the server */
       clientEnumerator = [_assignments objectEnumerator];
-      while ((clientRecord = [clientEnumerator nextObject]) != nil)
-      {
+      while ((clientRecord = [clientEnumerator nextObject]) != nil) {
         isFound = 0;
         serverEnumerator = [assignments objectEnumerator];
-        while ((serverRecord = [serverEnumerator nextObject]) != nil)
-        {
+        while ((serverRecord = [serverEnumerator nextObject]) != nil) {
           if([[clientRecord objectForKey:@"targetObjectId"] intValue] ==
              [[serverRecord objectForKey:@"companyId"] intValue])
            isFound = 1;
@@ -219,25 +214,22 @@
 
       /* Process company assignment deletions */
       if ([self isDebug])
-        [self logWithFormat:@"syncronizing company assignments for %@: changing", _objectId];
-      if ([deletes count] > 0)
-      {
+        [self logWithFormat:@"syncing company assignments for %@: changing", 
+           _objectId];
+      if ([deletes count] > 0) {
         serverEnumerator = nil;
         serverEnumerator = [deletes objectEnumerator];
-        while ((serverRecord = [serverEnumerator nextObject]) != nil)
-        {
+        while ((serverRecord = [serverEnumerator nextObject]) != nil) {
           [[self getCTX] runCommand:@"companyassignment::delete",
                            @"object", serverRecord, nil];
         } /* End process-deletes-loop */
       } /* End if-there-are-deletes */
 
       /* Process new company assignments */
-      if ([inserts count] > 0)
-      {
+      if ([inserts count] > 0) {
         serverEnumerator = nil;
         serverEnumerator = [inserts objectEnumerator];
-        while ((serverRecord = [serverEnumerator nextObject]) != nil)
-        {
+        while ((serverRecord = [serverEnumerator nextObject]) != nil) {
           [[self getCTX] runCommand:@"companyassignment::new"
              arguments:[NSDictionary dictionaryWithObjectsAndKeys:
                           [serverRecord objectForKey:@"targetObjectId"], 

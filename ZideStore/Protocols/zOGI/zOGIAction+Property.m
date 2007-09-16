@@ -25,16 +25,18 @@
 
 @implementation zOGIAction(Property)
 
-NSString *OGoExtAttrSpace = @"http://www.opengroupware.org/properties/ext-attr";
+NSString *OGoExtAttrSpace = 
+            @"http://www.opengroupware.org/properties/ext-attr";
 NSString *AptExtAttrDefault = @"OGoExtendedAptAttributes";
 
 -(NSString *)_takeNamespaceFromProperty:(NSString *)_property {
-  return [[[_property componentsSeparatedByString:@"}"] objectAtIndex:0] substringFromIndex:1];
-}
+  return [[[_property componentsSeparatedByString:@"}"] 
+              objectAtIndex:0] substringFromIndex:1];
+} /* end _takeNamespaceFromProperty */
 
 -(NSString *)_takeAttributeFromProperty:(NSString *)_property {
   return [[_property componentsSeparatedByString:@"}"] objectAtIndex:1];
-}
+} /* end _takeAttributeFromProperty */
 
 -(NSDictionary *)_renderProperty:(id)_name
                        withValue:(id)_value 
@@ -72,6 +74,10 @@ NSString *AptExtAttrDefault = @"OGoExtendedAptAttributes";
        [property setObject:@"unknown" forKey:@"valueType"];
       } 
   if ([namespace isEqualToString:OGoExtAttrSpace]) {
+    /* Properties in this space are extended attributes supported by the
+       core OGo Logic & WebUI.  These have type, labels, and possibly
+       a supported values list just like legacy XA stored in the
+       company values relation */
     if (standardDefaults == nil) {
       standardDefaults = [NSUserDefaults standardUserDefaults];
       extAttrSpecs = [[standardDefaults arrayForKey:AptExtAttrDefault] copy];
@@ -102,16 +108,18 @@ NSString *AptExtAttrDefault = @"OGoExtendedAptAttributes";
           } else { 
             [property setObject:[NSNull null] forKey:@"values"];
           }
-        }
-     }
+        } /* end found-XA-spec */
+     } /* end while */
+     /* end property-is-an-XA */
    } else {
+       /* property is not an XA, stuff these values with NULLs */
        [property setObject:[NSNull null] forKey:@"label"];
        [property setObject:[NSNull null] forKey:@"type"];
        [property setObject:[NSNull null] forKey:@"values"];
       }
 
   return property;
-}
+} /* end _renderProperty */
 
 -(NSArray *)_propertiesForKey:(id)_objectId {
   id             properties, key;
@@ -129,61 +137,13 @@ NSString *AptExtAttrDefault = @"OGoExtendedAptAttributes";
                                         forObject:_objectId]];
    }
   return propertyList;
-}
-
-/*
-   THIS CODE CHEATS!
-      This example uses a private method of the property manager to 
-      dig out more details about the property.  This is bad practice
-      so this code is not used - however, not using this code means
-      we loose the ability to provide an objectId for the property. :(
-
--(NSDictionary *)_renderProperty:(id)_property {
-  
-    TODO: 1.) Deal with value types other than string
-          2.) Add type and label information to rendered property from 
-              system defaults if namespace is               
-              "http://www.opengroupware.org/properties/ext-attr" as 
-              those values are rendered in the UI as extended 
-              attributes.
-          3.) Figure out long string storage and BLOB encoding.
-   
-  return [NSDictionary dictionaryWithObjectsAndKeys:
-       [_property objectForKey:@"key"], @"propertyName",
-       [_property objectForKey:@"namespacePrefix"], @"namespace",
-       [_property objectForKey:@"preferredType"], @"preferredType",
-       [self NIL:[_property objectForKey:@"valueString"]], @"value",
-       @"objectProperty", @"entityName",
-       [_property objectForKey:@"objectPropertyId"], @"objectId",
-       [_property objectForKey:@"objectId"], @"entityObjectId",
-       nil];
-}
-
--(NSArray *)_propertiesForKey:(id)_objectId {
-  NSMutableArray *propertyList;
-  NSArray        *properties, *keys;
-  id             property;
-  NSEnumerator   *enumerator;
-
-  propertyList = [[NSMutableArray alloc] initWithCapacity:6];
-  keys = [NSArray arrayWithObjects:[self _getEOForPKey:_objectId], nil];
-  properties = [[[self getCTX] propertyManager] 
-                 _fetchPropertyRowsForGlobalIDs:keys
-                                      namespace:nil];
-  enumerator = [properties objectEnumerator];
-  while ((property = [enumerator nextObject]) != nil) {
-     [propertyList addObject:[self _renderProperty:property]];
-   }
-  return propertyList;
-}
-
-  END OF CHEATING CODE
-*/
+} /* end _propertiesForKey */
 
 -(void)_addPropertiesToObject:(NSMutableDictionary *)_object {
-  [_object setObject:[self _propertiesForKey:[_object valueForKey:@"objectId"]]
-              forKey:@"_PROPERTIES"];
-}
+  [_object 
+     setObject:[self _propertiesForKey:[_object valueForKey:@"objectId"]]
+        forKey:@"_PROPERTIES"];
+} /* end _addPropertiesToObject */
 
 -(id)_translateProperty:(NSDictionary *)_property {
   NSMutableString  *propertyName;
@@ -207,7 +167,7 @@ NSString *AptExtAttrDefault = @"OGoExtendedAptAttributes";
    }
   return [NSException exceptionWithHTTPStatus:500
              reason:@"Encountered property without property name"];
-}
+} /* end _translateProperty */
 
 -(NSException *)_saveProperties:(id)_properties 
                       forObject:(id)_objectId {
@@ -229,6 +189,6 @@ NSString *AptExtAttrDefault = @"OGoExtendedAptAttributes";
   return [[[self getCTX] propertyManager] takeProperties:propertyList
                                                 namespace:nil
                                                  globalID:eo];
-}
+} /* end _saveProperties */
 
 @end /* End zOGIAction(Property) */

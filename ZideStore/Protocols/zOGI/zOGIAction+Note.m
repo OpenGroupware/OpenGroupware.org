@@ -42,7 +42,7 @@
     [noteList addObject:[self _renderNote:note]];
    }
   return noteList;
- } // End _getNotesForKey
+} /* end _getNotesForKey */
 
 -(id)_renderNote:(NSDictionary *)_note {
   return [NSDictionary dictionaryWithObjectsAndKeys:
@@ -55,12 +55,11 @@
     [self NIL:[_note valueForKey:@"projectId"]], @"projectObjectId",
     [self NIL:[_note valueForKey:@"dateId"]], @"appointmentObjectId",
     [NSString stringWithContentsOfFile:[_note valueForKey:@"attachmentName"]],
-    @"content",
+      @"content",
     nil];
-}
-/*
-   Retrieve and return the unrendered notes for the specified object.
- */
+} /* end _renderNote */
+
+/* Retrieve and return the unrendered notes for the specified object. */
 -(id)_getUnrenderedNotesForKey:(NSString *)_objectId {
   NSArray  *notes;
   NSString *entityName;
@@ -78,14 +77,16 @@
    }
   if (notes == nil)
     return [NSArray array];
-  [[self getCTX] runCommand:@"note::get-attachment-name", @"notes", notes, nil];
+  [[self getCTX] runCommand:@"note::get-attachment-name", 
+                            @"notes", notes, 
+                            nil];
   return notes;
- } // End _getUnrenderedNotesForKey
+} /* end _getUnrenderedNotesForKey */
 
 /*
   Save notes
   Note dictionaries in _notes with an objectId of "0" are created as new,
-  notes with a non-zero objectId are updated.  If the object has notes not 
+  notes with a non-zero objectId are updated.  If the object has notes not
   provided in the array they are deleted.
  */
 -(id)_saveNotes:(NSArray *)_notes 
@@ -98,14 +99,12 @@
 
   if ([self isDebug])
     [self logWithFormat:@"Saving notes on object %@", _objectId];
-  if (_notes == nil) 
-  {
+  if (_notes == nil) {
     if ([self isDebug])
       [self logWithFormat:@"No _NOTES key.", _objectId];
     return nil;  
   }
-  if ([_notes count] == 0) 
-  {
+  if ([_notes count] == 0) {
     if ([self isDebug])
       [self logWithFormat:@"No notes on object, deleing all notes."];
     return [self _deleteAllNotesFromObject:_objectId];
@@ -150,11 +149,9 @@
         }
    } // End while ((note = [[self _getNotesForKey:objectId] nextObject])
   return nil;
- } // End _saveNotes
+} /* end _saveNotes */
 
-/*
-  Delete all the notes from an object
- */
+/* Delete all the notes from an object */
 -(id)_deleteAllNotesFromObject:(NSString *)_objectId {
   NSArray       *objectNotes;
   NSEnumerator  *enumerator;
@@ -166,12 +163,10 @@
     [self _deleteNote:_objectId];
    } // End while ((note = [enumerator nextObject]) != nil)
   return nil;
- }
+} /* end _deleteAllNotesFromObject */
 
-/* 
-  Insert a note attached to the specified object,  that object must be
-  an appointment or a project.
- */
+/* Insert a note attached to the specified object,  that object must be
+  an appointment or a project. */
 -(id)_insertNote:(id)_objectId
        withTitle:(id)_title
      withContent:(id)_content {
@@ -180,11 +175,9 @@
 
   accountId =[self _getCompanyId];
   entityName = [self _getEntityNameForPKey:_objectId];
-  if ([entityName isEqualToString:@"Date"])
-  {
+  if ([entityName isEqualToString:@"Date"]) {
     objectKey = [NSString stringWithString:@"dateId"];
-  } else if ([entityName isEqualToString:@"Project"])
-    {
+  } else if ([entityName isEqualToString:@"Project"]) {
       objectKey = [NSString stringWithString:@"projectId"];
     } else return [NSException exceptionWithHTTPStatus:500
                       reason:@"Cannot attach note to this object type"];
@@ -203,8 +196,9 @@
       return [NSException exceptionWithHTTPStatus:500
                           reason:@"Note creation failed"];
   return [self _renderNote:note];
- } // End _insertNote
+} /* end _insertNote */
 
+/* Delete the specified note */
 - (id)_deleteNote:(id)_noteId {
   id note, result;
 
@@ -221,11 +215,10 @@
                    @"reallyDelete", [NSNumber numberWithBool:YES],
                  nil];
   return [NSNumber numberWithBool:YES];
- } // End _deleteNote
+} /* end _deleteNote */
 
-/*
-  Update the title and content of the specified note
- */
+/* Update the title and content of the specified note 
+   TODO: Does Logic auto update last modified time & user ? */
 -(id)_updateNote:(id)_noteId
        withTitle:(id)_title
      withContent:(id)_content {
@@ -234,7 +227,8 @@
   note = [[[self getCTX] runCommand:@"note::get",
              @"documentId", _noteId,
              nil] lastObject];
-  [note takeValue:[NSNumber numberWithInt:[_content length]] forKey:@"fileSize"];
+  [note takeValue:[NSNumber numberWithInt:[_content length]]
+           forKey:@"fileSize"];
   [note takeValue:_content forKey:@"fileContent"];
   [note takeValue:_title forKey:@"title"];
   [[self getCTX] runCommand:@"note::set",
@@ -244,6 +238,6 @@
              @"documentId", _noteId,
              nil] lastObject];
   return [self _renderNote:note];
- } // End _updateNote
+} /* end _updateNote */
 
 @end /* End zOGIAction(Note) */

@@ -36,8 +36,7 @@
 @implementation zOGIAction(Object)
 
 -(NSDictionary *)_getObjectByObjectId:(id)_objectId 
-                           withDetail:(NSNumber *)_detail 
-{
+                           withDetail:(NSNumber *)_detail {
   NSDictionary  *result;
   NSString      *entityName;
 
@@ -62,12 +61,11 @@
   if (result == nil)
     return [self _makeUnknownObject:(id)_objectId];
   return result;
-} /* End _getObjectByObjectId */
+} /* end _getObjectByObjectId */
 
 /* Add detail information that is common to all object types */
 -(void)_addObjectDetails:(NSMutableDictionary *)_object 
-               withDetail:(NSNumber *)_detail 
-{
+               withDetail:(NSNumber *)_detail {
   if([_detail intValue] > 0) {
     if([_detail intValue] & zOGI_INCLUDE_OBJLINKS)
       [self _addLinksToObject:_object];
@@ -79,7 +77,7 @@
       [self _addACLsToObject:_object];
    }
   [self _stripInternalKeys:_object];
-} /* End _addObjectDetails */
+} /* end _addObjectDetails */
 
 /* Add ACLs from Access Manager to object
    FYI: Contacts & enterprises get ACLs from object_acl,  projects get
@@ -108,15 +106,13 @@
                               @"acl", @"entityName",
                               [_object objectForKey:@"objectId"],
                                  @"parentObjectId", 
-                              [tmp valueForKey:@"projectCompanyAssignmentId"],
-                                 @"objectId",
                               [self _izeEntityName:key],
                                  @"targetEntityName",
                               [tmp valueForKey:@"companyId"],
                                  @"targetObjectId",
                               [tmp valueForKey:@"accessRight"],
                                  @"operations",
-                              [tmp valueForKey:@"info"], @"info",
+                              [self NIL:[tmp valueForKey:@"info"]], @"info",
                               nil]];
       } /* end project-assignment-is-an-ACL */
     } /* end while */
@@ -125,8 +121,7 @@
         [results count],
         [_object valueForKey:@"objectId"]]; 
     /* end entity-is-a-project */
-  } else
-    {
+  } else {
       accessManager = [[self getCTX] accessManager];
       tmp = [self _getEOsForPKeys:[_object objectForKey:@"objectId"]];
       acls = [accessManager allowedOperationsForObjectIds:tmp];
@@ -164,8 +159,7 @@
 } /* end _addACLs */
 
 /* Add _OBJECTLINKS information to an object */
--(void)_addLinksToObject:(NSMutableDictionary *)_object 
-{
+-(void)_addLinksToObject:(NSMutableDictionary *)_object {
   NSMutableArray      *linkList;
   NSArray             *links;
   NSEnumerator        *enumerator;
@@ -249,7 +243,8 @@
   _objectId specified are syncronized; object links must be modified from 
   the source.
  */
--(NSException *)_saveObjectLinks:(NSArray *)_links forObject:(NSString *)_objectId {
+-(NSException *)_saveObjectLinks:(NSArray *)_links
+                       forObject:(NSString *)_objectId {
   NSEnumerator        *clientEnumerator, *serverEnumerator;
   NSDictionary        *clientLink;
   NSArray             *serverLinks;
@@ -330,8 +325,7 @@
 
 -(NSException *)_saveACLs:(NSArray *)_acls 
                 forObject:(id)_objectId
-               entityName:(id)_entityName
-{
+               entityName:(id)_entityName {
   SkyAccessManager    *accessManager;
   NSMutableDictionary *acls;
   NSDictionary        *acl;
@@ -364,8 +358,7 @@
 } /* end _saveACLs */
 
 /* Remove objectId from favorite contacts list */
--(void)_unfavoriteObject:(id)_objectId defaultKey:(NSString *)_key
-{
+-(void)_unfavoriteObject:(id)_objectId defaultKey:(NSString *)_key {
   NSMutableArray    *favIds;
 
   if (![_objectId isKindOfClass:[NSString class]])
@@ -374,22 +367,20 @@
   [favIds removeObject:_objectId];
   [[self _getDefaults] setObject:favIds forKey:_key];
   [[self _getDefaults] synchronize];
-} /* End _unfavoriteObject */
+} /* end _unfavoriteObject */
 
 /* Add objectId to list of favorite contacts */
--(void)_favoriteObject:(id)_objectId defaultKey:(NSString *)_key
-{
+-(void)_favoriteObject:(id)_objectId defaultKey:(NSString *)_key {
   NSMutableArray    *favIds;
 
   if (![_objectId isKindOfClass:[NSString class]])
     _objectId = [_objectId stringValue];
   favIds = [[[self _getDefaults] arrayForKey:_key] mutableCopy];
-  if ([favIds indexOfObject:_objectId] == NSNotFound)
-  {
+  if ([favIds indexOfObject:_objectId] == NSNotFound) {
     [favIds addObject:_objectId];
     [[self _getDefaults] setObject:favIds forKey:_key];
     [[self _getDefaults] synchronize];
   }
-} /* End _favoriteObject */
+} /* end _favoriteObject */
 
 @end

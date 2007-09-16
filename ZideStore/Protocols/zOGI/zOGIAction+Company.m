@@ -33,8 +33,7 @@
    PRIVATE if the privacy flag is set to one
    TODO: Flag if there are ACLS on the object */
 -(NSMutableArray *)_renderCompanyFlags:(EOGenericRecord *)_company 
-                            entityName:(NSString *)_entityName
-{
+                            entityName:(NSString *)_entityName {
   NSMutableArray      *flags;
   SkyAccessManager    *accessManager;
   NSArray             *favIds;
@@ -62,7 +61,7 @@
   if ([[_company valueForKey:@"isPrivate"] intValue])
     [flags addObject:@"PRIVATE"];
   return flags;
-} /* End _renderCompanyFlags */
+} /* end _renderCompanyFlags */
 
 -(NSException *)_addAddressesToCompany:(NSMutableDictionary *)_company {
   NSMutableArray      *addressList;
@@ -76,14 +75,12 @@
                  @"companyId",  companyId,
                  @"returnType", intObj(LSDBReturnType_ManyObjects),
                  nil];
-  if (addresses == nil) 
-  {
+  if (addresses == nil) {
     [_company setObject:[NSArray array] forKey:@"_ADDRESSES"];  
     return nil;
   } else if ([addresses isKindOfClass:[NSException class]])
       return addresses;
-  if ([addresses count] == 0)
-  {
+  if ([addresses count] == 0) {
     [_company setObject:[NSArray array] forKey:@"_ADDRESSES"];  
     return nil;
   }
@@ -107,7 +104,7 @@
    }
   [_company setObject:addressList forKey:@"_ADDRESSES"];
   return nil;
-} /* End _addAddressesToCompany */
+} /* end _addAddressesToCompany */
 
 -(NSException *)_addPhonesToCompany:(NSMutableDictionary *)_company {
   NSArray             *phones;
@@ -116,7 +113,7 @@
   NSNumber            *companyId;
   id                   phone;
 
-  companyId = [NSNumber numberWithInt:[[_company objectForKey:@"objectId"] intValue]];
+  companyId = intObj([[_company objectForKey:@"objectId"] intValue]);
   phones = [[self getCTX] runCommand:@"telephone::get",
               @"companyId",  companyId,
               @"returnType", intObj(LSDBReturnType_ManyObjects),
@@ -138,7 +135,7 @@
    }
   [_company setObject:phoneList forKey:@"_PHONES"];
   return nil;
-}
+} /* end _addPhonesToCompany */
 
 -(NSException *)_addCompanyValuesToCompany:(NSMutableDictionary *)_company {
   NSMutableArray      *valueList;
@@ -163,11 +160,10 @@
    }
   [_company setObject:valueList forKey:@"_COMPANYVALUES"];
   return nil;
-}
+} /* end _addCompanyValuesToCompany */
 
 -(NSMutableDictionary *)_translateAddress:(NSDictionary *)_address 
-                               forCompany:(id)_objectId
-{
+                               forCompany:(id)_objectId {
   NSMutableDictionary   *address;
 
   address = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -185,16 +181,15 @@
   if ([self isDebug])
     [self logWithFormat:@"Translated address to %@", address];
   return address;
-} /* End _translateAddress */
+} /* end _translateAddress */
 
--(NSException *)_saveAddresses:(NSArray *)_addresses forCompany:(id)_objectId
-{
+-(NSException *)_saveAddresses:(NSArray *)_addresses 
+                    forCompany:(id)_objectId {
   NSMutableDictionary  *address;
   id                    eo;
   int                   count;
 
-  for (count = 0; count < [_addresses count]; count++)
-  {
+  for (count = 0; count < [_addresses count]; count++) {
     address = [self _translateAddress:[_addresses objectAtIndex:count]
                            forCompany:_objectId];
     eo = [[self getCTX] runCommand:@"address::get",
@@ -203,14 +198,11 @@
              @"operator", @"AND",
              @"comparator", @"EQUALS",
              nil];
-    if ([eo isKindOfClass:[NSArray class]])
-    {
-      if ([eo isNotEmpty])
-      {
+    if ([eo isKindOfClass:[NSArray class]]) {
+      if ([eo isNotEmpty]) {
         [address setObject:[eo lastObject] forKey:@"object"];
         eo = [[self getCTX] runCommand:@"address::set" arguments:address];
-      } else
-        {
+      } else {
           eo = [[self getCTX] runCommand:@"address::new" arguments:address];
         }
     }
@@ -218,11 +210,10 @@
       return eo;
   }
   return nil;
-} /* End _saveAddresses */
+} /* end _saveAddresses */
 
 -(NSMutableDictionary *)_translatePhone:(NSDictionary *)_phone 
-                             forCompany:(id)_objectId
-{
+                             forCompany:(id)_objectId {
   NSMutableDictionary   *phone;
 
   phone = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -235,18 +226,16 @@
     [phone setObject:[_phone objectForKey:@"info"] forKey:@"info"];
 
   return phone;
-} /* End of _translatePhone */
+} /* end of _translatePhone */
 
 /* Save the phone records for a contact/enterprise */
 -(NSException *)_savePhones:(NSArray *)_phones 
-                 forCompany:(id)_objectId
-{
+                 forCompany:(id)_objectId {
   NSMutableDictionary  *phone;
   id                    eo;
   int                   count;
 
-  for (count = 0; count < [_phones count]; count++)
-  {
+  for (count = 0; count < [_phones count]; count++) {
     phone = [self _translatePhone:[_phones objectAtIndex:count]
                        forCompany:_objectId];
     if ([self isDebug])
@@ -263,15 +252,12 @@
        "set" command.
        BUG: What happens if the result is not an array?  Looks like a logic
             command will be attempted with no command selected.*/
-    if ([eo isKindOfClass:[NSArray class]])
-    {
-      if ([eo isNotEmpty])
-      {
+    if ([eo isKindOfClass:[NSArray class]]) {
+      if ([eo isNotEmpty]) {
         /* What does this line do, why? */
         [phone setObject:[eo lastObject] forKey:@"object"];
         eo = [[self getCTX] runCommand:@"telephone::set" arguments:phone];
-      } else
-        {
+      } else {
           eo = [[self getCTX] runCommand:@"telephone::new" arguments:phone];
         }
     } /* End of if-the-result-an-array */
@@ -279,18 +265,17 @@
       return eo;
   }
   return nil;
-} /* End of _savePhones */
+} /* end _savePhones */
 
 /* Store a comapny 
-   Used by _updateContact, _createContact, _updateEnterprise, _createEnterprise
-   _command should be "new" or "set"
+   Used by _updateContact, _createContact, _updateEnterprise, 
+   _createEnterprise; _command should be "new" or "set"
    Flags supports: favorite, unfavorite, noCommit
    Flags supported only for enterprises: businessCard*/
 -(id)_writeCompany:(NSDictionary *)_company
        withCommand:(NSString *)_command
          withFlags:(NSArray *)_flags 
-        forEntity:(NSString *)_entity
-{
+        forEntity:(NSString *)_entity {
   NSArray              *keys;
   NSString             *key;
   NSString             *command;
@@ -305,29 +290,22 @@
     [self logWithFormat:@"_writeCompany using %@ command", command];
   company = [[NSMutableDictionary alloc] initWithCapacity:[_company count]];
   keys = [_company allKeys];
-  for (count = 0; count < [keys count]; count++) 
-  {
+  for (count = 0; count < [keys count]; count++) {
     value = [_company objectForKey:[keys objectAtIndex:count]];
-    if ([_entity isEqualToString:@"person"])
-    {
+    if ([_entity isEqualToString:@"person"]) {
       key = [self _translateContactKey:[keys objectAtIndex:count]];
-      if (key != nil)
-      {
-        if ([key isEqualToString:@"birthday"])
-        {
-          if ([value isKindOfClass:[NSCalendarDate class]])
-          {
+      if (key != nil) {
+        if ([key isEqualToString:@"birthday"]) {
+          if ([value isKindOfClass:[NSCalendarDate class]]) {
             /* TODO: Set timezone on birthdate to GMT? */
-          } else
-            {
+          } else {
               /* value is not a date; convert from string */
               if ([value isEqualToString:@""])
                 value = [EONull null];
               else
                 value = [self _makeCalendarDate:value];
             }
-        } else if ([key isEqualToString:@"gender"])
-          {
+        } else if ([key isEqualToString:@"gender"]) {
             if (([value isEqualToString:@"undefined"]) ||
                 ([value isEqualToString:@""]))
               value = [EONull null];
@@ -335,8 +313,7 @@
       }
     } else
         key = [self _translateEnterpriseKey:[keys objectAtIndex:count]];
-    if (key != nil)
-    {
+    if (key != nil) {
       if ([value isKindOfClass:[NSException class]])
         return value;
       [company setObject:value forKey:key];
@@ -347,8 +324,7 @@
   keys = nil;
 
   /* Process company values */
-  if ([_company objectForKey:@"_COMPANYVALUES"] != nil)
-  {
+  if ([_company objectForKey:@"_COMPANYVALUES"] != nil) {
     for (count = 0;
          count < [[_company objectForKey:@"_COMPANYVALUES"] count];
          count++) {
@@ -363,45 +339,44 @@
   } /* End if-COMPANYVALUES-supplied-by-client */
 
   /* Add & test snapshot if event is an update */
-  if ([_command isEqualToString:@"set"])
-  {
+  if ([_command isEqualToString:@"set"]) {
     if ([self isDebug])
       [self logWithFormat:@"Performing update of %@", 
          [company objectForKey:@"companyId"]];
     if ([_entity isEqualToString:@"enterprise"])
-      eo = [self _getUnrenderedEnterpriseForKey:[company objectForKey:@"companyId"]];
+      eo = [self _getUnrenderedEnterpriseForKey:
+              [company objectForKey:@"companyId"]];
     else
-      eo = [self _getUnrenderedContactForKey:[company objectForKey:@"companyId"]];
-    if (eo == nil)
-    {
+      eo = [self _getUnrenderedContactForKey:
+              [company objectForKey:@"companyId"]];
+    if (eo == nil) {
       if ([self isDebug])
         [self logWithFormat:@"Null snapshot when attempting company update"];
       return [NSException exceptionWithHTTPStatus:500
                 reason:@"Snapshot object for update could not be retrieved"];
     }
-    /* Object version check is not performed if ignoreVersion flag was provided
-       by the client.  But this is generally a bad idea and clients should ONLY
-       use this to offer an explicit force-overwrite option. */
-    if (!([_flags containsObject:[NSString stringWithString:@"ignoreVersion"]]))
-    {
+    /* Object version check is not performed if ignoreVersion flag 
+       was provided by the client.  But this is generally a bad idea
+       and clients should ONLY use this to offer an explicit force-
+       overwrite option. */
+    if (!([_flags containsObject:@"ignoreVersion"])) {
       if ([_company objectForKey:@"version"] == nil)
         return [NSException exceptionWithHTTPStatus:500
                   reason:@"No version supplied on company update"];
       if ([[_company objectForKey:@"version"] intValue] !=
-          [[eo objectForKey:@"objectVersion"] intValue])
-      {
-        if ([self isDebug])
-        {
-          [self warnWithFormat:@"Client object version: %@", [_company objectForKey:@"version"]];
-          [self warnWithFormat:@"Server object version: %@", [eo objectForKey:@"objectVersion"]];
+          [[eo objectForKey:@"objectVersion"] intValue]) {
+        if ([self isDebug]) {
+          [self warnWithFormat:@"Client object version: %@", 
+             [_company objectForKey:@"version"]];
+          [self warnWithFormat:@"Server object version: %@", 
+             [eo objectForKey:@"objectVersion"]];
         }
         return [NSException exceptionWithHTTPStatus:500
                   reason:@"Client object is out of date"];
       }
     } /* If ignoreVersion-not-specified */
     [company setObject:eo forKey:@"object"];
-  } else
-    {
+  } else {
       /* Creating a new company, remove companyId */
       [company removeObjectForKey:@"companyId"];
     }
@@ -423,8 +398,7 @@
   if (value != nil)
     exception = [self _saveAddresses:value 
                           forCompany:[company objectForKey:@"companyId"]];
-  if (exception != nil) 
-  {
+  if (exception != nil) {
     if ([self isDebug])
       [self logWithFormat:@"exception occured saving company addresses"];
     [[self getCTX] rollback];
@@ -437,8 +411,7 @@
   if (value != nil)
     exception = [self _savePhones:value
                           forCompany:[company objectForKey:@"companyId"]];
-  if (exception != nil) 
-  {
+  if (exception != nil) {
     if ([self isDebug])
       [self logWithFormat:@"exception occured saving company phones"];
     [[self getCTX] rollback];
@@ -449,8 +422,7 @@
   exception = [self _saveACLs:[_company objectForKey:@"_ACCESS"]
                     forObject:[company objectForKey:@"companyId"]
                    entityName:_entity];
-  if (exception != nil) 
-  {
+  if (exception != nil) {
     if ([self isDebug])
       [self logWithFormat:@"exception occured saving company ACLs"];
     [[self getCTX] rollback];
@@ -460,8 +432,7 @@
   /* Save object links */
   exception = [self _saveObjectLinks:[_company objectForKey:@"_OBJECTLINKS"]
                            forObject:[company objectForKey:@"companyId"]];
-  if (exception != nil) 
-  {
+  if (exception != nil) {
     if ([self isDebug])
       [self logWithFormat:@"exception occured saving company object links"];
     [[self getCTX] rollback];
@@ -472,8 +443,7 @@
   if (exception == nil)
     exception = [self _saveProperties:[_company objectForKey:@"_PROPERTIES"]
                             forObject:[company objectForKey:@"companyId"]];
-  if (exception != nil) 
-  {
+  if (exception != nil) {
     if ([self isDebug])
       [self logWithFormat:@"exception occured saving company properties"];
     [[self getCTX] rollback];
@@ -481,15 +451,14 @@
   } /* End if-exception-is-realized */
 
   /* Save assignments */
-  if ([_entity isEqualToString:@"person"])
-  {
+  if ([_entity isEqualToString:@"person"]) {
     /* save enterprise assignments from contact */
     if (exception == nil)
-      exception = [self _saveEnterprisesToPerson:[_company objectForKey:@"_ENTERPRISES"]
-                                        objectId:[company objectForKey:@"companyId"]];
+      exception = 
+        [self _saveEnterprisesToPerson:[_company objectForKey:@"_ENTERPRISES"]
+                              objectId:[company objectForKey:@"companyId"]];
     /* End save-enteprise-assignments-from-contact */
-  } else 
-    {
+  } else {
       /* save contact assignments from enterprise */
       if ([_flags containsObject:[NSString stringWithString:@"businessCard"]])
       {
@@ -498,44 +467,40 @@
                                 enterpriseId:[company objectForKey:@"companyId"]
                                  defaultACLs:[_company objectForKey:@"_ACCESS"]];
         /* End save-contacts-in-business-card-mode */
-      } else
-        {
+      } else {
           /* else contact assignments in traditional way */
-          exception = [self _savePersonsToEnterprise:[_company objectForKey:@"_CONTACTS"]
-                                            objectId:[company objectForKey:@"companyId"]];
+          exception = 
+            [self _savePersonsToEnterprise:[_company objectForKey:@"_CONTACTS"]
+                                  objectId:[company objectForKey:@"companyId"]];
         } /* End not-in-businessCard-mode */
     } /* End saving-contact-assignments-from-contact */
-  if (exception != nil) 
-  {
+  if (exception != nil) {
     if ([self isDebug])
-      [self logWithFormat:@"exception occured saving contact<->enterprise assignments"];
+      [self logWithFormat:@"exception occured saving assignments"];
     [[self getCTX] rollback];
     return exception;
   } /* End exception-is-realized */
 
   /* Save complete */
   if ([self isDebug])
-    [self logWithFormat:@"saving company %@ complete", [company objectForKey:@"companyId"]];
-  if ([_flags containsObject:[NSString stringWithString:@"noCommit"]])
-  {
+    [self logWithFormat:@"saving company %@ complete", 
+       [company objectForKey:@"companyId"]];
+  if ([_flags containsObject:[NSString stringWithString:@"noCommit"]]) {
     /* database commit has been disabled by the noCommit flag 
        return an Unknown object to the client */
     if ([self isDebug])
       [self logWithFormat:@"commit disabled via flag!"];
-  } else 
-    { 
+  } else {
       /* committing database transaction */
       [[self getCTX] commit];
     }
 
   /* do favorite flags  */
-  if ([_flags containsObject:[NSString stringWithString:@"favorite"]]) 
-  {
+  if ([_flags containsObject:[NSString stringWithString:@"favorite"]]) {
     [self _favoriteObject:[company objectForKey:@"companyId"] 
                defaultKey:[_entity stringByAppendingString:@"_favorites"]];
   }
-  if ([_flags containsObject:[NSString stringWithString:@"unfavorite"]])
-  {
+  if ([_flags containsObject:[NSString stringWithString:@"unfavorite"]]) {
     [self _unfavoriteObject:[company objectForKey:@"companyId"]
                  defaultKey:[_entity stringByAppendingString:@"_favorites"]];
   }
@@ -543,11 +508,11 @@
   /* render object and return */
   if ([_entity isEqualToString:@"person"])
     company = [self _getContactForKey:[company objectForKey:@"companyId"]
-                           withDetail:[NSNumber numberWithInt:65535]];
+                           withDetail:intObj(65535)];
   else
     company = [self _getEnterpriseForKey:[company objectForKey:@"companyId"]
-                              withDetail:[NSNumber numberWithInt:65535]];
+                              withDetail:intObj(65535)];
   return company;
-} /* End _writeCompany */
+} /* end _writeCompany */
 
-@end /* End zOGIAction(Company) */
+@end /* end zOGIAction(Company) */

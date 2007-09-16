@@ -64,11 +64,13 @@
 } /* end _getUnrenderedTeamsForKeys */
 
 -(id)_getTeamsForKeys:(id)_arg withDetail:(NSNumber *)_detail {
-  return [self _renderTeams:[self _getUnrenderedTeamsForKeys:_arg] withDetail:_detail];
+  return [self _renderTeams:[self _getUnrenderedTeamsForKeys:_arg] 
+                 withDetail:_detail];
 } /* end _getTeamsForKeys */
 
 -(id)_getTeamForKey:(id)_arg withDetail:(NSNumber *)_detail {
-  return [[self _renderTeams:[self _getUnrenderedTeamsForKeys:_arg] withDetail:_detail] lastObject];
+  return [[self _renderTeams:[self _getUnrenderedTeamsForKeys:_arg] 
+                  withDetail:_detail] lastObject];
 } /* _getTeamForKey */
 
 -(void)_addContactsToTeam:(NSMutableDictionary *)_team {
@@ -82,11 +84,10 @@
     memberList = [self _renderContacts:members withDetail:0];
    } else { memberList = [NSArray new]; }
   [_team setObject:memberList forKey:@"_CONTACTS"];
-}
+} /* end _addContactsToTeam */
 
 /* Get list of team member as an array of objectIds */
--(NSArray *)_getTeamMembers:(id)_team 
-{
+-(NSArray *)_getTeamMembers:(id)_team {
   NSArray            *members;
   NSMutableArray     *memberList;
   int                 count;
@@ -95,8 +96,7 @@
                                       @"team", _team,
                                       nil];
   memberList = [NSMutableArray arrayWithCapacity:[members count]];
-  for (count = 0; count < [members count]; count++)
-  {
+  for (count = 0; count < [members count]; count++) {
     [memberList 
        addObject:[[members objectAtIndex:count] valueForKey:@"companyId"]];
   }
@@ -105,22 +105,18 @@
 
 /* Search for teams
    Supported qualifiers are "all" and "mine" */
--(NSArray *)_searchForTeams:(id)_arg withDetail:(NSNumber *)_detail 
-{
+-(NSArray *)_searchForTeams:(id)_arg withDetail:(NSNumber *)_detail {
   NSArray   *teams;
 
   teams = nil;
   if ([self isDebug])
     [self logWithFormat:@"searchForTeams criteria is a %@", [_arg class]];
-  if ([_arg isKindOfClass:[NSString class]])
-  {
-    if ([_arg isEqualToString:@"all"])
-    {
+  if ([_arg isKindOfClass:[NSString class]]) {
+    if ([_arg isEqualToString:@"all"]) {
       if ([self isDebug])
         [self logWithFormat:@"Retrieving all teams"];
       teams = [[self getCTX] runCommand:@"team::get-all", nil];
-    } else if ([_arg isEqualToString:@"mine"])
-      {
+    } else if ([_arg isEqualToString:@"mine"]) {
         if ([self isDebug])
           [self logWithFormat:@"Retrieving teams for account %d",
                   [self _getCompanyId]];
@@ -130,8 +126,7 @@
                                  nil];
       }
   } /* end if-arg-is-a-string */
-  if (teams == nil)
-  {
+  if (teams == nil) {
     [self warnWithFormat:@"result of team search is nil, returning no teams"];
     return [NSConcreteEmptyArray new];
   }

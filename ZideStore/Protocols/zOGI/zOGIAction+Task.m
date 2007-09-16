@@ -39,7 +39,8 @@
             [self NIL:[_task valueForKey:@"jobStatus"]], @"status",
             [self NIL:[_task valueForKey:@"endDate"]], @"end",
             [self NIL:[_task valueForKey:@"startDate"]], @"start",
-            [self NIL:[_task valueForKey:@"executantId"]], @"executantObjectId",
+            [self NIL:[_task valueForKey:@"executantId"]], 
+               @"executantObjectId",
             [self ZERO:[_task valueForKey:@"priority"]], @"priority",
             [self NIL:[_task valueForKey:@"name"]], @"name",
             [self NIL:[_task valueForKey:@"keywords"]], @"keywords",
@@ -49,20 +50,27 @@
             [self ZERO:[_task valueForKey:@"sensitivity"]], @"sensitivity",
             [self ZERO:[_task valueForKey:@"totalWork"]], @"totalWork",
             [self NIL:[_task valueForKey:@"timerDate"]], @"timerDate",
-            //[self NIL:[_task valueForKey:@"parentJobId"]], @"parentJobId",
-            [self ZERO:[_task valueForKey:@"percentComplete"]], @"percentComplete",
+            /* 
+              [self NIL:[_task valueForKey:@"parentJobId"]], @"parentJobId", 
+             */
+            [self ZERO:[_task valueForKey:@"percentComplete"]], 
+               @"percentComplete",
             [self ZERO:[_task valueForKey:@"notify"]], @"notify",
             [self ZERO:[_task valueForKey:@"kilometers"]], @"kilometers",
-            [self NIL:[_task valueForKey:@"completionDate"]], @"completionDate",
+            [self NIL:[_task valueForKey:@"completionDate"]], 
+               @"completionDate",
             [self NIL:[_task valueForKey:@"comment"]], @"comment",
-            [self NIL:[_task valueForKey:@"accountingInfo"]], @"accountingInfo",
+            [self NIL:[_task valueForKey:@"accountingInfo"]], 
+               @"accountingInfo",
             [self ZERO:[_task valueForKey:@"actualWork"]], @"actualWork",
-            [self NIL:[_task valueForKey:@"associatedCompanies"]], @"associatedCompanies",
-            [self NIL:[_task valueForKey:@"associatedContacts"]], @"associatedContacts",
+            [self NIL:[_task valueForKey:@"associatedCompanies"]], 
+               @"associatedCompanies",
+            [self NIL:[_task valueForKey:@"associatedContacts"]], 
+               @"associatedContacts",
             [self NIL:[_task valueForKey:@"lastModified"]], @"lastModified",
             nil];
   return task;
-}
+} /* end renderTaskFromEO */
 
 -(NSMutableDictionary *)_renderTask:(EOGenericRecord *)_task 
                          withDetail:(NSNumber *)_detail {
@@ -76,15 +84,14 @@
     [self _addObjectDetails:task withDetail:_detail];
    }
   return task;
-}
+} /* end _renderTask */
 
 /*
   Render EOGenericRecords into dictionaries
   _tasks Array of EOGenericRecord Job objects
   _detail Specifies how much detail to add to dictionary
 */
--(NSArray *)_renderTasks:(NSArray *)_tasks withDetail:(NSNumber *)_detail 
-{
+-(NSArray *)_renderTasks:(NSArray *)_tasks withDetail:(NSNumber *)_detail {
   NSMutableArray       *taskList;
   int                  count;
 
@@ -93,41 +100,35 @@
     [taskList addObject:[self _renderTask:[_tasks objectAtIndex:count] 
                                withDetail:_detail]];
   return taskList;
-} /* End _renderTasks */
+} /* end _renderTasks */
 
 -(id)_getUnrenderedTasksForKeys:(id)_arg {
   return [[[self getCTX] runCommand:@"job::get-by-globalid",
                                     @"gids", [self _getEOsForPKeys:_arg],
                                     nil] retain];
-} /* End _getUnrenderedTasksForKeys */
+} /* end _getUnrenderedTasksForKeys */
 
--(id)_getTasksForKeys:(id)_arg withDetail:(NSNumber *)_detail 
-{
+-(id)_getTasksForKeys:(id)_arg withDetail:(NSNumber *)_detail {
   return [self _renderTasks:[self _getUnrenderedTasksForKeys:_arg] 
                   withDetail:_detail];
-} /* End _getTasksForKeys */
+} /* end _getTasksForKeys */
 
--(id)_getTasksForKeys:(id)_pk 
-{
-  return [self _getTasksForKeys:_pk 
-                      withDetail:[NSNumber numberWithInt:0]];
-} /* End _getTasksForKeys */
+-(id)_getTasksForKeys:(id)_pk {
+  return [self _getTasksForKeys:_pk withDetail:intObj(0)];
+} /* end _getTasksForKeys */
 
 -(id)_getTaskForKey:(id)_pk withDetail:(NSNumber *)_detail {
-  return [[self _getTasksForKeys:_pk 
-                       withDetail:_detail] objectAtIndex:0];
-} /* _getTasksForKey */
+  return [self _getTasksForKeys:_pk withDetail:intObj(0)];
+} /* end _getTasksForKey */
 
 -(id)_getTaskForKey:(id)_pk {
-  return [[self _getTasksForKeys:_pk 
-                      withDetail:[NSNumber numberWithInt:0]] objectAtIndex:0];
-} /* _getTasksForKey */
+  return [[self _getTasksForKeys:_pk withDetail:intObj(0)] objectAtIndex:0];
+} /* end _getTasksForKey */
 
 /* Retreive tasks from specified list
    _list can be: "todo", "control", "delegated", "archived", or "palm" */
 -(id)_getTaskList:(NSString *)_list 
-       withDetail:(NSNumber *)_detail 
-{
+       withDetail:(NSNumber *)_detail {
   NSString       *listCommand;
   NSArray        *tasks, *taskList;
 
@@ -147,21 +148,20 @@
                           nil];
   taskList = [self _renderTasks:tasks withDetail:_detail];
   return taskList;
-} /* End _getTaskList */
+} /* end _getTaskList */
 
 -(id)_createTaskNotation:(NSDictionary *)_notation {
   /* TODO: Verification & gaurdian clauses */
   return [self _doTaskAction:[_notation objectForKey:@"taskObjectId"]
                       action:[_notation objectForKey:@"action"]
                  withComment:[_notation objectForKey:@"comment"]];
-} /* End _createTaskNotation */
+} /* end _createTaskNotation */
 
 /* Perform a task action
   _action must be a valid action
   _command may be nil,  the action will then have no comment */
 -(id)_doTaskAction:(id)_pk action:(NSString *)_action 
-                      withComment:(NSString *)_comment 
-{
+                      withComment:(NSString *)_comment {
   id                 result;
   EOGenericRecord   *task;
   NSDictionary      *args;
@@ -206,10 +206,9 @@
   [[self getCTX] commit];
   return [self _renderTask:[[self _getUnrenderedTasksForKeys:_pk] lastObject] 
                 withDetail:[NSNumber numberWithInt:65535]];
-} /* End doTaskAction */
+} /* end doTaskAction */
 
--(void)_addNotesToTask:(NSMutableDictionary *)_task 
-{
+-(void)_addNotesToTask:(NSMutableDictionary *)_task {
   NSMutableArray    *noteList;
   NSEnumerator      *enumerator;
   id                 annotation;
@@ -233,19 +232,17 @@
        nil]];
    }
   [_task setObject:noteList forKey:@"_NOTES"];
-} /* End _addNotesToTask */
+} /* end _addNotesToTask */
 
--(NSString *)_getCommentFromHistoryEO:(EOGenericRecord *)_history 
-{
+-(NSString *)_getCommentFromHistoryEO:(EOGenericRecord *)_history {
   EOGenericRecord   *infoRecord;
 
   infoRecord = [_history valueForKey:@"toJobHistoryInfo"];
   return [self NIL:[[infoRecord valueForKey:@"comment"] lastObject]];
-} /* End _getCommentFromHistoryEO */
+} /* end _getCommentFromHistoryEO */
 
 /* Create a job entry from dictionary */
--(id)_createTask:(NSDictionary *)_task 
-{
+-(id)_createTask:(NSDictionary *)_task {
   NSMutableDictionary   *taskDictionary;
   NSString              *executantEntityName;
   id	                 taskObject;
@@ -260,8 +257,7 @@
      [taskDictionary setObject:[NSNumber numberWithInt:0] forKey:@"isTeamJob"];
   taskObject = [[self getCTX] runCommand:@"job::new" 
                               arguments:taskDictionary];
-  if(taskObject == nil) 
-  {
+  if(taskObject == nil) {
     // \todo Throw exception when task is not created
     return [NSException exceptionWithHTTPStatus:500
                         reason:@"Failure to create task"];
@@ -273,28 +269,27 @@
   [[self getCTX] commit];
   return [self _renderTask:taskObject 
                  withDetail:[NSNumber numberWithInt:65535]];
-} /* End _createTask */
+} /* end _createTask */
 
 /* Update the task object */
 -(id)_updateTask:(NSDictionary *)_task 
         objectId:(NSString *)objectId 
-       withFlags:(NSArray *)_flags 
-{
+       withFlags:(NSArray *)_flags {
   id    task;
 
-  if(![self _checkEntity:[_task valueForKey:@"objectId"] entityName:@"Task"]) 
-  {
+  if(![self _checkEntity:[_task valueForKey:@"objectId"] 
+              entityName:@"Task"]) {
     /* Throw exception if object is not a Task
        TODO: Can this happen? */
-    return [NSException exceptionWithHTTPStatus:500
-                        reason:@"Update of task requested for non-task object"];
+    return [NSException 
+              exceptionWithHTTPStatus:500
+              reason:@"Update of task requested for non-task object"];
   }
 
   [self _validateTask:_task];
   task = [[self getCTX] runCommand:@"job::set" 
                         arguments:[self _translateTask:_task]];
-  if (task == nil) 
-  {
+  if (task == nil) {
     return [NSException exceptionWithHTTPStatus:500
                         reason:@"Update of task failed"];
   }
@@ -308,12 +303,11 @@
   [[self getCTX] commit];
   return [self _renderTask:task 
                  withDetail:[NSNumber numberWithInt:65535]];
-} /* End _updateTask */
+} /* end _updateTask */
 
 /* Fill the empty fields in a new task
    Will turn the NSDictionary into a NSMutableDictionary */
--(NSMutableDictionary *)_fillTask:(NSDictionary *)_task 
-{
+-(NSMutableDictionary *)_fillTask:(NSDictionary *)_task {
   NSMutableDictionary	*task;
   NSCalendarDate		*startDate;
   NSCalendarDate		*endDate;
@@ -352,7 +346,7 @@
   if([task objectForKey:@"associatedContacts"] == nil)
     [task setObject:emptyString forKey:@"associatedContacts"];
   return task;
-} /* End _fillTask */
+} /* end _fillTask */
 
 /* Check that the contents of the _task are valid 
    TODO: Do something. :) */
@@ -361,8 +355,7 @@
 }
 
 /* Rewrite zOGI dictionary to something the OGo Logic layer wants to see */
--(NSMutableDictionary *)_translateTask:(NSDictionary *)_task 
-{
+-(NSMutableDictionary *)_translateTask:(NSDictionary *)_task {
   NSMutableDictionary   *task;
   NSCalendarDate        *dateValue;
   NSArray               *keys;
@@ -421,16 +414,15 @@
        }
    } // End for loop through keys
   return task;
-} /* End _translateTask */
+} /* end _translateTask */
 
--(NSArray *)_searchForTasks:(id)_query withDetail:(NSNumber *)_detail 
-{
+-(NSArray *)_searchForTasks:(id)_query withDetail:(NSNumber *)_detail {
   /* Task query supports a simple query where _query is a string
      specifying a task list. */
  if ([_query isKindOfClass:[NSString class]]) {
    return [self _getTaskList:_query withDetail:_detail];
   }
  return [[NSArray alloc] init];
-} /* End _searchForTasks */
+} /* end _searchForTasks */
 
 @end /* End zOGIAction(Task) */

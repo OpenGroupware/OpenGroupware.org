@@ -32,6 +32,7 @@
 #include "zOGIAction+Team.h"
 #include "zOGIAction+Object.h"
 #include "zOGIAction+Note.h"
+#include "zOGIAction+Notifications.h"
 #include "common.h"
 
 /*
@@ -54,10 +55,8 @@
   //return [self arg];
 }
 
--(id)getFavoritesByTypeAction
-{
-  if([arg1 isKindOfClass:[NSString class]]) 
-  {
+-(id)getFavoritesByTypeAction {
+  if([arg1 isKindOfClass:[NSString class]]) {
     if ([arg1 isEqualToString:@"Contact"])
       return [self _getFavoriteContacts:arg2];
     else if ([arg1 isEqualToString:@"Enterprise"])
@@ -69,8 +68,7 @@
             reason:@"Favorites not supported for this entity"];
 }
 
--(id)flagFavoritesAction 
-{
+-(id)flagFavoritesAction {
   NSArray      *objectList;
   NSEnumerator *enumerator;
   id            objectId;
@@ -83,8 +81,7 @@
   else 
     objectList = arg1;
   enumerator = [objectList objectEnumerator];
-  while ((objectId = [enumerator nextObject]) != nil) 
-  {
+  while ((objectId = [enumerator nextObject]) != nil) {
     entityName = [self _getEntityNameForPKey:objectId];
     if ([entityName isEqualToString:@"Project"])
       [self _favoriteObject:objectId defaultKey:@"project_favorites"];
@@ -98,8 +95,7 @@
   return [NSNumber numberWithBool:YES];
 } /* End flagFavoritesAction */
 
--(id)unflagFavoritesAction 
-{
+-(id)unflagFavoritesAction {
   NSArray      *objectList;
   NSEnumerator *enumerator;
   id            objectId;
@@ -129,9 +125,7 @@
   return [NSNumber numberWithBool:YES];
 } /* End unflagFavoritesAction */
 
--(id)getObjectsByObjectIdAction 
-{
-  
+-(id)getObjectsByObjectIdAction {
   NSArray    	  *objectList;
   NSMutableArray  *result;
   NSEnumerator    *enumerator;
@@ -154,8 +148,7 @@
   return result;
 } /* End getObjectsByObjectIdAction */
 
--(id)getObjectByObjectIdAction 
-{
+-(id)getObjectByObjectIdAction {
   id               object;
 
   object = [self _getObjectByObjectId:arg1 withDetail:arg2];
@@ -200,15 +193,13 @@
   return result;
 }
 
--(id)putObjectAction 
-{ 
+-(id)putObjectAction {
   NSString      *objectId;
   id             obj;
   NSArray       *flags;
 
   /* Initialize the update operation flags */
-  if ([arg1 objectForKey:@"_FLAGS"] == nil) 
-  {
+  if ([arg1 objectForKey:@"_FLAGS"] == nil) {
     flags = [[NSArray alloc] init];
   } else {
       if ([[arg1 objectForKey:@"_FLAGS"] isKindOfClass:[NSArray class]])
@@ -240,8 +231,7 @@
   return obj;
 } /* End putObjectAction */
 
--(id)deleteObjectAction 
-{
+-(id)deleteObjectAction {
   NSString     *entityName, *objectId;
   NSArray      *flags;
 
@@ -295,8 +285,7 @@
 } /* End deleteObjectAction */
 
 - (id)_createObject:(id)_dictionary 
-          withFlags:(NSArray *)_flags 
-{
+          withFlags:(NSArray *)_flags {
   NSString      *entityName;
 
   entityName = [_dictionary objectForKey:@"entityName"];
@@ -357,8 +346,7 @@
 // \param arg1 Entity Name (string)
 // \param arg2 Search criteria (mixed)
 // \param arg3 Detail Level (int)
--(id)searchForObjectsAction 
-{
+-(id)searchForObjectsAction {
   if ([arg1 isEqualToString:@"Contact"])
     return [self _searchForContacts:arg2 withDetail:arg3];
   else if ([arg1 isEqualToString:@"Enterprise"])
@@ -374,6 +362,17 @@
   else if ([arg1 isEqualToString:@"Team"])
     return [self _searchForTeams:arg2 withDetail:arg3];
   return [NSNumber numberWithBool:NO];
+}
+
+-(id)getNotificationsAction {
+  if ([[self _getCompanyId] intValue] != 10000)
+    return [NSException exceptionWithHTTPStatus:500
+             reason:@"RPC only available to superuser."];
+  if ([arg1 isKindOfClass:[NSString class]])
+    arg1 = [self _makeCalendarDate:arg1];
+  if ([arg2 isKindOfClass:[NSString class]])
+    arg2 = [self _makeCalendarDate:arg2];
+  return [self _getNotifications:arg1 until:arg2];
 }
 
 @end

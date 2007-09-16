@@ -1,3 +1,42 @@
+2007-09-14 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Contact.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIAction+Account.m: Code cleanup and added comments. Can now return
+	  the accounts team membership in "_TEAMS" at the zOGI_INCLUDE_MEMBERSHIP
+          detail level. (v1.5.12)
+
+	* zOGIAction+Appointment.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIAction+AppointmentConflicts.m: Code cleanup and added comments. 
+	  (v1.5.12)
+
+	* zOGIAction+Note.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIAction+Object.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIAction+Assignment.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIAction+Enterprise.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIAction+Property.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIAction+Team.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIAction+Task.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIAction+Company.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIAction+Project.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIRPCAction.m: Code cleanup and added comments. Added support for
+	  zogi.getNotifications method (only available to OGo superuser). (v1.5.12)
+
+	* zOGIAction+Document.m: Code cleanup and added comments. (v1.5.12)
+
+	* zOGIAction+Notifications.m: Provides a method to retrieve, and clear,
+	  pending appointment notifications. (v1.5.12)
+
 2007-09-13 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Object.m: Project ACLs are now reported

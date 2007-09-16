@@ -78,7 +78,7 @@
         }
    }
   return results;
-}
+} /* end _renderDocuments */
 
 -(NSArray *)_getUnrenderedDocsForKeys:(id)_arg {
   NSArray *docs;
@@ -86,40 +86,41 @@
                                     @"gids", [self _getEOsForPKeys:_arg],
                                     nil] retain];
   return docs;
-}
+} /* end _getUnrenderedDocsForKeys */
 
 -(id)_getDocumentsForKeys:(id)_pkeys withDetail:(NSNumber *)_detail {
   return [self _renderDocuments:[self _getUnrenderedDocsForKeys:_pkeys] 
                       withDetail:_detail];
-}
+} /* end _getDocumentsForKeys */
 
 -(id)_getDocumentsForKeys:(id)_pkeys {
   [self logWithFormat:@"_getDocumentsForKeys([%@])", _pkeys];
   return [self _renderDocuments:[self _getUnrenderedDocsForKeys:_pkeys] 
                      withDetail:[NSNumber numberWithInt:0]];
-}
+} /* end _getDocumentsForKeys */
 
 -(id)_getDocumentForKey:(id)_pkey withDetail:(NSNumber *)_detail {
   [self logWithFormat:@"_getDocumentsForKeys([%@],[%@])", _pkey, _detail];
   return [[self _renderDocuments:[self _getUnrenderedDocsForKeys:_pkey]
                       withDetail:_detail] objectAtIndex:0];
-}
+} /* end _DocumentForKey */
 
 -(id)_getDocumentForKey:(id)_pkey {
   [self logWithFormat:@"_getDocumentsForKeys([%@])", _pkey];
   return [[self _renderDocuments:[self _getUnrenderedDocsForKeys:_pkey]
                       withDetail:[NSNumber numberWithInt:0]] objectAtIndex:0];
-}
+} /* end _getDocumentForKey */
 
 -(id)_getContentsOfFolder:(id)_folderId {
   NSArray    *folderContents;
 
   folderContents = [[self getCTX] runCommand:@"doc::get",
                                    @"parentDocumentId", _folderId, 
-                                   @"returnType", [NSNumber numberWithInt:LSDBReturnType_ManyObjects],
+                                   @"returnType", 
+                                       intObj(LSDBReturnType_ManyObjects),
                                    nil];
   return [self _renderDocuments:folderContents
                      withDetail:[NSNumber numberWithInt:0]];
-}
+} /* end _getContentsOfFolder */
 
 @end /* End zOGIAction(Document) */

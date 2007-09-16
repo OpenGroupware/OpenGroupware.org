@@ -19,36 +19,15 @@
   02111-1307, USA.
 */
 
-#ifndef __zOGIRPCAction_H__
-#define __zOGIRPCAction_H__
+#ifndef __zOGIAction_Notifications_H__
+#define __zOGIAction_Notifications_H__
 
-/*
-  OGI Schedular Action
-*/
+#include "zOGIAction.h"
 
-@interface zOGIRPCAction : zOGIAction
-{
-}
+@interface zOGIAction(Notifications)
 
-/* methods */
--(id)getTypeOfObjectAction;
--(id)getFavoritesByTypeAction;
--(id)flagFavoritesAction;
--(id)unflagFavoritesAction;
--(id)getObjectsByObjectIdAction;
--(id)getObjectByObjectIdAction;
--(id)getObjectVersionsByObjectIdAction;
--(id)putObjectAction;
--(id)deleteObjectAction;
--(id)searchForObjectsAction;
--(id)getNotificationsAction;
--(id)_createObject:(id)_dictionary
-          withFlags:(NSArray *)_flags;
--(id)_updateObject:(id)_dictionary 
-          objectId:(NSString *)_objectId
-         withFlags:(NSArray *)_flags;
+-(NSArray *)_getNotifications:(id)_start until:(id)_end;
 
 @end
 
-#endif /* __zOGIRPCAction_H__ */
-
+#endif /* __zOGIAction_Team_H__ */

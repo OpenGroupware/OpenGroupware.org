@@ -453,8 +453,13 @@
     exception = [self _saveProperties:[_project objectForKey:@"_PROPERTIES"] 
                             forObject:[project objectForKey:@"projectId"]];
 
-  /* save notes */
+  /* save ACLs */
+  if (exception == nil)
+    exception = [self _saveACLs:[_project objectForKey:@"_ACCESS"]
+                      forObject:[_project objectForKey:@"objectId"]
+                     entityName:@"Project"];
 
+  /* save notes */
   if (exception == nil)
     exception = [self _saveNotes:[_project objectForKey:@"_NOTES"] 
                        forObject:[project objectForKey:@"projectId"]];
@@ -486,9 +491,7 @@
    QUESTION: What should happen to tasks?  Should they be deleted
      or just orphaned?  Perhaps that should be controlled by a
      flag? */
--(id)_deleteProject:(id)_objectId
-          withFlags:(NSArray *)_flags
-{
+-(id)_deleteProject:(id)_objectId  withFlags:(NSArray *)_flags {
   id   project;
 
   project = [self _getUnrenderedProjectsForKeys:_objectId];
@@ -512,6 +515,33 @@
     }
   }
   return [NSNumber numberWithBool:NO];
-}
+} /* end _deleteProject */
+
+-(NSArray *)_diffProjectPartners:(NSArray *)_list1 with:(NSArray *)_list2 {
+  int             i, j, count1, count2;
+  id              companyId1, companyId2;
+  NSMutableArray *result;
+  BOOL            isInList;
+
+  count1 = [_list1 count];
+  result = [NSMutableArray array];
+  for (i = 0; i < count1; i++) {
+    count2 = [_list2 count];
+    companyId1 = [[_list1 objectAtIndex:i] valueForKey:@"companyId"];
+    isInList = NO;
+    if (companyId1 == nil)
+      continue;
+    for (j = 0; j < count2; j++) {
+      companyId2 = [[_list2 objectAtIndex:j] valueForKey:@"companyId"];
+      if ([companyId2 isEqual:companyId1]) {
+        isInList = YES;
+        break;
+      }
+    }
+    if (!isInList)
+      [result addObject:[_list1 objectAtIndex:i]];
+  }
+  return result;
+} /* end _diffPartners */
 
 @end /* End zOGIAction(Project) */
