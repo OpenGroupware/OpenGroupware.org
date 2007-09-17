@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -183,7 +184,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   NSEnumerator *e;
   NSString *one;
   
-  if ([_attributes count] == 0) _attributes = _maxAttr;
+  if (![_attributes isNotEmpty]) _attributes = _maxAttr;
   
   e = [_attributes objectEnumerator];
   ma = [NSMutableArray arrayWithCapacity:16];
@@ -252,7 +253,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
     i++;
   }
 
-  if ([in length] > 0)
+  if ([in isNotEmpty])
     [ins addObject:in];
   
   return ins;
@@ -334,7 +335,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   NSString         *in;
 
   in = [self joinPrimaryKeysFromArrayForIN:_cids];
-  if ([in length] == 0) {
+  if (![in isNotEmpty]) {
     [self logWithFormat:@"got no primary keys for IN query!"];
     return nil;
   }
@@ -349,7 +350,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
     [self _checkAttributes:_attributes
           maxAttributes:[LSListParticipantsCommand teamAttributes]
           entity:entity subKey:@"team."];
-  if ([_attributes count] == 0)
+  if (![_attributes isNotEmpty])
     // no team attributes requested
     return nil;
   
@@ -377,7 +378,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   NSString         *in;
 
   in = [self joinPrimaryKeysFromArrayForIN:_cids];
-  if ([in length] == 0) {
+  if (![in isNotEmpty]) {
     [self logWithFormat:@"got no primary keys for IN query!"];
     return nil;
   }
@@ -783,12 +784,12 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
 - (BOOL)_containsPersonAttributes:(NSArray *)_attrs {
   return [[self _checkAttributes:_attrs
                 maxAttributes:[LSListParticipantsCommand personAttributes]
-                entity:nil subKey:nil] count] > 0 ? YES : NO;
+                entity:nil subKey:nil] isNotEmpty];
 }
 - (BOOL)_containsTeamAttributes:(NSArray *)_attrs {
   return [[self _checkAttributes:_attrs
                 maxAttributes:[LSListParticipantsCommand teamAttributes]
-                entity:nil subKey:nil] count] > 0 ? YES : NO;
+                entity:nil subKey:nil] isNotEmpty];
 }
 
 - (NSArray *)fetchResourceInfosInContext:(id)_ctx {
@@ -860,8 +861,8 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   BOOL           needExtraAttributes = NO;
   id result;
   
-  if ([self->dateIds count] == 0) {
-    [self setReturnValue:([self->groupBy length] > 0)
+  if (![self->dateIds isNotEmpty]) {
+    [self setReturnValue:[self->groupBy isNotEmpty]
             ? [NSDictionary dictionary] : [NSArray array]];
   }
 
@@ -919,7 +920,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
 
   /* get the members of the teams */
   
-  if (([teams count] > 0) && fetchMembers) {
+  if ([teams isNotEmpty] && fetchMembers) {
     NSMutableArray *maPers;
     
     maPers = [[persons mutableCopy] autorelease];
@@ -937,7 +938,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
 
   /* now fetch all data for the persons */
   
-  if ([allPersons count] > 0) {
+  if ([allPersons isNotEmpty]) {
     NSArray *allp;
     
     allp        = [self _fetchAllPersonsForGIDs:allPersons inContext:_context];

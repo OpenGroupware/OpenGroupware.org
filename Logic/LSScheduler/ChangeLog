@@ -1,3 +1,7 @@
+2007-09-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSListParticipantsCommand.m: changed to use -isNotEmpty (v5.3.102)
+
 2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSSetAppointmentCommand.m: changed to use the new
