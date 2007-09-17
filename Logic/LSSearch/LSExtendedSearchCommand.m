@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -33,13 +34,25 @@
 - (void)setFetchIds:(NSNumber *)_number;
 - (NSNumber *)fetchIds;
 - (BOOL)fetchGlobalIDs;
-- (EOSQLQualifier *)_buildQualifierWithContext:(id)_context;
+- (EOSQLQualifier *)_buildQualifierWithContext:(LSCommandContext *)_context;
 @end
 
 @implementation LSExtendedSearchCommand
 
+static BOOL debugOn = NO;
+
 + (int)version {
   return [super version] + 1; /* v2 */
+}
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSAssert2([super version] == 1,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
+  
+  if ((debugOn = [ud boolForKey:@"LSDebugExtSearch"]))
+    NSLog(@"Note: LSDebugExtSearch is enabled for %@",NSStringFromClass(self));
 }
 
 - (void)dealloc {
@@ -154,6 +167,7 @@
   return results;
 }
 
+
 - (NSArray *)_fetchIds:(id)_context {
   /* Note: overridden in some subclasses */
   // TODO: in this case we could fetch all and filter access afterwards?!
@@ -171,6 +185,11 @@
   qualifier  = [self _buildQualifierWithContext:_context];
   entity     = [qualifier entity];
   attributes = [entity primaryKeyAttributes];
+  
+  if (debugOn) {
+    [self logWithFormat:@"  extsearch: qualifier=%@", qualifier];
+    [self logWithFormat:@"  extsearch: entity=   %@", [entity name]];
+  }
   
   [self assert:[channel selectAttributes:attributes
                         describedByQualifier:qualifier
@@ -226,7 +245,8 @@
 				   @"(isFake = 0) OR (isFake IS NULL)"];
 }
 
-- (EOSQLQualifier *)_buildQualifierWithContext:(id)_context {
+
+- (EOSQLQualifier *)_buildQualifierWithContext:(LSCommandContext *)_context {
   EOSQLQualifier *qualifier;
   EOEntity       *entity;
 
@@ -340,29 +360,32 @@
 
 - (void)_executeInContext:(id)_context {
   NSAutoreleasePool *pool;
-  NSArray *access;
-  NSArray *r;
 
   pool = [[NSAutoreleasePool alloc] init];
-  
-  /* primary fetch */
+  {  
+    NSArray *access;
+    NSArray *r;
+    
+    /* primary fetch */
 
-  r = ([[self fetchIds] boolValue])
-    ? [self _fetchIds:_context]
-    : [self _fetchObjects:_context];
-  
-  r = [[r copy] autorelease];
+    r = ([[self fetchIds] boolValue])
+      ? [self _fetchIds:_context]
+      : [self _fetchObjects:_context];
+    
+    r = [[r copy] autorelease];
 
-  /* check permissions */
+    /* check permissions */
   
-  access = [self _determineAccessGIDsFromResults:r];
-  access = [[_context accessManager] objects:access forOperation:@"r"];
-  r      = [self filterResults:r fromAccess:access];
+    access = [self _determineAccessGIDsFromResults:r];
+    access = [[_context accessManager] objects:access forOperation:@"r"];
+    r      = [self filterResults:r fromAccess:access];
   
-  /* set return value to permission-checked objects */
-  [self setReturnValue:r];
+    /* set return value to permission-checked objects */
+    [self setReturnValue:r];
+  }
   [pool release];
 }
+
 
 /* support for person/enterprise */
 
@@ -418,6 +441,7 @@
   return lKeyWord;
 }
 
+
 /* accessors */
 
 - (void)setSearchRecordList:(NSArray *)_searchRecordList {
@@ -453,7 +477,7 @@
 }
 
 - (void)setFetchIds:(NSNumber *)_number {
-  ASSIGN(self->fetchIds, _number);
+  ASSIGNCOPY(self->fetchIds, _number);
 }
 - (NSNumber *)fetchIds {
   if (self->fetchGlobalIDs)
@@ -463,6 +487,7 @@
     ? self->fetchIds
     : [NSNumber numberWithBool:NO];
 }
+
 
 /* key/value coding */
 
@@ -515,6 +540,7 @@
 }
 
 @end /* LSExtendedSearchCommand */
+
 
 #include <NGExtensions/NSString+Ext.h>
 

@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -26,14 +27,20 @@
 
 @implementation LSExtendedSearch
 
+static BOOL debugOn = NO;
+
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSAssert2([super version] == 1,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
+
+  if ((debugOn = [ud boolForKey:@"LSDebugExtSearch"]))
+    NSLog(@"Note: LSDebugExtSearch is enabled for %@",NSStringFromClass(self));
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     self->operator = @"AND";
   }
   return self;
@@ -56,6 +63,7 @@
   [super dealloc];
 }
 
+
 /* qualifiers */
 
 - (void)_appendKey:(NSString *)key ofRecord:(LSGenericSearchRecord *)_record
@@ -73,10 +81,10 @@
 	    key, [_record entity]);
     
   value = [value stringValue];
-  if ([value length] == 0)
+  if (![value isNotEmpty])
     return;
 
-  if ([format length] > 0) {
+  if ([format isNotEmpty]) {
     [format appendString:@" "];
     [format appendString:self->operator];
     [format appendString:@" "];
@@ -126,12 +134,12 @@
   startQ       = @"( ";
   startQLength = [startQ length];
 
-#if 0
-  [self logWithFormat:@"S: %@", self->searchRecord];
-  [self logWithFormat:@"R: %@", self->relatedRecords];
-#endif
+  if (debugOn) {
+    [self logWithFormat:@"S: %@", self->searchRecord];
+    [self logWithFormat:@"R: %@", self->relatedRecords];
+  }
   
-  format = [NSMutableString stringWithCapacity:64];
+  format = [NSMutableString stringWithCapacity:128];
 
   [format appendString:startQ];
   [format appendString:[self _qualifierFormatForRecord:self->searchRecord]];
@@ -140,10 +148,10 @@
   while ((record = [listEnum nextObject]) != nil) {
     NSString *tmp;
     
-    tmp  = [self _qualifierFormatForRecord:record];
-    if ([tmp length] == 0)
+    tmp = [self _qualifierFormatForRecord:record];
+    if (![tmp isNotEmpty])
       continue;
-
+    
     if ([format length] > startQLength) {
       [format appendString:@" "];
       [format appendString:self->operator];
@@ -156,10 +164,9 @@
   
   [format appendString:@" )"];
 
-#if 0  
-#warning DEBUG LOG
-  [self logWithFormat:@"Q: '%@'", format];
-#endif
+  if (debugOn)
+    [self logWithFormat:@"Q: '%@'", format];
+  
   return format;
 }
 
