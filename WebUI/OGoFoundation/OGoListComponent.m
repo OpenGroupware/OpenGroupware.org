@@ -322,7 +322,7 @@
 - (BOOL)_modifyFavorites:(BOOL)_doRemove {
   NSMutableArray *favIds;
   NSUserDefaults *ud;
-    
+
   if (_doRemove && ![self isInFavorites])
     return NO; /* not in favorites */
   if (!_doRemove && [self isInFavorites])
@@ -332,8 +332,11 @@
     
   if (_doRemove)
     [favIds removeObject:[self itemIdString]];
-  else
+  else {
+    if (favIds == nil)
+      favIds = [[NSMutableArray alloc] initWithCapacity:2];
     [favIds addObject:[self itemIdString]];
+  }
 
   ud = [[self session] userDefaults];
   [ud setObject:favIds forKey:[self favoritesKey]];

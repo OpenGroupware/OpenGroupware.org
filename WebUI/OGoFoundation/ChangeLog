@@ -1,3 +1,8 @@
+2007-09-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoListComponent.m: fixed a bug with adding favorites (adding favs
+	  failed if no favs where set) (v5.3.109)
+
 2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWLabelHandler.m: and yet another change to make it working with
