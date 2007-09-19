@@ -187,7 +187,8 @@
 } /* end _getFavoriteEnterprises */
 
 -(id)_searchForEnterprises:(NSArray *)_query 
-                withDetail:(NSNumber *)_detail {
+                withDetail:(NSNumber *)_detail
+                 withFlags:(NSDictionary *)_flags {
   NSArray         *results;
   NSString        *query;
   NSString        *key;
@@ -196,6 +197,12 @@
   NSDictionary    *qualifier;
   int             count;
   id              tmp;
+  NSNumber       *limit;
+
+  if ([_flags objectForKey:@"limit"] != nil)
+    limit = [_flags objectForKey:@"limit"];
+  else
+    limit = intObj(100);
 
   query = [NSString stringWithString:@""];
   for(count = 0; count < [_query count]; count++) {
@@ -288,7 +295,7 @@
     [self logWithFormat:@"enterprise query: %@", query];
   results = [[self getCTX] runCommand:@"enterprise::qsearch",
                              @"qualifier", query, 
-                             @"maxSearchCount", intObj(100),
+                             @"maxSearchCount", limit,
                              nil];
   if (results == nil) {
     if ([self isDebug])

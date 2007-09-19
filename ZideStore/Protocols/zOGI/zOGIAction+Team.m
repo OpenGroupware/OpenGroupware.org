@@ -105,7 +105,9 @@
 
 /* Search for teams
    Supported qualifiers are "all" and "mine" */
--(NSArray *)_searchForTeams:(id)_arg withDetail:(NSNumber *)_detail {
+-(NSArray *)_searchForTeams:(id)_arg 
+                 withDetail:(NSNumber *)_detail
+                  withFlags:(NSDictionary *)_flags; {
   NSArray   *teams;
 
   teams = nil;

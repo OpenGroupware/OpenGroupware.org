@@ -49,7 +49,8 @@
 -(NSArray *)_getFavoriteEnterprises:(NSNumber *)_detail;
 
 -(id)_searchForEnterprises:(NSArray *)_query 
-                withDetail:(NSNumber *)_detail;
+                withDetail:(NSNumber *)_detail
+                 withFlags:(NSDictionary *)_flags;
 
 -(id)_deleteEnterprise:(NSString *)_objectId 
              withFlags:(NSArray *)_flags;

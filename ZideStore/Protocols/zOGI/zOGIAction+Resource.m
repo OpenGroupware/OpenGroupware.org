@@ -124,7 +124,8 @@
 
 
 -(id)_searchForResources:(NSDictionary *)_query 
-              withDetail:(NSNumber *)_detail {
+              withDetail:(NSNumber *)_detail
+               withFlags:(NSDictionary *)_flags {
   NSMutableDictionary   *query;
   NSArray               *keys, *result;
   NSString              *key;

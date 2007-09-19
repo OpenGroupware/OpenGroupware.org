@@ -39,7 +39,8 @@
 -(NSException *)_addMembershipToPerson:(NSMutableDictionary *)_contact;
 -(NSArray *)_getFavoriteContacts:(NSNumber *)_detail;
 -(id)_searchForContacts:(NSArray *)_query 
-             withDetail:(NSNumber *)_detail;
+             withDetail:(NSNumber *)_detail
+              withFlags:(NSDictionary *)_flags;
 -(NSString *)_translateContactKey:(NSString *)_key;
 -(id)_deleteContact:(NSString *)_objectId
           withFlags:(NSArray *)_flags;

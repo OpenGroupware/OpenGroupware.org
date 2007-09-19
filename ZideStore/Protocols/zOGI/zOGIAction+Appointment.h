@@ -47,7 +47,8 @@
                withComment:(NSString *)_comment 
                   withRSVP:(NSNumber *)_rsvp;
 -(id)_searchForAppointments:(NSDictionary *)_query 
-                 withDetail:(NSNumber *)_detail;
+                 withDetail:(NSNumber *)_detail
+                  withFlags:(NSDictionary *)_flags;
 -(id)_createAppointment:(NSDictionary *)_app 
               withFlags:(NSArray *)_flags;
 -(id)_updateAppointment:(NSDictionary *)_app 

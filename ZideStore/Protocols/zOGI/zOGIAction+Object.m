@@ -83,8 +83,7 @@
    FYI: Contacts & enterprises get ACLs from object_acl,  projects get
         ACLs from project<->company assignments.  Wierd.
    TODO: This doesn't actually catch any errors or produce any exceptions */
--(NSException *)_addACLsToObject:(NSMutableDictionary *)_object
-{
+-(NSException *)_addACLsToObject:(NSMutableDictionary *)_object {
   SkyAccessManager    *accessManager;
   NSMutableArray      *results;
   NSEnumerator        *enumerator;
@@ -339,6 +338,7 @@
     if ([self isDebug])
       [self logWithFormat:@"saving project ACLs for %@", _objectId];
     /* TODO: Implement */
+    enumerator = [_acls objectEnumerator]; 
   } else {
       /* assuming this is a company object */
       if ([self isDebug])

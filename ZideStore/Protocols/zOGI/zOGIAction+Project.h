@@ -41,7 +41,8 @@
 -(void)_favoriteProject:(NSString *)projectId;
 
 -(id)_searchForProjects:(NSDictionary *)_query 
-             withDetail:(NSNumber *)_detail;
+             withDetail:(NSNumber *)_detail
+              withFlags:(NSDictionary *)_flags;
 
 -(id)_translateProject:(NSDictionary *)_project;
 

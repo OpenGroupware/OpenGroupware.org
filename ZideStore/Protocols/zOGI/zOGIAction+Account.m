@@ -52,7 +52,8 @@
       {
         [[result objectAtIndex:count] 
             setObject:[self _searchForTeams:@"mine" 
-                                 withDetail:[NSNumber numberWithInt:128]]
+                                 withDetail:[NSNumber numberWithInt:128]
+                                  withFlags:nil]
                forKey:@"_TEAMS"];
       }
     }

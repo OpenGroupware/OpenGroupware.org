@@ -47,7 +47,9 @@
 -(NSMutableDictionary *)_fillTask:(NSDictionary *)_task;
 -(void)_validateTask:(NSDictionary *)_task;
 -(NSMutableDictionary *)_translateTask:(NSDictionary *)_task;
--(NSArray *)_searchForTasks:(id)_query withDetail:(NSNumber *)_detail;
+-(NSArray *)_searchForTasks:(id)_query 
+                 withDetail:(NSNumber *)_detail
+                  withFlags:(NSDictionary *)_flags;
 @end
 
 #endif /* __zOGIAction_Task_H__ */

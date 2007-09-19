@@ -279,7 +279,7 @@
 /* Search for a project using provided criteria */
 -(id)_searchForProjects:(NSDictionary *)_query 
              withDetail:(NSNumber *)_detail 
-{
+              withFlags:(NSDictionary *)_flags {
   NSMutableDictionary   *query;
   NSArray               *keys, *result;
   NSString              *key;

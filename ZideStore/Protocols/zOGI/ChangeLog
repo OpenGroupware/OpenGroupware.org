@@ -1,3 +1,37 @@
+2007-09-19 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Contact.m: Support passing flags to search routine.
+	  Support the "limit" flag. (v1.5.16)
+
+	* zOGIAction+Account.m: Support passing flags to search routine.
+	  (v1.5.16)
+
+	* zOGIAction+Appointment.m: Support passing flags to search routine.
+	  (v1.5.16)
+
+	* zOGIAction+Object.m: Minor code cleanup. (v1.5.16)
+
+	* zOGIAction+Enterprise.m: Support passing flags to search routine.
+	  Support the "limit" flag. (v1.5.16)
+
+	* zOGIAction+Team.m: Support passing flags to search routine. (v1.5.16)
+
+	* zOGIAction+Resource.m: Support passing flags to search routine.
+	  (v1.5.16)
+
+	* zOGIAction+Task.m: Support passing flags to search routine. 
+	  (v1.5.16)
+
+	* zOGIAction+Project.m: Support passing flags to search routine.
+	  (v1.5.16)
+
+	* zOGIRPCAction.m: Receive flags for searchForObjects.  If a "filter"
+	  flag is supplied further filter the seach results after search 
+	  operation. (v1.5.16)
+
+	* zOGIAction+Notifications.m: Request person.imAddress and
+	  person.isAccount from list-participants command. (v1.5.16)
+
 2007-09-14 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Appointment.m: Fix bug in handling of participants

@@ -31,7 +31,8 @@
 -(id)_getResourceForKey:(id)_arg withDetail:(NSNumber *)_detail;
 -(NSArray *)_renderNamedResources:(NSArray *)_names;
 -(id)_searchForResources:(NSDictionary *)_query 
-              withDetail:(NSNumber *)_detail;
+              withDetail:(NSNumber *)_detail
+               withFlags:(NSDictionary *)_flags;
 @end
 
 #endif /* __zOGIAction_Resource_H__ */

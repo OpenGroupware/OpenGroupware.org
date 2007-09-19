@@ -349,7 +349,8 @@
   TODO: Handle the participants sanely.  Should be a ZOGI key.
  */
 -(id)_searchForAppointments:(NSDictionary *)_query 
-                 withDetail:(NSNumber *)_detail {
+                 withDetail:(NSNumber *)_detail
+                  withFlags:(NSDictionary *)_flags {
   NSCalendarDate        *startDate, *endDate;
   NSMutableDictionary   *args;
   NSArray               *participants, *gids;

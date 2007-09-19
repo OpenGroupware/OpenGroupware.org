@@ -347,21 +347,33 @@
 // \param arg2 Search criteria (mixed)
 // \param arg3 Detail Level (int)
 -(id)searchForObjectsAction {
+  id                   result;
+  NSString            *filterString;
+  EOQualifier         *eoFilter;
+
+  if (arg4 == nil)
+    arg4 = [NSConcreteEmptyDictionary new];
   if ([arg1 isEqualToString:@"Contact"])
-    return [self _searchForContacts:arg2 withDetail:arg3];
+    result = [self _searchForContacts:arg2 withDetail:arg3 withFlags:arg4];
   else if ([arg1 isEqualToString:@"Enterprise"])
-    return [self _searchForEnterprises:arg2 withDetail:arg3];
+    result = [self _searchForEnterprises:arg2 withDetail:arg3 withFlags:arg4];
   else if ([arg1 isEqualToString:@"Appointment"])
-    return [self _searchForAppointments:arg2 withDetail:arg3];
+    result = [self _searchForAppointments:arg2 withDetail:arg3 withFlags:arg4];
   else if ([arg1 isEqualToString:@"Task"])
-    return [self _searchForTasks:arg2 withDetail:arg3];
+    result = [self _searchForTasks:arg2 withDetail:arg3 withFlags:arg4];
   else if ([arg1 isEqualToString:@"Project"])
-    return [self _searchForProjects:arg2 withDetail:arg3];
+    result = [self _searchForProjects:arg2 withDetail:arg3 withFlags:arg4];
   else if ([arg1 isEqualToString:@"Resource"])
-    return [self _searchForResources:arg2 withDetail:arg3];
+    result = [self _searchForResources:arg2 withDetail:arg3 withFlags:arg4];
   else if ([arg1 isEqualToString:@"Team"])
-    return [self _searchForTeams:arg2 withDetail:arg3];
-  return [NSNumber numberWithBool:NO];
+    result = [self _searchForTeams:arg2 withDetail:arg3 withFlags:arg4];
+  else return [NSNumber numberWithBool:NO];
+
+  if ([arg4 objectForKey:@"filter"]) {
+    filterString = [arg4 objectForKey:@"filter"];
+    eoFilter = [EOQualifier qualifierWithQualifierFormat:filterString];
+    return [result filteredArrayUsingQualifier:eoFilter];
+  } return result;
 }
 
 -(id)getNotificationsAction {

@@ -416,7 +416,9 @@
   return task;
 } /* end _translateTask */
 
--(NSArray *)_searchForTasks:(id)_query withDetail:(NSNumber *)_detail {
+-(NSArray *)_searchForTasks:(id)_query 
+                 withDetail:(NSNumber *)_detail
+                  withFlags:(NSDictionary *)_flags {
   /* Task query supports a simple query where _query is a string
      specifying a task list. */
  if ([_query isKindOfClass:[NSString class]]) {

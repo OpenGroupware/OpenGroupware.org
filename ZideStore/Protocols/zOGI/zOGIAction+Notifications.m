@@ -77,6 +77,7 @@
                                 @"partStatus", @"comment", @"rsvp", @"team.isTeam",
                                 @"team.email", @"team.description", @"team.companyId",
                                 @"person.extendedAttributes",
+                                @"person.imAddress", @"person.isAccount",
                                 @"dateId", 
                                 nil],
                          nil];
