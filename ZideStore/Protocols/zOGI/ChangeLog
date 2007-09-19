@@ -1,5 +1,11 @@
 2007-09-19 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* zOGIRPCAction.m: Improved logging, returning of empty results,
+	  and returning of Exceptions. (v1.5.17)
+
+	* product.plist: Registered arguement#4 for searchForObjects.
+	  (v1.5.17)
+
 	* zOGIAction+Contact.m: Support passing flags to search routine.
 	  Support the "limit" flag. (v1.5.16)
 

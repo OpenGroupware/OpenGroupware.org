@@ -351,8 +351,12 @@
   NSString            *filterString;
   EOQualifier         *eoFilter;
 
-  if (arg4 == nil)
+  if (arg4 == nil) {
     arg4 = [NSConcreteEmptyDictionary new];
+    if ([self isDebug])
+      [self logWithFormat:@"No flags provided, assuming an empty set of flags."];
+  }
+
   if ([arg1 isEqualToString:@"Contact"])
     result = [self _searchForContacts:arg2 withDetail:arg3 withFlags:arg4];
   else if ([arg1 isEqualToString:@"Enterprise"])
@@ -367,13 +371,31 @@
     result = [self _searchForResources:arg2 withDetail:arg3 withFlags:arg4];
   else if ([arg1 isEqualToString:@"Team"])
     result = [self _searchForTeams:arg2 withDetail:arg3 withFlags:arg4];
-  else return [NSNumber numberWithBool:NO];
+  else {
+    [self warnWithFormat:@"search for unknown entity, returning empty array"];
+    return [NSConcreteEmptyArray new];
+  }
+
+  if ([result isKindOfClass:[NSException class]]) {
+    [self warnWithFormat:@"search failed, returning exception %@", result];
+    return result;
+  }
 
   if ([arg4 objectForKey:@"filter"]) {
     filterString = [arg4 objectForKey:@"filter"];
+    if ([self isDebug])
+      [self logWithFormat:@"Filtering %d objects with filter: %@",
+         [result count],
+         filterString];
     eoFilter = [EOQualifier qualifierWithQualifierFormat:filterString];
-    return [result filteredArrayUsingQualifier:eoFilter];
-  } return result;
+    result = [result filteredArrayUsingQualifier:eoFilter];
+  }
+  
+  if ([self isDebug])
+    [self logWithFormat:@"Search returning %d objects to client.",
+       [result count]];
+
+ return result;
 }
 
 -(id)getNotificationsAction {
