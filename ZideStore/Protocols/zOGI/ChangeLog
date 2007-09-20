@@ -1,5 +1,8 @@
 2007-09-20 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* zOGIAction+Appointment.m: Fix bug for storing readAccessTeamId
+	  when value is provides as a string. (v1.5.20)
+
 	* zOGIAction+Team.m: Supress expansion of membership to the all
 	  "all intranet" team unless the zOGIExpandAllIntranet default
 	  is YES. (v1.5.19)

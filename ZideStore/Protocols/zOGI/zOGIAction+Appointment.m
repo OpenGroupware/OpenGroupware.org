@@ -665,9 +665,9 @@
       if (([value isKindOfClass:[NSString class]]) ||
           ([value isKindOfClass:[NSShortInline8BitString class]])) {
         if ([value length] == 0)
-          tmp = [NSNumber numberWithInt:0];
-        else tmp = [NSNumber numberWithInt:[tmp intValue]];
-      } else tmp = value;
+          tmp = intObj(0);
+        else tmp = intObj([value intValue]);
+      } else tmp = value; /* Assuming value is an number */
       if ([tmp intValue] == 0)
         [appointment setObject:[EONull null] forKey:@"accessTeamId"];
       else [appointment setObject:tmp forKey:@"accessTeamId"];
