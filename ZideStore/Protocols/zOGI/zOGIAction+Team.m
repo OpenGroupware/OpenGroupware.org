@@ -42,13 +42,17 @@
        nil]];
      if([_detail intValue] > 0) {
        [[result objectAtIndex:count] setObject:eoTeam forKey:@"*eoObject"];
-       if([_detail intValue] & zOGI_INCLUDE_CONTACTS)
-         [self _addContactsToTeam:[result objectAtIndex:count]];
-       if([_detail intValue] & zOGI_INCLUDE_MEMBERSHIP)
-         [[result objectAtIndex:count]
-                    setObject:[self _getTeamMembers:eoTeam]
-                       forKey:@"memberObjectIds"];
-      [self _addObjectDetails:[result objectAtIndex:count] withDetail:_detail];
+       if (([[eoTeam objectForKey:@"companyId"] intValue] != 10003) ||
+           ([[self _getDefaults] boolForKey:@"zOGIExpandAllIntranet"])) {
+         if([_detail intValue] & zOGI_INCLUDE_CONTACTS)
+           [self _addContactsToTeam:[result objectAtIndex:count]];
+         if([_detail intValue] & zOGI_INCLUDE_MEMBERSHIP)
+           [[result objectAtIndex:count]
+                        setObject:[self _getTeamMembers:eoTeam]
+                           forKey:@"memberObjectIds"];
+       }
+       [self _addObjectDetails:[result objectAtIndex:count] 
+                    withDetail:_detail];
      }
    }
   return result;

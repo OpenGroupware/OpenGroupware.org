@@ -353,31 +353,31 @@
   NSMutableDictionary *flags;
 
   if (arg4 == nil) {
-    flags = [[NSMutableDictionary new] autorelease];
+    flags = [NSMutableDictionary new];
     if ([self isDebug])
       [self logWithFormat:@"No flags provided, assuming an empty set of flags."];
-  } else arg4 = [[arg4 mutableCopy] autorelease];
+  } else flags = [arg4 mutableCopy];
 
-  if ([arg4 objectForKey:@"limit"] == nil) {
+  if ([flags objectForKey:@"limit"] == nil) {
     if ([self isDebug])
       [self logWithFormat:@"No limit in flags, assuming default."];
-    [arg4 setObject:intObj(150) forKey:@"limit"];
+    [flags setObject:intObj(150) forKey:@"limit"];
   }
 
   if ([arg1 isEqualToString:@"Contact"])
-    result = [self _searchForContacts:arg2 withDetail:arg3 withFlags:arg4];
+    result = [self _searchForContacts:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Enterprise"])
-    result = [self _searchForEnterprises:arg2 withDetail:arg3 withFlags:arg4];
+    result = [self _searchForEnterprises:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Appointment"])
-    result = [self _searchForAppointments:arg2 withDetail:arg3 withFlags:arg4];
+    result = [self _searchForAppointments:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Task"])
-    result = [self _searchForTasks:arg2 withDetail:arg3 withFlags:arg4];
+    result = [self _searchForTasks:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Project"])
-    result = [self _searchForProjects:arg2 withDetail:arg3 withFlags:arg4];
+    result = [self _searchForProjects:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Resource"])
-    result = [self _searchForResources:arg2 withDetail:arg3 withFlags:arg4];
+    result = [self _searchForResources:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Team"])
-    result = [self _searchForTeams:arg2 withDetail:arg3 withFlags:arg4];
+    result = [self _searchForTeams:arg2 withDetail:arg3 withFlags:flags];
   else {
     [self warnWithFormat:@"search for unknown entity, returning empty array"];
     return [NSConcreteEmptyArray new];
@@ -388,8 +388,8 @@
     return result;
   }
 
-  if ([arg4 objectForKey:@"filter"]) {
-    filterString = [arg4 objectForKey:@"filter"];
+  if ([flags objectForKey:@"filter"]) {
+    filterString = [flags objectForKey:@"filter"];
     if ([self isDebug])
       [self logWithFormat:@"Filtering %d objects with filter: %@",
          [result count],

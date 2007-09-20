@@ -1,4 +1,22 @@
+2007-09-20 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Team.m: Supress expansion of membership to the all
+	  "all intranet" team unless the zOGIExpandAllIntranet default
+	  is YES. (v1.5.19)
+
+	* zOGIRPCAction.m: Change handling of flags in searchForObjects
+	  (v1.5.19)
+
 2007-09-19 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Contact.m: Change limit flag handling. (v1.5.18)
+
+	* zOGIAction+Enterprise.m: Change limit flag handling. (v1.5.18)
+
+	* zOGIRPCAction.m: Change limit flag handling. (v1.5.18)
+
+	* zOGIAction+Document.m: Support common object details on
+	  documents; logs & properties. (v1.5.18)
 
 	* zOGIRPCAction.m: Improved logging, returning of empty results,
 	  and returning of Exceptions. (v1.5.17)
