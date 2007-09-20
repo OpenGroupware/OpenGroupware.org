@@ -197,12 +197,6 @@
   NSDictionary    *qualifier;
   int             count;
   id              tmp;
-  NSNumber       *limit;
-
-  if ([_flags objectForKey:@"limit"] != nil)
-    limit = [_flags objectForKey:@"limit"];
-  else
-    limit = intObj(100);
 
   query = [NSString stringWithString:@""];
   for(count = 0; count < [_query count]; count++) {
@@ -295,7 +289,7 @@
     [self logWithFormat:@"enterprise query: %@", query];
   results = [[self getCTX] runCommand:@"enterprise::qsearch",
                              @"qualifier", query, 
-                             @"maxSearchCount", limit,
+                             @"maxSearchCount", [_flags objectForKey:@"limit"],
                              nil];
   if (results == nil) {
     if ([self isDebug])

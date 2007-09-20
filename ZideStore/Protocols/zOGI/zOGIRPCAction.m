@@ -350,11 +350,18 @@
   id                   result;
   NSString            *filterString;
   EOQualifier         *eoFilter;
+  NSMutableDictionary *flags;
 
   if (arg4 == nil) {
-    arg4 = [NSConcreteEmptyDictionary new];
+    flags = [[NSMutableDictionary new] autorelease];
     if ([self isDebug])
       [self logWithFormat:@"No flags provided, assuming an empty set of flags."];
+  } else arg4 = [[arg4 mutableCopy] autorelease];
+
+  if ([arg4 objectForKey:@"limit"] == nil) {
+    if ([self isDebug])
+      [self logWithFormat:@"No limit in flags, assuming default."];
+    [arg4 setObject:intObj(150) forKey:@"limit"];
   }
 
   if ([arg1 isEqualToString:@"Contact"])

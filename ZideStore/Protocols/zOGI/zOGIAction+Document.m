@@ -20,6 +20,7 @@
 */
 
 #include "zOGIAction.h"
+#include "zOGIAction+Object.h"
 #include "zOGIAction+Document.h"
 
 @implementation zOGIAction(Document)
@@ -28,6 +29,7 @@
   NSMutableArray      *results;
   EOGenericRecord     *eoDoc;
   NSMutableDictionary *folder;
+  NSMutableDictionary *document;
   int                 i;
 
   if (_docs == nil)
@@ -58,7 +60,8 @@
                                    @"document", eoDoc, 
                                    nil];
          [self logWithFormat:@"Rendering File:%@", eoDoc];
-         [results addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys: 
+         document = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+           eoDoc, @"*eoObject",
            [eoDoc valueForKey:@"documentId"], @"objectId",
            @"File", @"entityName",
            [self NIL:[eoDoc valueForKey:@"projectId"]], @"projectObjectId",
@@ -74,8 +77,11 @@
            [self NIL:[eoDoc valueForKey:@"fileType"]], @"fileType",
            [self NIL:[eoDoc valueForKey:@"lastmodifiedDate"]], @"lastModified",
            [self NIL:[eoDoc valueForKey:@"versionCount"]], @"version",
-           nil]];
-        }
+           nil];
+         [self _addObjectDetails:document withDetail:_detail];
+         [self _stripInternalKeys:document];
+         [results addObject:document];
+       }
    }
   return results;
 } /* end _renderDocuments */
