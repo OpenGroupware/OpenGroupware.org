@@ -146,6 +146,8 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
                        @"person.degree",
                        @"person.enterprises",
                        @"person.isPrivate",
+                       @"person.isAccount",
+                       @"person.imAddress",
                        @"person.ownerId",
                        @"person.isPerson",
                        
