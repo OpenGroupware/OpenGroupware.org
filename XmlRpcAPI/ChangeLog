@@ -1,3 +1,10 @@
+2007-09-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* Actions.subproj/DirectAction+Appointment.m: added 
+	  appointment.getNotes, appointment.insertNote,
+	  appointment.updateNote, and appointment.deleteNote methods.
+	  Closes OGo bug 1793. (v5.3.85)
+
 2007-08-06  Tobias Kaefer  <tobias.kaefer@abas.de>
 
 	* Actions.subproj/DirectAction+Appointment.m: fixed accept() method to

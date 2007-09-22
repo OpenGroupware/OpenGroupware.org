@@ -778,4 +778,113 @@
 		 _apt:@"NEEDS-ACTION":nil:nil:nil];
 }
 
+- (id)appointment_getNotesAction:(id)_aptId {
+  NSMutableArray    *noteList;
+  NSArray           *notes;
+  EOGenericRecord   *note;
+  int               count;
+
+  noteList = [[[NSMutableArray new] initWithCapacity:16] autorelease]; 
+  notes = [[self commandContext] runCommand:@"note::get",
+              @"dateId", _aptId,
+              @"returnType", intObj(LSDBReturnType_ManyObjects),
+              nil];
+  if (notes == nil)
+    notes = [NSArray array];
+  [[self commandContext] runCommand:@"note::get-attachment-name", 
+      @"notes", notes, 
+      nil];
+  for (count = 0; count < [notes count]; count++) {
+    note = [notes objectAtIndex:count];
+    [noteList addObject:
+       [NSDictionary dictionaryWithObjectsAndKeys:
+          [note valueForKey:@"documentId"], @"objectId",
+          [note valueForKey:@"title"], @"title",
+          [note valueForKey:@"firstOwnerId"], @"creatorObjectId",
+          [note valueForKey:@"currentOwnerId"], @"ownerObjectId",
+          [note valueForKey:@"creationDate"], @"createdTime",
+          [NSNull null], @"projectObjectId",
+          _aptId, @"dateObjectId",
+          [NSString stringWithContentsOfFile:
+             [note valueForKey:@"attachmentName"]], @"content", 
+          nil]];
+  }
+  return noteList;
+}
+
+- (id)appointment_insertNoteAction:(id)_aptId:(NSString *)_title:(NSString *)_content {
+  id                    note, resultNote;
+  NSNumber             *accountId;
+
+  accountId =[[[[[self commandContext] valueForKey:LSAccountKey]
+                valueForKey:@"globalID"] keyValuesArray] objectAtIndex:0];
+  note = [NSDictionary dictionaryWithObjectsAndKeys:
+           _aptId, @"dateId",
+           accountId, @"firstOwnerId",
+           accountId, @"currentOwnerId",
+           _title, @"title",
+           _content, @"fileContent",
+           [NSNumber numberWithBool:NO], @"isFolder",
+           [NSNumber numberWithInt:[_content length]], @"fileSize",
+           nil];
+  resultNote = [[self commandContext] runCommand:@"note::new" arguments:note];
+  if (resultNote == nil)
+    return [self faultWithFaultCode:XMLRPC_FAULT_INTERNAL_ERROR
+                 reason:@"Couldn't create appointment notation"];
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+           [resultNote valueForKey:@"documentId"], @"objectId",
+           [resultNote valueForKey:@"title"], @"title",
+           [resultNote valueForKey:@"currentOwnerId"], @"creatorObjectId",
+           [resultNote valueForKey:@"currentOwnerId"], @"ownerObjectId",
+           [resultNote valueForKey:@"creationDate"], @"createdTime",
+           [NSNull null], @"projectObjectId",
+           [resultNote valueForKey:@"dateId"], @"dateObjectId",
+           _content, @"content",
+           nil];
+}
+
+- (id)appointment_deleteNoteAction:(id)_noteId {
+  id note;
+  id result;
+  
+  if ([_noteId isKindOfClass:[NSString class]])
+    _noteId = [NSNumber numberWithInt:[_noteId intValue]];
+  note = [[self commandContext] runCommand:@"note::get",
+             @"documentId", _noteId,
+             nil];
+  if (note == nil)
+    return [self faultWithFaultCode:XMLRPC_FAULT_INTERNAL_ERROR
+                 reason:@"Note does not exist"];
+  result = [[self commandContext] runCommand:@"note::delete",
+                   @"documentId", _noteId,
+                   @"reallyDelete", [NSNumber numberWithBool:YES],
+                 nil];
+  return [NSNumber numberWithBool:YES];
+}
+
+- (id)appointment_updateNoteAction:(id)_noteId: 
+                                   (NSString *)_title:
+                                   (NSString *)_content {
+  id note;
+
+  [[self commandContext] runCommand:@"note::set"
+     @"documentId", _noteId,
+     @"title", _title,
+     @"fileContent", _content,
+     nil];
+  note = [[[self commandContext] runCommand:@"note::get",
+             @"documentId", _noteId,
+             nil] lastObject];
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+           [note valueForKey:@"documentId"], @"objectId",
+           [note valueForKey:@"title"], @"title",
+           [note valueForKey:@"currentOwnerId"], @"creatorObjectId",
+           [note valueForKey:@"currentOwnerId"], @"ownerObjectId",
+           [note valueForKey:@"creationDate"], @"createdTime",
+           [NSNull null], @"projectObjectId",
+           [note valueForKey:@"dateId"], @"dateObjectId",
+           _content, @"content",
+           nil];
+}
+
 @end /* DirectAction(Appointment) */
