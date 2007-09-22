@@ -1,3 +1,8 @@
+2007-09-21  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* SkyProject4DocumentSearch.m: added selectors to choose between AND
+	  and OR operators for searching. (v5.3.75)
+
 2007-08-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyP4DocumentRequestHandler.m: changed to use -isNotEmpty (v5.3.74)

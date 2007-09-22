@@ -39,6 +39,7 @@
   id                  dataSource;
   id                  fileManager;
   id                  currentFile;
+  NSString            *qualifierOperator;
 }
 
 - (EOFetchSpecification *)fetchSpecification;
@@ -64,6 +65,7 @@
   [self->projectId   release];
   [self->fsname      release];
   [self->fsgid       release];
+  [self->qualifierOperator       release];
   [super dealloc];
 }
 
@@ -75,6 +77,14 @@
 }
 
 /* accessors */
+
+- (void)setQualifierOperator:(NSString *)_op {
+  ASSIGNCOPY(self->qualifierOperator, _op);
+}
+- (NSString *)qualifierOperator {
+  return [self->qualifierOperator isNotNull]
+    ? self->qualifierOperator : (NSString *)@"AND";
+}
 
 - (void)setFileManager:(id)_fm {
   ASSIGN(self->fileManager, _fm);
@@ -233,10 +243,6 @@
   return self->bindings;
 }
 
-- (BOOL)isAndSearch {
-  return YES;
-}
-
 - (EOKeyValueQualifier *)qualifierForTitle {
   EOQualifier *q;
   NSString *s;
@@ -313,9 +319,9 @@
   if ([qualifiers count] == 1)
     return [qualifiers objectAtIndex:0];
   
-  q = ([self isAndSearch])
-    ? [[EOAndQualifier alloc] initWithQualifierArray:qualifiers]
-    : [[EOOrQualifier  alloc] initWithQualifierArray:qualifiers];
+  q = [[self qualifierOperator] isEqualToString:@"OR"]
+      ? [[EOOrQualifier alloc]  initWithQualifierArray:qualifiers]
+      : [[EOAndQualifier alloc] initWithQualifierArray:qualifiers];
   return [q autorelease];
 }
 

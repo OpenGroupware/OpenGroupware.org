@@ -1,3 +1,9 @@
+2007-09-21  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* English.lproj|German.lproj/OGoProject.strings: added "operator",
+	  "operator_or", and "operator_and" strings used when selecting
+	  operator in project document search.
+
 2007-03-17  Per Jensen  <per@net-es.dk>
 
   * updated Danish translation

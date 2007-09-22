@@ -11,6 +11,20 @@ SearchSubmit: WOSubmitButton {
   class  = "button_narrow";
 }
 
+AndOperator: WORadioButton {
+  name      = "operator";
+  value     = "AND";
+  selection = qualifierOperator;
+}
+OrOperator: WORadioButton {
+  name      = "operator";
+  value     = "OR";
+  selection = qualifierOperator;
+}
+OperatorLabel:        WOString { value = labels.operator;       }
+AndOperatorLabel:     WOString { value = labels.operator_and;   }
+OrOperatorLabel:      WOString { value = labels.operator_or;    }
+
 TitleField: WOTextField {
   value = bindings.title;
   size  = "40";

@@ -1,3 +1,8 @@
+2007-09-21  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* OGoProject/SkyProject4DocumentSearch.html:  added ability to 
+	  select search operator in project document search.
+
 2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoNote/SkyNoteList.wox: fixed invalid XML in .wox file (removed
