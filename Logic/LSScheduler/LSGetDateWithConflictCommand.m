@@ -149,16 +149,14 @@ static NSArray *startDateSortOrderings = nil;
 
 - (BOOL)_hasResourceConflictFor:(id)_appmt {
   NSArray  *res;
-  NSArray  *cRes = nil;
-  NSString *rN   = nil;
-  int      i, j, cnt, cnt2;
+  NSArray  *cRes;
+  NSString *rN;
+  unsigned i, j, cnt, cnt2;
+  
+  if ((rN = [_appmt valueForKey:@"resourceNames"]) == nil)
+    return NO;
   
   res  = self->resourceList;
-  rN = [_appmt valueForKey:@"resourceNames"];
-
-  if (rN == nil)
-    return NO;
-
   cRes = [rN componentsSeparatedByString:RESOURCE_CSV_SEPARATOR];
   
   for (i = 0, cnt = [res count], cnt2 = [cRes count]; i < cnt; i++) {
