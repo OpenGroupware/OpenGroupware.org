@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -60,9 +61,9 @@
 
 /* accessors */
 
-- (void)setBegin:(NSCalendarDate *)_begin;
+- (void)setBegin:(id)_begin;
 - (NSCalendarDate *)begin;
-- (void)setEnd:(NSCalendarDate *)_end;
+- (void)setEnd:(id)_end;
 - (NSCalendarDate *)end;
 - (void)setStaffList:(NSArray *)_staffList;
 - (NSArray *)staffList;
@@ -73,6 +74,9 @@
 @end
 
 #include "common.h"
+
+#define RESOURCE_CSV_SEPARATOR @", "
+#define STRING_DATE_FORMAT     @"%Y-%m-%d %H:%M:%S %Z"
 
 @implementation LSGetDateWithConflictCommand
 
@@ -155,12 +159,9 @@ static NSArray *startDateSortOrderings = nil;
   if (rN == nil)
     return NO;
 
-  cRes = [rN componentsSeparatedByString:@", "];
-
-  cnt  = [res count];
-  cnt2 = [cRes count];
+  cRes = [rN componentsSeparatedByString:RESOURCE_CSV_SEPARATOR];
   
-  for  (i = 0; i < cnt; i++) {
+  for (i = 0, cnt = [res count], cnt2 = [cRes count]; i < cnt; i++) {
     for (j = 0; j < cnt2; j++) {
       if ([[res objectAtIndex:i] isEqualToString:[cRes objectAtIndex:j]])
         return YES;
@@ -296,7 +297,7 @@ static NSArray *startDateSortOrderings = nil;
   
   // TODO: how can the staffList be empty? What is supposed to happen in this
   //       case?
-  if ([self->staffList count] > 0) { // TODO: should be "[in length] > 0"?
+  if ([self->staffList isNotEmpty]) { // TODO: should be "[in isNotEmpty]"?
     NSString *in;
     NSString *pattern;
     
@@ -463,17 +464,18 @@ static NSArray *startDateSortOrderings = nil;
       id tmp;
       
       tmp = [self->appointment valueForKey:@"resourceNames"];
-      if ([tmp isNotNull]) {
-        self->resourceList = [[tmp componentsSeparatedByString:@", "] copy];
+      if ([tmp isNotEmpty]) {
+        self->resourceList =
+	  [[tmp componentsSeparatedByString:RESOURCE_CSV_SEPARATOR] copy];
       }
       
       tmp = [self->appointment valueForKey:@"participants"];
-      if (![tmp isNotNull]) {
+      if (![tmp isNotEmpty]) {
         tmp = LSRunCommandV(_context, @"appointment", @"get-participants",
                             @"appointment", self->appointment, nil);
       }
       
-      if ([tmp isNotNull])
+      if ([tmp isNotEmpty])
         self->staffList = [tmp retain];
       else {
         [self errorWithFormat:@"could not detect participants: %@", 
@@ -691,34 +693,50 @@ static NSArray *startDateSortOrderings = nil;
 
 /* accessors */
 
-- (void)setBeginFromString:(NSString *)_beginString {
-  NSCalendarDate *myDate = nil;
+- (void)setBegin:(id)_begin {
+  if ([_begin isKindOfClass:[NSString class]]) {
+    NSString *s = (NSString *)_begin;
+    if ([s isNotEmpty]) {
+      _begin = [NSCalendarDate dateWithString:s
+			       calendarFormat:STRING_DATE_FORMAT];
+      if (_begin == nil)
+	[self errorWithFormat:@"could not parse date string: %@", s];
+    }
+    else
+      _begin = nil;
+  }
   
-  myDate = [NSCalendarDate dateWithString:_beginString
-                           calendarFormat:@"%Y-%m-%d %H:%M:%S %Z"];
-  [self setBegin:myDate];
-}
-
-- (void)setBegin:(NSCalendarDate *)_begin {
   ASSIGNCOPY(self->begin, _begin);
 }
 - (NSCalendarDate *)begin {
   return self->begin;
 }
 
-- (void)setEndFromString:(NSString *)_endString {
-  NSCalendarDate *myDate = nil;
+- (void)setEnd:(id)_end {
+  if ([_end isKindOfClass:[NSString class]]) {
+    NSString *s = (NSString *)_end;
+    if ([s isNotEmpty]) {
+      _end = [NSCalendarDate dateWithString:s
+			     calendarFormat:STRING_DATE_FORMAT];
+      if (_end == nil)
+	[self errorWithFormat:@"could not parse date string: %@", s];
+    }
+    else
+      _end = nil;
+  }
   
-  myDate = [NSCalendarDate dateWithString:_endString
-                           calendarFormat:@"%Y-%m-%d %H:%M:%S %Z"];
-  [self setEnd:myDate];
-}
-
-- (void)setEnd:(NSCalendarDate *)_end {
   ASSIGNCOPY(self->end, _end);
 }
 - (NSCalendarDate *)end {
   return self->end;
+}
+
+- (void)setBeginFromString:(NSString *)_beginString {
+  // TBD: who uses those, document
+  [self setBegin:(NSCalendarDate *)_beginString];
+}
+- (void)setEndFromString:(NSString *)_endString {
+  [self setEnd:(NSCalendarDate *)_endString];
 }
 
 - (void)setStaffList:(NSArray *)_staffList {
@@ -767,6 +785,7 @@ static NSArray *startDateSortOrderings = nil;
 - (BOOL)fetchConflictInfo {
   return self->fetchConflictInfo;
 }
+
 
 /* key/value coding */
 
