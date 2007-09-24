@@ -7,7 +7,7 @@
 2007-09-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetDateWithConflictCommand.m: various refactorings and cleanups
-	  (v5.3.103)
+	  (v5.3.104)
 
 2007-09-20  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
