@@ -29,7 +29,7 @@
   The objects in the 'participants' array do not need to be full EO objects,
   they just need to have a 'companyId' attribute AND 'isAccount' or 'isTeam'
   if the record is one of those.
-  It may have 'role', 'rsvp' and 'partStatus' keys.
+  It may have 'role', 'rsvp', 'partStatus', and 'comment' keys.
   
   Arguments:
     date | appointment | object
@@ -74,13 +74,14 @@
 
 - (BOOL)_newEntry:(id)_object changedSinceEntry:(id)_oldEntry {
   NSNumber *pkey;
-  NSString *role, *status;
+  NSString *role, *status, *comment;
   NSNumber *rsvp;
 
   pkey  = [_object valueForKey:@"companyId"];
   role  = [_object valueForKey:@"role"];
   rsvp  = [_object valueForKey:@"rsvp"];
   status = [_object valueForKey:@"partStatus"];
+  comment = [_object valueForKey:@"comment"];
   
   // check these participant attributes only, if both not null
   if ([role isNotNull]) {
@@ -97,6 +98,11 @@
     if (![role isEqual:[_oldEntry valueForKey:@"partStatus"]])
       // no equal partStatus
       return YES; 
+  }
+  if ([comment isNotNull]) {
+    if (![comment isEqual:[_oldEntry valueForKey:@"comment"]])
+      // no equal comment 
+      return YES;
   }
 
   // if id is equal
@@ -172,6 +178,47 @@
                   @"partStatus", [newParticipant valueForKey:@"partStatus"],
                   @"role",       [newParticipant valueForKey:@"role"],
                   @"rsvp",       [newParticipant valueForKey:@"rsvp"],
+                  @"comment",    [newParticipant valueForKey:@"comment"],
+                  nil);
+  }
+  [self setReturnValue:[self object]];
+}
+
+- (void)_updateAssignments:(NSArray *)_assignments
+  inContext:(id)_context
+{
+  NSEnumerator *listEnum;
+  id           updatedParticipant;
+  NSNumber     *aptPKey;
+
+  aptPKey = [[self object] valueForKey:@"dateId"];
+
+  listEnum = [_assignments objectEnumerator];
+  while ((updatedParticipant = [listEnum nextObject]) != nil) {
+    BOOL isStaff;
+
+    isStaff = ([[updatedParticipant valueForKey:@"isAccount"] boolValue] ||
+               [[updatedParticipant valueForKey:@"isTeam"] boolValue]);
+
+    if (!isStaff) {
+      if ([updatedParticipant valueForKey:@"isAccount"] == nil &&
+          [updatedParticipant valueForKey:@"isTeam"]) {
+        [self warnWithFormat:
+                @"non-staff participant (probably missing type marker!): %@",
+                updatedParticipant];
+      }
+    }
+
+    LSRunCommandV(_context, @"DateCompanyAssignment", @"set",
+                  @"dateCompanyAssignmentId", 
+                      [updatedParticipant valueForKey:@"dateCompanyAssignmentId"],
+                  @"dateId",     aptPKey,
+                  @"companyId",  [updatedParticipant valueForKey:@"companyId"],
+                  @"isStaff",    [NSNumber numberWithBool:isStaff],
+                  @"partStatus", [updatedParticipant valueForKey:@"partStatus"],
+                  @"role",       [updatedParticipant valueForKey:@"role"],
+                  @"rsvp",       [updatedParticipant valueForKey:@"rsvp"],
+                  @"comment",    [updatedParticipant valueForKey:@"comment"],
                   nil);
   }
   [self setReturnValue:[self object]];
@@ -181,6 +228,7 @@
   withNewList:(NSArray *)_newList
   toRemove:(NSMutableArray *)_toRemove
   toAdd:(NSMutableArray *)_toAdd
+  toUpdate:(NSMutableArray *)_toUpdate
 {
   NSMutableArray *oldList, *addedIds;
   unsigned int newListCount, i;
@@ -194,7 +242,7 @@
     NSNumber *cId;
     id newEntry, oldEntry;
     
-    newEntry = [_newList objectAtIndex:i];
+    newEntry = [[[_newList objectAtIndex:i] mutableCopy] autorelease];
     oldEntry = [self _findOldEntry:oldList 
                      forCompanyId:[newEntry valueForKey:@"companyId"]];
     cId      = [newEntry valueForKey:@"companyId"];
@@ -213,12 +261,37 @@
     }
     
     if ([self _newEntry:newEntry changedSinceEntry:oldEntry]) {
-      /* 
-         New entry changed since old. We remove the old and add the new, not
-         sure whether this makes sense. Can't we update the old assignment?
-      */
-      [_toAdd    addObject:newEntry];
-      [_toRemove addObject:oldEntry];
+      /* This entry already exists but has changed -> update 
+         The only required fields/values for an update are:
+           dateCompanyAssignmentId, dateId, & companyId */
+      [newEntry setObject:[oldEntry valueForKey:@"dateCompanyAssignmentId"]
+                   forKey:@"dateCompanyAssignmentId"];
+
+      /* if new entry does not provide status, get from old entry */
+      if (([newEntry valueForKey:@"partStatus"] == nil) &&
+          ([[oldEntry valueForKey:@"partStatus"] isNotNull]))
+        [newEntry setObject:[oldEntry valueForKey:@"partStatus"]
+                     forKey:@"partStatus"];
+
+      /* if new entry does not provide rsvp, get from old entry */
+      if (([newEntry valueForKey:@"rsvp"] == nil) &&
+          ([[oldEntry valueForKey:@"rsvp"] isNotNull]))
+        [newEntry setObject:[oldEntry valueForKey:@"rsvp"]
+                     forKey:@"rsvp"];
+
+      /* if new entry does not provide comment, get from old entry */
+      if (([newEntry valueForKey:@"comment"] == nil) &&
+          ([[oldEntry valueForKey:@"comment"] isNotNull]))
+        [newEntry setObject:[oldEntry valueForKey:@"comment"]
+                     forKey:@"comment"];
+
+      /* if new entry does not provide role, get from old entry */
+      if (([newEntry valueForKey:@"role"] == nil) &&
+          ([[oldEntry valueForKey:@"role"]  isNotNull]))
+        [newEntry setObject:[oldEntry valueForKey:@"role"]
+                     forKey:@"role"];
+
+      [_toUpdate   addObject:newEntry];
       
       [oldList removeObject:oldEntry];
       [addedIds addObject:cId];
@@ -227,8 +300,11 @@
     
     /* no changes */
     [oldList removeObject:oldEntry]; /* keep it */
-  }
-  
+  } /* end for-loop newlist */
+ 
+  /* copy all remaining objects from previous participant list
+     to list of participants to remove,  these participants
+     were not found in the new participant list -> delete */ 
   if ([oldList isNotEmpty])
     [_toRemove addObjectsFromArray:oldList];
 }
@@ -320,6 +396,7 @@
                        @"companyId", @"partStatus",
                        @"role",      @"rsvp",
                        @"dateId",    @"isStaff",
+                       @"comment",  
                        nil];
   }
   return keys;
@@ -347,7 +424,7 @@
 
 - (void)_executeInContext:(id)_context {
   NSArray        *oldList, *newList;
-  NSMutableArray *toRemove, *toAdd;
+  NSMutableArray *toRemove, *toAdd, *toUpdate;
 
   //oldList = [[self object] valueForKey:@"toDateCompanyAssignment"];
   oldList = [self _fetchOldParticipants:_context];
@@ -355,14 +432,19 @@
   
   toRemove = [NSMutableArray arrayWithCapacity:4];
   toAdd    = [NSMutableArray arrayWithCapacity:4];
+  toUpdate = [NSMutableArray arrayWithCapacity:4];
   
   [self syncOldList:oldList withNewList:newList
-        toRemove:toRemove toAdd:toAdd];
+        toRemove:toRemove 
+        toAdd:toAdd
+        toUpdate:toUpdate];
   
   if ([toRemove isNotEmpty])
     [self _removeOldAssignments:toRemove inContext:_context];
   if ([toAdd isNotEmpty])
     [self _addAssignments:toAdd inContext:_context];
+  if ([toUpdate isNotEmpty])
+    [self _updateAssignments:toUpdate inContext:_context];
 }
 
 /* initialize records */

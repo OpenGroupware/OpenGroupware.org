@@ -1,3 +1,9 @@
+2007-09-24  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSDateAssignmentCommand.m: Modified to perform updates rather
+	  than replace existing records.  Added support for comment
+	  attribute. Closes OGo bug 1915. (v5.3.105)
+
 2007-09-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetDateWithConflictCommand.m: various refactorings and cleanups
