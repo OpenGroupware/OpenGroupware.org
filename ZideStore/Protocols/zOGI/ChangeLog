@@ -1,4 +1,4 @@
-2009-09-24 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+2007-09-24 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Appointment.m: Change participant translation
 	  to match behaviour of improved LSDateAssignmentCommand.
