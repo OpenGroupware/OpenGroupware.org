@@ -264,21 +264,24 @@
   while ((participant = [enumerator nextObject]) != nil) {
     if([participant valueForKey:@"isTeam"] == nil) {
       /* Participant is a contact */
-      if ([participant valueForKey:@"partStatus"] == nil)
-        status = [NSString stringWithString:@"NEEDS-ACTION"];
+      if ([[participant valueForKey:@"partStatus"] isNotNull])
+        if([[participant objectForKey:@"partStatus"] length] == 0)
+          status = [NSString stringWithString:@"NEEDS-ACTION"];
+        else
+          status = [participant objectForKey:@"partStatus"];
       else
-        status = [participant valueForKey:@"partStatus"];
+        status = [NSString stringWithString:@"NEEDS-ACTION"];
       [participantList addObject:
          [NSDictionary dictionaryWithObjectsAndKeys:
             @"participant", @"entityName",
             @"Contact", @"participantEntityName",
+           status, @"status",
            [participant valueForKey:@"companyId"], @"participantObjectId",
            [participant valueForKey:@"dateCompanyAssignmentId"], @"objectId",
            [self NIL:[participant valueForKey:@"firstname"]], @"firstName",
            [self NIL:[participant valueForKey:@"name"]], @"lastName",
            [self NIL:[participant valueForKey:@"role"]], @"role",
            [self ZERO:[participant valueForKey:@"isPrivate"]], @"private",
-           status, @"status",
            [self NIL:[participant valueForKey:@"comment"]], @"comment",
            [self ZERO:[participant valueForKey:@"rsvp"]], @"rsvp",
            [_appointment valueForKey:@"objectId"], @"appointmentObjectId",
@@ -583,40 +586,48 @@
     if ([self isDebug])
       [self logWithFormat:@"_translateParticipants; called with nil list"];
     return [NSArray arrayWithObject:participant];
-   }
+  }
   participants = [[NSMutableArray alloc] initWithCapacity:[_participants count]];
   for (count = 0; count < [_participants count]; count++) {
     _participant = [_participants objectAtIndex:count];
-    // Make dictionary to contain the new translated participant
+
+    /* Make dictionary to contain the new translated participant */
     participant = [[NSMutableDictionary alloc] initWithCapacity:8];
     if (![_participant isKindOfClass:[NSDictionary class]])
       return [NSException exceptionWithHTTPStatus:500
                           reason:@"Non-dictionary in participant list"];
-    // Extract and if need be translate participant object id to a string
-    objectId = [_participant objectForKey:@"participantObjectId"];
+
+    /* Extract and if need be translate participant object id to a string */
+    objectId = [_participant valueForKey:@"participantObjectId"];
     if (objectId == nil)
       return [NSException exceptionWithHTTPStatus:500
                           reason:@"Participant specified with no id"];
-     else if ([objectId isKindOfClass:[NSNumber class]])
-       objectId = [objectId stringValue];
-    // TODO: Verify that objectId points to a contact or a team
+     else if ([objectId isKindOfClass:[NSString class]])
+       objectId = intObj([objectId intValue]);
+
+    /* TODO: Verify that objectId points to a contact or a team */
     [participant setObject:objectId forKey:@"companyId"];
-    // Retrieve record object id and translate to a string if need be
-    objectId = [_participant objectForKey:@"objectId"];
-    if (objectId != nil) {
-      if ([objectId isKindOfClass:[NSNumber class]])
-        objectId = [objectId stringValue];
-      if (![objectId isEqualToString:@"0"])
+
+    /* Retrieve record object id and translate to a string if need be */
+    objectId = [_participant valueForKey:@"objectId"];
+    if ([objectId isNotNull]) {
+      if ([objectId isKindOfClass:[NSString class]])
+        objectId = intObj([objectId intValue]);
+      if ([objectId intValue] != 0)
         [participant setObject:objectId forKey:@"dateCompanyAssignmentId"];
-     } // End objectId (record object id) != nil
-    if ([_participant objectForKey:@"role"] != nil)
-      [participant setObject:[_participant objectForKey:@"role"]
+     } /* End objectId (record object id) != nil */
+
+    if ([[_participant valueForKey:@"role"] isNotNull])
+      [participant setObject:[_participant valueForKey:@"role"]
                       forKey:@"role"];
-    if ([_participant objectForKey:@"comment"] != nil)
-      [participant setObject:[_participant objectForKey:@"comment"]
-                      forKey:@"comment"];      
+
+    if ([[_participant valueForKey:@"rsvp"] isNotNull])
+      [participant setObject:[_participant valueForKey:@"rsvp"]
+                      forKey:@"rsvp"];      
+    else [participant setObject:intObj(1) forKey:@"rsvp"];
+
     [participants addObject:participant];
-   } // End for count < [_participants count]
+  } /* End for count < [_participants count] */
   return participants;
 } /* End _translateParticipants */
 
@@ -718,7 +729,7 @@
   if ([participants isKindOfClass:[NSException class]]) {
     [appointment release];
     return participants;
-   }
+  }
   [appointment setObject:participants forKey:@"participants"];
   // Deal with the "ignoreConflicts" flag if presented
   if ([_flags containsObject:[NSString stringWithString:@"ignoreConflicts"]])
