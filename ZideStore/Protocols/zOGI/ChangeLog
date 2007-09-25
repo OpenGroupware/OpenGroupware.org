@@ -1,3 +1,8 @@
+2007-09-25 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* GNUMakefile.preable: Uncomment mistakenly commented lines.
+	  (v1.5.22)
+
 2007-09-24 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Appointment.m: Change participant translation
