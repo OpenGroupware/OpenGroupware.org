@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -33,12 +34,12 @@
 @implementation OGoContextManager(FailedLogin)
 
 static NSString *FailMailContentTemplate =
-  @"This is a message from the SKYRiX Application Server.\n\n"
+  @"This is a message from the OpenGroupware.org Application Server.\n\n"
   @"The account with the login '%@' was locked after "
   @"%d failed logins in the last %d minutes.\n\n"
   @"To unlock this "
   @"account do the following steps: \n\n"
-  @"  - login as SKYRiX-administrator\n"
+  @"  - login as OGo-administrator\n"
   @"  - open the administration application\n"
   @"  - search and open the account '%@'\n"
   @"  - open the edit panel\n"
@@ -87,7 +88,7 @@ static NSString *LockInfoMail        = nil;
 - (BOOL)failLogin_start {
   if (![self->adChannel isOpen]) {
     if (![self->adChannel openChannel]) {
-      [self logWithFormat:@"couldn't open adaptor channel"];
+      [self errorWithFormat:@"could not open adaptor channel"];
       return NO;
     }
   }
@@ -115,10 +116,9 @@ static NSString *LockInfoMail        = nil;
 - (NSDictionary *)failLogin_getAccount:(NSString *)_login uid:(NSNumber *)_uid{
   EOSQLQualifier *qualifier;
   NSException    *error;
-  id             row;
+  NSDictionary   *row;
   NSArray        *attrs;
   EOAttribute    *companyIdAttr, *isLockedAttr;
-  id obj;
   
   companyIdAttr = [self->personEntity attributeNamed:@"companyId"];
   isLockedAttr  = [self->personEntity attributeNamed:@"isLocked"];
@@ -138,8 +138,8 @@ static NSString *LockInfoMail        = nil;
     return nil;
   }
   
-  while ((obj = [self->adChannel fetchAttributes:attrs withZone:NULL]))
-    row = obj;
+  row = [self->adChannel fetchAttributes:attrs withZone:NULL];
+  [self->adChannel cancelFetch];
   
   return row;
 }
@@ -160,14 +160,14 @@ static NSString *LockInfoMail        = nil;
   result = [NSMutableArray arrayWithCapacity:5];
   
   error = [self->adChannel selectAttributesX:attrs
-	       describedByQualifier:_qual fetchOrder:nil lock:NO];
+	                   describedByQualifier:_qual fetchOrder:nil lock:NO];
   if (error != nil) {
     [self->adContext rollbackTransaction];
-    [self logWithFormat:@"could not fetch session log infos: %@", error];
+    [self errorWithFormat:@"could not fetch session log infos: %@", error];
     return nil;
   }
   
-  while ((obj = [self->adChannel fetchAttributes:attrs withZone:NULL]))
+  while ((obj = [self->adChannel fetchAttributes:attrs withZone:NULL]) != nil)
     [result addObject:obj];
   
   return result;
@@ -198,7 +198,7 @@ static NSString *LockInfoMail        = nil;
   tmp = [self failLogin_getSessionLogInfoForEntity:sLogEntity 
 	      sqlQualifier:qual];
   
-  array = (tmp)
+  array = (tmp != nil)
     ? [[tmp mutableCopy] autorelease]
     : [NSMutableArray arrayWithCapacity:10];
   
@@ -210,17 +210,16 @@ static NSString *LockInfoMail        = nil;
                                      @"accountId", companyId] autorelease];
   tmp = [self failLogin_getSessionLogInfoForEntity:sLogEntity 
 	      sqlQualifier:qual];
-  if (tmp)
+  if (tmp != nil)
     [array addObjectsFromArray:tmp];
 
   enumerator = [array objectEnumerator];
-
-  while ((tmp = [enumerator nextObject])) {
+  while ((tmp = [enumerator nextObject]) != nil) {
     tmp = [tmp valueForKey:@"logDate"];
     if ([date compare:tmp] == NSOrderedAscending)
       date = tmp;
   }
-
+  
   dateStr = [self->adaptor formatValue:date
 		 forAttribute:[sLogEntity attributeNamed:@"logDate"]];
 
@@ -230,6 +229,7 @@ static NSString *LockInfoMail        = nil;
                                     @"logDate",   dateStr, 
 				    @"action",    @"Login Failed",
                                     @"accountId", companyId] autorelease];
+  
   return [self failLogin_getSessionLogInfoForEntity:sLogEntity 
 	       sqlQualifier:qual];
 }
@@ -297,8 +297,12 @@ static NSString *LockInfoMail        = nil;
     closeConnection = YES;
   }
   row = [self failLogin_getAccount:_login uid:nil];
-  if (closeConnection)
-    [self->adContext commitTransaction];
+  if (closeConnection) {
+    if (![self->adContext commitTransaction]) {
+      [self warnWithFormat:@"could no commit tx!"];
+      [self->adContext rollbackTransaction];
+    }
+  }
 
   if (row == nil) {
     [self logWithFormat:@"Did not find account for login: '%@'", _login];
@@ -313,15 +317,22 @@ static NSString *LockInfoMail        = nil;
   
   companyId = [row objectForKey:@"companyId"];
   cint = [companyId intValue];
-      
-  if (!(cint > 0 && cint != 10000)) {
+  
+  
+  if (!(cint > 0 && cint != 10000)) { // root
     [self logWithFormat:@"Did not find account for login: '%@'", _login];
+    [self->adContext commitTransaction];
+    [self->adChannel closeChannel];
     return;
   }
-
+  
   cmdCtx = [[LSCommandContext alloc] initWithManager:self];
-  [cmdCtx begin];
-
+  if (![cmdCtx begin]) {
+    [self errorWithFormat:@"could not begin cmdctx tx!"];
+    [cmdCtx release]; cmdCtx = nil;
+    return;
+  }
+  
   LSRunCommandV(cmdCtx, @"sessionlog", @"add",
 		@"accountId", companyId,
 		@"action",    @"Login Failed",
@@ -335,7 +346,7 @@ static NSString *LockInfoMail        = nil;
     [cmdCtx release]; cmdCtx = nil;
     return;
   }
-
+  
   if (![self->adContext hasOpenTransaction]) {
     [self->adContext beginTransaction];
     closeConnection = YES;
@@ -344,11 +355,10 @@ static NSString *LockInfoMail        = nil;
 		  minutes:MinutesBetweenFailed];
   
   if ([slInfos count] >= FailedCount) {
-    id      root, person;
-
-    root = [self failLogin_getAccount:nil 
-		 uid:[NSNumber numberWithInt:10000]];
-	    
+    id root, person;
+    
+    root = [self failLogin_getAccount:nil uid:[NSNumber numberWithInt:10000]];
+    
     [self logWithFormat:
 	    @"Max retry count was reached, lock account '%@', "
 	    @"send a message to %@.", _login, LockInfoMail];
@@ -363,7 +373,7 @@ static NSString *LockInfoMail        = nil;
       person = [person lastObject];
     }
 
-    if (person) {
+    if (person != nil) {
       [person takeValue:[NSNumber numberWithBool:YES]
 	      forKey:@"isLocked"];
             
@@ -372,8 +382,8 @@ static NSString *LockInfoMail        = nil;
 		    @"checkAccess", [NSNumber numberWithBool:NO], nil);
     }
     else {
-      NSLog(@"%s: couldn't fetch person for id %@", __PRETTY_FUNCTION__,
-	    companyId);
+      [self errorWithFormat:@"%s: could not fetch person for id %@",
+	      __PRETTY_FUNCTION__, companyId];
     }
     [self failLogin_sendInfoMailInCommandContext:cmdCtx
 	  to:LockInfoMail
@@ -381,12 +391,18 @@ static NSString *LockInfoMail        = nil;
 	  account:_login 
 	  numberOfFails:FailedCount
 	  timeRange:MinutesBetweenFailed];
-	    
-    if (closeConnection)
-      [self->adContext commitTransaction];
+    
+  }
+
+  if (closeConnection) {
+    if (![self->adContext commitTransaction]) {
+      [self warnWithFormat:@"could no commit tx!"];
+      [self->adContext rollbackTransaction];
+    }
   }
   
-  [cmdCtx commit];
+  if (![cmdCtx commit])
+    [self errorWithFormat:@"could not commit account lock ..."];
   [cmdCtx release]; cmdCtx = nil;
 }
 

@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -101,7 +102,7 @@ NSString *ProfileCommandsFileName = nil;
 }
 
 - (id)_init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NSNotificationCenter *nc;
 
     /* setup helper objects */
@@ -110,11 +111,11 @@ NSString *ProfileCommandsFileName = nil;
       [[NSClassFromString(@"LSTypeManager") alloc] initWithContext:self];
     
     self->objectPropertyManager =
-      [[NSClassFromString(@"SkyObjectPropertyManager") alloc]
-                                                       initWithContext:self];
+      [[NSClassFromString(@"SkyObjectPropertyManager") 
+			 alloc] initWithContext:self];
     self->linkManager =
-      [[NSClassFromString(@"OGoObjectLinkManager") alloc]
-                                                   initWithContext:self];
+      [[NSClassFromString(@"OGoObjectLinkManager") 
+			 alloc] initWithContext:self];
     self->accessManager = [[SkyAccessManager alloc] initWithContext:self];
     
     if (self->typeManager == nil)
