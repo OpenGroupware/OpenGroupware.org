@@ -1,3 +1,9 @@
+2007-10-01  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* OGoProject/SkyProject4VersionList.wod: Use numeric version
+	  number for version column, and sorting, in project document
+	  version list. Closes OGo bug 1592.
+
 2007-09-21  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
 
 	* OGoProject/SkyProject4DocumentSearch.html:  added ability to 
