@@ -15,6 +15,21 @@ Buttons: SkyButtonRow {
   new      = labels.new;
 }
 
+AndOperator: WORadioButton {
+  name      = "operator";
+  value     = "AND";
+  selection = qualifierOperator;
+}
+OrOperator: WORadioButton {
+  name      = "operator";
+  value     = "OR";
+  selection = qualifierOperator;
+}
+OperatorLabel:        WOString { value = labels.operator;       }
+AndOperatorLabel:     WOString { value = labels.operator_and;   }
+OrOperatorLabel:      WOString { value = labels.operator_or;    }
+
+
 /* tabs */
 
 TabView: SkyTabView {

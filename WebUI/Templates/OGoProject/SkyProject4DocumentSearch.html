@@ -1,31 +1,28 @@
 <!-- $Id: SkyProject4DocumentSearch.html 2 2004-08-20 11:37:44Z znek $ -->
 
 <#Form>
-  <table border='0' width='100%' cellspacing='0' cellpadding='2'>
+  <table>
     <tr>
-      <td align="right"><#Font><#OperatorLabel/>:</#Font></td>
-      <td><#AndOperator/><#Font><#AndOperatorLabel/></#Font>
-          <#OrOperator /><#Font><#OrOperatorLabel /></#Font>
-      </td>
-    </tr>
-    <tr>
-      <td align="right"><#Font><#Title/>:</#Font></td>
+      <td><#Font><#Title/>:</#Font></td>
       <td><#TitleField/></td>
     </tr>
     <tr>
-      <td align="right"><#Font><#Filename/>:</#Font></td>
+      <td><#Font><#Filename/>:</#Font></td>
       <td><#FileNameField/></td>
     </tr>
     
     <tr>
-      <td align="right"><#Font><#Extension/>:</#Font></td>
+      <td><#Font><#Extension/>:</#Font></td>
       <td><#ExtensionField/></td>
     </tr>
-    
     <tr>
-      <td></td>
-      <td><#SearchSubmit/></td>
+      <td><#Font><#OperatorLabel/>:</#Font></td>
+      <td><#AndOperator/><#Font><#AndOperatorLabel/></#Font>
+          <#OrOperator /><#Font><#OrOperatorLabel /></#Font>
+          <#SearchSubmit/>
+      </td>
     </tr>
+    
   </table>
   
   <hr size="1" />

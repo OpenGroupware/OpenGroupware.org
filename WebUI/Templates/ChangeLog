@@ -4,6 +4,13 @@
 	  number for version column, and sorting, in project document
 	  version list. Closes OGo bug 1592.
 
+	* OGoProject/SkyProject4Desktop.html|wod: Added AND/OR search
+	  qualifier when searching project documents.  Closes OGo
+	  bug 1918.
+
+	* OGoProject/SkyProject4DocumentSearch.html: Rearrainged form
+	  elements slightly.  Relates to OGo bug 1918.
+
 2007-09-21  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
 
 	* OGoProject/SkyProject4DocumentSearch.html:  added ability to 

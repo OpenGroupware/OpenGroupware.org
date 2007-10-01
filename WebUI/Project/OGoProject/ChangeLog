@@ -1,3 +1,9 @@
+2007-10-01  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* SkyProject4Desktop.m: added selects to choose between AND
+	  and OR operators for searching documents. Closes OGo bug
+	  1918. (v5.3.76)
+
 2007-09-21  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
 
 	* SkyProject4DocumentSearch.m: added selectors to choose between AND

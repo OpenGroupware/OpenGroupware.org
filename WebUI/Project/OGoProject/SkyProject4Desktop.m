@@ -38,6 +38,7 @@
   EODataSource         *documentDS;
   EOFilterDataSource   *ds;
   EOQualifier          *searchQualifier;
+  NSString	       *qualifierOperator;
   
   /* transient */
   unsigned int         currentBatch;
@@ -162,19 +163,20 @@ static NSArray     *extDesktopPages   = nil;
 }
 
 - (void)dealloc {
-  [self->nameToExtComponent release];
-  [self->currentTab     release];
-  [self->clippedGIDs    release];
-  [self->project        release];
-  [self->ds             release];
-  [self->title          release];
-  [self->extension      release];
-  [self->fileName       release];
-  [self->searchString   release];
-  [self->searchProjects release];
-  [self->item           release];
-  [self->prevItem       release];
-  [self->documentDS     release];
+  [self->nameToExtComponent  release];
+  [self->currentTab          release];
+  [self->clippedGIDs         release];
+  [self->project             release];
+  [self->ds                  release];
+  [self->title               release];
+  [self->extension           release];
+  [self->fileName            release];
+  [self->searchString        release];
+  [self->qualifierOperator   release];
+  [self->searchProjects      release];
+  [self->item                release];
+  [self->prevItem            release];
+  [self->documentDS          release];
   [super dealloc];
 }
 
@@ -200,6 +202,16 @@ static NSArray     *extDesktopPages   = nil;
 - (EODataSource *)documentDS {
   return self->documentDS;
 }
+
+- (void)setQualifierOperator:(NSString *)_op {
+  ASSIGNCOPY(self->qualifierOperator, _op);
+}
+- (NSString *)qualifierOperator {
+  return [self->qualifierOperator isNotNull]
+    ? self->qualifierOperator : (NSString *)@"AND";
+}
+
+
 
 /* datasources */
 
@@ -422,10 +434,6 @@ static NSArray     *extDesktopPages   = nil;
 
 /* qualifiers */
 
-- (BOOL)isAndSearch {
-  return YES;
-}
-
 - (NSString *)likeWrapString:(NSString *)_s {
   if ([_s rangeOfString:@"*"].length == 0)
     _s  = [[@"*" stringByAppendingString:_s] stringByAppendingString:@"*"];
@@ -482,10 +490,10 @@ static NSArray     *extDesktopPages   = nil;
   if ([qualifiers count] == 1)
     return [qualifiers objectAtIndex:0];
   
-  q = [self isAndSearch]
-    ? [[EOAndQualifier alloc] initWithQualifierArray:qualifiers]
-    : [[EOOrQualifier  alloc] initWithQualifierArray:qualifiers];
-  
+  q = [[self qualifierOperator] isEqualToString:@"OR"]
+      ? [[EOOrQualifier alloc]  initWithQualifierArray:qualifiers]
+      : [[EOAndQualifier alloc] initWithQualifierArray:qualifiers];
+ 
   return [q autorelease];
 }
 

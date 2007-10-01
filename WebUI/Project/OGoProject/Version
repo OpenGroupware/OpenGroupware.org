@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=75
+SUBMINOR_VERSION:=76
 
 # Requirements:
 #   v5.1.66 requires libNGExtensions  v4.4.133
