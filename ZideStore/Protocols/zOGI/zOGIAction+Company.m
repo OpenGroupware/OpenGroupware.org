@@ -140,22 +140,40 @@
 -(NSException *)_addCompanyValuesToCompany:(NSMutableDictionary *)_company {
   NSMutableArray      *valueList;
   NSEnumerator        *enumerator;
+  NSArray             *values;
   id                   value;
 
   valueList = [NSMutableArray new];
   enumerator = [[[_company objectForKey:@"*eoObject"] valueForKey:@"attributeMap"] objectEnumerator];
   while ((value = [enumerator nextObject]) != nil) {
     if ([value isKindOfClass:[EOGenericRecord class]]) {
-      [valueList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+      if ([[value valueForKey:@"type"] intValue] == 9) {
+        if ([[value valueForKey:@"value"] isNotNull])
+          values = [[value valueForKey:@"value"] componentsSeparatedByString:@","];
+        else
+          values = [NSConcreteEmptyArray new];
+        [valueList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
            @"companyValue", @"entityName",
            [value valueForKey:@"companyValueId"], @"objectId",
            [value valueForKey:@"companyId"], @"companyObjectId",
            [self NIL:[value valueForKey:@"label"]], @"label",
            [self NIL:[value valueForKey:@"type"]], @"type",
            [self NIL:[value valueForKey:@"uid"]], @"uid",
-           [self NIL:[value valueForKey:@"value"]], @"value",
+           values, @"value",
            [value valueForKey:@"attribute"], @"attribute",
            nil]];
+      } else {
+          [valueList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+             @"companyValue", @"entityName",
+             [value valueForKey:@"companyValueId"], @"objectId",
+             [value valueForKey:@"companyId"], @"companyObjectId",
+             [self NIL:[value valueForKey:@"label"]], @"label",
+             [self NIL:[value valueForKey:@"type"]], @"type",
+             [self NIL:[value valueForKey:@"uid"]], @"uid",
+             [self NIL:[value valueForKey:@"value"]], @"value",
+             [value valueForKey:@"attribute"], @"attribute",
+             nil]];
+        }
      }
    }
   [_company setObject:valueList forKey:@"_COMPANYVALUES"];
@@ -278,7 +296,7 @@
         forEntity:(NSString *)_entity {
   NSArray              *keys;
   NSString             *key;
-  NSString             *command;
+  NSString             *command, *attribute;
   id                    value, company, eo;
   int                   count;
   NSException          *exception;
@@ -329,13 +347,15 @@
          count < [[_company objectForKey:@"_COMPANYVALUES"] count];
          count++) {
       value = [[_company objectForKey:@"_COMPANYVALUES"] objectAtIndex:count];
+      attribute = [value objectForKey:@"attribute"];
+      value = [value objectForKey:@"value"];
+      if ([value isKindOfClass:[NSArray class]])
+        value = [value componentsJoinedByString:@","];
       if ([self isDebug])
         [self logWithFormat:@"Company Value: Storing value %@ as %@", 
-          [value objectForKey:@"value"],
-          [value objectForKey:@"attribute"]];
-      [company setObject:[value objectForKey:@"value"]
-                  forKey:[value objectForKey:@"attribute"]];
-     }
+          value, attribute];
+      [company setObject:value forKey:attribute];
+    }
   } /* End if-COMPANYVALUES-supplied-by-client */
 
   /* Add & test snapshot if event is an update */
