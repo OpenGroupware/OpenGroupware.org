@@ -1,3 +1,10 @@
+2007-10-07  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSDateAssignmentCommand.m: Deal with LSPerson objects as
+	  participants;  these don't support mutableCopy and never
+	  provide comment, role, status, or rsvp.
+	  Should fix OGo bug 1922. (v5.3.106)
+
 2007-09-24  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSDateAssignmentCommand.m: Modified to perform updates rather

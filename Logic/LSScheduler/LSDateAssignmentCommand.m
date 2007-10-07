@@ -241,8 +241,23 @@
   for (i = 0; i < newListCount; i++) {
     NSNumber *cId;
     id newEntry, oldEntry;
-    
-    newEntry = [[[_newList objectAtIndex:i] mutableCopy] autorelease];
+ 
+    if ([[_newList objectAtIndex:i] isKindOfClass:[NSDictionary class]]) {
+      /* Take a mutable copy of the participant dictionary so we can add
+         the comment/role/status etc... from the existing participant
+         entry if it was not provided */
+      newEntry = [[[_newList objectAtIndex:i] mutableCopy] autorelease];
+    } else {
+        /* Participant provided as an LSPerson object,  in this case
+           we know it won't have comment/role/status etc... so we
+           make a mutable dictionary grabbing the companyId out of the
+           LSPerson object */
+        newEntry = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                      [[_newList objectAtIndex:i] objectForKey:@"companyId"],
+                      @"companyId",
+	      nil];
+       }
+  
     oldEntry = [self _findOldEntry:oldList 
                      forCompanyId:[newEntry valueForKey:@"companyId"]];
     cId      = [newEntry valueForKey:@"companyId"];
