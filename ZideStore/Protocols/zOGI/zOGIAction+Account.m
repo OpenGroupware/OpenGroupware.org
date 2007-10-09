@@ -96,7 +96,9 @@
 
 /* Get rendered account for current account at specified detail level */
 -(id)_getLoginAccount:(NSNumber *)_detail {
+  NSMutableArray          *calendarPanel;
   NSMutableDictionary     *account;
+  NSMutableDictionary     *defaults;
 
   account = [self _getAccountForKey:[self _getCompanyId]
                          withDetail:_detail];
@@ -105,6 +107,44 @@
      [account setObject:[self _getDefaults] forKey:@"_DEFAULTS"];
      This fails because SOPE cannot encode the LSUserDefaults
      class;  perhaps we can add an encoding category? */
+ 
+  defaults = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                [self _getCompanyId], @"accountObjectId",
+                @"defaults", @"entityName",
+                nil]; 
+  if ([[self _getTimeZone] isNotNull]) {
+    [defaults setObject:[[self _getTimeZone] abbreviation]
+                 forKey:@"timeZone"];
+    [defaults setObject:intObj([[self _getTimeZone] secondsFromGMT])
+                 forKey:@"secondsFromGMT"];
+    [defaults setObject:intObj([[self _getTimeZone] isDaylightSavingTime])
+                 forKey:@"isDST"];
+    [defaults setObject:[self _getTimeZone] forKey:@"timeZoneName"];
+  } else {
+      [defaults setObject:@"GMT" forKey:@"timeZone"];
+      [defaults setObject:intObj(0)
+                   forKey:@"secondsFromGMT"];
+      [defaults setObject:intObj(0)
+                   forKey:@"isDST"];
+      [defaults setObject:@"GMT" forKey:@"timeZoneName"];
+    }
+  if (([[self _getDefault:@"scheduler_panel_accounts"] isNotNull]) ||
+      ([[self _getDefault:@"scheduler_panel_persons"] isNotNull]) ||
+      ([[self _getDefault:@"scheduler_panel_teams"] isNotNull])) {
+    calendarPanel = [NSMutableArray arrayWithCapacity:16];
+    if ([[self _getDefault:@"scheduler_panel_accounts"] isNotNull]) 
+      [calendarPanel addObjectsFromArray:[self _getDefault:@"scheduler_panel_accounts"]];
+    if ([[self _getDefault:@"scheduler_panel_persons"] isNotNull])
+      [calendarPanel addObjectsFromArray:[self _getDefault:@"scheduler_panel_persons"]];
+    if ([[self _getDefault:@"scheduler_panel_teams"] isNotNull])
+      [calendarPanel addObjectsFromArray:[self _getDefault:@"scheduler_panel_teams"]];
+    [defaults setObject:calendarPanel forKey:@"calendarPanelObjectIds"];
+  } else {
+      [self logWithFormat:@"sending empty calendar panel - no defaults"];
+      [defaults setObject:[NSConcreteEmptyArray new] forKey:@"calendarPanelObjectIds"];
+    }
+
+  [account setObject:defaults forKey:@"_DEFAULTS"];
   return account;
 } /* end _getLoginAccount */
 

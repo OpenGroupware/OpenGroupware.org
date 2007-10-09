@@ -374,11 +374,11 @@ static int zOGIDebugOn = -1;
 }
 
 /* Get the specified string value from the defaults */
-- (NSString *)_getDefault:(NSString *)_value 
+- (id)_getDefault:(NSString *)_value 
 {
-  NSString *value;
+  id value;
 
-  value = [[self _getDefaults] stringForKey:_value];
+  value = [[self _getDefaults] valueForKey:_value];
   return value;
 }
 

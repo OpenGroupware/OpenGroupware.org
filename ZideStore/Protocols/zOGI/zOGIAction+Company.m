@@ -297,7 +297,7 @@
   NSArray              *keys;
   NSString             *key;
   NSString             *command, *attribute;
-  id                    value, company, eo;
+  id                   value, tmp , company, eo;
   int                   count;
   NSException          *exception;
 
@@ -348,14 +348,33 @@
          count++) {
       value = [[_company objectForKey:@"_COMPANYVALUES"] objectAtIndex:count];
       attribute = [value objectForKey:@"attribute"];
-      value = [value objectForKey:@"value"];
-      if ([value isKindOfClass:[NSArray class]])
-        value = [value componentsJoinedByString:@","];
+      tmp = [value objectForKey:@"value"];
+      if ([self isDebug])
+        [self logWithFormat:@"Company value type is %@", [tmp class]];
+      /* If the value of the companyValue is an array or a dictionary then
+         we flatten the value to a comma separated values string.  We have
+         to test for both array/dictionary because some environments like
+         PHP don't distinguish between the two and an empty array is
+         presented as an empty dictionary */
+      if (([tmp isKindOfClass:[NSArray class]]) ||
+          ([tmp isKindOfClass:[NSDictionary class]])) {
+        if ([self isDebug])
+          [self logWithFormat:@"Flattening value array for company value %@",
+             attribute];
+        /* If there are no objects in the array/dictionary then we
+           short-circuit to an empty string,  otherwise it errors
+           that dictionary does not support componentsJoinedByString,
+           which is true. */
+        if ([tmp count] == 0)
+          tmp = [NSString stringWithString:@""];
+        else
+          tmp = [tmp componentsJoinedByString:@","];
+      }
       if ([self isDebug])
         [self logWithFormat:@"Company Value: Storing value %@ as %@", 
-          value, attribute];
-      [company setObject:value forKey:attribute];
-    }
+          tmp, attribute];
+      [company setObject:tmp forKey:attribute];
+    } /* End for-loop */
   } /* End if-COMPANYVALUES-supplied-by-client */
 
   /* Add & test snapshot if event is an update */

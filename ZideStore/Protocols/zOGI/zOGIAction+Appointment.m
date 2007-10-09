@@ -262,15 +262,17 @@
        nil];
   enumerator = [participants objectEnumerator];
   while ((participant = [enumerator nextObject]) != nil) {
+    /* Make sure we have a status string */
+    if ([[participant valueForKey:@"partStatus"] isNotNull])
+      if([[participant objectForKey:@"partStatus"] length] == 0)
+        status = [NSString stringWithString:@"NEEDS-ACTION"];
+      else
+        status = [participant objectForKey:@"partStatus"];
+    else
+      status = [NSString stringWithString:@"NEEDS-ACTION"];
+    /* Render participant */
     if([participant valueForKey:@"isTeam"] == nil) {
       /* Participant is a contact */
-      if ([[participant valueForKey:@"partStatus"] isNotNull])
-        if([[participant objectForKey:@"partStatus"] length] == 0)
-          status = [NSString stringWithString:@"NEEDS-ACTION"];
-        else
-          status = [participant objectForKey:@"partStatus"];
-      else
-        status = [NSString stringWithString:@"NEEDS-ACTION"];
       [participantList addObject:
          [NSDictionary dictionaryWithObjectsAndKeys:
             @"participant", @"entityName",
@@ -292,6 +294,7 @@
             [NSDictionary dictionaryWithObjectsAndKeys:
                @"participant", @"entityName",
                @"Team", @"participantEntityName",
+              status, @"status",
               [participant valueForKey:@"companyId"], @"participantObjectId",
               [participant valueForKey:@"dateCompanyAssignmentId"], @"objectId",
               [self NIL:[participant valueForKey:@"description"]], @"name",
@@ -498,7 +501,7 @@
                                   withFlags:_flags];
   if ([appointment isKindOfClass:[NSException class]])
     return appointment;
-  [appointment setObject:[self _getTimeZone] forKey:@"timeZone"];
+  /* [appointment setObject:[self _getTimeZone] forKey:@"timeZone"]; */
   /* translate resources */
   if ([_appointment valueForKey:@"_RESOURCES"] != nil) {
     resourceNames = [NSMutableString new];
@@ -520,6 +523,10 @@
   }
 
   /* perform logic command */
+  if ([self isDebug])
+    [self logWithFormat:@"performing %@ on appointment %@",
+       _command,
+       [appointment valueForKey:@"dateId"]];
   appointment = [[self getCTX] runCommand:_command
                                 arguments:appointment];
   if ([appointment valueForKey:@"dateId"] == nil) {

@@ -1,3 +1,18 @@
+2007-10-08 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Account.m: return some key default values in response
+	  to a call to getLoginAccount. (v1.5.25)
+
+	* zOGIAction+Appointment.m: always provide a status value for 
+	  appointment participants.  Deal with a user having no defined
+	  default timezone.   (v1.5.25)
+
+	* zOGIAction.m: getDefault returns the value of the specified
+	  default without forcing it to be a string. (v1.5.25)
+
+	* zOGIAction+Company.m: Fix crash when value of a company value
+	  was provided as an empty array. (v1.5.25)
+
 2007-10-03 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+News.h|m: Begin support for managing 
