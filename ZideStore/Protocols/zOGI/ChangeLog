@@ -1,3 +1,15 @@
+2007-10-10 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Appointment.m: Participants are no longer lost when an
+	  update is made to an Appointment without a PARTICIPANTS key, such as
+	  when doing an appointment move.  Appointment creation without a
+	  PARTICIPANTS key automatically adds the current user as a sole
+	  participant with a status of "ACCEPTED" and a role of 
+ 	  "REQ-PARTICIPANT". (v1.5.26)
+
+	* zOGIAction+Object.m: Direct a request for a NewsArticle to the 
+	  appropriate method. (v1.5.26)
+
 2007-10-08 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Account.m: return some key default values in response

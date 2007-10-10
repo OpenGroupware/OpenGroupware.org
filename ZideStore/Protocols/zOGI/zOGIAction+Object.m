@@ -32,6 +32,7 @@
 #include "zOGIAction+Project.h"
 #include "zOGIAction+Resource.h"
 #include "zOGIAction+Document.h"
+#include "zOGIAction+News.h"
 
 @implementation zOGIAction(Object)
 
@@ -58,6 +59,8 @@
     result = [self _getResourceForKey:_objectId withDetail:_detail];
   else if ([entityName isEqualToString:@"Doc"])
     result = [self _getDocumentForKey:_objectId withDetail:_detail];
+  else if ([entityName isEqualToString:@"NewsArticle"])
+    result = [self _getArticleForKey:_objectId withDetail:_detail];
   if (result == nil)
     return [self _makeUnknownObject:(id)_objectId];
   return result;

@@ -489,7 +489,7 @@
 -(id)_writeAppointment:(NSDictionary *)_appointment
            withCommand:(NSString *)_command
              withFlags:(NSArray *)_flags {
-  id                     appointment, exception; 
+  id                     appointment, exception, tmp;
   NSDictionary          *resource, *eoResource;
   NSEnumerator	        *enumerator;
   NSMutableString       *resourceNames;
@@ -501,7 +501,7 @@
                                   withFlags:_flags];
   if ([appointment isKindOfClass:[NSException class]])
     return appointment;
-  /* [appointment setObject:[self _getTimeZone] forKey:@"timeZone"]; */
+
   /* translate resources */
   if ([_appointment valueForKey:@"_RESOURCES"] != nil) {
     resourceNames = [NSMutableString new];
@@ -521,6 +521,33 @@
     }
     [appointment setObject:resourceNames forKey:@"resourceNames"];
   }
+
+  /* transfer participants if not provided for update */
+  if ([appointment objectForKey:@"participants"] == nil) {
+    if ([_command isEqualTo:@"appointment::set"]) {
+      /* Update performed with no participants specified */
+      tmp = [self _getUnrenderedDateForKey:[appointment valueForKey:@"dateId"]];
+      if (tmp == nil) {
+        [self warnWithFormat:@"attept to update unknown appointmentId#%d",
+              [appointment valueForKey:@"dateId"]];
+        return [NSException exceptionWithHTTPStatus:500
+                  reason:@"attept to update unknown appointment"];
+      }
+      [appointment setObject:[tmp objectForKey:@"participants"]
+                      forKey:@"participants"];
+    } else {
+        /* Creation performed with no participants specified */
+        if ([self isDebug])
+          [self logWithFormat:@"adding user as sole accepted participant"];
+        tmp = [NSDictionary dictionaryWithObjectsAndKeys:
+                 [self _getCompanyId], @"companyId",
+                 @"ACCEPTED", @"partStatus",
+                 @"REQ-PARTICIPANT", @"role",
+                 nil];
+        [appointment setObject:[NSArray arrayWithObjects:tmp, nil] 
+                        forKey:@"participants"];
+      }
+  } /* end if-no-participants */
 
   /* perform logic command */
   if ([self isDebug])
@@ -587,12 +614,9 @@
   int                 count;
 
   if (_participants == nil) {
-    participant = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                     [self _getCompanyId], @"companyId",
-                     nil];
     if ([self isDebug])
       [self logWithFormat:@"_translateParticipants; called with nil list"];
-    return [NSArray arrayWithObject:participant];
+    return [NSConcreteEmptyArray new];
   }
   participants = [[NSMutableArray alloc] initWithCapacity:[_participants count]];
   for (count = 0; count < [_participants count]; count++) {
@@ -721,7 +745,7 @@
           }
     } else if ([key isEqualToString:@"entityName"] || 
                [key isEqualToString:@"version"]) {
-      // These atttributes are deliberately dropped
+      /* These atttributes are deliberately dropped */
       if ([self isDebug])
         [self logWithFormat:@"key %@ dropped", key];
     } else if ([[key substringToIndex:1] isEqualToString:@"_"]) {
@@ -730,21 +754,29 @@
     } else {
         [appointment setObject:value forKey:key];
        }
-   } // End for loop through keys
-  // Translate participants
-  participants = [self _translateParticipants:[_appointment objectForKey:@"_PARTICIPANTS"]];
-  if ([participants isKindOfClass:[NSException class]]) {
-    [appointment release];
-    return participants;
-  }
-  [appointment setObject:participants forKey:@"participants"];
-  // Deal with the "ignoreConflicts" flag if presented
+   } /* End for loop through keys */
+
+  /* Translate participants */
+  if ([[_appointment objectForKey:@"_PARTICIPANTS"] isNotNull]) {
+    participants = [self _translateParticipants:[_appointment objectForKey:@"_PARTICIPANTS"]];
+    if ([participants isKindOfClass:[NSException class]]) {
+      [appointment release];
+      return participants;
+    }
+    [appointment setObject:participants forKey:@"participants"];
+  } else {
+      if ([self isDebug])
+        [self logWithFormat:@"No _PARTICIPANTS key provided in appointment."];
+    }
+
+  /* Deal with the "ignoreConflicts" flag if presented */
   if ([_flags containsObject:[NSString stringWithString:@"ignoreConflicts"]])
     [appointment setObject:[NSNumber numberWithInt:1] 
                     forKey:@"isWarningIgnored"];
   if ([_flags containsObject:[NSString stringWithString:@"respectConflicts"]])
     [appointment setObject:[NSNumber numberWithInt:0] 
                     forKey:@"isWarningIgnored"];
+
   return appointment;
 } /* end _translateAppointment */
 
