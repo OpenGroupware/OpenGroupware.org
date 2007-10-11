@@ -33,6 +33,7 @@
   int             notifyTime;
   EOQualifier    *filter;
   NSString       *status;
+  NSTimeZone     *timeZone;
   
   results = [NSMutableArray arrayWithCapacity:128];
   args = [NSMutableDictionary dictionaryWithCapacity:2];
@@ -104,6 +105,7 @@
                 if ([participant valueForKey:@"email3"] != nil)
                   [emails addObject:[participant valueForKey:@"email3"]];
                 /* render contact notification */
+                timeZone = [self _getTimeZoneForAccount:[participant valueForKey:@"companyId"]];
                 [results addObject:[NSDictionary dictionaryWithObjectsAndKeys:
                    @"notification", @"entityName",
                    @"Appointment", @"type",
@@ -119,6 +121,14 @@
                    [self ZERO:[participant valueForKey:@"isAccount"]],
                       @"isAccount",
                    emails, @"email",
+                   [timeZone abbreviationForDate:[date valueForKey:@"startDate"]], 
+                     @"startTimeZone",
+                   intObj([timeZone secondsFromGMTForDate:[date valueForKey:@"startDate"]]),
+                     @"startOffsetFromGMT",
+                   [timeZone abbreviationForDate:[date valueForKey:@"endDate"]], 
+                     @"endTimeZone",
+                   intObj([timeZone secondsFromGMTForDate:[date valueForKey:@"endDate"]]),
+                     @"endOffsetFromGMT",
                    nil]];
                 /* end render contact notification */
               } else {

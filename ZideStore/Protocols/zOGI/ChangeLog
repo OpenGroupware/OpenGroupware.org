@@ -1,3 +1,13 @@
+2007-10-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction.m: Added methods to load a specified user's defaults
+	  and retrieve a specified user's default time zone. (v1.5.27)
+
+	* zOGIAction+Notifications.m: Provide startTimeZone, 
+	  startOffsetFromGMT, endTimeZone, endOffsetFromGMT attributes in
+	  notification so user can be notified in the appropriate time
+	  zone (v1.5.27)
+
 2007-10-10 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Appointment.m: Participants are no longer lost when an

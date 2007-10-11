@@ -443,4 +443,28 @@ static int zOGIDebugOn = -1;
       [_dictionary removeObjectForKey:key];
 } /* End _stripInternalKeys */
 
+/* Load the defaults file for the specified account (companyId) from
+   the filesystem and return it as a dictionary.  If the user has
+   noo defaults and empty dictionary is returned */
+- (NSDictionary *)_getDefaultsForAccount:(id)_account {
+  return [NSDictionary dictionaryWithContentsOfFile:
+              [NSString stringWithFormat:@"%@/%@.defaults",
+                 [[self _getDefault:@"LSAttachmentPath"] stringValue],
+                 [_account stringValue]]];
+} /* End _getDefaultsForAccount */
+
+/* Retrieve the time zone for the specified account Id (companyID), this
+   method retrieves the time zone from _getDefaultsForAccount; if the
+   account has not time zone defined we return GMT. */
+- (NSTimeZone *)_getTimeZoneForAccount:(id)_account {
+  NSDictionary  *defaults;
+
+  defaults = [self _getDefaultsForAccount:_account];
+  if ([[defaults valueForKey:@"timezone"] isNotNull]) {
+    return [NSTimeZone timeZoneWithAbbreviation:
+              [[defaults valueForKey:@"timezone"] stringValue]];
+  }
+    return [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+} /* End _getTimeZoneForAccount */
+
 @end /* zOGIAction */

@@ -67,6 +67,9 @@
 - (id)_getDefault:(NSString *)_value;
 - (NSCalendarDate *)_makeCalendarDate:(id)_date;
 - (void)_stripInternalKeys:(NSMutableDictionary *)_dictionary;
+- (NSDictionary *)_getDefaultsForAccount:(id)_account;
+- (NSTimeZone *)_getTimeZoneForAccount:(id)_account;
+
 
 @end /* zOGIAction */
 
