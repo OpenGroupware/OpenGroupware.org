@@ -46,11 +46,14 @@
     @"\t-firstname\t\account first name\n"
     @"\t-lastname\taccount last name\n"
     @"\t-nickname\tnickname\n"
-    @"\t-email\t\temail (aka email1)\n"
+    @"\t-email1\t\temail1 (aka email1)\n"
+    @"\t-email2\t\temail2 (aka email2)\n"
+    @"\t-email3\t\temail3 (aka email3)\n"
     @"\t-phone\t\taccount phone\n"
     @"\t-mobile\t\taccount mobile phone\n"
     @"\t-fax\t\taccount fax number\n"
-    @"\t-title\t\taccount title";
+    @"\t-title\t\taccount title\n"
+    @"\t-password\tpassword (cleartext string)";
 }
 
 - (NSString *)toolName {
@@ -58,7 +61,7 @@
 }
 
 - (NSString *)versionInformation {
-  return @"1.0.2";
+  return @"1.0.3";
 }
 
 - (NSString *)toolDescription {
@@ -90,8 +93,17 @@
     if ((obj = [def stringForKey:@"lastname"])) {
       [dict setObject:obj forKey:@"name"];
     }
-    if ((obj = [def stringForKey:@"email"])) {
+    if ((obj = [def stringForKey:@"password"])) {
+      [dict setObject:obj forKey:@"password"];
+    }
+    if ((obj = [def stringForKey:@"email1"])) {
       [dict setObject:obj forKey:@"email1"];
+    }
+    if ((obj = [def stringForKey:@"email2"])) {
+      [dict setObject:obj forKey:@"email2"];
+    }
+    if ((obj = [def stringForKey:@"email3"])) {
+      [dict setObject:obj forKey:@"email3"];
     }
     if ((obj = [def stringForKey:@"nickname"])) {
       [dict setObject:obj forKey:@"description"];
@@ -123,7 +135,7 @@
       team = [ctx runCommand:@"team::get",
                   @"companyId", [NSNumber numberWithInt:10003], nil];
       if ([team count] != 1) {
-        NSLog(@"Missing all intranet team");
+        NSLog(@"Missing all intranet team!");
         exit(7);
       }
       [dict setObject:team forKey:@"teams"];
@@ -134,12 +146,12 @@
 
     if ([ctx runCommand:@"account::new" arguments:dict]) {
       if (![ctx commit]) {
-        NSLog(@"Couldn`t commit transaction");
+        NSLog(@"Couldn't commit transaction!");
         exit(6);
       }
     }
     else {
-      NSLog(@"insert failed, rollback");
+      NSLog(@"Insert failed, rollback...");
       [ctx rollback];
       exit(6);
     }

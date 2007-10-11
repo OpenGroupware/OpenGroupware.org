@@ -25,7 +25,7 @@
 /*
   Exit codes:
   1 - missing login
-  2 - wrong passwor or user
+  2 - wrong password or user
   3 - root login required
 
 */
@@ -145,7 +145,7 @@
   printf("%s\n", [[self toolDescription] cString]);
   printf("Arguments:\n");
   printf("\t-h, --help\tdisplay this help\n");
-  printf("\t--version\toutput version informantion\n");
+  printf("\t--version\toutput version information\n");
   printf("\t-v, --verbose\tenter verbose mode\n");
   printf("\t-l\t\tlogin name\n");
   printf("\t-p\t\tpassword\n");
