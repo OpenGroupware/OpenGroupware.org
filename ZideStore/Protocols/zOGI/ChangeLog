@@ -1,3 +1,12 @@
+2007-10-12 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction.m: Added method to retrieve the notification CC
+	  address of a specified account. (v1.5.28)
+
+	* zOGIAction+Notifications.m: Broke up enormous method in smaller
+	  functional pieces.  Teams are now expanded to members for
+	  notification and duplicates are suppressed. (v1.5.28)
+
 2007-10-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction.m: Added methods to load a specified user's defaults

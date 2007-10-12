@@ -69,6 +69,7 @@
 - (void)_stripInternalKeys:(NSMutableDictionary *)_dictionary;
 - (NSDictionary *)_getDefaultsForAccount:(id)_account;
 - (NSTimeZone *)_getTimeZoneForAccount:(id)_account;
+- (NSString *)_getCCAddressForAccount:(id)_account;
 
 
 @end /* zOGIAction */

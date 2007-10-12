@@ -464,7 +464,15 @@ static int zOGIDebugOn = -1;
     return [NSTimeZone timeZoneWithAbbreviation:
               [[defaults valueForKey:@"timezone"] stringValue]];
   }
-    return [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+  return [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
 } /* End _getTimeZoneForAccount */
+
+- (NSString *)_getCCAddressForAccount:(id)_account {
+  NSDictionary  *defaults;
+
+  defaults = [self _getDefaultsForAccount:_account];
+  return [defaults valueForKey:@"scheduler_ccForNotificationMails"];
+} /* End _getCCAddressForAccount */
+
 
 @end /* zOGIAction */

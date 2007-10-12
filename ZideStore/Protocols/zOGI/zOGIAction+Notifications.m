@@ -21,6 +21,7 @@
 #include "zOGIAction.h"
 #include "zOGIAction+Object.h"
 #include "zOGIAction+Appointment.h"
+#include "zOGIAction+Notifications.h"
 
 @implementation zOGIAction(Notifications)
 
@@ -29,21 +30,21 @@
   NSEnumerator   *dateEnumerator, *participantEnumerator;
   id              date, args, participant;
   NSArray        *dates, *gids, *participants;
-  NSMutableArray *emails, *results;
+  NSMutableArray *results;
   int             notifyTime;
   EOQualifier    *filter;
-  NSString       *status;
-  NSTimeZone     *timeZone;
   
-  results = [NSMutableArray arrayWithCapacity:128];
   args = [NSMutableDictionary dictionaryWithCapacity:2];
   [args takeValue:_start forKey:@"fromDate"];
   [args takeValue:_end forKey:@"toDate"];
   gids = [[self getCTX] runCommand:@"appointment::query" arguments:args];
-  /*
-       Get appointment notifications 
-   */
+  /* If there are no appointments bail out */
+  if ([gids count] == 0)
+    return [NSConcreteEmptyArray new];
+
+  /* Get appointments */
   dates = [self _getUnrenderedDatesForKeys:gids];
+  /* Filter out appointments not set to do notification */
   filter =  [EOQualifier qualifierWithQualifierFormat:
                          @"(NOT ((%@ = %@) OR "
                          @"(%@ = 0)))",
@@ -51,13 +52,19 @@
                          @"notificationTime"];
   dates = [dates filteredArrayUsingQualifier:filter];
   if ([self isDebug])
-    [self logWithFormat:@"filtering %d dates for notification",
+    [self logWithFormat:@"filtered down to %d dates for notification",
        [dates count]];
+  /* Bail out if there are no qualifying appointments */
+  if ([dates count] == 0)
+    return [NSConcreteEmptyArray new];
+
+  results = [NSMutableArray arrayWithCapacity:128];
   dateEnumerator = [dates objectEnumerator];
   while ((date = [dateEnumerator nextObject]) != nil) {
     startDate = [date objectForKey:@"startDate"];
     notifyTime = [[date objectForKey:@"notificationTime"] intValue];
     if (notifyTime > 0) {
+      /* Check if notification is due */
       notifyDate = [startDate dateByAddingYears:0
                                          months:0
                                            days:0
@@ -70,101 +77,20 @@
           [self logWithFormat:@"date %@ qualified for notification @ %@",
              [date objectForKey:@"dateId"],
              notifyDate];
-        participants = 
-          [[self getCTX] runCommand:@"appointment::list-participants",
-                         @"gid", [self _getEOForPKey:[date valueForKey:@"dateId"]],
-                         @"attributes", 
-                             [NSArray arrayWithObjects: @"role", @"companyId",
-                                @"partStatus", @"comment", @"rsvp", @"team.isTeam",
-                                @"team.email", @"team.description", @"team.companyId",
-                                @"person.extendedAttributes",
-                                @"person.imAddress", @"person.isAccount",
-                                @"dateId", 
-                                nil],
-                         nil];
-        if ([participants count] == 0) {
-          [self warnWithFormat:@"date %@ has no participants to notify",
+        /* Create notifications */
+        participants = [self _retrieveParticipantsForNotification:date];
+        if ([self isDebug])
+          [self logWithFormat:@"found %d participants to notify for date %@",
+             [participants count],
              [date objectForKey:@"dateId"]];
-        } else {
-            participantEnumerator = [participants objectEnumerator];
-            while ((participant = [participantEnumerator nextObject])) {
-              if([participant valueForKey:@"isTeam"] == nil) {
-                /* Participant is a contact */
-                /* make status string */
-                if ([participant valueForKey:@"partStatus"] == nil)
-                  status = [NSString stringWithString:@"NEEDS-ACTION"];
-                else
-                  status = [participant valueForKey:@"partStatus"];
-                /* build array of e-mail addresses 
-                   TODO: Support additional type#3 XAs */
-                emails = [NSMutableArray arrayWithCapacity:3];
-                if ([participant valueForKey:@"email1"] != nil)
-                  [emails addObject:[participant valueForKey:@"email1"]];
-                if ([participant valueForKey:@"email2"] != nil)
-                  [emails addObject:[participant valueForKey:@"email2"]];
-                if ([participant valueForKey:@"email3"] != nil)
-                  [emails addObject:[participant valueForKey:@"email3"]];
-                /* render contact notification */
-                timeZone = [self _getTimeZoneForAccount:[participant valueForKey:@"companyId"]];
-                [results addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                   @"notification", @"entityName",
-                   @"Appointment", @"type",
-                   [participant valueForKey:@"companyId"],
-                      @"notifyObjectId",
-                   @"Contact", @"notifyEntityName",
-                   status, @"status",
-                   [self NIL:[participant valueForKey:@"comment"]], @"comment",
-                   [self ZERO:[participant valueForKey:@"rsvp"]], @"rsvp",
-                   [date valueForKey:@"dateId"], @"appointmentObjectId",
-                   [self NIL:[participant valueForKey:@"imAddress"]],
-                      @"imAddress",
-                   [self ZERO:[participant valueForKey:@"isAccount"]],
-                      @"isAccount",
-                   emails, @"email",
-                   [timeZone abbreviationForDate:[date valueForKey:@"startDate"]], 
-                     @"startTimeZone",
-                   intObj([timeZone secondsFromGMTForDate:[date valueForKey:@"startDate"]]),
-                     @"startOffsetFromGMT",
-                   [timeZone abbreviationForDate:[date valueForKey:@"endDate"]], 
-                     @"endTimeZone",
-                   intObj([timeZone secondsFromGMTForDate:[date valueForKey:@"endDate"]]),
-                     @"endOffsetFromGMT",
-                   nil]];
-                /* end render contact notification */
-              } else {
-                  /* participant is a team */
-                  if ([participant valueForKey:@"email"] != nil)
-                    emails = [NSConcreteEmptyArray new];
-                  else
-                    emails = [NSArray arrayWithObject:
-                                [participant valueForKey:@"email"]];
-                  /* render team/date notification */
-                  [results addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                     @"notification", @"entityName",
-                     @"Appointment", @"type",
-                     [participant valueForKey:@"companyId"],
-                        @"notifyObjectId",
-                     @"Team", @"notifyEntityName",
-                     @"N/A", @"status",
-                     @"N/A", @"comment",
-                     intObj(0), @"rsvp", 
-                     [participant valueForKey:@"role"], @"role",
-                     [date valueForKey:@"dateId"], @"appointmentObjectId",
-                     @"", @"imAddress",
-                     intObj(1), @"isAccount",
-                     emails, @"email",
-                     nil]];
-                  /* end render team notification */
-                 }
-            } /* while loop-participants */
-          } /* end else-date-has-participants */
-        [[self getCTX] runCommand:@"appointment::set",
-                         @"dateId", [date objectForKey:@"dateId"],
-                         @"notificationTime", [EONull null],
-                         @"setAllCyclic", [NSNumber numberWithBool:NO],
-                         nil];
+        participantEnumerator = [participants objectEnumerator];
+        while ((participant = [participantEnumerator nextObject])) {
+          [results addObject:[self _renderNotification:participant 
+                                                inDate:date]];
+        }
+        [self _clearNotificationTime:date];
       } else {
-          /* notfication time still in future, disqualified */
+          /* notification time still in future, disqualified */
           if ([self isDebug])
             [self logWithFormat:@"date %@ disqualified from notification",
                [date objectForKey:@"dateId"]];
@@ -180,9 +106,175 @@
                         @"(resourceNames = ''))", [EONull null]];
   dates = [dates filteredArrayUsingQualifier:filter];
    */
-
   [[self getCTX] commit];
   return results;
 }
+
+- (NSArray *)_retrieveParticipantsForNotification:(id)_date {
+  NSArray             *list;
+  /* Used to expand teams */
+  id                   team, member, tmp;
+  NSArray             *members;
+  NSMutableArray      *teams;
+  NSEnumerator        *memberEnumerator;
+  /* Uset to process participants */
+  id                   participant;
+  NSMutableDictionary *participants;
+  NSEnumerator        *participantEnumerator;
+
+  /* Retrieve participants from Logic */
+  list = [[self getCTX] runCommand:@"appointment::list-participants",
+             @"gid", [self _getEOForPKey:[_date valueForKey:@"dateId"]],
+             @"attributes", 
+                 [NSArray arrayWithObjects: @"role", @"companyId",
+                    @"partStatus", @"comment", @"rsvp", 
+                    @"team.isTeam", @"team.companyId",
+                    @"person.extendedAttributes",
+                    @"person.imAddress", @"person.isAccount",
+                    @"dateId", 
+                    nil],
+             nil];
+
+  /* If appointment has not participants then bail out */
+  if ([list count] == 0) {
+    [self warnWithFormat:@"date %@ has no participants to notify",
+       [_date objectForKey:@"dateId"]];
+    return [NSConcreteEmptyArray new];
+  } else if ([self isDebug])
+      [self logWithFormat:@"found %d participants in appointment list",
+         [list count]];
+
+  /* Process participants, queuing teams for expansion; we completely 
+     process individual participants first because those entries can
+     have role/status/comment/etc... whereas participants from a team
+     entry are always nude */
+  teams = nil;
+  participants = [NSMutableDictionary dictionaryWithCapacity:64];
+  participantEnumerator = [list objectEnumerator];
+  while ((participant = [participantEnumerator nextObject])) {
+    if([[participant valueForKey:@"isTeam"] isNotNull]) {
+      /* participant is a team */
+      if (teams == nil)
+        teams = [NSMutableArray arrayWithCapacity:16];
+      [teams addObject:participant];
+    } else {
+        [participants setObject:participant 
+                         forKey:[participant objectForKey:@"companyId"]];
+      }
+  } /* end while loop */
+
+  /* process teams if any of participants where teams */
+  if ([teams isNotNull]) {
+    participantEnumerator = [teams objectEnumerator]; 
+    while ((participant = [participantEnumerator nextObject])) {
+      if ([self isDebug])
+        [self logWithFormat:@"Expanding members of team %@",
+           [participant objectForKey:@"companyId"]];
+      /* get the team object */
+      tmp = [self _getEOsForPKeys:[participant objectForKey:@"companyId"]];
+      team = [[[self getCTX] runCommand:@"team::get-by-globalid",
+                             @"gids", tmp,
+                             nil] lastObject];
+      if ([team isNotNull]) {
+        /* get team members */
+        members = [[self getCTX] runCommand:@"team::members",
+                      @"team", team,
+                      nil];
+        if ([self isDebug])
+          [self logWithFormat:@"found %d members for team %@",
+             [members count],
+             [participant objectForKey:@"companyId"]];
+        /* loop members */
+        memberEnumerator = [members objectEnumerator];
+        while ((member = [memberEnumerator nextObject])) {
+          /* if participant not already in dictionary, add, otherwise skip
+             this supresses duplicate notifications */
+          tmp = [participants objectForKey:[member objectForKey:@"companyId"]];
+          if (tmp == nil)
+            [participants setObject:member
+                             forKey:[member objectForKey:@"companyId"]];
+        }  /* end for loop of team members */
+      } /* end if team isNotNull */
+    } /* end while loop */
+  } /* end if teams exist to expand */
+
+  return [participants allValues];
+} /* End _retrieveParticipantsForNotification */
+
+/* Create the notification entry for the specified participant */
+- (NSDictionary *)_renderNotification:(id)_participant inDate:(id)_date {
+  NSMutableArray *emails;
+  NSString       *status, *ccAddress;
+  NSTimeZone     *timeZone;
+  id              tmp;
+
+  if ([self isDebug])
+    [self logWithFormat:@"rendering notifaction to %@ for %@",
+       [_participant valueForKey:@"companyId"],
+       [_date valueForKey:@"dateId"]];
+
+  /* make status string */
+  if ([[_participant valueForKey:@"partStatus"] isNotNull])
+    status = [_participant valueForKey:@"partStatus"];
+  else
+    status = [NSString stringWithString:@"NEEDS-ACTION"];
+  /* build array of e-mail addresses 
+  TODO: Support additional type#3 XAs */
+  emails = [NSMutableArray arrayWithCapacity:3];
+  if ([[_participant valueForKey:@"email1"] isNotNull])
+    [emails addObject:[_participant valueForKey:@"email1"]];
+  if ([[_participant valueForKey:@"email2"] isNotNull])
+    [emails addObject:[_participant valueForKey:@"email2"]];
+  if ([[_participant valueForKey:@"email3"] isNotNull])
+    [emails addObject:[_participant valueForKey:@"email3"]];
+  /* get user's time zone */
+  timeZone = nil;
+  if ([[_participant valueForKey:@"isAccount"] isNotNull]) {
+    if ([[_participant valueForKey:@"isAccount"] intValue] == 1) {
+      tmp = [_participant valueForKey:@"companyId"];
+      timeZone = [self _getTimeZoneForAccount:tmp];
+      ccAddress = [self _getCCAddressForAccount:tmp];
+      if ([ccAddress isNotNull]) {
+        if ([ccAddress length] > 0) {
+          [emails addObject:ccAddress];
+        }
+      }
+    }
+  }
+  if (timeZone == nil)
+    timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+            @"notification", @"entityName",
+            @"Appointment", @"type",
+            [_participant valueForKey:@"companyId"],
+              @"notifyObjectId",
+            @"Contact", @"notifyEntityName",
+            status, @"status",
+            [self NIL:[_participant valueForKey:@"comment"]], @"comment",
+            [self ZERO:[_participant valueForKey:@"rsvp"]], @"rsvp",
+            [_date valueForKey:@"dateId"], @"appointmentObjectId",
+            [self NIL:[_participant valueForKey:@"imAddress"]],
+               @"imAddress",
+            [self ZERO:[_participant valueForKey:@"isAccount"]],
+               @"isAccount",
+            emails, @"email",
+            [timeZone abbreviationForDate:[_date valueForKey:@"startDate"]], 
+               @"startTimeZone",
+            intObj([timeZone secondsFromGMTForDate:[_date valueForKey:@"startDate"]]),
+               @"startOffsetFromGMT",
+            [timeZone abbreviationForDate:[_date valueForKey:@"endDate"]], 
+               @"endTimeZone",
+            intObj([timeZone secondsFromGMTForDate:[_date valueForKey:@"endDate"]]),
+               @"endOffsetFromGMT",
+            nil];
+} /* End _renderNotification */
+
+- (void)_clearNotificationTime:(id)_date {
+  [[self getCTX] runCommand:@"appointment::set",
+      @"dateId", [_date objectForKey:@"dateId"],
+      @"notificationTime", [EONull null],
+      @"setAllCyclic", [NSNumber numberWithBool:NO],
+      nil];
+} /* End _clearNotificationTime */
 
 @end /* End zOGIAction(Notifications) */

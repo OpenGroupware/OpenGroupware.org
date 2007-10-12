@@ -27,6 +27,9 @@
 @interface zOGIAction(Notifications)
 
 -(NSArray *)_getNotifications:(id)_start until:(id)_end;
+-(NSArray *)_retrieveParticipantsForNotification:(id)_date;
+-(void)_clearNotificationTime:(id)_date;
+-(NSDictionary *)_renderNotification:(id)_participant inDate:(id)_date;
 
 @end
 
