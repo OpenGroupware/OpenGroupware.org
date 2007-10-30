@@ -31,9 +31,6 @@
   NSArray         *conflictAttrs;
   id               conflictList;
 
-  if ([self isDebug])
-    [self logWithFormat:@"_getConflictsForDate(%@)", 
-       [_appointment valueForKey:@"dateId"]];
   /* TODO: Do we really need to get the conflict attirbutes from defaults? */
   conflictAttrs = [[[self _getDefaults]
                         arrayForKey:@"schedulerconflicts_conflictkeys"] copy];  
@@ -44,11 +41,6 @@
                                            @"conflictInfoAttributes", 
                                               conflictAttrs,
                                 nil];
-  if ([self isDebug]) {
-    [self logWithFormat:@"conflict retrieval Logic complete"];
-    [self logWithFormat:@"_getConflictsForDate returning %@",
-       conflictList];
-  }
   return conflictList;
 } /* end _getConflictsForDate */
 
@@ -64,10 +56,6 @@
   NSEnumerator          *conflictEnumerator;
   id                    resource;
 
-  if ([self isDebug])
-    [self logWithFormat:@"_renderConflictsForDate:(%@)", 
-       [_eo valueForKey:@"dateId"]];
-
   /* Get required bits from user defaults */
   aptAttrs = [[[[self getCTX] userDefaults]
                    arrayForKey:@"schedulerconflicts_fetchkeys"] copy];
@@ -82,9 +70,6 @@
      of conflicting appointments */
   dateEnumerator = [[conflictDates allKeys] objectEnumerator];
   while ((conflictDate = [dateEnumerator nextObject]) != nil) {
-    if ([self isDebug])
-      [self logWithFormat:@"processing conflict with date %@",
-         [conflictDate valueForKey:@"dateId"]];
     conflictEnumerator = [[conflictDates objectForKey:conflictDate] 
                              objectEnumerator];
       while ((conflict = [conflictEnumerator nextObject]) != nil) {

@@ -34,6 +34,9 @@
 	* zOGIAction+Contact.m: Fixed a memory leak.  Support for bulk
 	  requests. (v1.5.29)
 
+	* zOGIAction+AppointmentConflicts.m: Removed useless log message.
+	  (v1.5.30)
+
 2007-10-12 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction.m: Added method to retrieve the notification CC
