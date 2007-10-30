@@ -1,3 +1,39 @@
+2007-10-29 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* common.h: Added include of NSFileManager.h (v1.5.29)
+
+	* zOGIRPCAction.m: Fixed a memory leak. searchForObjects and
+	  getObjectsByObjectId report profiling information if zOGI
+	  debugging is enabled.  getObjectsByObjectId groups contact
+	  and enterprise requests and retrieves them from Logic with
+	  a bulk request instead of one-by-one providing a huge
+	  performance improvement. (v1.5.29)
+
+	* zOGIAction+Company.m: Fixed a memory leak.  Correct double
+	  dipping into Logic loading company phone numbers; get-by-globalid
+	  already loads phone numbers. (v1.5.29)
+
+	* zOGIAction.m: Fixed a memory leak.  Removed useless log message.
+	  (v1.5.29)
+
+	* zOGIAction+Resource.m: Apply limit to resource searches. (v1.5.29)
+
+	* zOGIAction+Team.m: Fixed a memory leak.  Preperation for bulk
+	  get support. (v1.5.29)
+
+	* zOGIAction+Enterprise.m: Get enterprises from Logic in a bulk
+	  request. (v1.5.29)
+
+	* zOGIAction+Object.m: Support for bulk requests.  Fixed a memory
+	  leak. (v1.5.29)
+
+	* zOGIAction+AppointmentConflicts.m: Fixed a memory leak. (v1.5.29)
+
+	* zOGIAction+Appointment.m: Fixed a memory leak. (v1.5.29)
+
+	* zOGIAction+Contact.m: Fixed a memory leak.  Support for bulk
+	  requests. (v1.5.29)
+
 2007-10-12 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction.m: Added method to retrieve the notification CC

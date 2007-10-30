@@ -173,7 +173,7 @@
   assignments = [self _getCompanyAssignments:_contact key:@"subCompanyId"]; 
   if ([assignments class] == [NSException class]) 
     return assignments;
-  enterpriseList = [NSMutableArray new];
+  enterpriseList = [NSMutableArray arrayWithCapacity:16];
   enumerator = [assignments objectEnumerator];
   while ((eo = [enumerator nextObject]) != nil) {
     if ([[self _getEntityNameForPKey:[eo valueForKey:@"companyId"]]
@@ -214,7 +214,7 @@
   assignments = [self _getCompanyAssignments:_contact key:@"subCompanyId"];
   if ([assignments isKindOfClass:[NSException class]]) 
     return assignments;
-  teamList = [NSMutableArray new];
+  teamList = [NSMutableArray arrayWithCapacity:32];
   enumerator = [assignments objectEnumerator];
   while ((eo = [enumerator nextObject]) != nil) {
     if ([[self _getEntityNameForPKey:[eo valueForKey:@"companyId"]]
@@ -246,7 +246,7 @@
                               nil];
   if ([projects isKindOfClass:[NSException class]])
     return projects;
-  projectList = [NSMutableArray new];
+  projectList = [NSMutableArray arrayWithCapacity:16];
   enumerator = [projects objectEnumerator];
   while ((eo = [enumerator nextObject]) != nil) {
     assignment = 

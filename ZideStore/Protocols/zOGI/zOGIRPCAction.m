@@ -40,6 +40,14 @@
 */
 @implementation zOGIRPCAction
 
+-(id)init
+{
+  self = [super init];
+  if (self)  {
+  }
+  return self;
+}
+
 - (void)dealloc {
   [super dealloc];
 }
@@ -48,12 +56,11 @@
 
 -(id)getLoginAccountAction {
   return [self _getLoginAccount:arg1];
-} /* End getLoginAccountAction */
+} /* end getLoginAccountAction */
 
 -(id)getTypeOfObjectAction {
   return [self _izeEntityName:[self _getEntityNameForPKey:[self arg1]]];
-  //return [self arg];
-}
+} /* end getTypeOfObjectAction */
 
 -(id)getFavoritesByTypeAction {
   if([arg1 isKindOfClass:[NSString class]]) {
@@ -66,7 +73,7 @@
   }
   return [NSException exceptionWithHTTPStatus:500
             reason:@"Favorites not supported for this entity"];
-}
+} /* end getFavoritesByTypeAction */
 
 -(id)flagFavoritesAction {
   NSArray      *objectList;
@@ -93,7 +100,7 @@
                    reason:@"Favorites not supported for this entity"];
   }
   return [NSNumber numberWithBool:YES];
-} /* End flagFavoritesAction */
+} /* end flagFavoritesAction */
 
 -(id)unflagFavoritesAction {
   NSArray      *objectList;
@@ -123,39 +130,130 @@
   }
   [self logWithFormat:@"unflagFavoritesAction - complete"];
   return [NSNumber numberWithBool:YES];
-} /* End unflagFavoritesAction */
+} /* end unflagFavoritesAction */
 
 -(id)getObjectsByObjectIdAction {
-  NSArray    	  *objectList;
-  NSMutableArray  *result;
+  NSArray    	  *keyList;
+  NSMutableArray  *results;
   NSEnumerator    *enumerator;
-  id              objectId, object;
+  id              pkey, gid, object, tmp;
+  NSTimeInterval  start, end;
 
+  NSMutableArray  *contacts = nil;
+  NSMutableArray  *enterprises = nil;
+
+  /* remainder accumulates all the objects that are not setup
+     to perform bulk get from Logic. */
+  NSMutableArray  *remainder = nil;
+
+  if ([self isDebug])
+    start = [[NSDate date] timeIntervalSince1970];
+
+  /* if arg1 is not an array then make a single object array
+     from the arg1 */
   if (![arg1 isKindOfClass:[NSArray class]])
-    objectList = [NSArray arrayWithObject:arg1];
-   else 
-     objectList = arg1;
-  enumerator = [objectList objectEnumerator];
-  result = [NSMutableArray arrayWithCapacity:[objectList count]];
-  while ((objectId = [enumerator nextObject]) != nil) 
-  {
-    object = [self _getObjectByObjectId:objectId withDetail:arg2];
-    if ([object isKindOfClass:[NSException class]])
-      return object;
-    else
-      [result addObject:object];
+    keyList = [NSArray arrayWithObject:arg1];
+  else 
+    keyList = arg1;
+
+  results = [NSMutableArray arrayWithCapacity:[keyList count]];
+
+  /* classify requested objects by type so we can do bulk fetches */
+  enumerator = [keyList objectEnumerator];
+  while ((pkey = [enumerator nextObject]) != nil) {
+    gid = [self _getEOForPKey:pkey]; 
+    if (gid == nil) {
+      /* if no gid can be identified for the specified objectId
+         then we generate and UnknownObject entity.  this 
+         signals the client to purge the specified entity from
+         its cache as it no longer exists or never existed */
+      [results addObject:[self _makeUnknownObject:pkey]];
+    } else if ([[gid entityName] isEqualToString:@"Person"]) {
+      if (contacts == nil)
+        contacts = [NSMutableArray arrayWithCapacity:128];
+      [contacts addObject:gid];
+    } else if ([[gid entityName] isEqualToString:@"Enterprise"]) {
+      if (enterprises == nil)
+        enterprises = [NSMutableArray arrayWithCapacity:128];
+      [enterprises addObject:gid];
+    } else {
+        if (remainder == nil)
+          remainder = [NSMutableArray arrayWithCapacity:128];
+        [remainder addObject:gid];
+      }
+  } /* end while */
+
+  if ([self isDebug]) {
+     if ([contacts isNotNull])
+       [self logWithFormat:@"prepared to request %d contact entities", 
+               [contacts count]];
+     if ([enterprises isNotNull])
+       [self logWithFormat:@"prepared to request %d enterprise entities", 
+               [enterprises count]];
+     if ([remainder isNotNull])
+       [self logWithFormat:@"prepared to request %d other entities", 
+               [remainder count]];
   }
-  return result;
-} /* End getObjectsByObjectIdAction */
+
+  /* get the results */
+  if ([contacts isNotNull]) {
+    /* get requested contacts as a bulk operation */
+    if ([self isDebug])
+      [self logWithFormat:@"performing contact bulk request"];
+    tmp = [self _getContactsForKeys:contacts withDetail:arg2];
+    if ([self isDebug])
+      [self logWithFormat:@"bulked %d contacts", [tmp count]];
+    [results addObjectsFromArray:tmp];
+  } /* end get-contacts */
+  if ([enterprises isNotNull]) {
+    /* get requested enterprises as a bulk operation */
+    if ([self isDebug])
+      [self logWithFormat:@"performing enterprise bulk request"];
+    tmp = [self _getEnterprisesForKeys:enterprises withDetail:arg2];
+    if ([self isDebug])
+      [self logWithFormat:@"bulked %d enterprises", [tmp count]];
+    [results addObjectsFromArray:tmp];
+  } /* end get-enterprises */
+  if ([remainder isNotNull]) {
+    /* Get the non-bulk operation entities */
+    if ([self isDebug])
+      [self logWithFormat:@"performing one-by-one requests"];
+    enumerator = [remainder objectEnumerator];
+    while ((gid = [enumerator nextObject]) != nil) {
+      if ([self isDebug])
+        [self logWithFormat:@"requesting %@ one-by-one", gid];
+      object = [self _getObjectByObjectId:gid withDetail:arg2];
+      if ([object isNotNull]) {
+        if ([object isKindOfClass:[NSException class]])
+          return object;
+        else
+          [results addObject:object];
+      } else {
+          [self warnWithFormat:@"getObjectByObjectId produced a NULL object"];
+         }
+    } /* end while remainder */
+  } /* end get-remainder */
+
+  /* log command duration */
+  if ([self isDebug]) {
+    end = [[NSDate date] timeIntervalSince1970];
+    [self logWithFormat:@"getObjectsByObjectId consumed %.3f seconds", 
+            (end - start)];
+    [self logWithFormat:@"getObjectsByObjectId returning %d objects",
+            [results count]];
+  }
+
+  return results;
+} /* end getObjectsByObjectIdAction */
 
 -(id)getObjectByObjectIdAction {
   id               object;
 
   object = [self _getObjectByObjectId:arg1 withDetail:arg2];
   if (object == nil)
-    return [self _makeUnknownObject:arg1];
+    return [self _makeUnknownObject:[arg1 stringValue]];
   return object;
-}
+} /* end getObjectByObjectIdAction */
 
 -(id)getObjectVersionsByObjectIdAction {
   NSArray    	  *objectList;
@@ -187,18 +285,18 @@
                              entityName, @"entityName",
                              version, @"version",
                              nil]];
-       } // End If version is not nil
-     } // End if document is not nil
-   } // End while nextObject
+       } // end if version is not nil
+     } // end if document is not nil
+   } // end while nextObject
   return result;
-}
+} /* end getObjectVersionsByObjectIdAction */
 
 -(id)putObjectAction {
   NSString      *objectId;
   id             obj;
   NSArray       *flags;
 
-  /* Initialize the update operation flags */
+  /* initialize the update operation flags */
   if ([arg1 objectForKey:@"_FLAGS"] == nil) {
     flags = [[NSArray alloc] init];
   } else {
@@ -210,7 +308,7 @@
      }
 
   obj = nil;
-  // Determine objectId
+  // determine objectId
   if ([arg1 objectForKey:@"objectId"] == nil) {
     objectId = [NSString stringWithString:@"0"];
    } else {
@@ -219,7 +317,7 @@
         else 
           objectId = [arg1 objectForKey:@"objectId"];
       }
-  // Do the deed
+  // do the deed
   if ([objectId isEqualToString:@"0"]) {
     obj = [self _createObject:arg1 withFlags:flags];
    } else {
@@ -229,7 +327,7 @@
     // \todo Throw Exception
    } 
   return obj;
-} /* End putObjectAction */
+} /* end putObjectAction */
 
 -(id)deleteObjectAction {
   NSString     *entityName, *objectId;
@@ -237,6 +335,7 @@
 
   objectId = nil;
   entityName = nil;
+
   /* Deal with arg1 (determining objectId) */
   if ([arg1 isKindOfClass:[NSDictionary class]]) 
   {
@@ -250,7 +349,8 @@
                         reason:@"Unable to determine id of object to delete"];
   if ([objectId isKindOfClass:[NSNumber class]])
     objectId = [objectId stringValue];
-  /* Deal with arg2 (flags) */
+
+  /* feal with arg2 (flags) */
   if (arg2 == nil)
     flags = [[NSArray alloc] init];
   else if ([arg2 isKindOfClass:[NSString class]])
@@ -259,13 +359,15 @@
     flags = arg2;
   else return [NSException exceptionWithHTTPStatus:500
                         reason:@"Unrecognized flags type for object deletion"];
-  /* Find the entity name if it was not set. */
+
+  /* find the entity name if it was not set. */
   if (entityName == nil)
     entityName = [self _getEntityNameForPKey:objectId];
   if (entityName == nil)
     return [NSException exceptionWithHTTPStatus:500
                         reason:@"Deletion of invalid key requested"];
-  /* Select the correct deletion method based on entityName */
+
+  /* select the correct deletion method based on entityName */
   if ([entityName isEqualToString:@"Task"])
     return [NSException exceptionWithHTTPStatus:500
                         reason:@"Deletion of tasks is not supported"];
@@ -279,10 +381,11 @@
     return [self _deleteEnterprise:objectId withFlags:flags];
   else if ([entityName isEqualToString:@"Project"])
     return [self _deleteProject:objectId withFlags:flags];
-  /* Blow back an exception if we got this far */
+
+  /* blow back an exception if we got this far */
   return [NSException exceptionWithHTTPStatus:500
                       reason:@"Unknown deletion requested"];
-} /* End deleteObjectAction */
+} /* end deleteObjectAction */
 
 - (id)_createObject:(id)_dictionary 
           withFlags:(NSArray *)_flags {
@@ -340,17 +443,17 @@
                                   withFlags:_flags];
   }
   return nil;
-}
+} /* end _updateObject */
 
-// \brief Search for Objects
-// \param arg1 Entity Name (string)
-// \param arg2 Search criteria (mixed)
-// \param arg3 Detail Level (int)
 -(id)searchForObjectsAction {
   id                   result;
   NSString            *filterString;
   EOQualifier         *eoFilter;
   NSMutableDictionary *flags;
+  NSTimeInterval       start, end;
+
+  if ([self isDebug]) 
+    start = [[NSDate date] timeIntervalSince1970];
 
   if (arg4 == nil) {
     flags = [NSMutableDictionary new];
@@ -397,13 +500,19 @@
     eoFilter = [EOQualifier qualifierWithQualifierFormat:filterString];
     result = [result filteredArrayUsingQualifier:eoFilter];
   }
-  
-  if ([self isDebug])
-    [self logWithFormat:@"Search returning %d objects to client.",
-       [result count]];
-
+ 
+  /* log command duration */
+  if ([self isDebug]) {
+    end = [[NSDate date] timeIntervalSince1970];
+    [self logWithFormat:@"searchForObjects consumed %.3f seconds",
+            (end - start)];
+    [self logWithFormat:@"searchForObjects returning %d objects",
+            [result count]];
+  } 
+ 
+ [flags release];
  return result;
-}
+} /* end searchForObjectsAction */
 
 -(id)getNotificationsAction {
   if ([[self _getCompanyId] intValue] != 10000)
@@ -414,6 +523,6 @@
   if ([arg2 isKindOfClass:[NSString class]])
     arg2 = [self _makeCalendarDate:arg2];
   return [self _getNotifications:arg1 until:arg2];
-}
+} /* end getNotificationsAction */
 
 @end

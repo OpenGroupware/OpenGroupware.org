@@ -39,6 +39,7 @@
 #include <EOControl/EOControl.h>
 #include <Foundation/NSConcreteDictionary.h>
 #include <Foundation/NSConcreteArray.h>
+#include <Foundation/NSFileManager.h>
 #include "NSString+SearchingAdditions.h"
 
 #define OGo_HTML_MARKER @"<!-- html marker -->\n"

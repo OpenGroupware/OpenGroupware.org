@@ -131,9 +131,9 @@
   NSString              *key;
   id                    value;
   int                   count;
-  
 
   query = [[NSMutableDictionary alloc] initWithCapacity:[_query count]];
+
   keys = [_query allKeys];
   for (count = 0; count < [keys count]; count++) {
     key = [keys objectAtIndex:count];
@@ -144,7 +144,8 @@
       /* TODO: Verify this is AND or OR */
       [query setObject:value forKey:@"operator"];
     } else [query setObject:value forKey:key];
-   }
+  }
+
   if ([query count] == 0)
   {
     if ([self isDebug])
@@ -152,6 +153,7 @@
     result = [[self getCTX] runCommand:@"appointmentresource::get",
                   @"returnType",
                   [NSNumber numberWithInt:LSDBReturnType_ManyObjects],
+                  @"maxSearchCount", [_flags objectForKey:@"limit"],
                   nil];
   } else if ([query objectForKey:@"operator"] == nil)
     {
@@ -159,10 +161,14 @@
         [self logWithFormat:@"performing fuzzy search for resources"];
       [query setObject:[NSNumber numberWithInt:LSDBReturnType_ManyObjects]
                 forKey:@"returnType"];
+      [query setObject:[_flags objectForKey:@"limit"] 
+                forKey:@"maxSearchCount"];
       result = [[self getCTX] runCommand:@"appointmentresource::get" 
                                arguments:query];
     } else
       {
+        [query setObject:[_flags objectForKey:@"limit"]
+                  forKey:@"maxSearchCount"];
         if ([self isDebug])
           [self logWithFormat:@"performing exact search for resources"];
         result = [[self getCTX] runCommand:@"appointmentresource::extended-search"

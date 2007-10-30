@@ -42,7 +42,11 @@
   NSString      *entityName;
 
   result = nil;
-  entityName = [self _getEntityNameForPKey:_objectId];
+  if ([_objectId isKindOfClass:[EOKeyGlobalID class]])
+    entityName = [[_objectId entityName] valueForKey:@"stringValue"];
+  else 
+    entityName = [self _getEntityNameForPKey:_objectId];
+
   if ([entityName isEqualToString:@"Date"])
     result = [self _getDateForKey:_objectId withDetail:_detail];
   else if ([entityName isEqualToString:@"Enterprise"])
@@ -169,7 +173,7 @@
   id                  link;
 
   eo = [self _getEOForPKey:[_object valueForKey:@"objectId"]];
-  linkList = [NSMutableArray new];
+  linkList = [NSMutableArray arrayWithCapacity:16];
   links = [[[self getCTX] linkManager] allLinksTo:(id)eo];
   if (links != nil) {
     enumerator = [links objectEnumerator];

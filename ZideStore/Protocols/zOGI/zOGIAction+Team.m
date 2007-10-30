@@ -73,7 +73,7 @@
 } /* end _getTeamsForKeys */
 
 -(id)_getTeamForKey:(id)_arg withDetail:(NSNumber *)_detail {
-  return [[self _renderTeams:[self _getUnrenderedTeamsForKeys:_arg] 
+  return [[self _renderTeams:[self _getUnrenderedTeamsForKeys:[NSArray arrayWithObject:_arg]] 
                   withDetail:_detail] lastObject];
 } /* _getTeamForKey */
 
@@ -86,7 +86,7 @@
                                       nil];
   if (members != nil) {
     memberList = [self _renderContacts:members withDetail:0];
-   } else { memberList = [NSArray new]; }
+   } else { memberList = [NSConcreteEmptyArray new]; }
   [_team setObject:memberList forKey:@"_CONTACTS"];
 } /* end _addContactsToTeam */
 

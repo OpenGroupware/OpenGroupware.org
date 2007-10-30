@@ -88,7 +88,7 @@
     conflictEnumerator = [[conflictDates objectForKey:conflictDate] 
                              objectEnumerator];
       while ((conflict = [conflictEnumerator nextObject]) != nil) {
-        renderedConflict = [NSMutableDictionary new];
+        renderedConflict = [NSMutableDictionary dictionaryWithCapacity:16];
         [renderedConflict 
            setObject:@"appointmentConflict" forKey:@"entityName"];
         [renderedConflict setObject:[self _getPKeyForEO:(id)conflictDate]

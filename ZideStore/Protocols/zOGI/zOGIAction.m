@@ -148,7 +148,8 @@ static int zOGIDebugOn = -1;
   id                      tmp;
 
   /* Short circuit; if we go a EOGlobalID just return it */
-  if ([_arg isKindOfClass:[EOGlobalID class]])
+  if (([_arg isKindOfClass:[EOGlobalID class]]) ||
+      ([_arg isKindOfClass:[EOKeyGlobalID class]]))
     return _arg;
 
   /* Assume gid lookup will fail */
@@ -191,8 +192,6 @@ static int zOGIDebugOn = -1;
     [self warnWithFormat:@"unable to generate EOId, returning nil"];
     return nil;
   } 
-  if ([self isDebug])
-    [self logWithFormat:@"EOId %@ from PKey %@", gid, tmp];
   return gid;
 } /* End _getEOForPKey */
 
@@ -225,6 +224,7 @@ static int zOGIDebugOn = -1;
 
   /* If the _arg is a single value */
   if ([_arg isKindOfClass:[NSString class]] ||
+      [_arg isKindOfClass:[EOGlobalID class]] ||
       [_arg isKindOfClass:[NSNumber class]]) 
   {
     result = [NSArray arrayWithObject:[self _getEOForPKey:_arg]];
@@ -232,7 +232,7 @@ static int zOGIDebugOn = -1;
   } /* End if-arg-is-a-string-or-a-number */
 
   /* _arg is a multiple value */
-  pkeys = [NSMutableArray new];
+  pkeys = [NSMutableArray arrayWithCapacity:64];
   if ([_arg isKindOfClass:[NSArray class]]) 
   {
     [pkeys addObjectsFromArray: _arg] ;

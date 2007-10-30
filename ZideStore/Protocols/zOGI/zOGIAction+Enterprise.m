@@ -63,7 +63,7 @@
        nil]];
     [self _addAddressesToCompany:[result objectAtIndex:count]];
     [self _addPhonesToCompany:[result objectAtIndex:count]];
-    /* Add flags */
+    /* Add flags  */
     [[result objectAtIndex:count] 
         setObject:[self _renderCompanyFlags:eoEnterprise 
                                  entityName:@"Enterprise"]
@@ -78,7 +78,7 @@
         [self _addProjectsToEnterprise:[result objectAtIndex:count]];
       [self _addObjectDetails:[result objectAtIndex:count] 
                    withDetail:_detail];
-    } /* End detail-is-required */
+    } /*  End detail-is-required  */
     [self _stripInternalKeys:[result objectAtIndex:count]];
   } /* End rendering loop */
   return result;
@@ -86,10 +86,20 @@
 
 -(NSArray *)_getUnrenderedEnterprisesForKeys:(id)_arg {
   NSArray       *enterprises;
+  NSArray       *eos;
+
+  eos = nil;
+  if ([_arg isKindOfClass:[NSArray class]]) {
+    if ([[_arg lastObject] isKindOfClass:[EOKeyGlobalID class]]) {
+      eos = _arg;
+    }
+  }
+  if (eos == nil)
+    eos = [self _getEOsForPKeys:_arg];
 
   enterprises = [[[self getCTX] runCommand:@"enterprise::get-by-globalid",
-                                  @"gids", [self _getEOsForPKeys:_arg],
-                                  nil] retain];
+                                @"gids", eos,
+                                nil] retain];
   return enterprises;
 } /* end _getUnrenderedEnterprisesForKeys */
 
@@ -108,13 +118,15 @@
 } /* end _getEnterprisesForKeys */
 
 -(id)_getEnterpriseForKeys:(id)_pk {
-  return [self _getEnterprisesForKeys:_pk withDetail:intObj(0)];
+  return [self _getEnterprisesForKeys:_pk 
+                           withDetail:intObj(0)];
 } /* end _getEnterpriseForKeys */
 
 -(id)_getEnterpriseForKey:(id)_pk withDetail:(NSNumber *)_detail {
   id               result;
 
-  result = [self _getEnterprisesForKeys:_pk withDetail:_detail];
+  result = [self _getEnterprisesForKeys:_pk
+                             withDetail:_detail];
   if ([result isKindOfClass:[NSException class]])
     return result;
   if ([result isKindOfClass:[NSMutableArray class]])

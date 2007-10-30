@@ -110,15 +110,9 @@
   NSArray             *phones;
   NSMutableArray      *phoneList;
   NSEnumerator        *enumerator;
-  NSNumber            *companyId;
   id                   phone;
 
-  companyId = intObj([[_company objectForKey:@"objectId"] intValue]);
-  phones = [[self getCTX] runCommand:@"telephone::get",
-              @"companyId",  companyId,
-              @"returnType", intObj(LSDBReturnType_ManyObjects),
-              nil];
-  if (phones == nil) phones = [NSArray array];
+  phones = [[_company objectForKey:@"*eoObject"] objectForKey:@"telephones"];
   phoneList = [NSMutableArray arrayWithCapacity:[phones count]];
   enumerator = [phones objectEnumerator];
   while ((phone = [enumerator nextObject]) != nil) {
@@ -143,7 +137,7 @@
   NSArray             *values;
   id                   value;
 
-  valueList = [NSMutableArray new];
+  valueList = [NSMutableArray arrayWithCapacity:32];
   enumerator = [[[_company objectForKey:@"*eoObject"] valueForKey:@"attributeMap"] objectEnumerator];
   while ((value = [enumerator nextObject]) != nil) {
     if ([value isKindOfClass:[EOGenericRecord class]]) {

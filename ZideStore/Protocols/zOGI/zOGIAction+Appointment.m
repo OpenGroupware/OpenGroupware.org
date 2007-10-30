@@ -30,11 +30,7 @@
 
 @implementation zOGIAction(Appointment)
 
-/*
-  Construct a ZOGI Appointment dictionary from an EOGenericRecord of an
-  appointment with the specified detail 
-*/
--(NSDictionary *)_renderAppointment:(NSDictionary *)eoAppointment
+- (NSDictionary *)_renderAppointment:(NSDictionary *)_eoAppointment
                          withDetail:(NSNumber *)_detail {
   NSMutableDictionary  *appointment;
   NSMutableArray       *flags;
@@ -44,39 +40,39 @@
   id                    resources;
   NSString             *permissions;
 
-  if (eoAppointment == nil) return [[NSDictionary alloc] init];
+  if (_eoAppointment == nil) return [[NSDictionary alloc] init];
   flags = [[NSMutableArray alloc] initWithCapacity:6];
   permissions = [[self getCTX] runCommand:@"appointment::access", 
                                @"gid", 
-                                 [eoAppointment valueForKey:@"globalID"],
+                                 [_eoAppointment valueForKey:@"globalID"],
                                nil];
 
   /* Render core appointment attributes */
-  startDate = [eoAppointment valueForKey:@"startDate"];
+  startDate = [_eoAppointment valueForKey:@"startDate"];
   [startDate setTimeZone:[self _getTimeZone]];
-  endDate = [eoAppointment valueForKey:@"endDate"];
+  endDate = [_eoAppointment valueForKey:@"endDate"];
   [endDate setTimeZone:[self _getTimeZone]];
   if ([permissions rangeOfString:@"v"].length > 0) {
     /* render appointment in visible mode */
     [flags addObject:@"VISIBLE"];
     appointment = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-      [eoAppointment valueForKey:@"dateId"], @"objectId",
+      [_eoAppointment valueForKey:@"dateId"], @"objectId",
       @"Appointment", @"entityName",
-      [self ZERO:[eoAppointment valueForKey:@"objectVersion"]], @"version",
-      [eoAppointment valueForKey:@"ownerId"], @"ownerObjectId",
+      [self ZERO:[_eoAppointment valueForKey:@"objectVersion"]], @"version",
+      [_eoAppointment valueForKey:@"ownerId"], @"ownerObjectId",
       endDate, @"end", startDate, @"start",
-      [self NIL:[eoAppointment valueForKey:@"title"]], @"title",
-      [self NIL:[eoAppointment valueForKey:@"notificationTime"]], 
+      [self NIL:[_eoAppointment valueForKey:@"title"]], @"title",
+      [self NIL:[_eoAppointment valueForKey:@"notificationTime"]], 
          @"notification",
-      [self NIL:[eoAppointment valueForKey:@"location"]], @"location",
-      [self NIL:[eoAppointment valueForKey:@"keywords"]], @"keywords",
-      [self NIL:[eoAppointment valueForKey:@"aptType"]], @"appointmentType",
-      [self NIL:[eoAppointment valueForKey:@"comment"]], @"comment",
-      [self NIL:[eoAppointment valueForKey:@"accessTeamId"]], 
+      [self NIL:[_eoAppointment valueForKey:@"location"]], @"location",
+      [self NIL:[_eoAppointment valueForKey:@"keywords"]], @"keywords",
+      [self NIL:[_eoAppointment valueForKey:@"aptType"]], @"appointmentType",
+      [self NIL:[_eoAppointment valueForKey:@"comment"]], @"comment",
+      [self NIL:[_eoAppointment valueForKey:@"accessTeamId"]], 
          @"readAccessTeamObjectId",
       nil];
     /* Add object details */
-    [appointment setObject:eoAppointment forKey:@"*eoObject"];
+    [appointment setObject:_eoAppointment forKey:@"*eoObject"];
     if([_detail intValue] & zOGI_INCLUDE_NOTATIONS)
       [self _addNotesToDate:appointment];
     if([_detail intValue] & zOGI_INCLUDE_PARTICIPANTS)
@@ -88,37 +84,37 @@
        /* render appointment in non-visible mode */
        [flags addObject:@"NONVISIBLE"];
        appointment = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-         [eoAppointment valueForKey:@"dateId"], @"objectId",
+         [_eoAppointment valueForKey:@"dateId"], @"objectId",
          @"Appointment", @"entityName",
-         [eoAppointment valueForKey:@"objectVersion"], @"version",
-         [eoAppointment valueForKey:@"ownerId"], @"ownerObjectId",
-         [self NIL:[eoAppointment valueForKey:@"accessTeamId"]], 
+         [_eoAppointment valueForKey:@"objectVersion"], @"version",
+         [_eoAppointment valueForKey:@"ownerId"], @"ownerObjectId",
+         [self NIL:[_eoAppointment valueForKey:@"accessTeamId"]], 
             @"readAccessTeamObjectId",
          endDate, @"end", startDate, @"start",
          nil];
       }
   /* Add cyclical attributes if appointment has a type */
-  if([eoAppointment valueForKey:@"type"] != nil) {
+  if([_eoAppointment valueForKey:@"type"] != nil) {
     [flags addObject:@"CYCLIC"];
-    [appointment setObject:[self NIL:[eoAppointment valueForKey:@"parentDateId"]]
+    [appointment setObject:[self NIL:[_eoAppointment valueForKey:@"parentDateId"]]
                  forKey:@"parentObjectId"];
-    [appointment setObject:[eoAppointment valueForKey:@"cycleEndDate"]
+    [appointment setObject:[_eoAppointment valueForKey:@"cycleEndDate"]
                  forKey:@"cycleEndDate"];
-    [appointment setObject:[eoAppointment valueForKey:@"type"]
+    [appointment setObject:[_eoAppointment valueForKey:@"type"]
                  forKey:@"cycleType"];
    }
   /* Add resources */
-  if([eoAppointment valueForKey:@"resourceNames"] != nil) {
+  if([_eoAppointment valueForKey:@"resourceNames"] != nil) {
     if ([self isDebug])
       [self logWithFormat:@"appointment resources: %@",
-         [eoAppointment valueForKey:@"resourceNames"]];    
-    tmp = [[eoAppointment valueForKey:@"resourceNames"] 
+         [_eoAppointment valueForKey:@"resourceNames"]];    
+    tmp = [[_eoAppointment valueForKey:@"resourceNames"] 
               componentsSeparatedByString:@", "];
     resources = [self _renderNamedResources:tmp];  
   } else resources = [NSConcreteEmptyArray new];
   [appointment setObject:resources forKey:@"_RESOURCES"];
   /* Add writers */
-  if ([(tmp = [eoAppointment valueForKey:@"writeAccessList"]) isNotEmpty]) {
+  if ([(tmp = [_eoAppointment valueForKey:@"writeAccessList"]) isNotEmpty]) {
     if([tmp length] == 0)
       [appointment setObject:[[NSArray alloc] init]
                       forKey:@"writeAccessObjectIds"];
@@ -133,7 +129,7 @@
     [flags addObject:@"WRITE"];
    else 
      [flags addObject:@"READONLY"];
-  if ([[eoAppointment objectForKey:@"ownerId"] isEqualTo:[self _getCompanyId]])
+  if ([[_eoAppointment objectForKey:@"ownerId"] isEqualTo:[self _getCompanyId]])
     [flags addObject:@"SELF"];
   [appointment setObject:flags forKey:@"FLAGS"];
   /* Return Rendered Appointment */
@@ -249,7 +245,7 @@
   NSEnumerator   *enumerator;
   NSString       *status;
 
-  participantList = [NSMutableArray new];
+  participantList = [NSMutableArray arrayWithCapacity:64];
   participants = 
     [[self getCTX] runCommand:@"appointment::list-participants",
        @"gid", [self _getEOForPKey:[_appointment valueForKey:@"objectId"]],
