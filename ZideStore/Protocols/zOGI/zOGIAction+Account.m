@@ -21,6 +21,7 @@
 
 #include "zOGIAction.h"
 #include "zOGIAction+Account.h"
+#include "zOGIAction+Defaults.h"
 #include "zOGIAction+Team.h"
 #include "zOGIAction+Object.h"
 
@@ -96,7 +97,6 @@
 
 /* Get rendered account for current account at specified detail level */
 -(id)_getLoginAccount:(NSNumber *)_detail {
-  NSMutableArray          *calendarPanel;
   NSMutableDictionary     *account;
   NSMutableDictionary     *defaults;
 
@@ -128,21 +128,12 @@
                    forKey:@"isDST"];
       [defaults setObject:@"GMT" forKey:@"timeZoneName"];
     }
-  if (([[self _getDefault:@"scheduler_panel_accounts"] isNotNull]) ||
-      ([[self _getDefault:@"scheduler_panel_persons"] isNotNull]) ||
-      ([[self _getDefault:@"scheduler_panel_teams"] isNotNull])) {
-    calendarPanel = [NSMutableArray arrayWithCapacity:16];
-    if ([[self _getDefault:@"scheduler_panel_accounts"] isNotNull]) 
-      [calendarPanel addObjectsFromArray:[self _getDefault:@"scheduler_panel_accounts"]];
-    if ([[self _getDefault:@"scheduler_panel_persons"] isNotNull])
-      [calendarPanel addObjectsFromArray:[self _getDefault:@"scheduler_panel_persons"]];
-    if ([[self _getDefault:@"scheduler_panel_teams"] isNotNull])
-      [calendarPanel addObjectsFromArray:[self _getDefault:@"scheduler_panel_teams"]];
-    [defaults setObject:calendarPanel forKey:@"calendarPanelObjectIds"];
-  } else {
-      [self logWithFormat:@"sending empty calendar panel - no defaults"];
-      [defaults setObject:[NSConcreteEmptyArray new] forKey:@"calendarPanelObjectIds"];
-    }
+
+  [defaults setObject:[self _getSchedularPanel]
+               forKey:@"calendarPanelObjectIds"];
+
+  [defaults setObject:[self _getDefault:@"scheduler_ccForNotificationMails"]
+               forKey:@"notificationCC"];
 
   [account setObject:defaults forKey:@"_DEFAULTS"];
   return account;

@@ -20,6 +20,7 @@
 */
 
 #include "zOGIAction.h"
+#include "zOGIAction+Defaults.h"
 #include "zOGIAction+Resource.h"
 #include "zOGIAction+Team.h"
 #include "zOGIAction+Appointment.h"
@@ -56,6 +57,11 @@
   NSEnumerator          *conflictEnumerator;
   id                    resource;
 
+  /* Bail out if conflict detection is disabled */
+  if ([[_eo objectForKey:@"isConflictDisabled"] isNotNull])
+    if ([[_eo objectForKey:@"isConflictDisabled"] intValue])
+      return [NSConcreteEmptyArray new];
+    
   /* Get required bits from user defaults */
   aptAttrs = [[[[self getCTX] userDefaults]
                    arrayForKey:@"schedulerconflicts_fetchkeys"] copy];

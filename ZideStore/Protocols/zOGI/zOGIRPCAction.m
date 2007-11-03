@@ -24,6 +24,7 @@
 #include "NSObject+zOGI.h"
 #include "zOGIAction+Appointment.h"
 #include "zOGIAction+Contact.h"
+#include "zOGIAction+Defaults.h"
 #include "zOGIAction+Enterprise.h"
 #include "zOGIAction+Project.h"
 #include "zOGIAction+Resource.h"
@@ -404,6 +405,8 @@
     return [self _createContact:_dictionary withFlags:_flags];
   else if ([entityName isEqualToString:@"Enterprise"])
     return [self _createEnterprise:_dictionary withFlags:_flags];
+  else if ([entityName isEqualToString:@"defaults"])
+    return [self _storeDefaults:_dictionary withFlags:_flags];
   return nil;
 } /* End _createObject */
 

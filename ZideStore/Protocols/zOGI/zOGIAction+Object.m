@@ -30,6 +30,7 @@
 #include "zOGIAction+Contact.h"
 #include "zOGIAction+Task.h"
 #include "zOGIAction+Project.h"
+#include "zOGIAction+Defaults.h"
 #include "zOGIAction+Resource.h"
 #include "zOGIAction+Document.h"
 #include "zOGIAction+News.h"

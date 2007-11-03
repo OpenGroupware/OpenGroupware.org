@@ -22,6 +22,7 @@
 #include "zOGIAction.h"
 #include "zOGIAction+Object.h"
 #include "zOGIAction+Company.h"
+#include "zOGIAction+Defaults.h"
 #include "zOGIAction+Contact.h"
 #include "zOGIAction+Enterprise.h"
 

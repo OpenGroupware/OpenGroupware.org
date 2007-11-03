@@ -20,6 +20,7 @@
 */
 #include "zOGIAction.h"
 #include "zOGIAction+Object.h"
+#include "zOGIAction+Defaults.h"
 #include "zOGIAction+Appointment.h"
 #include "zOGIAction+Notifications.h"
 

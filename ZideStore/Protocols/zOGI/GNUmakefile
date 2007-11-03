@@ -33,6 +33,7 @@ zOGI_OBJC_FILES = \
         zOGIAction+Property.m \
         zOGIAction+Notifications.m \
         zOGIAction+News.m \
+        zOGIAction+Defaults.m \
         zOGIRPCAction.m 
 
 zOGI_RESOURCE_FILES += \

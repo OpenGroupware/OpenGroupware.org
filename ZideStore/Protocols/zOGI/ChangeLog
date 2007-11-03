@@ -1,3 +1,40 @@
+2007-11-03 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Contact.m: Include zOGIAction+Defaults.h. (v1.5.31)
+
+	* zOGIAction+Account.m: Include zOGIAction+Defaults.h.  Removed panel
+	  rendering, which is now in the Defaults category. (v1.5.31)
+
+	* zOGIAction+Appointment.m: Resources can now be specified, by objectd,
+	  as participants when searching for appointments.  Removed a useless
+	  log message.  "isConflictDisabled" attribute is now rendered in the
+	  Appointment entity. (v1.5.31)
+
+	* zOGIAction+Defaults.h|m: New category for handling retrieval and
+	  manipulation of user defaults.  User's schedular panel, notification
+	  CC address, and timezone can now be changed via zOGI API. (v1.5.31)
+
+	* zOGIAction+AppointmentConflicts.m: _renderConflictsForDate now
+	  respects the "isConflictDisabled" attribute and sets an empty array
+	  of conflicts if conflict detection is disabled for the appointment.
+	  (v1.5.31)
+
+	* zOGIAction+Object.m: Include zOGIAction+Defaults.h. (v1.5.31)
+
+	* zOGIAction+Enterprise.m: Include zOGIAction+Defaults.h. (v1.5.31)
+
+	* zOGIAction+Team.m: Include zOGIAction+Defaults.h. (v1.5.31)
+
+	* zOGIAction.h|m: Removed methods relating to defaults. (v1.5.31)
+	
+	* zOGIAction+Company.m: Include zOGIAction+Defaults.h. (v1.5.31)
+
+	* zOGIRPCAction.m: Include zOGIAction+Defaults.h. A putObject of a 
+	  "defaults" entity now invokes _storeDefaults from the Defaults
+	  category. (v1.5.31)
+
+	* zOGIAction+Notifications.m: Include zOGIAction+Defaults.h. (v1.5.31)
+
 2007-10-29 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* common.h: Added include of NSFileManager.h (v1.5.29)

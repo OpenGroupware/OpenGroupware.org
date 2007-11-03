@@ -27,6 +27,7 @@
 */
 
 #include "zOGIAction.h"
+#include "zOGIAction+Defaults.h"
 
 @implementation zOGIAction
 
@@ -367,21 +368,6 @@ static int zOGIDebugOn = -1;
   return [NSNumber numberWithBool:YES];
 } /* End _checkEntity */
 
-/* Get the defaults structure from the command context */
-- (NSUserDefaults *)_getDefaults 
-{
-  return [[self getCTX] userDefaults];
-}
-
-/* Get the specified string value from the defaults */
-- (id)_getDefault:(NSString *)_value 
-{
-  id value;
-
-  value = [[self _getDefaults] valueForKey:_value];
-  return value;
-}
-
 /* Get the current users companyId value */
 - (NSNumber *)_getCompanyId 
 {
@@ -442,37 +428,5 @@ static int zOGIDebugOn = -1;
     if ([[key substringToIndex:1] isEqualToString:@"*"])
       [_dictionary removeObjectForKey:key];
 } /* End _stripInternalKeys */
-
-/* Load the defaults file for the specified account (companyId) from
-   the filesystem and return it as a dictionary.  If the user has
-   noo defaults and empty dictionary is returned */
-- (NSDictionary *)_getDefaultsForAccount:(id)_account {
-  return [NSDictionary dictionaryWithContentsOfFile:
-              [NSString stringWithFormat:@"%@/%@.defaults",
-                 [[self _getDefault:@"LSAttachmentPath"] stringValue],
-                 [_account stringValue]]];
-} /* End _getDefaultsForAccount */
-
-/* Retrieve the time zone for the specified account Id (companyID), this
-   method retrieves the time zone from _getDefaultsForAccount; if the
-   account has not time zone defined we return GMT. */
-- (NSTimeZone *)_getTimeZoneForAccount:(id)_account {
-  NSDictionary  *defaults;
-
-  defaults = [self _getDefaultsForAccount:_account];
-  if ([[defaults valueForKey:@"timezone"] isNotNull]) {
-    return [NSTimeZone timeZoneWithAbbreviation:
-              [[defaults valueForKey:@"timezone"] stringValue]];
-  }
-  return [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-} /* End _getTimeZoneForAccount */
-
-- (NSString *)_getCCAddressForAccount:(id)_account {
-  NSDictionary  *defaults;
-
-  defaults = [self _getDefaultsForAccount:_account];
-  return [defaults valueForKey:@"scheduler_ccForNotificationMails"];
-} /* End _getCCAddressForAccount */
-
 
 @end /* zOGIAction */

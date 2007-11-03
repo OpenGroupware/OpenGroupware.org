@@ -52,7 +52,6 @@
 - (id)_getGlobalId;
 - (NSNumber *)_getCompanyId;
 - (NSTimeZone *)_getTimeZone;
-- (NSUserDefaults *)_getDefaults;
 
 /* methods */
 
@@ -64,12 +63,8 @@
 - (NSString *)_izeEntityName:(NSString *)_arg;
 - (id)_checkEntity:(id)_pkey entityName:(id)_name;
 - (NSString *)_getPKeyForEO:(EOKeyGlobalID *)_arg;
-- (id)_getDefault:(NSString *)_value;
 - (NSCalendarDate *)_makeCalendarDate:(id)_date;
 - (void)_stripInternalKeys:(NSMutableDictionary *)_dictionary;
-- (NSDictionary *)_getDefaultsForAccount:(id)_account;
-- (NSTimeZone *)_getTimeZoneForAccount:(id)_account;
-- (NSString *)_getCCAddressForAccount:(id)_account;
 
 
 @end /* zOGIAction */

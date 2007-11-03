@@ -59,6 +59,7 @@
       [_eoAppointment valueForKey:@"dateId"], @"objectId",
       @"Appointment", @"entityName",
       [self ZERO:[_eoAppointment valueForKey:@"objectVersion"]], @"version",
+      [self ZERO:[_eoAppointment valueForKey:@"isConflictDisabled"]], @"isConflictDisabled",
       [_eoAppointment valueForKey:@"ownerId"], @"ownerObjectId",
       endDate, @"end", startDate, @"start",
       [self NIL:[_eoAppointment valueForKey:@"title"]], @"title",
@@ -105,9 +106,6 @@
    }
   /* Add resources */
   if([_eoAppointment valueForKey:@"resourceNames"] != nil) {
-    if ([self isDebug])
-      [self logWithFormat:@"appointment resources: %@",
-         [_eoAppointment valueForKey:@"resourceNames"]];    
     tmp = [[_eoAppointment valueForKey:@"resourceNames"] 
               componentsSeparatedByString:@", "];
     resources = [self _renderNamedResources:tmp];  
@@ -355,7 +353,9 @@
                   withFlags:(NSDictionary *)_flags {
   NSCalendarDate        *startDate, *endDate;
   NSMutableDictionary   *args;
-  NSArray               *participants, *gids;
+  NSMutableArray        *resources;
+  NSMutableArray        *participants;
+  NSArray               *gids;
   id                     tmp;
 
   /* Setup & Validate Start Date */
@@ -379,47 +379,68 @@
   [endDate setTimeZone:[self _getTimeZone]];
 
   /* setup participant restraint */
-  if([_query objectForKey:@"participants"] == nil) {
-    /* no participants provided - assume self */
-    if ([self isDebug])
-      [self logWithFormat:@"no participants specified, assuming self"];
-    tmp = [NSArray arrayWithObject:[self _getCompanyId]];
+  if ([[_query objectForKey:@"participants"] isNotNull]) {
+    tmp = [_query objectForKey:@"participants"];
+    if ([tmp isKindOfClass:[NSString class]])
+      tmp = [tmp componentsSeparatedByString:@","];
+    else if  ([tmp isKindOfClass:[NSNumber class]])
+       tmp = [NSArray arrayWithObject:tmp];
   } else {
-      /* participants were specified */
-      tmp = [_query objectForKey:@"participants"];
-      if ([tmp isKindOfClass:[NSString class]]) {
-        /* blow up string into an array */
-        tmp = [tmp componentsSeparatedByString:@","];
-      } else if ([tmp isKindOfClass:[NSNumber class]]) {
-          tmp = [NSArray arrayWithObject:tmp];
-        }
+      /* no participants provided - assume self */
+      if ([self isDebug])
+        [self logWithFormat:@"no participants specified, assuming self"];
+      tmp = [NSArray arrayWithObject:[self _getCompanyId]];
     } /* end process participants */
 
-  /* participant setup complete, get EOs if we have an array */
   if ([tmp isKindOfClass:[NSArray class]]) {
-    /* generate participants from array */
-    participants = [self _getEOsForPKeys:tmp];
-    if ([self isDebug])
-      [self logWithFormat:@"participants for appointments query = %@",
-         participants];
+    NSEnumerator *enumerator;
+    NSString     *entityName;
+    id            object;
+
+    resources    = nil;
+    participants = nil;
+    enumerator   = [tmp objectEnumerator];
+    while ((object = [enumerator nextObject]) != nil) {
+      entityName = [self _getEntityNameForPKey:object];
+      if ([entityName isEqualToString:@"AppointmentResource"]) {
+        /* participant is a resource */
+        object = [self _getUnrenderedResourceForKey:object];
+        if ([object isNotNull]) {
+          if (resources == nil)
+            resources = [NSMutableArray arrayWithCapacity:16];
+          [resources addObject:[object objectForKey:@"name"]];
+        } else [self warnWithFormat:@"Unable to retrieve resource by key"];
+      } else {
+          /* participant is a contact/account */
+          object = [self _getEOForPKey:object];
+          if ([object isNotNull]) {
+            if (participants == nil)
+              participants = [NSMutableArray arrayWithCapacity:32];
+            [participants addObject:object];
+          }
+        }
+    }
   } else {
       [self warnWithFormat:@"appointment query with participants of type %@",
          [tmp class]];
       return [NSException exceptionWithHTTPStatus:500
                 reason:@"Participant specified using unsupported type"];
     }
+  if ([self isDebug]) {
+    [self logWithFormat:@"participants for query = %@", participants];
+    [self logWithFormat:@"resources for query = %@", resources];
+  }
   tmp = nil;
 
   /* Do Query */
   args = [NSMutableDictionary dictionaryWithCapacity:5];
   [args takeValue:startDate forKey:@"fromDate"];
   [args takeValue:endDate forKey:@"toDate"];
-  [args takeValue:participants forKey:@"companies"];
-  /*
-  if (resources != nil)
-    [dict takeValue:resources    forKey:@"resourceNames"];
-   */
-  if ([_query objectForKey:@"appointmentType"] != nil) {
+  if ([participants isNotNull])
+    [args takeValue:participants forKey:@"companies"];
+  if ([resources isNotNull])
+    [args takeValue:resources forKey:@"resourceNames"];
+  if ([[_query objectForKey:@"appointmentType"] isNotNull]) {
     tmp = [_query objectForKey:@"appointmentType"];
     if ([tmp isKindOfClass:[NSString class]])
       tmp = [tmp componentsSeparatedByString:@","];
