@@ -45,7 +45,6 @@
   if ([[_defaults objectForKey:@"notificationCC"] isNotNull])
     [defaults setObject:[_defaults objectForKey:@"notificationCC"]
                  forKey:@"scheduler_ccForNotificationMails"];
-  
 
   /* store calendar panel if provided */
   tmp = [_defaults objectForKey:@"calendarPanelObjectIds"];
@@ -187,7 +186,9 @@
   NSDictionary  *defaults;
 
   defaults = [self _getDefaultsForAccount:_account];
-  return [defaults valueForKey:@"scheduler_ccForNotificationMails"];
+  if ([[defaults objectForKey:@"scheduler_ccForNotificationMails"] isNotNull])
+    return [defaults objectForKey:@"scheduler_ccForNotificationMails"];
+  return [NSString stringWithString:@""];
 } /* End _getCCAddressForAccount */
 
 @end /* end zOGIAction(Defaults) */

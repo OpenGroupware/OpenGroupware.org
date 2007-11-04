@@ -1,3 +1,13 @@
+2007-11-04 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Account.m: Correctly handle users who have no
+	  notification CC: address when rendering defaults for the
+	  logged in user account. (v1.5.32)
+
+	* zOGIAction+Defaults.m: Correctly handle retrieving the
+	  notification CC: address from user defaults when none has been
+	  set. (v1.5.33)
+
 2007-11-03 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Contact.m: Include zOGIAction+Defaults.h. (v1.5.31)

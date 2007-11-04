@@ -132,8 +132,10 @@
   [defaults setObject:[self _getSchedularPanel]
                forKey:@"calendarPanelObjectIds"];
 
-  [defaults setObject:[self _getDefault:@"scheduler_ccForNotificationMails"]
-               forKey:@"notificationCC"];
+  if ([[self _getDefault:@"scheduler_ccForNotificationMails"] isNotNull])
+    [defaults setObject:[self _getDefault:@"scheduler_ccForNotificationMails"]
+                 forKey:@"notificationCC"];
+  else [defaults setObject:@"" forKey:@"notificationCC"];
 
   [account setObject:defaults forKey:@"_DEFAULTS"];
   return account;
