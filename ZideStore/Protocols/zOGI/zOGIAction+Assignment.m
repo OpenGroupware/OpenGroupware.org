@@ -32,7 +32,7 @@
   NSMutableDictionary   *assignment;
   NSString              *sourceEntity, *targetEntity;
  
-  assignment = [[NSMutableDictionary alloc] initWithCapacity:16];
+  assignment = [NSMutableDictionary dictionaryWithCapacity:16];
 
   if ([_objectId isKindOfClass:[NSString class]])
     _objectId = [NSNumber numberWithInt:[_objectId intValue]];
@@ -176,8 +176,8 @@
         [self logWithFormat:@"syncing company assignments for %@: scanning", 
            _objectId];
       /* Sigh... we have real work to do, process client-->server changes */
-      inserts = [[NSMutableArray alloc] initWithCapacity:16];
-      deletes = [[NSMutableArray alloc] initWithCapacity:16];
+      inserts = [NSMutableArray arrayWithCapacity:16];
+      deletes = [NSMutableArray arrayWithCapacity:16];
       assignments = [self _getCompanyAssignments:_objectId key:_key];
       if ([assignments isKindOfClass:[NSException class]])
         return assignments;

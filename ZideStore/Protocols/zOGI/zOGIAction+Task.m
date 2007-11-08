@@ -134,8 +134,6 @@
 
   if ([_list isEqualToString:@"todo"])
     listCommand = [NSString stringWithString:@"job::get-todo-jobs"];
-  if ([_list isEqualToString:@"control"])
-    listCommand = [NSString stringWithString:@"job::get-control-jobs"];
   if ([_list isEqualToString:@"delegated"])
     listCommand = [NSString stringWithString:@"job::get-delegated-jobs"];
   if ([_list isEqualToString:@"archived"])
@@ -313,7 +311,7 @@
   NSCalendarDate		*endDate;
   NSString              *emptyString;
 
-  task = [[NSMutableDictionary alloc] initWithCapacity:32];
+  task = [NSMutableDictionary dictionaryWithCapacity:32];
   [task addEntriesFromDictionary:_task];
   emptyString = [NSString stringWithString:@""];
   // Name (description)
@@ -370,7 +368,7 @@
   else if ([objectId isKindOfClass:[NSNumber class]])
     objectId = [objectId stringValue];
 
-  task = [[NSMutableDictionary alloc] initWithCapacity:32];
+  task = [NSMutableDictionary dictionaryWithCapacity:32];
   keys = [_task allKeys];
   for (count = 0; count < [keys count]; count++) {
     key = [keys objectAtIndex:count];

@@ -52,7 +52,7 @@
   for (count = 0; count < [_projects count]; count++) 
   {
     eoProject = [_projects objectAtIndex:count];
-    flags = [[NSMutableArray alloc] initWithCapacity:6];
+    flags = [NSMutableArray arrayWithCapacity:6];
 
     /* setup access flags */ 
     permissions = [[self getCTX] runCommand:@"project::check-write-permission",
@@ -181,7 +181,7 @@
   NSMutableArray      *contactList;
   NSMutableDictionary *assignment;
 
-  contactList = [[NSMutableArray alloc]initWithCapacity:16];
+  contactList = [NSMutableArray arrayWithCapacity:16];
   enumerator = [[[_project objectForKey:@"*eoObject"] objectForKey:@"companyAssignments"] objectEnumerator];
   while ((eo = [enumerator nextObject]) != nil) 
   {
@@ -207,7 +207,7 @@
   NSMutableArray      *enterpriseList;
   NSMutableDictionary *assignment;
 
-  enterpriseList = [[NSMutableArray alloc]initWithCapacity:16];
+  enterpriseList = [NSMutableArray arrayWithCapacity:16];
   enumerator = [[[_project objectForKey:@"*eoObject"] objectForKey:@"companyAssignments"] objectEnumerator];
   while ((eo = [enumerator nextObject]) != nil) {
     if (([[self _getEntityNameForPKey:[eo valueForKey:@"companyId"]]
@@ -246,7 +246,7 @@
                           nil];
   if (tasks == nil) 
     tasks = [NSArray array];
-  taskList = [[NSMutableArray alloc] initWithCapacity:[tasks count]];
+  taskList = [NSMutableArray arrayWithCapacity:[tasks count]];
   enumerator = [tasks objectEnumerator];
   while ((task = [enumerator nextObject]) != nil) {
     [taskList addObject:[self _renderTaskFromEO:task]];
@@ -323,7 +323,7 @@
   NSMutableDictionary	*project;
   NSCalendarDate        *start, *end;
   
-  project = [[NSMutableDictionary alloc] initWithCapacity:12];
+  project = [NSMutableDictionary dictionaryWithCapacity:12];
   [project setObject:[_project objectForKey:@"name"] 
               forKey:@"name"];
   if ([_project objectForKey:@"objectId"] != nil) 

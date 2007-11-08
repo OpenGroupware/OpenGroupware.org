@@ -36,7 +36,7 @@
   notes = [self _getUnrenderedNotesForKey:_objectId];
   if ([notes count] == 0)
     return notes;
-  noteList = [[NSMutableArray alloc] initWithCapacity:[notes count]];
+  noteList = [NSMutableArray arrayWithCapacity:[notes count]];
   for (count = 0; count < [notes count]; count++) {
     note = [notes objectAtIndex:count];
     [noteList addObject:[self _renderNote:note]];
@@ -109,7 +109,7 @@
       [self logWithFormat:@"No notes on object, deleing all notes."];
     return [self _deleteAllNotesFromObject:_objectId];
   }
-  noteList = [[NSMutableArray alloc] initWithCapacity:[_notes count]];
+  noteList = [NSMutableArray arrayWithCapacity:[_notes count]];
   enumerator = [_notes objectEnumerator];
   while ((note = [enumerator nextObject]) != nil) {
     objectId = [note objectForKey:@"objectId"];

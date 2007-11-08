@@ -41,7 +41,7 @@
   NSString             *permissions;
 
   if (_eoAppointment == nil) return [[NSDictionary alloc] init];
-  flags = [[NSMutableArray alloc] initWithCapacity:6];
+  flags = [NSMutableArray arrayWithCapacity:6];
   permissions = [[self getCTX] runCommand:@"appointment::access", 
                                @"gid", 
                                  [_eoAppointment valueForKey:@"globalID"],
@@ -93,6 +93,8 @@
             @"readAccessTeamObjectId",
          endDate, @"end", startDate, @"start",
          nil];
+       if([_detail intValue] & zOGI_INCLUDE_PARTICIPANTS)
+         [self _addParticipantsToDate:appointment];
       }
   /* Add cyclical attributes if appointment has a type */
   if([_eoAppointment valueForKey:@"type"] != nil) {
@@ -114,11 +116,11 @@
   /* Add writers */
   if ([(tmp = [_eoAppointment valueForKey:@"writeAccessList"]) isNotEmpty]) {
     if([tmp length] == 0)
-      [appointment setObject:[[NSArray alloc] init]
+      [appointment setObject:[NSConcreteEmptyArray new]
                       forKey:@"writeAccessObjectIds"];
     else [appointment setObject:[tmp componentsSeparatedByString:@","]
                          forKey:@"writeAccessObjectIds"];
-   } else [appointment setObject:[[NSArray alloc] init] 
+   } else [appointment setObject:[NSConcreteEmptyArray new] 
                          forKey:@"writeAccessObjectIds"];
   /* Add access hint for the client */
   if ([permissions rangeOfString:@"d"].length > 0) 
@@ -147,8 +149,8 @@
   NSDictionary        *appointment;
   int                 count;
 
-  if (_appointments == nil) return [[NSArray alloc] init];
-  if ([_appointments count] == 0) return [[NSArray alloc] init];
+  if (_appointments == nil) return [NSConcreteEmptyArray new];
+  if ([_appointments count] == 0) return [NSConcreteEmptyArray new];
 
   result = [NSMutableArray arrayWithCapacity:[_appointments count]];
   for (count = 0; count < [_appointments count]; count++) {
@@ -451,7 +453,7 @@
 
   /* process quert results */
   if ([gids count] == 0)
-    return [[NSArray alloc] init];
+    return [NSConcreteEmptyArray new];
   return [self _getDatesForKeys:gids withDetail:_detail];
 } /* end _searchForAppointments */
 
@@ -635,12 +637,12 @@
       [self logWithFormat:@"_translateParticipants; called with nil list"];
     return [NSConcreteEmptyArray new];
   }
-  participants = [[NSMutableArray alloc] initWithCapacity:[_participants count]];
+  participants = [NSMutableArray arrayWithCapacity:[_participants count]];
   for (count = 0; count < [_participants count]; count++) {
     _participant = [_participants objectAtIndex:count];
 
     /* Make dictionary to contain the new translated participant */
-    participant = [[NSMutableDictionary alloc] initWithCapacity:8];
+    participant = [NSMutableDictionary dictionaryWithCapacity:8];
     if (![_participant isKindOfClass:[NSDictionary class]])
       return [NSException exceptionWithHTTPStatus:500
                           reason:@"Non-dictionary in participant list"];
@@ -699,7 +701,7 @@
   else if ([objectId isKindOfClass:[NSNumber class]])
     objectId = [objectId stringValue];
 
-  appointment = [[NSMutableDictionary alloc] initWithCapacity:32];
+  appointment = [NSMutableDictionary dictionaryWithCapacity:32];
   keys = [_appointment allKeys];
   for (count = 0; count < [keys count]; count++) {
     key = [keys objectAtIndex:count];

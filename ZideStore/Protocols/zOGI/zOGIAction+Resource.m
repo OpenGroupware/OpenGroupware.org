@@ -132,7 +132,7 @@
   id                    value;
   int                   count;
 
-  query = [[NSMutableDictionary alloc] initWithCapacity:[_query count]];
+  query = [NSMutableDictionary dictionaryWithCapacity:[_query count]];
 
   keys = [_query allKeys];
   for (count = 0; count < [keys count]; count++) {

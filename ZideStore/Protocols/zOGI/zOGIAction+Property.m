@@ -51,7 +51,7 @@ NSString *AptExtAttrDefault = @"OGoExtendedAptAttributes";
   standardDefaults = nil;  
   namespace = [self _takeNamespaceFromProperty:_name];
   attribute = [self _takeAttributeFromProperty:_name];
-  property = [[NSMutableDictionary alloc] initWithCapacity:12];
+  property = [NSMutableDictionary dictionaryWithCapacity:12];
   [property addEntriesFromDictionary:
      [NSDictionary dictionaryWithObjectsAndKeys:
        _name, @"propertyName",
@@ -127,7 +127,7 @@ NSString *AptExtAttrDefault = @"OGoExtendedAptAttributes";
   NSEnumerator   *enumerator;
   NSMutableArray *propertyList;
 
-  propertyList = [[NSMutableArray alloc] initWithCapacity:64];
+  propertyList = [NSMutableArray arrayWithCapacity:64];
   eo = [self _getEOForPKey:_objectId];
   properties = [[[self getCTX] propertyManager] propertiesForGlobalID:eo];
   enumerator = [[properties allKeys] objectEnumerator];
@@ -178,7 +178,7 @@ NSString *AptExtAttrDefault = @"OGoExtendedAptAttributes";
   NSMutableDictionary  *propertyList;
 
   eo = [self _getEOForPKey:_objectId];
-  propertyList = [[NSMutableDictionary alloc] initWithCapacity:64];
+  propertyList = [NSMutableDictionary dictionaryWithCapacity:64];
   enumerator = [_properties objectEnumerator];
   while ((propertyEntity = [enumerator nextObject]) != nil) {
     property = [self _translateProperty:propertyEntity];

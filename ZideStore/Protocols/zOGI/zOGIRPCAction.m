@@ -270,7 +270,7 @@
    else 
      objectList = arg1;
   enumerator = [objectList objectEnumerator];
-  result = [[NSMutableArray alloc] initWithCapacity:[objectList count]];
+  result = [NSMutableArray arrayWithCapacity:[objectList count]];
   while ((objectId = [enumerator nextObject]) != nil) {
     document = [[self getCTX] runCommand:@"object::get-by-globalid", 
                                          @"gid", [self _getEOForPKey:objectId], 

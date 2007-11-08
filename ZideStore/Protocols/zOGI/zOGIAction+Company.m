@@ -179,7 +179,7 @@
                                forCompany:(id)_objectId {
   NSMutableDictionary   *address;
 
-  address = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+  address = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                 [self NIL:[_address objectForKey:@"name1"]], @"name1",
                 [self NIL:[_address objectForKey:@"name2"]], @"name2",
                 [self NIL:[_address objectForKey:@"name3"]], @"name3",
@@ -229,7 +229,7 @@
                              forCompany:(id)_objectId {
   NSMutableDictionary   *phone;
 
-  phone = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+  phone = [NSMutableDictionary dictionaryWithObjectsAndKeys:
               [self NIL:[_phone objectForKey:@"number"]], @"number",
               [_phone objectForKey:@"type"], @"type",
               _objectId, @"companyId",
@@ -296,12 +296,12 @@
   int                   count;
   NSException          *exception;
 
-  command = [[NSString alloc] initWithString:_entity];
+  command = [NSString stringWithString:_entity];
   command = [command stringByAppendingString:@"::"];
   command = [command stringByAppendingString:_command];
   if ([self isDebug])
     [self logWithFormat:@"_writeCompany using %@ command", command];
-  company = [[NSMutableDictionary alloc] initWithCapacity:[_company count]];
+  company = [NSMutableDictionary dictionaryWithCapacity:[_company count]];
   keys = [_company allKeys];
   for (count = 0; count < [keys count]; count++) {
     value = [_company objectForKey:[keys objectAtIndex:count]];

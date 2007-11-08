@@ -195,7 +195,7 @@
   [self logWithFormat:@"_getFavoriteEnterprises()"];
   favoriteIds = [[self _getDefaults] arrayForKey:@"enterprise_favorites"];
   if (favoriteIds == nil)
-    return [[NSArray alloc] initWithObjects:nil];
+    return [NSConcreteEmptyArray new];
   return [self _getEnterprisesForKeys:favoriteIds withDetail:_detail];
 } /* end _getFavoriteEnterprises */
 

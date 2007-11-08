@@ -32,8 +32,8 @@
   int                 i;
 
   if (_articles == nil)
-    return [[NSArray alloc] init];
-  results = [[NSMutableArray alloc] initWithCapacity:[_articles count]];
+    return [NSConcreteEmptyArray new];
+  results = [NSMutableArray arrayWithCapacity:[_articles count]];
   for(i = 0; i < [_articles count]; i++) {
     eoArticle = [_articles objectAtIndex:i];
     article = [NSMutableDictionary new];

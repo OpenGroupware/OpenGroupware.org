@@ -70,7 +70,7 @@
   conflictDates = [self _getConflictsForDate:_eo];
 
   /* Initialize array of conflicts */
-  conflicts = [[NSMutableArray alloc] initWithCapacity:[conflictDates count]];
+  conflicts = [NSMutableArray arrayWithCapacity:[conflictDates count]];
 
   /* Initialize dictionary for results with summary
      of conflicting appointments */

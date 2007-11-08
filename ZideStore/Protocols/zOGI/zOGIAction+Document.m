@@ -33,8 +33,8 @@
   int                 i;
 
   if (_docs == nil)
-    return [[NSArray alloc] init];
-  results = [[NSMutableArray alloc] initWithCapacity:[_docs count]];
+    return [NSConcreteEmptyArray new];
+  results = [NSMutableArray arrayWithCapacity:[_docs count]];
   for(i = 0; i < [_docs count]; i++) {
     eoDoc = [_docs objectAtIndex:i];
     if ([[eoDoc valueForKey:@"isFolder"] intValue] == 1) {
