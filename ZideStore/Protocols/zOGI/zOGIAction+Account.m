@@ -120,6 +120,7 @@
     [defaults setObject:intObj([[self _getTimeZone] isDaylightSavingTime])
                  forKey:@"isDST"];
     [defaults setObject:[self _getTimeZone] forKey:@"timeZoneName"];
+    [defaults setObject:intObj(1) forKey:@"isTimeZoneSet"];
   } else {
       [defaults setObject:@"GMT" forKey:@"timeZone"];
       [defaults setObject:intObj(0)
@@ -127,6 +128,7 @@
       [defaults setObject:intObj(0)
                    forKey:@"isDST"];
       [defaults setObject:@"GMT" forKey:@"timeZoneName"];
+      [defaults setObject:intObj(0) forKey:@"isTimeZoneSet"];
     }
 
   [defaults setObject:[self _getSchedularPanel]

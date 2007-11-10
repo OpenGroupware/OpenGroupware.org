@@ -47,6 +47,9 @@
 -(id)_updateObject:(id)_dictionary 
           objectId:(NSString *)_objectId
          withFlags:(NSArray *)_flags;
+-(id)_searchForTimeZones:(id)_criteria
+              withDetail:(id)_detail
+               withFlags:(id)_flags;
 
 @end
 

@@ -64,6 +64,7 @@
 - (id)_checkEntity:(id)_pkey entityName:(id)_name;
 - (NSString *)_getPKeyForEO:(EOKeyGlobalID *)_arg;
 - (NSCalendarDate *)_makeCalendarDate:(id)_date;
+- (NSCalendarDate *)_makeCalendarDate:(id)_date withZone:(id)_timeZone;
 - (void)_stripInternalKeys:(NSMutableDictionary *)_dictionary;
 
 

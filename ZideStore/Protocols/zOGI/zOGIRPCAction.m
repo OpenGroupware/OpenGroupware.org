@@ -484,7 +484,15 @@
     result = [self _searchForResources:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Team"])
     result = [self _searchForTeams:arg2 withDetail:arg3 withFlags:flags];
-  else {
+  else if ([arg1 isEqualToString:@"TimeZones"])
+    result = [self _searchForTimeZones:arg2 withDetail:arg3 withFlags:flags];
+  else if ([arg1 isEqualToString:@"Time"]) {
+    result = [NSArray arrayWithObject:
+                [NSDictionary dictionaryWithObjectsAndKeys:
+                   @"serverTime", @"entityName",
+                   [NSCalendarDate calendarDate], @"time",
+                   nil]];
+  } else {
     [self warnWithFormat:@"search for unknown entity, returning empty array"];
     return [NSConcreteEmptyArray new];
   }
@@ -527,5 +535,35 @@
     arg2 = [self _makeCalendarDate:arg2];
   return [self _getNotifications:arg1 until:arg2];
 } /* end getNotificationsAction */
+
+-(id)_searchForTimeZones:(id)_criteria 
+              withDetail:(id)_detail
+               withFlags:(id)_flags {
+  
+  NSMutableArray   *results;
+  NSDictionary     *timeZones;
+  NSEnumerator     *enumerator;
+  id                key, zone;
+  NSCalendarDate   *current;
+  
+  current = [NSCalendarDate calendarDate];
+  timeZones = [NSTimeZone abbreviationDictionary];
+  results = [NSMutableArray arrayWithCapacity:[timeZones count]];
+  enumerator = [[timeZones allKeys] objectEnumerator];
+  while ((key = [enumerator nextObject]) != nil) {
+    zone = [NSTimeZone timeZoneWithAbbreviation:key];
+    [results addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+       @"timeZone", @"entityName",
+       [zone abbreviation], @"abbreviation",
+       [zone description], @"description",
+       [NSNumber numberWithInt:[zone secondsFromGMT]],
+          @"offsetFromGMT",
+       [NSNumber numberWithBool:[zone isDaylightSavingTime]],
+          @"isCurrentlyDST",
+       current,  @"serverDateTime",
+       nil]];
+  }
+  return results; 
+} /* end _searchForTimeZones */
 
 @end

@@ -39,6 +39,7 @@
   id                    tmp;
   id                    resources;
   NSString             *permissions;
+  NSTimeZone           *timeZone;
 
   if (_eoAppointment == nil) return [[NSDictionary alloc] init];
   flags = [NSMutableArray arrayWithCapacity:6];
@@ -48,10 +49,12 @@
                                nil];
 
   /* Render core appointment attributes */
+  timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
   startDate = [_eoAppointment valueForKey:@"startDate"];
-  [startDate setTimeZone:[self _getTimeZone]];
+  [startDate setTimeZone:timeZone];
   endDate = [_eoAppointment valueForKey:@"endDate"];
-  [endDate setTimeZone:[self _getTimeZone]];
+  [endDate setTimeZone:timeZone];
+  timeZone = [self _getTimeZone];
   if ([permissions rangeOfString:@"v"].length > 0) {
     /* render appointment in visible mode */
     [flags addObject:@"VISIBLE"];
@@ -71,6 +74,11 @@
       [self NIL:[_eoAppointment valueForKey:@"comment"]], @"comment",
       [self NIL:[_eoAppointment valueForKey:@"accessTeamId"]], 
          @"readAccessTeamObjectId",
+      [timeZone abbreviation], @"offsetTimeZone",
+      [NSNumber numberWithInt:[timeZone secondsFromGMTForDate:startDate]], 
+         @"startOffset",
+      [NSNumber numberWithInt:[timeZone secondsFromGMTForDate:endDate]], 
+         @"endOffset",
       nil];
     /* Add object details */
     [appointment setObject:_eoAppointment forKey:@"*eoObject"];
@@ -692,6 +700,7 @@
   NSMutableDictionary   *appointment;
   NSArray               *keys;
   NSString              *key;
+  NSTimeZone            *timeZone;
   id                    objectId, value, participants, tmp;
   int                   count;
 
@@ -701,6 +710,13 @@
   else if ([objectId isKindOfClass:[NSNumber class]])
     objectId = [objectId stringValue];
 
+  tmp = [_appointment objectForKey:@"timeZone"];
+  if ([tmp isNotNull]) {
+    timeZone = [NSTimeZone timeZoneWithAbbreviation:tmp];
+  } else {
+      timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+    }
+
   appointment = [NSMutableDictionary dictionaryWithCapacity:32];
   keys = [_appointment allKeys];
   for (count = 0; count < [keys count]; count++) {
@@ -709,11 +725,14 @@
     if ([self isDebug])
       [self logWithFormat:@"translating key %@ of type %@", key, [value class]];
     if ([key isEqualToString:@"end"]) {
-      [appointment setObject:[self _makeCalendarDate:value] forKey:@"endDate"];
+      [appointment setObject:[self _makeCalendarDate:value withZone:timeZone]
+                      forKey:@"endDate"];
     } else if ([key isEqualToString:@"start"]) {
-      [appointment setObject:[self _makeCalendarDate:value] forKey:@"startDate"];
+      [appointment setObject:[self _makeCalendarDate:value withZone:timeZone]
+                      forKey:@"startDate"];
     } else if ([key isEqualToString:@"cycleEndDate"]) {
-      [appointment setObject:[self _makeCalendarDate:value] forKey:@"cycleEndDate"];
+      [appointment setObject:[self _makeCalendarDate:value withZone:timeZone]
+                      forKey:@"cycleEndDate"];
     } else if ([key isEqualToString:@"appointmentType"]) {
       [appointment setObject:value forKey:@"aptType"];
     } else if ([key isEqualToString:@"notification"]) {
@@ -763,6 +782,10 @@
            [appointment setObject:value forKey:@"dateId"];
           }
     } else if ([key isEqualToString:@"entityName"] || 
+               [key isEqualToString:@"timeZone"] ||
+               [key isEqualToString:@"endOffset"] ||
+               [key isEqualToString:@"startOffset"] ||
+               [key isEqualToString:@"offsetTimeZone"] ||
                [key isEqualToString:@"version"]) {
       /* These atttributes are deliberately dropped */
       if ([self isDebug])

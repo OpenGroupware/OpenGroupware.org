@@ -389,18 +389,35 @@ static int zOGIDebugOn = -1;
   return tz;
 } /* End _getTimeZone */
 
+- (NSCalendarDate *)_makeCalendarDate:(id)_date
+{
+  return [self _makeCalendarDate:(id)_date withZone:nil];
+}
+
 /* Make the specified value into a calendar date
    NOTE: There has got to be a better way to do this
    BUG: What about timezones? */
-- (NSCalendarDate *)_makeCalendarDate:(id)_date 
-{
+- (NSCalendarDate *)_makeCalendarDate:(id)_date withZone:(id)_zone {
   NSCalendarDate *dateValue;
+  NSTimeZone     *timeZone;
+  int             zoneDiff;
 
+  if ([self isDebug])
+    [self logWithFormat:@"makeCalendarDate received %@", _date];
+
+  /* if no _zone was provided we assume GMT */
+  if ([_zone isNotNull])
+    timeZone = _zone;
+  else
+    timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+
+  /* if _date is a date then we take it as is, otherwise if _date
+     is a string we convert it from a string based upon the 
+     length;  currently supports 2007-11-09 and 2007-11-09 06:06 */
   dateValue = nil;
   if ([_date isKindOfClass:[NSCalendarDate class]])
     dateValue = _date;
-  else if ([_date isKindOfClass:[NSString class]]) 
-  {
+  else if ([_date isKindOfClass:[NSString class]])  {
     if ([_date length] == 10)
       dateValue = [NSCalendarDate dateWithString:_date
                              calendarFormat:@"%Y-%m-%d"];
@@ -408,11 +425,27 @@ static int zOGIDebugOn = -1;
       dateValue = [NSCalendarDate dateWithString:_date
                              calendarFormat:@"%Y-%m-%d %H:%M"];
   }
-  if (dateValue == nil) 
-  {
-    /* TODO: THROW EXCEPTION */
-    return nil;
-  }
+
+  /* if we successfuly aquired a date then make an adjustment to
+     GMT if a timezone was provided;  GMT values are not changed. */
+  if ([dateValue isNotNull]) {
+    zoneDiff = [timeZone secondsFromGMTForDate:dateValue];
+    if (zoneDiff != 0)
+      dateValue = [dateValue dateByAddingYears:0
+                                        months:0
+                                          days:0
+                                         hours:0
+                                       minutes:0
+                                       seconds:(zoneDiff * -1)];
+  } else return nil;
+
+  if ([self isDebug])
+    [self logWithFormat:@"makeCalendarDate returned %@", dateValue];
+
+  /* Stamp the time we retun as GMT so that it gets written into 
+     the database correctly */
+  [dateValue setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+
   return dateValue;
 } /* End _makeCalendarDate */
 

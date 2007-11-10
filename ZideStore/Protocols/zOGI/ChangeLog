@@ -1,3 +1,22 @@
+2007-11-09 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Account.m: Add isTimeZoneSet element to DEFAULTS
+	  key in response to getLoginAccount.  Indicates if the time
+	  zone is defaulting or if the user has selected the indicated
+	  time zone.  (v1.5.35)
+
+	* zOGIAction+Appointment.m: Support server side time zone
+	  offsets via timeZone attribute.  Provide client with offsets
+	  between users default time zone and GMT with the endOffset,
+	   startOffset, and offsetTimeZone attributes. (v1.5.35)
+
+	* zOGIAction.m|h: makeCalendarDate now guaranteers provided
+	  dates are turned into GMT;  optionally offsets the date time
+	  to GMT on behalf of the client. (v1.5.35)
+
+	* zOGIRPCAction.m|h: Clients can retrieve server's time zone
+	  tables and current time via searchForObjects. (v1.5.35)
+
 2007-11-08 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Contact.m: Fixed memory leak. (v1.5.34)
