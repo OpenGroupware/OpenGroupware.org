@@ -1,3 +1,8 @@
+2007-11-10 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIRPCAction.m|h: Clean to retrieval of server's time.  Also
+	  return server's perspective of client's time.  (v1.5.36)
+
 2007-11-09 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Account.m: Add isTimeZoneSet element to DEFAULTS

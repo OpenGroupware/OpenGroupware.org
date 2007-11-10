@@ -50,7 +50,7 @@
 -(id)_searchForTimeZones:(id)_criteria
               withDetail:(id)_detail
                withFlags:(id)_flags;
-
+-(id)_getServerTime;
 @end
 
 #endif /* __zOGIRPCAction_H__ */

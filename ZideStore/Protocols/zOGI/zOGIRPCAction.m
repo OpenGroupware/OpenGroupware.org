@@ -487,11 +487,7 @@
   else if ([arg1 isEqualToString:@"TimeZones"])
     result = [self _searchForTimeZones:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Time"]) {
-    result = [NSArray arrayWithObject:
-                [NSDictionary dictionaryWithObjectsAndKeys:
-                   @"serverTime", @"entityName",
-                   [NSCalendarDate calendarDate], @"time",
-                   nil]];
+    result = [NSArray arrayWithObject:[self _getServerTime]];
   } else {
     [self warnWithFormat:@"search for unknown entity, returning empty array"];
     return [NSConcreteEmptyArray new];
@@ -565,5 +561,31 @@
   }
   return results; 
 } /* end _searchForTimeZones */
+
+-(id)_getServerTime {
+   NSDictionary   *entity;
+   NSCalendarDate *date;
+   NSTimeZone     *zone;
+
+   zone = [self _getTimeZone];
+   if (zone == nil)
+     zone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+   date = [NSCalendarDate calendarDate];
+   entity = [NSDictionary dictionaryWithObjectsAndKeys:
+               @"time", @"entityName",
+               date, @"gmtTime",
+               [zone abbreviation], @"offsetTimeZone",
+               intObj([zone secondsFromGMT]), @"offsetFromGMT",
+               intObj([zone isDaylightSavingTime]), @"isDST",
+               [date dateByAddingYears:0
+                                months:0
+                                  days:0
+                                 hours:0
+                               minutes:0
+                               seconds:[zone secondsFromGMT]],
+                  @"userTime",
+               nil];
+   return entity;
+}
 
 @end
