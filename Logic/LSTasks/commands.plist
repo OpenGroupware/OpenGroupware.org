@@ -7,7 +7,6 @@
         new          = { class = "LSNewJobCommand";     };
         delete       = { class = "LSDeleteJobCommand";  };
         jobaction    = { class = "LSJobActionCommand";  };
-        controljob   = { class = "LSControlJobCommand"; };
         setcreator   = { 
           class  = "LSDBFetchRelationCommand"; 
           init   = { 
@@ -79,14 +78,12 @@
           init   = { entity = "Job"; };
         };
         "filter-todolist"      = { class = "LSFilterToDoListJobCommand";  };
-        "filter-controljobs"   = { class = "LSFilterControlJobCommand";   };
         "filter-delegatedjobs" = { class = "LSFilterDelegatedJobCommand"; };
         "filter-archivedjobs"  = { class = "LSFilterArchivedJobCommand";  };
         "getparentjobs"        = { class = "LSGetParentJobsCommand";      };
         "get-todo-jobs"        = { class = "LSFetchToDoJobsCommand";      };
         "get-private-jobs"     = { class = "LSFetchPrivateJobsCommand";   };
         "get-archived-jobs"    = { class = "LSFetchArchivedJobsCommand";  };
-        "get-control-jobs"     = { class = "LSFetchControlJobsCommand";   };
         "get-delegated-jobs"   = { class = "LSFetchDelegatedJobsCommand"; };
         "get-executant-jobs"   = { class = "LSFetchJobsForExecutantCommand";};
         "remove-waste-jobs"    = { class = "LSRemoveWasteJobsCommand";    };

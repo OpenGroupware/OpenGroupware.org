@@ -78,13 +78,10 @@
   qualifier = [[EOSQLQualifier allocWithZone:[self zone]]
                                initWithEntity:[self destinationEntity]
                                qualifierFormat:
-                               @"((%A <> '%@') AND ((%A IS NULL) OR "
-                               @"(%A = 0)) AND (%A IN (%@)) AND "
-                               @"(%A IS NULL))",
+                               @"((%A <> '%@') AND (%A IN (%@))",
                                @"jobStatus", LSJobArchived,
-                               @"isControlJob", @"isControlJob",
                                @"executantId", s,
-                               @"kind", nil];
+                               nil];
   return AUTORELEASE(qualifier);
 }
 

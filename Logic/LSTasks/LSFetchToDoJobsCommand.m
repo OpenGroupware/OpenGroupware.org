@@ -117,16 +117,14 @@
     qualifier = [qualifier initWithEntity:[self destinationEntity]
 			   qualifierFormat:
                                  @"((%A <> '%@') AND ((%A <> '%@') OR "
-                                 @"(%A IN (%@))) AND ((%A IS NULL) OR "
-                                 @"(%A = 0)) AND (%A IN (%@)) AND (%A IS NULL)"
-                                 @"AND (((%A > %@) OR (%A = '%@')) AND "
+                                 @"(%A IN (%@))) AND "
+                                 @"(%A IN (%@)) AND "
+                                 @"(((%A > %@) OR (%A = '%@')) AND "
                                  @"(%A < %@)))",
                                  @"jobStatus", LSJobArchived,
                                  @"jobStatus", LSJobDone,
                                  @"creatorId", s,
-                                 @"isControlJob", @"isControlJob",
                                  @"executantId", s,
-                                 @"kind",
                                  @"endDate",   formattedBegin,
                                  @"jobStatus", LSJobCreated,
                                  @"endDate",   formattedEnd, nil];
@@ -134,16 +132,14 @@
   else {
     qualifier = [qualifier initWithEntity:[self destinationEntity]
 			   qualifierFormat:
-                                 @"((%A <> '%@') AND ((%A <> '%@') OR "
-                                 @"(%A IN (%@))) AND ((%A IS NULL) OR "
-                                 @"(%A = 0)) AND (%A IN (%@)) AND "
-                                 @"(%A IS NULL))",
+                                 @"((%A <> '%@') AND "
+                                 @" ((%A <> '%@') OR(%A IN (%@))) AND "
+                                 @" (%A IN (%@)))",
                                  @"jobStatus", LSJobArchived,
                                  @"jobStatus", LSJobDone,
                                  @"creatorId", s,
-                                 @"isControlJob", @"isControlJob",
                                  @"executantId", s,
-                                 @"kind", nil];
+                                 nil];
   }
   return [qualifier autorelease];
 }

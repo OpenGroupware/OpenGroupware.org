@@ -1,3 +1,47 @@
+2007-11-14  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSFilterArchivedJobCommand.m: Removed old control job stuff. 
+	  (v5.3.11)
+
+	* LSFilterToDoListJobCommand.m: Removed old control job stuff. 
+	  (v5.3.11)
+
+	* LSFetchPrivateJobsCommand.m: Remove control job and kind constraints
+	  from filter.  (v5.3.11)
+
+	* LSFetchArchivedJobsCommand.m: Remove control job and kind constraints
+	  from filter. (v5.3.11)
+
+	* LSFetchToDoJobsCommand.m: Remove control job and kind constraints
+	  from filter. (v5.3.11)
+
+	* LSFetchProjectJobsCommand.m: Remove control job and kind constraints
+	  from filter. (v5.3.11)
+
+	* GNUmakefile: Remove reference to LSControlJob.m, 
+	  LSFetchControlJobsCommand.m, and LSFilterControlJobsCommand.m files. 
+	  (v5.3.11)
+
+	* LSFetchJobsForExecutantCommand.m: Remove control job and kind
+	  constraints from filter. (v5.3.11)
+
+	* commands.plist:  Remove LSControlJobCommand,
+	  LSFilterControlJobCommand, and LSFetchControlJobsCommand commands
+	  list. (v5.3.11)
+
+	* bundle-info.plist: Remove LSControlJobCommand, 
+	  LSFilterControlJobCommand, and LSFetchControlJobsCommand commands
+	  from bundle info. (v5.3.11)
+
+	* LSFetchDelegatedJobsCommand.m: Remove control job and kind 
+	  constraints from filter. (v5.3.11)
+
+	* LSFetchProjectToJobCommand.m: Remove control job and kind constraints
+	  from filter. (v5.3.11)
+
+	* LSFilterDelegatedJobCommand.m: Removed old control job stuff. 
+	  (v5.3.11)
+
 2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSSetJobCommand.m: changed to use the new -bumpChangeTrackingFields

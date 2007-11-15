@@ -45,16 +45,8 @@
   
   enumerator   = [[self jobList] objectEnumerator];
   while ((job = [enumerator nextObject])) {
-    BOOL isControlJob  = NO;
-    id   ctrlJob        = nil;
     NSString *jobStatus = [job valueForKey:@"jobStatus"];
 
-    ctrlJob = [job valueForKey:@"isControlJob"];
-
-    if (ctrlJob != nil) {
-      isControlJob = [ctrlJob boolValue];
-    }
-    
     if (([[job valueForKey:@"creatorId"] isEqual:[self creatorId]]) &&
         ([jobStatus isEqualToString:LSJobArchived])) {
       [filteredJobs addObject:job];

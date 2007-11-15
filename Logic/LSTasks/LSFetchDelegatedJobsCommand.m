@@ -37,13 +37,10 @@
   qualifier = [[[EOSQLQualifier allocWithZone:[self zone]]
                                initWithEntity:[self destinationEntity]
                                qualifierFormat:
-                               @"(%A <> '%@') AND "
-                               @"((%A IS NULL) OR (%A = 0)) AND"
-                               @"(%A <> %A) AND (%A IS NULL)",
+                               @"(%A <> '%@') AND  (%A <> %A)",
                                @"jobStatus", LSJobArchived,
-                               @"isControlJob", @"isControlJob",
                                @"creatorId", @"executantId",
-                               @"kind", nil] autorelease];
+                               nil] autorelease];
 
   return [self _checkConjoinWithQualifier:qualifier];
 }

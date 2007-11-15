@@ -10,12 +10,10 @@ LSTasks_PCH_FILE = common.h
 LSTasks_OBJC_FILES = \
 	LSAllSubJobsDoneJobCommand.m		\
 	LSAssignProjectToJobCommand.m		\
-	LSControlJobCommand.m			\
 	LSDeleteJobCommand.m			\
 	LSDeleteJobHistoryCommand.m		\
 	LSDetachProjectFromJobCommand.m		\
 	LSFetchArchivedJobsCommand.m		\
-	LSFetchControlJobsCommand.m		\
 	LSFetchDelegatedJobsCommand.m		\
 	LSFetchJobCommand.m			\
 	LSFetchJobExecutantCommand.m		\
@@ -26,7 +24,6 @@ LSTasks_OBJC_FILES = \
 	LSFetchProjectToRootJobCommand.m	\
 	LSFetchToDoJobsCommand.m		\
 	LSFilterArchivedJobCommand.m		\
-	LSFilterControlJobCommand.m		\
 	LSFilterDelegatedJobCommand.m		\
 	LSFilterJobCommand.m			\
 	LSFilterToDoListJobCommand.m		\

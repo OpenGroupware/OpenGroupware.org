@@ -53,9 +53,7 @@
 
   qualifier = [[EOSQLQualifier allocWithZone:[self zone]]
                             initWithEntity:[self destinationEntity]
-                            qualifierFormat:
-                            @"((%A IS NULL) OR (%A = 0)) AND (%A IS NULL)",
-                            @"isControlJob", @"isControlJob", @"kind", nil];
+                            qualifierFormat:@"(1 = 1)", nil];
   [qualifier conjoinWithQualifier:[super _qualifier]];  
   return AUTORELEASE(qualifier);
 }

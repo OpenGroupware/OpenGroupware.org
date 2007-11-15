@@ -38,16 +38,14 @@
                               initWithEntity:[self destinationEntity]
                               qualifierFormat:
                               @"((%A IS NULL) AND (%A <> '%@') AND "
-                              @"(%A <> '%@') AND ((%A IS NULL) OR (%A = 0)) "
-                              @"OR ((%A = '%@') AND (%A = %A))) AND "
-                              @"(%A IS NULL)",
+                              @"(%A <> '%@') "
+                              @"OR ((%A = '%@') AND (%A = %A)))"
                               @"projectId", 
                               @"jobStatus", LSJobArchived,
                               @"jobStatus", LSJobDone,
-                              @"isControlJob", @"isControlJob",
                               @"jobStatus", LSJobDone,
                               @"creatorId", @"executantId",
-                              @"kind", nil] autorelease];
+                              nil] autorelease];
 
   return [self _checkConjoinWithQualifier:qualifier];
 }
