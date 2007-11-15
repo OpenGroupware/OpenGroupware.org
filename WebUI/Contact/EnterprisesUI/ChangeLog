@@ -1,3 +1,8 @@
+2007-11-14  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* LSWEnterpriseAdvancedSearch.m: Preserve the match-one / match-all in
+	  saved contact searchs. (v5.3.51) Bug#1920
+
 2007-04-25  Olivier Hallot <olivier@ig.com.br>
 
 	* LSWEnterprises.m: Enhanced with additionaldirect actions 

@@ -433,6 +433,7 @@ static NSString *KeywordSeparator = @", ";
   info = [NSDictionary dictionaryWithObjectsAndKeys:
                        info,                  @"searchFields",
                        [qual description],    @"qualifier",
+                       [self qualifierOperator],    @"qualifierOperator",
                        [self maxSearchCount], @"maxSearchCount",
                        [NSNumber numberWithBool:[self showTab]], @"showTab",
                        nil];
@@ -486,6 +487,7 @@ static NSString *KeywordSeparator = @", ";
 
   [self _setSearchFields:[info objectForKey:@"searchFields"]];
   [self setMaxSearchCount:[info objectForKey:@"maxSearchCount"]];
+  [self setQualifierOperator:[info objectForKey:@"qualifierOperator"]];
   [self setShowTab:[[info objectForKey:@"showTab"] boolValue]];
   [self setSaveTitle:self->searchTitle];
 

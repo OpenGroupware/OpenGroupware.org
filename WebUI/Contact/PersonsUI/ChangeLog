@@ -1,7 +1,12 @@
+2007-11-14  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* LSWPersonAdvancedSearch.m: Preserve the match-one / match-all in
+	  saved contact searchs. (v5.3.76) Bug#1920
+
 2007-04-25  Olivier Hallot <olivier@ig.com.br>
 
 	* LSWPersons.m: Enhanced with additional direct actions
-          (v5.3.75) Bug#1732
+	  (v5.3.75) Bug#1732
 
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
 
