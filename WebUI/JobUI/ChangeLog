@@ -1,3 +1,14 @@
+2007-11-14 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* GNUmakefile: Remove reference to LSJobImport.
+	  (v5.3.55)
+
+	* LSWJobEditor.m: Remove old isParentJob stuff.
+	  (v5.3.55)
+
+	* LSWJobs.m: Remove old control job stuff.
+	  (v5.3.55)
+
 2007-04-26 Olivier Hallot <olivier@ig.com.br>
 
 	* LSWJobs.m: enhanced with direct actions, links can

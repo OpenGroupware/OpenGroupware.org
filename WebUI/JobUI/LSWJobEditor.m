@@ -28,7 +28,6 @@
 @protected
   id             item;
   int            idx;
-  id             parentJob;
   id             project;
   BOOL           notifyExecutant;
   BOOL           isImportMode;
@@ -154,7 +153,6 @@ static BOOL HasSkyProject4Desktop    = NO;
 
 - (void)dealloc {
   [self->item                release];
-  [self->parentJob           release];
   [self->project             release];
   [self->notifyList          release];
   [self->teams               release];
@@ -445,7 +443,6 @@ static BOOL HasSkyProject4Desktop    = NO;
 
 - (void)clearEditor {
   [self->item      release]; self->item      = nil;
-  [self->parentJob release]; self->parentJob = nil;
   [super clearEditor];        
 }
 
@@ -593,10 +590,6 @@ static BOOL HasSkyProject4Desktop    = NO;
       
       p = [self _fetchProject:[pJob valueForKey:@"projectId"]];
       self->project = [p retain];;
-      
-      [job takeValue:pJob forKey:@"toParentJob"];
-      [job takeValue:[pJob valueForKey:@"jobId"] forKey:@"parentJobId"];
-      self->parentJob = [pJob retain];
     }
   }
 
@@ -720,12 +713,7 @@ static BOOL HasSkyProject4Desktop    = NO;
         p = self->project;
       }
       else {
-        p =  [[self object] valueForKey:@"toParentJob"];
-
-        if (![p isNotNull] ||
-            [[p valueForKey:@"isControlJob"] boolValue]) {
-          p = self->project;
-        }
+        p = self->project;
       }
     }
   }

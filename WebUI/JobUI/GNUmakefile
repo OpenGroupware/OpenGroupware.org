@@ -14,7 +14,6 @@ JobUI_OBJC_FILES = \
 	LSWJobs.m	 		\
 	LSWJobEditor.m	 		\
 	LSWJobAction.m	 		\
-	LSWJobImport.m	 		\
 	LSWJobMailPage.m 		\
 	LSWJobPreferences.m 		\
 	SkyJobList.m        		\

@@ -341,12 +341,6 @@ static BOOL       LSCoreOnCommandException = NO;
   [pool release];
 }
 
-- (void)_setControlJobs {
-  [self->filteredJobList release]; self->filteredJobList = nil;  
-  self->filteredJobList =
-    [[[self _activeAccountEO] run:@"job::get-control-jobs",nil] retain];
-}
-
 - (void)_setDelegetedJobs {
   [self->filteredJobList release]; self->filteredJobList = nil;  
   self->filteredJobList =
