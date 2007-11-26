@@ -20,8 +20,6 @@
 */
 #include "zOGIAction.h"
 #include "zOGIAction+Object.h"
-#include <Foundation/NSConcreteData.h>
-#include <Foundation/NSConcreteNumber.h>
 
 @implementation zOGIAction(Property)
 
@@ -64,11 +62,11 @@ NSString *AptExtAttrDefault = @"OGoExtendedAptAttributes";
   if (([_value class] == [NSShortInline8BitString class]) ||
       ([_value class] == [NSString class])) {
     [property setObject:@"string" forKey:@"valueType"];
-   } else if ([_value class] == [NSIntNumber class]) {
+   } else if ([_value isKindOfClass:[NSNumber class]]) {
     [property setObject:@"int" forKey:@"valueType"];
-   } else if ([_value class] == [NSCalendarDate class]) {
+   } else if ([_value isKindOfClass:[NSCalendarDate class]]) {
     [property setObject:@"timestamp" forKey:@"valueType"];
-   } else if ([_value class] == [NSConcreteData class]) {
+   } else if ([_value isKindOfClass:[NSData class]]) {
     [property setObject:@"data" forKey:@"valueType"];
    } else  {
        [property setObject:@"unknown" forKey:@"valueType"];

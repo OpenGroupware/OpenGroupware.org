@@ -37,8 +37,6 @@
 #include <EOControl/EOKeyGlobalID.h>
 #include <GDLAccess/EOAdaptorChannel.h>
 #include <EOControl/EOControl.h>
-#include <Foundation/NSConcreteDictionary.h>
-#include <Foundation/NSConcreteArray.h>
 #include <Foundation/NSFileManager.h>
 #include "NSString+SearchingAdditions.h"
 

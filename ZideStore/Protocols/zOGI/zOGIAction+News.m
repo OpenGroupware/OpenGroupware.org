@@ -32,7 +32,7 @@
   int                 i;
 
   if (_articles == nil)
-    return [NSConcreteEmptyArray new];
+    return [NSArray arrayWithObjects:nil];
   results = [NSMutableArray arrayWithCapacity:[_articles count]];
   for(i = 0; i < [_articles count]; i++) {
     eoArticle = [_articles objectAtIndex:i];

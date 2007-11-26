@@ -119,16 +119,16 @@
     tmp = [[_eoAppointment valueForKey:@"resourceNames"] 
               componentsSeparatedByString:@", "];
     resources = [self _renderNamedResources:tmp];  
-  } else resources = [NSConcreteEmptyArray new];
+  } else resources = [NSArray arrayWithObjects:nil];
   [appointment setObject:resources forKey:@"_RESOURCES"];
   /* Add writers */
   if ([(tmp = [_eoAppointment valueForKey:@"writeAccessList"]) isNotEmpty]) {
     if([tmp length] == 0)
-      [appointment setObject:[NSConcreteEmptyArray new]
+      [appointment setObject:[NSArray arrayWithObjects:nil]
                       forKey:@"writeAccessObjectIds"];
     else [appointment setObject:[tmp componentsSeparatedByString:@","]
                          forKey:@"writeAccessObjectIds"];
-   } else [appointment setObject:[NSConcreteEmptyArray new] 
+   } else [appointment setObject:[NSArray arrayWithObjects:nil] 
                          forKey:@"writeAccessObjectIds"];
   /* Add access hint for the client */
   if ([permissions rangeOfString:@"d"].length > 0) 
@@ -157,8 +157,8 @@
   NSDictionary        *appointment;
   int                 count;
 
-  if (_appointments == nil) return [NSConcreteEmptyArray new];
-  if ([_appointments count] == 0) return [NSConcreteEmptyArray new];
+  if (_appointments == nil) return [NSArray arrayWithObjects:nil];
+  if ([_appointments count] == 0) return [NSArray arrayWithObjects:nil];
 
   result = [NSMutableArray arrayWithCapacity:[_appointments count]];
   for (count = 0; count < [_appointments count]; count++) {
@@ -461,7 +461,7 @@
 
   /* process quert results */
   if ([gids count] == 0)
-    return [NSConcreteEmptyArray new];
+    return [NSArray arrayWithObjects:nil];
   return [self _getDatesForKeys:gids withDetail:_detail];
 } /* end _searchForAppointments */
 
@@ -643,7 +643,7 @@
   if (_participants == nil) {
     if ([self isDebug])
       [self logWithFormat:@"_translateParticipants; called with nil list"];
-    return [NSConcreteEmptyArray new];
+    return [NSArray arrayWithObjects:nil];
   }
   participants = [NSMutableArray arrayWithCapacity:[_participants count]];
   for (count = 0; count < [_participants count]; count++) {
@@ -761,9 +761,7 @@
           if (([tmp length] == 0) || ([tmp isEqualToString:@"0"]))
             tmp = [NSString stringWithString:@""];
           else tmp = value;
-        } else if (([value isKindOfClass:[NSArray class]]) ||
-                   ([value isKindOfClass:[NSConcreteEmptyArray class]]) ||
-                   ([value isKindOfClass:[NSConcreteArray class]])) {
+        } else if ([value isKindOfClass:[NSArray class]]) {
             if ([value count] == 0)
               tmp = [NSString stringWithString:@""];
             else tmp = [value componentsJoinedByString:@","];

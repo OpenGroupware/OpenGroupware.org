@@ -33,7 +33,7 @@
   int                 i;
 
   if (_docs == nil)
-    return [NSConcreteEmptyArray new];
+    return [NSArray arrayWithObjects:nil];
   results = [NSMutableArray arrayWithCapacity:[_docs count]];
   for(i = 0; i < [_docs count]; i++) {
     eoDoc = [_docs objectAtIndex:i];

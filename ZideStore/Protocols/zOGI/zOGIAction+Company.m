@@ -146,7 +146,7 @@
         if ([[value valueForKey:@"value"] isNotNull])
           values = [[value valueForKey:@"value"] componentsSeparatedByString:@","];
         else
-          values = [NSConcreteEmptyArray new];
+          values = [NSArray arrayWithObjects:nil];
         [valueList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
            @"companyValue", @"entityName",
            [value valueForKey:@"companyValueId"], @"objectId",

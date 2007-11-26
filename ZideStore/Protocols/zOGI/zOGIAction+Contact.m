@@ -266,7 +266,7 @@
 
   favoriteIds = [[self _getDefaults] arrayForKey:@"person_favorites"];
   if (favoriteIds == nil)
-    return [NSConcreteEmptyArray new];
+    return [NSArray arrayWithObjects:nil];
   return [self _getContactsForKeys:favoriteIds withDetail:_detail];
 } /* end _getFavoriteContacts */
 
@@ -428,7 +428,7 @@
 
   eo = [self _getUnrenderedContactForKey:_objectId];
   /* delete any company assignments */
-  result = [self _saveEnterprisesToPerson:[NSConcreteEmptyArray new]
+  result = [self _saveEnterprisesToPerson:[NSArray arrayWithObjects:nil]
                                  objectId:[eo objectForKey:@"companyId"]];
   if (result == nil) {
     /* delete the object */

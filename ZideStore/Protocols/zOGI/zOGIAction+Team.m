@@ -87,7 +87,7 @@
                                       nil];
   if (members != nil) {
     memberList = [self _renderContacts:members withDetail:0];
-   } else { memberList = [NSConcreteEmptyArray new]; }
+   } else { memberList = [NSArray arrayWithObjects:nil]; }
   [_team setObject:memberList forKey:@"_CONTACTS"];
 } /* end _addContactsToTeam */
 
@@ -135,7 +135,7 @@
   } /* end if-arg-is-a-string */
   if (teams == nil) {
     [self warnWithFormat:@"result of team search is nil, returning no teams"];
-    return [NSConcreteEmptyArray new];
+    return [NSArray arrayWithObjects:nil];
   }
   if ([self isDebug])
      [self logWithFormat:@"Logic found %d teams matching criteria",

@@ -21,7 +21,6 @@
 
 #include "zOGIAction.h"
 #include "zOGIAction+Object.h"
-#include <Foundation/NSConcreteNumber.h>
 
 @implementation zOGIAction(Assignment)
 
@@ -95,14 +94,12 @@
 
   if ([_company isKindOfClass:[EOGenericRecord class]])
     companyId = [_company objectForKey:@"companyId"];
-  else if (([_company isKindOfClass:[NSNumber class]]) ||
-           ([_company isKindOfClass:[NSIntNumber class]]))
+  else if ([_company isKindOfClass:[NSNumber class]])
     companyId = _company;
   else if ([_company isKindOfClass:[NSString class]])
     companyId = [NSNumber numberWithInt:[_company intValue]];
   else if (([_company isKindOfClass:[NSDictionary class]]) ||
-           ([_company isKindOfClass:[NSMutableDictionary class]]) ||
-           ([_company isKindOfClass:[NSConcreteMutableDictionary class]])) {
+           ([_company isKindOfClass:[NSMutableDictionary class]])) {
     if ([_company objectForKey:@"*companyAssignments"] != nil)
       return [_company objectForKey:@"*companyAssignments"];
     return [self _getCompanyAssignments:[_company objectForKey:@"objectId"]
@@ -122,8 +119,7 @@
   }
   if (assignments == nil)
     assignments = [NSArray array];
-  if (([_company isKindOfClass:[NSMutableDictionary class]]) ||
-      ([_company isKindOfClass:[NSConcreteMutableDictionary class]]))
+  if ([_company isKindOfClass:[NSMutableDictionary class]])
     [_company setObject:assignments forKey:@"*companyAssignments"];
  
   return assignments;

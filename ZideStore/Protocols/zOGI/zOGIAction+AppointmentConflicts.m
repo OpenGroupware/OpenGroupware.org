@@ -60,7 +60,7 @@
   /* Bail out if conflict detection is disabled */
   if ([[_eo objectForKey:@"isConflictDisabled"] isNotNull])
     if ([[_eo objectForKey:@"isConflictDisabled"] intValue])
-      return [NSConcreteEmptyArray new];
+      return [NSArray arrayWithObjects:nil];
     
   /* Get required bits from user defaults */
   aptAttrs = [[[[self getCTX] userDefaults]

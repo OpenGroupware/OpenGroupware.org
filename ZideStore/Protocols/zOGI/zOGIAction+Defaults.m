@@ -163,7 +163,7 @@
     } /* end there-are-resources-in-the-panel */
   } else {
       [self logWithFormat:@"sending empty calendar panel - no defaults"];
-      calendarPanel = [NSConcreteEmptyArray new];
+      calendarPanel = [NSArray arrayWithObjects:nil];
     }
   return calendarPanel;
 }

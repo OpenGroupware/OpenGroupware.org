@@ -41,7 +41,7 @@
   gids = [[self getCTX] runCommand:@"appointment::query" arguments:args];
   /* If there are no appointments bail out */
   if ([gids count] == 0)
-    return [NSConcreteEmptyArray new];
+    return [NSArray arrayWithObjects:nil];
 
   /* Get appointments */
   dates = [self _getUnrenderedDatesForKeys:gids];
@@ -57,7 +57,7 @@
        [dates count]];
   /* Bail out if there are no qualifying appointments */
   if ([dates count] == 0)
-    return [NSConcreteEmptyArray new];
+    return [NSArray arrayWithObjects:nil];
 
   results = [NSMutableArray arrayWithCapacity:128];
   dateEnumerator = [dates objectEnumerator];
@@ -140,7 +140,7 @@
   if ([list count] == 0) {
     [self warnWithFormat:@"date %@ has no participants to notify",
        [_date objectForKey:@"dateId"]];
-    return [NSConcreteEmptyArray new];
+    return [NSArray arrayWithObjects:nil];
   } else if ([self isDebug])
       [self logWithFormat:@"found %d participants in appointment list",
          [list count]];

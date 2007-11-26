@@ -490,7 +490,7 @@
     result = [NSArray arrayWithObject:[self _getServerTime]];
   } else {
     [self warnWithFormat:@"search for unknown entity, returning empty array"];
-    return [NSConcreteEmptyArray new];
+    return [NSArray arrayWithObjects:nil];
   }
 
   if ([result isKindOfClass:[NSException class]]) {
