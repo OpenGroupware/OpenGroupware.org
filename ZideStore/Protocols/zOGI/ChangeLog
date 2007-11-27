@@ -1,33 +1,33 @@
 2001-11-26 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
-  * zOGIAction+Contact.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIAction+Contact.m: Removed use of concrete classes. (v1.5.37)
 
-  * zOGIAction+Appointment.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIAction+Appointment.m: Removed use of concrete classes. (v1.5.37)
 
-  * zOGIAction+AppointmentConflicts.m: Removed use of concrete classes. 
-    (v1.5.37)
+	* zOGIAction+AppointmentConflicts.m: Removed use of concrete classes. 
+	  (v1.5.37)
 
-  * zOGIAction+Defaults.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIAction+Defaults.m: Removed use of concrete classes. (v1.5.37)
 
-  * zOGIAction+Assignment.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIAction+Assignment.m: Removed use of concrete classes. (v1.5.37)
 
-  * zOGIAction+Enterprise.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIAction+Enterprise.m: Removed use of concrete classes. (v1.5.37)
 
-  * zOGIAction+Property.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIAction+Property.m: Removed use of concrete classes. (v1.5.37)
 
-  * zOGIAction+Team.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIAction+Team.m: Removed use of concrete classes. (v1.5.37)
 
-  * zOGIAction+Company.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIAction+Company.m: Removed use of concrete classes. (v1.5.37)
 
-  * zOGIRPCAction.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIRPCAction.m: Removed use of concrete classes. (v1.5.37)
 
-  * zOGIAction+Notifications.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIAction+Notifications.m: Removed use of concrete classes. (v1.5.37)
 
-  * zOGIAction+News.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIAction+News.m: Removed use of concrete classes. (v1.5.37)
 
-  * zOGIAction+Document.m: Removed use of concrete classes. (v1.5.37)
+	* zOGIAction+Document.m: Removed use of concrete classes. (v1.5.37)
 
-  * common.h: Removed use of concrete classes. (v1.5.37)
+	* common.h: Removed use of concrete classes. (v1.5.37)
 
 2007-11-10 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
