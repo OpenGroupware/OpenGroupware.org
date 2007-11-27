@@ -59,18 +59,17 @@ NSString *AptExtAttrDefault = @"OGoExtendedAptAttributes";
        @"objectProperty", @"entityName",
        _objectId, @"parentObjectId",
        nil]];
-  if (([_value class] == [NSShortInline8BitString class]) ||
-      ([_value class] == [NSString class])) {
+  if ([_value class] == [NSString class]) {
     [property setObject:@"string" forKey:@"valueType"];
-   } else if ([_value isKindOfClass:[NSNumber class]]) {
+  } else if ([_value isKindOfClass:[NSNumber class]]) {
     [property setObject:@"int" forKey:@"valueType"];
-   } else if ([_value isKindOfClass:[NSCalendarDate class]]) {
+  } else if ([_value isKindOfClass:[NSCalendarDate class]]) {
     [property setObject:@"timestamp" forKey:@"valueType"];
-   } else if ([_value isKindOfClass:[NSData class]]) {
+  } else if ([_value isKindOfClass:[NSData class]]) {
     [property setObject:@"data" forKey:@"valueType"];
-   } else  {
-       [property setObject:@"unknown" forKey:@"valueType"];
-      } 
+  } else  {
+      [property setObject:@"unknown" forKey:@"valueType"];
+     } 
   if ([namespace isEqualToString:OGoExtAttrSpace]) {
     /* Properties in this space are extended attributes supported by the
        core OGo Logic & WebUI.  These have type, labels, and possibly

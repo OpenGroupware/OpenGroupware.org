@@ -1,4 +1,10 @@
-2001-11-26 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+2007-11-27 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Appointment.m: Remove concrete class check. (v1.5.38)
+
+	* zOGIAction+Property.m: Remove concrete class check (v1.5.38)
+
+2007-11-26 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Contact.m: Removed use of concrete classes. (v1.5.37)
 

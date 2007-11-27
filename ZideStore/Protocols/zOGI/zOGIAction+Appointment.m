@@ -742,8 +742,7 @@
       /* readAccessTeamObjectId -> accessTeamId 
          A blank string or a value of zero nulls the attribute. */
       tmp = nil;
-      if (([value isKindOfClass:[NSString class]]) ||
-          ([value isKindOfClass:[NSShortInline8BitString class]])) {
+      if  ([value isKindOfClass:[NSString class]]) {
         if ([value length] == 0)
           tmp = intObj(0);
         else tmp = intObj([value intValue]);
@@ -756,8 +755,7 @@
          May be an array or a CSV string 
          TODO: Verify contained values */
         tmp = nil;
-        if (([value isKindOfClass:[NSString class]]) ||
-            ([value isKindOfClass:[NSShortInline8BitString class]])) {
+        if ([value isKindOfClass:[NSString class]]) {
           if (([tmp length] == 0) || ([tmp isEqualToString:@"0"]))
             tmp = [NSString stringWithString:@""];
           else tmp = value;
