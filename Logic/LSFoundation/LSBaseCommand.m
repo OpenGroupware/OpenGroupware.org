@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -371,6 +372,10 @@ static BOOL debug = NO;
 #endif
     
     va_start(ap, _fmt);
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
+    [self assert:_condition format:_fmt arguments:ap];
+    // TBD: do we leak here if we have an exception?
+#else
     NS_DURING {
       [self assert:_condition format:_fmt arguments:ap];
     }
@@ -379,6 +384,7 @@ static BOOL debug = NO;
       [localException raise];
     }
     NS_ENDHANDLER;
+#endif
     va_end(ap);
   }
 }
