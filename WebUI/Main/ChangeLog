@@ -1,3 +1,8 @@
+2007-12-07  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* OpenGroupware+CTI.m: removed short-circuit in createCTIDialer.
+	  Should close Bug#1857. (v5.3.85)
+
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OpenGroupware.m: improved some logs, use -isNotEmpty when appropriate

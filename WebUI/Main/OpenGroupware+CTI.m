@@ -91,8 +91,6 @@
   NSString *defReader;
   id reader;
 
-  return nil;
-  
   defReader = 
     [[NSUserDefaults standardUserDefaults] stringForKey:@"CTIDialer"];
   
