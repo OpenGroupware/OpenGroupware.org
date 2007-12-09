@@ -52,8 +52,7 @@
 #include "common.h"
 #include <NGHttp/NGUrlFormCoder.h>
 #include <time.h>
-
-extern unsigned getpid();
+#include <unistd.h>
 
 @implementation SkySchedulerDateCell
 
