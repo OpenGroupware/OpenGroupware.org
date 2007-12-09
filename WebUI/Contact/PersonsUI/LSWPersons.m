@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2006-2007 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -484,6 +484,7 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   
   fspec = [self fetchSpecification];
   
+  // BUG?!: returns [[self->dataSource fetchSpecification] qualifier];
   [fspec setQualifier:[self qualifier]];
   [fspec setFetchLimit:[self->maxSearchCount intValue]];
   [self->dataSource setFetchSpecification:fspec];
@@ -498,7 +499,7 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 /* custom tabs */
 
 - (void)setSearchTitle:(NSString *)_title {
-  ASSIGN(self->searchTitle, _title);
+  ASSIGNCOPY(self->searchTitle, _title);
 }
 - (NSString *)searchTitle {
   return self->searchTitle;
