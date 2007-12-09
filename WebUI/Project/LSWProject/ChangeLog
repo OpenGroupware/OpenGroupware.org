@@ -1,3 +1,7 @@
+2007-12-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWDocumentDownloadAction.m: replaced a cString method (v5.3.50)
+
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed gcc4 warnings (v5.3.49)

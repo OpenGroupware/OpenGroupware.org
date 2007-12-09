@@ -228,32 +228,35 @@
       return response;
 
     {
+	unsigned int i, clen;
         NSString *filename;
-        unsigned const char *cstr;
-        unsigned char *buf;
-        int i, clen;
+	unichar  *buf;
     
         filename = [obj valueForKey:@"title"];
         filename = [filename stringByAppendingString:@"."];
         filename = [filename stringByAppendingString:
                                [obj valueForKey:@"fileType"]];
-
-	// TODO: rewrite with unichar
-        cstr = (unsigned char *)[filename cString];
-        clen = [filename cStringLength];
-        buf = alloca(clen + 1);
-        for (i = 0; i < clen; i++) {
-          if (isalnum(cstr[i]) || cstr[i] == '.')
-            buf[i] = cstr[i];
-          else
+	
+	clen = [filename length];
+	buf  = malloc(sizeof(unichar) * (clen + 2));
+	[filename getCharacters:buf];
+	
+	for (i = 0; i < clen; i++) {
+          if (!isalnum(buf[i]) && buf[i] != '.')
             buf[i] = '_';
-        }
+	}
         buf[clen] = '\0';
-        filename = [NSString stringWithCString:(char *)buf length:clen];
-    
+	
+	filename = [[NSString alloc] initWithCharactersNoCopy:buf length:clen
+				     freeWhenDone:YES];
+	buf = NULL; /* ownership given to NSString */
+	
         [response setHeader:
                   [@"attachment;filename=" stringByAppendingString:filename]
                   forKey:@"content-disposition"];
+	
+	[filename release]; filename = nil;
+	
 	return response;
     }
   }
