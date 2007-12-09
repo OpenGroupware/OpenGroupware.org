@@ -1,3 +1,8 @@
+2007-12-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkySchedulerSelectPanel.m: do not declare getpid(), already done
+	  in unistd.h (fixes Leopard compilation) (v5.3.61)
+
 2007-06-14  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkySchedulerConflictPage.m: fixed a crasher on MacOS (v5.3.60)
