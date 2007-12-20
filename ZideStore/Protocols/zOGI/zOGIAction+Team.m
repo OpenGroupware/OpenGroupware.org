@@ -143,4 +143,37 @@
   return [self _renderTeams:teams withDetail:_detail];
 } /* end _searchForTeams */
 
+-(id)_updateTeam:_dictionary
+        objectId:_objectId
+       withFlags:_flags {
+  id team;
+
+  /* get team */
+  team = [[[self getCTX] runCommand:@"team::get-by-globalid",
+                           @"gid", [self _getEOForPKey:_objectId],
+                           nil] lastObject];
+  /* if i got the team */
+  if ([team isNotNull]) {
+	  /* if members are specified in the update*/
+    if ([[_dictionary objectForKey:@"memberObjectIds"] isNotNull]) {
+      NSArray *accounts, *gids;
+      /* turn members into gids */
+      gids = [self _getEOsForPKeys:[_dictionary objectForKey:@"memberObjectIds"]];
+      /* get the account objects for the gids */
+      accounts = [[self getCTX] runCommand:@"object::get-by-globalid",
+                                   @"gids", gids,
+                                   nil];
+      /* set the membership of the team to the prescribed accounts */
+      [[self getCTX] runCommand:@"team::setmembers",
+                       @"group", team,
+                       @"members", accounts,
+                       nil];
+    }
+  }
+  /* commit changes */
+  [[self getCTX] commit];
+  /* get potentially modified team and return to client */
+  return [self _getObjectByObjectId:_objectId withDetail:intObj(65535)];
+} /* end _updateTeam */
+
 @end /* End zOGIAction(Team) */

@@ -68,7 +68,7 @@
 
     /* render project */
     [result addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys: 
-       [eoProject valueForKey:@"projectId"], @"objectId",
+       intObj([[eoProject valueForKey:@"projectId"] intValue]), @"objectId",
        @"Project", @"entityName",
        [self ZERO:[eoProject valueForKey:@"objectVersion"]], @"version",
        [self NIL:[eoProject valueForKey:@"ownerId"]], @"ownerObjectId",

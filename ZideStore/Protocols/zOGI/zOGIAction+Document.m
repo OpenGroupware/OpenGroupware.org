@@ -32,14 +32,14 @@
   NSMutableDictionary *document;
   int                 i;
 
-  if (_docs == nil)
+  if ((_docs == nil) || ([_docs count] == 0)) {
     return [NSArray arrayWithObjects:nil];
+   }
   results = [NSMutableArray arrayWithCapacity:[_docs count]];
   for(i = 0; i < [_docs count]; i++) {
     eoDoc = [_docs objectAtIndex:i];
     if ([[eoDoc valueForKey:@"isFolder"] intValue] == 1) {
       /* Render document as a folder */
-      [self logWithFormat:@"Rendering Folder:%@", eoDoc];
       folder = [NSMutableDictionary dictionaryWithObjectsAndKeys: 
         [eoDoc valueForKey:@"documentId"], @"objectId",
         @"Folder", @"entityName",
@@ -100,21 +100,21 @@
 } /* end _getDocumentsForKeys */
 
 -(id)_getDocumentsForKeys:(id)_pkeys {
-  [self logWithFormat:@"_getDocumentsForKeys([%@])", _pkeys];
-  return [self _renderDocuments:[self _getUnrenderedDocsForKeys:_pkeys] 
-                     withDetail:[NSNumber numberWithInt:0]];
+  return [self _getDocumentsForKeys:_pkeys withDetail:intObj(0)];
 } /* end _getDocumentsForKeys */
 
 -(id)_getDocumentForKey:(id)_pkey withDetail:(NSNumber *)_detail {
-  [self logWithFormat:@"_getDocumentsForKeys([%@],[%@])", _pkey, _detail];
-  return [[self _renderDocuments:[self _getUnrenderedDocsForKeys:_pkey]
-                      withDetail:_detail] objectAtIndex:0];
+  NSArray	*tmp;
+
+  tmp = [self _renderDocuments:[self _getUnrenderedDocsForKeys:_pkey]
+                    withDetail:_detail];
+  if ([tmp count] > 0)
+    return [tmp objectAtIndex:0];
+  return nil;
 } /* end _DocumentForKey */
 
 -(id)_getDocumentForKey:(id)_pkey {
-  [self logWithFormat:@"_getDocumentsForKeys([%@])", _pkey];
-  return [[self _renderDocuments:[self _getUnrenderedDocsForKeys:_pkey]
-                      withDetail:[NSNumber numberWithInt:0]] objectAtIndex:0];
+  return [self _getDocumentForKey:_pkey withDetail:intObj(0)];
 } /* end _getDocumentForKey */
 
 -(id)_getContentsOfFolder:(id)_folderId {

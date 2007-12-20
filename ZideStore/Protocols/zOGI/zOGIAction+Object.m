@@ -181,7 +181,7 @@
     while ((link = [enumerator nextObject]) != nil) {
       [linkList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
          @"to", @"direction",
-         [self _getPKeyForEO:(id)[link globalID]], @"objectId",
+         intObj([[self _getPKeyForEO:(id)[link globalID]] intValue]), @"objectId",
          @"objectLink", @"entityName",
          [self _getPKeyForEO:(id)[link sourceGID]], @"sourceObjectId",
          [self _getPKeyForEO:(id)[link targetGID]], @"targetObjectId",
@@ -198,7 +198,7 @@
     while ((link = (id)[enumerator nextObject]) != nil) {
       [linkList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
          @"from", @"direction",
-         [self _getPKeyForEO:(id)[link globalID]], @"objectId",
+         intObj([[self _getPKeyForEO:(id)[link globalID]] intValue]), @"objectId",
          @"objectLink", @"entityName",
          [self _getPKeyForEO:(id)[link targetGID]], @"targetObjectId",
          [self _getPKeyForEO:(id)[link sourceGID]], @"sourceObjectId",
@@ -324,11 +324,18 @@
 }
 
 -(NSDictionary *)_makeUnknownObject:(id)_objectId {
-  return [NSDictionary dictionaryWithObjectsAndKeys:
-    @"Unknown", @"entityName",
-    _objectId, @"objectId",
-    nil];
-}
+  if ([_objectId isKindOfClass:[EOGlobalID class]]) {
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+              @"Unknown", @"entityName",
+              [self _getPKeyForEO:_objectId], @"objectId",
+              nil];
+   } else {
+       return [NSDictionary dictionaryWithObjectsAndKeys:
+                 @"Unknown", @"entityName",
+          			 _objectId, @"objectId",
+                 nil];
+      }
+} /* end _makeUnknownObject */
 
 -(NSException *)_saveACLs:(NSArray *)_acls 
                 forObject:(id)_objectId

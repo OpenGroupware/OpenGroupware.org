@@ -1,3 +1,28 @@
+2007-11-19 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Contact.m: Always render the superuser account (10000)
+	  as an Account entity and not as a Contact. (v1.5.39)
+
+	* zOGIAction+Object.m: Make the objectId of an objectLink entity 
+	  numeric rather than a string.  Fix case where objectId of an
+	  Unknown entity was an EOGlobalId rather than an integer.
+	  (v1.5.39)
+
+	* zOGIAction+Team.h|.m: Add support for updating the members of a
+	  Team via the memberObjectIds attribute (v1.5.39)
+
+	* zOGIAction+Project.m: Return objectId of a Project entity as an
+	  integer. (v1.5.39)
+
+	* zOGIRPCAction.m: Support "revolve" feature when searching for
+	  Contact or Enterprise objects, support filters when performing
+	  getObjectsById, and log duration of getObjectsById calls.
+	  Enable updating Teams via putObject. (v1.5.39)
+
+	* zOGIAction+Document.m: Remove superfluous log message.  Fix error
+	  when an object was requested from an emtpy array.  Fixes Consonance 
+	  / ZOGI.Net issue#22. (v1.5.39)
+
 2007-11-27 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Appointment.m: Remove concrete class check. (v1.5.38)

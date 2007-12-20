@@ -44,48 +44,59 @@
   for (count = 0; count < [_contacts count]; count++) {
     eoContact = [_contacts objectAtIndex:count];
     comment = [[eoContact objectForKey:@"comment"] objectForKey:@"comment"];
-    [result addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys: 
-       eoContact, @"*eoObject",
-       [eoContact valueForKey:@"companyId"], @"objectId",
-       @"Contact", @"entityName",
-       [self ZERO:[eoContact valueForKey:@"objectVersion"]], @"version",
-       [eoContact valueForKey:@"ownerId"], @"ownerObjectId",
-       [self NIL:[eoContact valueForKey:@"assistantName"]], 
-          @"assistantName",
-       [self NIL:[eoContact valueForKey:@"associatedCategories"]], 
-          @"associatedCategories",
-       [self NIL:[eoContact valueForKey:@"associatedCompany"]], 
-          @"associatedCompany",
-       [self NIL:[eoContact valueForKey:@"associatedContacts"]], 
-          @"associatedContacts",
-       [self NIL:[eoContact valueForKey:@"birthday"]], @"birthDate",
-       [self NIL:[eoContact valueForKey:@"nickname"]], @"displayName",
-       [self NIL:[eoContact valueForKey:@"bossname"]], @"managersName",
-       [self NIL:[eoContact valueForKey:@"degree"]], @"degree",
-       [self NIL:[eoContact valueForKey:@"department"]], @"department",
-       [self NIL:[eoContact valueForKey:@"description"]], @"description",
-       [self NIL:[eoContact valueForKey:@"fileas"]], @"fileAs",
-       [self NIL:[eoContact valueForKey:@"firstname"]], @"firstName",
-       [self NIL:[eoContact valueForKey:@"middlename"]], @"middleName",
-       [self NIL:[eoContact valueForKey:@"name"]], @"lastName",
-       [self NIL:[eoContact valueForKey:@"imAddress"]], @"imAddress",
-       [self NIL:comment], @"comment",
-       [self NIL:[eoContact valueForKey:@"isPrivate"]], @"isPrivate",
-       [self NIL:[eoContact valueForKey:@"isAccount"]], @"isAccount",
-       [self NIL:[eoContact valueForKey:@"keywords"]], @"keywords",
-       [self NIL:[eoContact valueForKey:@"occupation"]], @"occupation",
-       [self NIL:[eoContact valueForKey:@"office"]], @"office",
-       [self NIL:[eoContact valueForKey:@"salutation"]], @"salutation",
-       [self NIL:[eoContact valueForKey:@"sensitivity"]], @"sensitivity",
-       [self NIL:[eoContact valueForKey:@"sex"]], @"gender",
-       [self NIL:[eoContact valueForKey:@"url"]], @"url",
-       nil]];
-     [self _addAddressesToCompany:[result objectAtIndex:count]];
-     [self _addPhonesToCompany:[result objectAtIndex:count]];
-     /* Add flags */
-     [[result objectAtIndex:count] 
-         setObject:[self _renderCompanyFlags:eoContact entityName:@"Contact"]
-           forKey:@"FLAGS"];
+    if ([[eoContact valueForKey:@"companyId"] intValue] == 10000) {
+      [result addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
+         eoContact, @"*eoObject",
+         [eoContact valueForKey:@"companyId"], @"objectId",
+         @"Account", @"entityName",
+         [self ZERO:[eoContact valueForKey:@"objectVersion"]], @"version",
+         [eoContact valueForKey:@"login"], @"login",
+        nil]];
+    } else {
+        [result addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys: 
+           eoContact, @"*eoObject",
+           [eoContact valueForKey:@"companyId"], @"objectId",
+           @"Contact", @"entityName",
+           [self ZERO:[eoContact valueForKey:@"objectVersion"]], @"version",
+           [eoContact valueForKey:@"ownerId"], @"ownerObjectId",
+           [self NIL:[eoContact valueForKey:@"assistantName"]], 
+             @"assistantName",
+           [self NIL:[eoContact valueForKey:@"associatedCategories"]], 
+             @"associatedCategories",
+           [self NIL:[eoContact valueForKey:@"associatedCompany"]], 
+             @"associatedCompany",
+           [self NIL:[eoContact valueForKey:@"associatedContacts"]], 
+             @"associatedContacts",
+           [self NIL:[eoContact valueForKey:@"birthday"]], @"birthDate",
+           [self NIL:[eoContact valueForKey:@"nickname"]], @"displayName",
+           [self NIL:[eoContact valueForKey:@"bossname"]], @"managersName",
+           [self NIL:[eoContact valueForKey:@"degree"]], @"degree",
+           [self NIL:[eoContact valueForKey:@"department"]], @"department",
+           [self NIL:[eoContact valueForKey:@"description"]], @"description",
+           [self NIL:[eoContact valueForKey:@"fileas"]], @"fileAs",
+           [self NIL:[eoContact valueForKey:@"firstname"]], @"firstName",
+           [self NIL:[eoContact valueForKey:@"middlename"]], @"middleName",
+           [self NIL:[eoContact valueForKey:@"name"]], @"lastName",
+           [self NIL:[eoContact valueForKey:@"imAddress"]], @"imAddress",
+           [self NIL:comment], @"comment",
+           [self NIL:[eoContact valueForKey:@"isPrivate"]], @"isPrivate",
+           [self NIL:[eoContact valueForKey:@"isAccount"]], @"isAccount",
+           [self NIL:[eoContact valueForKey:@"keywords"]], @"keywords",
+           [self NIL:[eoContact valueForKey:@"occupation"]], @"occupation",
+           [self NIL:[eoContact valueForKey:@"office"]], @"office",
+           [self NIL:[eoContact valueForKey:@"salutation"]], @"salutation",
+           [self NIL:[eoContact valueForKey:@"sensitivity"]], @"sensitivity",
+           [self NIL:[eoContact valueForKey:@"sex"]], @"gender",
+           [self NIL:[eoContact valueForKey:@"url"]], @"url",
+           [self NIL:[eoContact valueForKey:@"login"]], @"login",
+         nil]];
+        [self _addAddressesToCompany:[result objectAtIndex:count]];
+        [self _addPhonesToCompany:[result objectAtIndex:count]];
+        /* Add flags */
+        [[result objectAtIndex:count] 
+            setObject:[self _renderCompanyFlags:eoContact entityName:@"Contact"]
+              forKey:@"FLAGS"];
+       } /* end if-not-10000-render-as-contact */
      /* Add detail if required */
      if([_detail intValue] > 0) {
        if([_detail intValue] & zOGI_INCLUDE_COMPANYVALUES)

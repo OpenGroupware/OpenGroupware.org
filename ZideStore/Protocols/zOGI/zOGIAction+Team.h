@@ -35,7 +35,9 @@
 -(NSArray *)_searchForTeams:(id)_arg 
                  withDetail:(NSNumber *)_detail
                  withFlags:(NSDictionary *)_flags;
-
+-(id)_updateTeam:_dictionary
+        objectId:_objectId
+       withFlags:_flags;
 @end
 
 #endif /* __zOGIAction_Team_H__ */

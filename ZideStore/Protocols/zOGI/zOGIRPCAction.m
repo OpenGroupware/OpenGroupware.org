@@ -134,11 +134,19 @@
 } /* end unflagFavoritesAction */
 
 -(id)getObjectsByObjectIdAction {
-  NSArray    	  *keyList;
-  NSMutableArray  *results;
-  NSEnumerator    *enumerator;
-  id              pkey, gid, object, tmp;
-  NSTimeInterval  start, end;
+  NSArray    	         *keyList;
+  NSMutableDictionary  *flags;
+  NSEnumerator         *enumerator;
+  NSString             *filterString;
+  EOQualifier          *eoFilter;
+  id                    pkey, gid, object, tmp, results;
+  NSTimeInterval        start, end;
+
+  if (arg3 == nil) {
+    flags = [NSMutableDictionary new];
+    if ([self isDebug])
+      [self logWithFormat:@"No flags provided, assuming an empty set of flags."];
+  } else flags = [arg3 mutableCopy];
 
   NSMutableArray  *contacts = nil;
   NSMutableArray  *enterprises = nil;
@@ -235,13 +243,23 @@
     } /* end while remainder */
   } /* end get-remainder */
 
+  if ([flags objectForKey:@"filter"]) {
+    filterString = [flags objectForKey:@"filter"];
+    if ([self isDebug])
+      [self logWithFormat:@"Filtering %d objects with EOQualifier",
+         [results count]];
+    eoFilter = [EOQualifier qualifierWithQualifierFormat:filterString];
+    results = [results filteredArrayUsingQualifier:eoFilter];
+  }
+
   /* log command duration */
   if ([self isDebug]) {
     end = [[NSDate date] timeIntervalSince1970];
-    [self logWithFormat:@"getObjectsByObjectId consumed %.3f seconds", 
-            (end - start)];
     [self logWithFormat:@"getObjectsByObjectId returning %d objects",
             [results count]];
+    [self logWithFormat:@"getObjectsByObjectId consumed %.3f seconds", 
+            (end - start)];
+    [self logWithFormat:@"end getObjectsByObjectId"];
   }
 
   return results;
@@ -444,6 +462,10 @@
          return [self _setParticipantStatus:_dictionary 
                                    objectId:_objectId
                                   withFlags:_flags];
+  } else if ([entityName isEqualToString:@"Team"]) {
+         return [self _updateTeam:_dictionary
+                         objectId:_objectId
+                        withFlags:_flags];
   }
   return nil;
 } /* end _updateObject */
@@ -470,11 +492,67 @@
     [flags setObject:intObj(150) forKey:@"limit"];
   }
 
-  if ([arg1 isEqualToString:@"Contact"])
+  if ([arg1 isEqualToString:@"Contact"]) {
     result = [self _searchForContacts:arg2 withDetail:arg3 withFlags:flags];
-  else if ([arg1 isEqualToString:@"Enterprise"])
+    if ([[flags objectForKey:@"revolve"] isEqualToString:@"YES"]) {
+      NSMutableArray      *tmpList;
+      id		              tmp1, tmp2, enterpriseId;
+      NSEnumerator        *enumerator1, *enumerator2;
+
+			[self logWithFormat:@"revolving enterprises for %d contacts",
+              [result count]];
+      tmpList = [NSMutableArray arrayWithCapacity:[result count]];
+      enumerator1 = [result objectEnumerator];
+      while ((tmp1 = [enumerator1 nextObject]) != nil) {
+        [self logWithFormat:@"revolving enterprises for contact#%@",
+                [tmp1 objectForKey:@"objectId"]];
+        if ([tmp1 objectForKey:@"_ENTERPRISES"] != nil) {
+          enumerator2 = [[tmp1 objectForKey:@"_ENTERPRISES"] objectEnumerator];
+          while ((tmp2 = [enumerator2 nextObject]) != nil) {
+            [self logWithFormat:@"contact assigned to enterprise#%@",
+                    [tmp2 objectForKey:@"targetObjectId"]];
+            enterpriseId = [tmp2 objectForKey:@"targetObjectId"];
+            if([tmpList indexOfObjectIdenticalTo:enterpriseId] == NSNotFound)
+              [tmpList addObject:enterpriseId];
+          } /* end while tmp2 */
+        } /* end if-tmp1-has-enterprises */
+      } /* end while tmp1 */
+      [self logWithFormat:@"requesting %d enterprises for revolution",
+              [tmpList count]];
+      if ([tmpList count] > 0)
+        [result addObjectsFromArray:[self _getEnterprisesForKeys:tmpList withDetail:arg2]];
+    } /* end if-revolve-requested */
+  } else if ([arg1 isEqualToString:@"Enterprise"]) {
     result = [self _searchForEnterprises:arg2 withDetail:arg3 withFlags:flags];
-  else if ([arg1 isEqualToString:@"Appointment"])
+    if ([[flags objectForKey:@"revolve"] isEqualToString:@"YES"]) {
+      NSMutableArray      *tmpList;
+      id		              tmp1, tmp2, contactId;
+      NSEnumerator        *enumerator1, *enumerator2;
+
+			[self logWithFormat:@"revolving contacts for %d enterprises",
+              [result count]];
+      tmpList = [NSMutableArray arrayWithCapacity:[result count]];
+      enumerator1 = [result objectEnumerator];
+      while ((tmp1 = [enumerator1 nextObject]) != nil) {
+        [self logWithFormat:@"revolving contacts for enterprise#%@",
+                [tmp1 objectForKey:@"objectId"]];
+        if ([tmp1 objectForKey:@"_CONTACTS"] != nil) {
+          enumerator2 = [[tmp1 objectForKey:@"_CONTACTS"] objectEnumerator];
+          while ((tmp2 = [enumerator2 nextObject]) != nil) {
+            [self logWithFormat:@"enterprise assigned to contact#%@",
+                    [tmp2 objectForKey:@"targetObjectId"]];
+            contactId = [tmp2 objectForKey:@"targetObjectId"];
+            if([tmpList indexOfObjectIdenticalTo:contactId] == NSNotFound)
+              [tmpList addObject:contactId];
+          } /* end while tmp2 */
+        } /* end if-tmp1-has-enterprises */
+      } /* end while tmp1 */
+      [self logWithFormat:@"requesting %d contacts for revolution",
+              [tmpList count]];
+      if ([tmpList count] > 0)
+        [result addObjectsFromArray:[self _getContactsForKeys:tmpList withDetail:arg2]];
+    } /* end if-revolve-requested */
+  } else if ([arg1 isEqualToString:@"Appointment"])
     result = [self _searchForAppointments:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Task"])
     result = [self _searchForTasks:arg2 withDetail:arg3 withFlags:flags];
@@ -501,9 +579,8 @@
   if ([flags objectForKey:@"filter"]) {
     filterString = [flags objectForKey:@"filter"];
     if ([self isDebug])
-      [self logWithFormat:@"Filtering %d objects with filter: %@",
-         [result count],
-         filterString];
+      [self logWithFormat:@"Filtering %d objects with EOQualifier",
+         [result count]];
     eoFilter = [EOQualifier qualifierWithQualifierFormat:filterString];
     result = [result filteredArrayUsingQualifier:eoFilter];
   }
@@ -511,10 +588,11 @@
   /* log command duration */
   if ([self isDebug]) {
     end = [[NSDate date] timeIntervalSince1970];
-    [self logWithFormat:@"searchForObjects consumed %.3f seconds",
-            (end - start)];
     [self logWithFormat:@"searchForObjects returning %d objects",
             [result count]];
+    [self logWithFormat:@"searchForObjects consumed %.3f seconds",
+            (end - start)];
+    [self logWithFormat:@"end searchForObjects"];
   } 
  
  [flags release];
