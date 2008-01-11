@@ -21,6 +21,7 @@
 
 #include "zOGIAction.h"
 #include "zOGIAction+Account.h"
+#include "zOGIAction+Contact.h"
 #include "zOGIAction+Defaults.h"
 #include "zOGIAction+Team.h"
 #include "zOGIAction+Object.h"
@@ -100,8 +101,15 @@
   NSMutableDictionary     *account;
   NSMutableDictionary     *defaults;
 
-  account = [self _getAccountForKey:[self _getCompanyId]
-                         withDetail:_detail];
+  if ([_detail intValue] & zOGI_INCLUDE_CONTACTS)
+  {
+    account = [self _getContactForKey:[self _getCompanyId]
+                           withDetail:_detail];
+  } else
+    {
+      account = [self _getAccountForKey:[self _getCompanyId]
+                             withDetail:_detail];
+    }
 
   /* TODO: Implement returning the user's defaults
      [account setObject:[self _getDefaults] forKey:@"_DEFAULTS"];

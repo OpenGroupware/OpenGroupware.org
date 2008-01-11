@@ -1,3 +1,9 @@
+2008-01-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Account.m: If the detail level of getLoginAccount is
+	  zOGI_INCLUDE_CONTACTS then render the login account as a Contact
+	  instead of as an Account. (v1.5.40)
+
 2007-11-19 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Contact.m: Always render the superuser account (10000)
