@@ -1462,4 +1462,510 @@ custom_all = {
 //      "12-31" = "end_christmas_holiday";   // Weihnachtsferien
     };
   };
+
+//-------------------------------------------------------------------
+  scheduler_2008_holidays = {
+// Benutzerdefiniert
+custom_all = {
+ // here add custom entries
+ // Termine fuer alle
+ };
+    // Baden-Wuerttemberg
+    bwb = {
+      "01-05" = "end_christmas_holiday";   // Weihnachtsferien
+//	"02-02" = "start_winter_holiday";    // Winterferien
+//	"02-03" = "end_winter_holiday";      //
+      "03-17" = "start_easter_holiday";    // Osterferien
+      "03-28" = "end_easter_holiday";      //
+      "05-13" = "start_whitsun_holiday";   // Pfingstferien
+      "05-23" = "end_whitsun_holiday";     //
+      "07-24" = "start_summer_holiday";    // Sommerferien
+      "09-06" = "end_summer_holiday";      //
+      "10-27" = "start_autum_holiday";     // Herbstferien
+      "10-30" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Bayern
+    bay = {
+      "01-05" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-04" = "start_winter_holiday";    // Winterferien
+      "02-09" = "end_winter_holiday";      //
+      "03-17" = "start_easter_holiday";    // Osterferien
+      "03-29" = "end_easter_holiday";      //
+      "05-13" = "start_whitsun_holiday";   // Pfingstferien
+      "05-24" = "end_whitsun_holiday";     //
+      "08-04" = "start_summer_holiday";    // Sommerferien
+      "09-15" = "end_summer_holiday";      //
+      "11-03" = "start_autum_holiday";     // Herbstferien
+      "11-07" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Berlin
+    ber = {
+      "01-12" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-04" = "start_winter_holiday";    // Winterferien
+      "02-04" = "end_winter_holiday";      //
+      "03-17" = "start_easter_holiday";    // Osterferien
+      "03-29" = "end_easter_holiday";      //
+      "05-02" = "fluctuating_holiday";     // Variabler Ferientag
+      "05-13" = "start_whitsun_holiday";   // Pfingstferien
+      "05-16" = "end_whitsun_holiday";     //
+      "07-17" = "start_summer_holiday";    // Sommerferien
+      "08-29" = "end_summer_holiday";      //
+      "10-20" = "start_autum_holiday";     // Herbstferien
+      "10-31" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+//      "12-31" = "end_christmas_holiday";
+    };
+    // Brandenburg
+    bra = {
+      "01-12" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-04" = "start_winter_holiday";    // Winterferien
+      "02-04" = "end_winter_holiday";      //
+      "03-19" = "start_easter_holiday";    // Osterferien
+      "03-28" = "end_easter_holiday";      //
+      "05-13" = "start_whitsun_holiday";   // Pfingstferien
+      "05-16" = "end_whitsun_holiday";     //
+      "07-17" = "start_summer_holiday";    // Sommerferien
+      "08-30" = "end_summer_holiday";      //
+      "10-20" = "start_autum_holiday";     // Herbstferien
+      "10-30" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+//      "12-31" = "end_christmas_holiday";
+    };
+    // Bremen
+    bre = {
+      "01-05" = "end_christmas_holiday";   // Weihnachtsferien
+      "01-31" = "start_winter_holiday";    // Winterferien
+      "02-01" = "end_winter_holiday";      //
+      "03-10" = "start_easter_holiday";    // Osterferien
+      "03-25" = "end_easter_holiday";      //
+      "05-13" = "start_whitsun_holiday";   // Pfingstferien
+      "05-16" = "end_whitsun_holiday";     //
+      "07-10" = "start_summer_holiday";    // Sommerferien
+      "08-20" = "end_summer_holiday";      //
+      "10-13" = "start_autum_holiday";     // Herbstferien
+      "10-25" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Hamburg
+    hh = {
+      "01-05" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-01" = "start_winter_holiday";    // Winterferien
+      "02-01" = "end_winter_holiday";      //
+      "03-10" = "start_easter_holiday";    // Osterferien
+      "03-20" = "end_easter_holiday";      //
+      "05-02" = "fluctuating_holiday";     // Variabler Ferientag
+      "05-13" = "start_whitsun_holiday";   // Pfingstferien
+      "05-17" = "end_whitsun_holiday";     //
+      "07-17" = "start_summer_holiday";    // Sommerferien
+      "08-27" = "end_summer_holiday";      //
+      "10-13" = "start_autum_holiday";     // Herbstferien
+      "10-25" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+//      "12-31" = "end_christmas_holiday";   // Weihnachtsferien
+    };
+    // Hessen
+    hes = {
+      "01-11" = "end_christmas_holiday";   // Weihnachtsferien
+//      "" = "start_winter_holiday";    // Winterferien
+//      "" = "end_winter_holiday";      //
+      "03-25" = "start_easter_holiday";    // Osterferien
+      "04-05" = "end_easter_holiday";      //
+//      "" = "start_whitsun_holiday";   // Pfingstferien
+//      "" = "end_whitsun_holiday";     //
+      "06-23" = "start_summer_holiday";    // Sommerferien
+      "08-01" = "end_summer_holiday";      //
+      "10-06" = "start_autum_holiday";     // Herbstferien
+      "10-18" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Meck.-V.P.
+    mvp = {
+      "01-04" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-04" = "start_winter_holiday";    // Winterferien
+      "02-16" = "end_winter_holiday";      //
+      "03-17" = "start_easter_holiday";    // Osterferien
+      "03-26" = "end_easter_holiday";      //
+      "05-09" = "start_whitsun_holiday";   // Pfingstferien
+      "05-13" = "end_whitsun_holiday";     //
+      "07-21" = "start_summer_holiday";    // Sommerferien
+      "08-30" = "end_summer_holiday";      //
+      "10-27" = "start_autum_holiday";     // Herbstferien
+      "11-01" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Niedersachsen
+    nsa = {
+      "01-05" = "end_christmas_holiday";   // Weihnachtsferien
+      "01-31" = "start_winter_holiday";    // Winterferien
+      "02-01" = "end_winter_holiday";      //
+      "03-10" = "start_easter_holiday";    // Osterferien
+      "03-26" = "end_easter_holiday";      //
+      "05-02" = "fluctuating_holiday";     // Variabler Ferientag
+      "05-13" = "start_whitsun_holiday";   // Pfingstferien
+      "05-13" = "end_whitsun_holiday";     //
+      "07-10" = "start_summer_holiday";    // Sommerferien
+      "08-20" = "end_summer_holiday";      //
+      "10-13" = "start_autum_holiday";     // Herbstferien
+      "10-25" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Nordrhein-W.
+    nrw = {
+      "01-04" = "end_christmas_holiday";   // Weihnachtsferien
+//      "" = "start_winter_holiday";    // Winterferien
+//      "" = "end_winter_holiday";      //
+      "03-17" = "start_easter_holiday";    // Osterferien
+      "04-29" = "end_easter_holiday";      //
+      "05-13" = "start_whitsun_holiday";   // Pfingstferien
+//	"" = "end_whitsun_holiday";     //
+      "06-26" = "start_summer_holiday";    // Sommerferien
+      "08-08" = "end_summer_holiday";      //
+      "09-29" = "start_autum_holiday";     // Herbstferien
+      "10-11" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Rheinland-P.
+    rpf = {
+      "01-08" = "end_christmas_holiday";   // Weihnachtsferien
+//      "" = "start_winter_holiday";    // Winterferien
+//      "" = "end_winter_holiday";      //
+      "03-12" = "start_easter_holiday";    // Osterferien
+      "03-28" = "end_easter_holiday";      //
+//      "" = "start_whitsun_holiday";   // Pfingstferien
+//      "" = "end_whitsun_holiday";     //
+      "06-23" = "start_summer_holiday";    // Sommerferien
+      "08-01" = "end_summer_holiday";      //
+      "10-06" = "start_autum_holiday";     // Herbstferien
+      "10-17" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Saarland
+    saa = {
+      "01-05" = "end_christmas_holiday";   // Weihnachtsferien
+      "01-31" = "start_winter_holiday";    // Winterferien
+      "02-06" = "end_winter_holiday";      //
+      "03-17" = "start_easter_holiday";    // Osterferien
+      "03-29" = "end_easter_holiday";      //
+//      "" = "start_whitsun_holiday";   // Pfingstferien
+//      "" = "end_whitsun_holiday";     //
+      "06-30" = "start_summer_holiday";    // Sommerferien
+      "08-09" = "end_summer_holiday";      //
+      "10-04" = "start_autum_holiday";     // Herbstferien
+      "10-18" = "end_autum_holiday";       //
+      "12-19" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Sachsen
+    sac = {
+      "01-02" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-04" = "start_winter_holiday";    // Winterferien
+      "02-15" = "end_winter_holiday";      //
+      "03-20" = "start_easter_holiday";    // Osterferien
+      "03-28" = "end_easter_holiday";      //
+      "05-02" = "fluctuating_holiday";     // Variabler Ferientag
+      "05-10" = "start_whitsun_holiday";   // Pfingstferien
+      "05-13" = "end_whitsun_holiday";     //
+      "07-14" = "start_summer_holiday";    // Sommerferien
+      "08-22" = "end_summer_holiday";      //
+      "10-20" = "start_autum_holiday";     // Herbstferien
+      "10-30" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Sachsen-Anhalt
+    sah = {
+      "01-04" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-02" = "start_winter_holiday";    // Winterferien
+      "02-09" = "end_winter_holiday";      //
+      "03-17" = "start_easter_holiday";    // Osterferien
+      "03-20" = "end_easter_holiday";      //
+      "05-13" = "start_whitsun_holiday";   // Pfingstferien
+      "05-23" = "end_whitsun_holiday";     //
+      "07-10" = "start_summer_holiday";    // Sommerferien
+      "08-22" = "end_summer_holiday";      //
+      "10-13" = "start_autum_holiday";     // Herbstferien
+      "10-17" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Schleswig-H.
+    slh = {
+      "01-08" = "end_christmas_holiday";   // Weihnachtsferien
+//      "03-10" = "start_winter_holiday";    // Winterferien
+//      "03-22" = "end_winter_holiday";      //
+      "03-20" = "start_easter_holiday";    // Osterferien
+      "04-05" = "end_easter_holiday";      //
+//      "05-06" = "start_whitsun_holiday";   // Pfingstferien
+//      "05-07" = "end_whitsun_holiday";     //
+      "07-21" = "start_summer_holiday";    // Sommerferien
+      "08-30" = "end_summer_holiday";      //
+      "10-13" = "start_autum_holiday";     // Herbstferien
+      "10-25" = "end_autum_holiday";       //
+      "12-22" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Thueringen
+    thu = {
+      "01-05" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-04" = "start_winter_holiday";    // Winterferien
+      "02-09" = "end_winter_holiday";      //
+      "03-22" = "start_easter_holiday";    // Osterferien
+      "03-28" = "end_easter_holiday";      //
+      "05-13" = "start_whitsun_holiday";   // Pfingstferien
+      "05-16" = "end_whitsun_holiday";     //
+      "07-10" = "start_summer_holiday";    // Sommerferien
+      "08-20" = "end_summer_holiday";      //
+      "10-13" = "start_autum_holiday";     // Herbstferien
+      "10-24" = "end_autum_holiday";       //
+      "12-20" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+  };
+//-------------------------------------------------------------------
+  scheduler_2009_holidays = {
+// Benutzerdefiniert
+custom_all = {
+ // here add custom entries
+ // Termine fuer alle
+ };
+    // Baden-Wuerttemberg
+    bwb = {
+      "01-10" = "end_christmas_holiday";   // Weihnachtsferien
+//	"02-02" = "start_winter_holiday";    // Winterferien
+//	"02-03" = "end_winter_holiday";      //
+      "04-14" = "start_easter_holiday";    // Osterferien
+      "04-17" = "end_easter_holiday";      //
+      "06-02" = "start_whitsun_holiday";   // Pfingstferien
+      "06-13" = "end_whitsun_holiday";     //
+      "07-30" = "start_summer_holiday";    // Sommerferien
+      "09-12" = "end_summer_holiday";      //
+      "10-26" = "start_autum_holiday";     // Herbstferien
+      "10-30" = "end_autum_holiday";       //
+      "12-23" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Bayern
+    bay = {
+      "01-05" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-23" = "start_winter_holiday";    // Winterferien
+      "02-28" = "end_winter_holiday";      //
+      "04-06" = "start_easter_holiday";    // Osterferien
+      "04-04" = "end_easter_holiday";      //
+      "06-02" = "start_whitsun_holiday";   // Pfingstferien
+      "06-13" = "end_whitsun_holiday";     //
+      "08-03" = "start_summer_holiday";    // Sommerferien
+      "09-14" = "end_summer_holiday";      //
+      "11-02" = "start_autum_holiday";     // Herbstferien
+      "11-03" = "end_autum_holiday";       //
+      "12-24" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Berlin
+    ber = {
+      "01-03" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-02" = "start_winter_holiday";    // Winterferien
+      "02-07" = "end_winter_holiday";      //
+      "04-06" = "start_easter_holiday";    // Osterferien
+      "04-18" = "end_easter_holiday";      //
+      "05-22" = "start_whitsun_holiday";   // Pfingstferien
+      "05-22" = "end_whitsun_holiday";     //
+      "07-15" = "start_summer_holiday";    // Sommerferien
+      "08-28" = "end_summer_holiday";      //
+      "10-19" = "start_autum_holiday";     // Herbstferien
+      "10-30" = "end_autum_holiday";       //
+      "12-21" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Brandenburg
+    bra = {
+      "01-03" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-02" = "start_winter_holiday";    // Winterferien
+      "02-07" = "end_winter_holiday";      //
+      "04-08" = "start_easter_holiday";    // Osterferien
+      "04-17" = "end_easter_holiday";      //
+      "05-22" = "start_whitsun_holiday";   // Pfingstferien
+      "05-22" = "end_whitsun_holiday";     //
+      "07-16" = "start_summer_holiday";    // Sommerferien
+      "08-29" = "end_summer_holiday";      //
+      "10-19" = "start_autum_holiday";     // Herbstferien
+      "10-30" = "end_autum_holiday";       //
+      "12-21" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Bremen
+    bre = {
+      "01-06" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-02" = "start_winter_holiday";    // Winterferien
+      "02-02" = "end_winter_holiday";      //
+      "03-30" = "start_easter_holiday";    // Osterferien
+      "04-15" = "end_easter_holiday";      //
+      "06-02" = "start_whitsun_holiday";   // Pfingstferien
+      "06-02" = "end_whitsun_holiday";     //
+      "06-25" = "start_summer_holiday";    // Sommerferien
+      "08-05" = "end_summer_holiday";      //
+      "10-15" = "start_autum_holiday";     // Herbstferien
+      "10-17" = "end_autum_holiday";       //
+      "12-23" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Hamburg
+    hh = {
+      "01-02" = "end_christmas_holiday";   // Weihnachtsferien
+      "01-30" = "start_winter_holiday";    // Winterferien
+      "01-30" = "end_winter_holiday";      //
+      "03-09" = "start_easter_holiday";    // Osterferien
+      "03-21" = "end_easter_holiday";      //
+      "05-18" = "start_whitsun_holiday";   // Pfingstferien
+      "05-23" = "end_whitsun_holiday";     //
+      "07-16" = "start_summer_holiday";    // Sommerferien
+      "08-26" = "end_summer_holiday";      //
+      "10-12" = "start_autum_holiday";     // Herbstferien
+      "10-24" = "end_autum_holiday";       //
+      "12-21" = "start_christmas_holiday"; // Weihnachtsferien
+//      "12-31" = "end_christmas_holiday";   // Weihnachtsferien
+    };
+    // Hessen
+    hes = {
+      "01-10" = "end_christmas_holiday";   // Weihnachtsferien
+//      "" = "start_winter_holiday";    // Winterferien
+//      "" = "end_winter_holiday";      //
+      "04-06" = "start_easter_holiday";    // Osterferien
+      "04-18" = "end_easter_holiday";      //
+//      "" = "start_whitsun_holiday";   // Pfingstferien
+//      "" = "end_whitsun_holiday";     //
+      "07-13" = "start_summer_holiday";    // Sommerferien
+      "08-21" = "end_summer_holiday";      //
+      "10-12" = "start_autum_holiday";     // Herbstferien
+      "10-24" = "end_autum_holiday";       //
+      "12-21" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Meck.-V.P.
+    mvp = {
+      "01-03" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-09" = "start_winter_holiday";    // Winterferien
+      "02-20" = "end_winter_holiday";      //
+      "04-06" = "start_easter_holiday";    // Osterferien
+      "04-14" = "end_easter_holiday";      //
+      "06-02" = "start_whitsun_holiday";   // Pfingstferien
+      "06-06" = "end_whitsun_holiday";     //
+      "07-20" = "start_summer_holiday";    // Sommerferien
+      "08-29" = "end_summer_holiday";      //
+      "10-26" = "start_autum_holiday";     // Herbstferien
+      "10-30" = "end_autum_holiday";       //
+      "12-21" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Niedersachsen
+    nsa = {
+      "01-06" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-02" = "start_winter_holiday";    // Winterferien
+      "02-03" = "end_winter_holiday";      //
+      "03-30" = "start_easter_holiday";    // Osterferien
+      "04-15" = "end_easter_holiday";      //
+      "05-22" = "start_whitsun_holiday";   // Pfingstferien
+      "05-22" = "end_whitsun_holiday";     //
+      "06-02" = "fluctuating_holiday";     // Variabler Ferientag
+      "06-25" = "start_summer_holiday";    // Sommerferien
+      "08-05" = "end_summer_holiday";      //
+      "10-05" = "start_autum_holiday";     // Herbstferien
+      "10-17" = "end_autum_holiday";       //
+      "12-23" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Nordrhein-W.
+    nrw = {
+      "01-06" = "end_christmas_holiday";   // Weihnachtsferien
+//      "" = "start_winter_holiday";    // Winterferien
+//      "" = "end_winter_holiday";      //
+      "04-06" = "start_easter_holiday";    // Osterferien
+      "04-18" = "end_easter_holiday";      //
+      "06-02 = "start_whitsun_holiday";   // Pfingstferien
+//	"" = "end_whitsun_holiday";     //
+      "07-02" = "start_summer_holiday";    // Sommerferien
+      "08-14" = "end_summer_holiday";      //
+      "10-12" = "start_autum_holiday";     // Herbstferien
+      "10-24" = "end_autum_holiday";       //
+      "12-24" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Rheinland-P.
+    rpf = {
+      "01-07" = "end_christmas_holiday";   // Weihnachtsferien
+//      "" = "start_winter_holiday";    // Winterferien
+//      "" = "end_winter_holiday";      //
+      "04-01" = "start_easter_holiday";    // Osterferien
+      "04-17" = "end_easter_holiday";      //
+//      "" = "start_whitsun_holiday";   // Pfingstferien
+//      "" = "end_whitsun_holiday";     //
+      "07-13" = "start_summer_holiday";    // Sommerferien
+      "08-21" = "end_summer_holiday";      //
+      "10-12" = "start_autum_holiday";     // Herbstferien
+      "10-23" = "end_autum_holiday";       //
+      "12-21" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Saarland
+    saa = {
+      "01-03" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-19" = "start_winter_holiday";    // Winterferien
+      "02-25" = "end_winter_holiday";      //
+      "04-06" = "start_easter_holiday";    // Osterferien
+      "04-18" = "end_easter_holiday";      //
+//      "" = "start_whitsun_holiday";   // Pfingstferien
+//      "" = "end_whitsun_holiday";     //
+      "07-13" = "start_summer_holiday";    // Sommerferien
+      "08-22" = "end_summer_holiday";      //
+      "10-19" = "start_autum_holiday";     // Herbstferien
+      "10-31" = "end_autum_holiday";       //
+      "12-18" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Sachsen
+    sac = {
+      "01-02" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-09" = "start_winter_holiday";    // Winterferien
+      "02-21" = "end_winter_holiday";      //
+      "04-09" = "start_easter_holiday";    // Osterferien
+      "04-18" = "end_easter_holiday";      //
+      "05-22" = "start_whitsun_holiday";   // Pfingstferien
+      "05-22" = "end_whitsun_holiday";     //
+      "06-29" = "start_summer_holiday";    // Sommerferien
+      "08-07" = "end_summer_holiday";      //
+      "10-12" = "start_autum_holiday";     // Herbstferien
+      "10-24" = "end_autum_holiday";       //
+      "12-23" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Sachsen-Anhalt
+    sah = {
+      "01-05" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-02" = "start_winter_holiday";    // Winterferien
+      "02-10" = "end_winter_holiday";      //
+      "04-06" = "start_easter_holiday";    // Osterferien
+      "04-18" = "end_easter_holiday";      //
+      "05-22" = "start_whitsun_holiday";   // Pfingstferien
+      "05-29" = "end_whitsun_holiday";     //
+      "06-25" = "start_summer_holiday";    // Sommerferien
+      "08-05" = "end_summer_holiday";      //
+      "10-12" = "start_autum_holiday";     // Herbstferien
+      "10-17" = "end_autum_holiday";       //
+      "12-21" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Schleswig-H.
+    slh = {
+      "01-07" = "end_christmas_holiday";   // Weihnachtsferien
+//      "03-10" = "start_winter_holiday";    // Winterferien
+//      "03-22" = "end_winter_holiday";      //
+      "04-06" = "start_easter_holiday";    // Osterferien
+      "04-21" = "end_easter_holiday";      //
+//      "05-06" = "start_whitsun_holiday";   // Pfingstferien
+//      "05-07" = "end_whitsun_holiday";     //
+      "07-20" = "start_summer_holiday";    // Sommerferien
+      "08-29" = "end_summer_holiday";      //
+      "10-12" = "start_autum_holiday";     // Herbstferien
+      "10-24" = "end_autum_holiday";       //
+      "12-21" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+    // Thueringen
+    thu = {
+      "01-03" = "end_christmas_holiday";   // Weihnachtsferien
+      "02-02" = "start_winter_holiday";    // Winterferien
+      "02-07" = "end_winter_holiday";      //
+      "04-06" = "start_easter_holiday";    // Osterferien
+      "04-17" = "end_easter_holiday";      //
+//      "05-13" = "start_whitsun_holiday";   // Pfingstferien
+//      "05-16" = "end_whitsun_holiday";     //
+      "06-25" = "start_summer_holiday";    // Sommerferien
+      "08-05" = "end_summer_holiday";      //
+      "10-12" = "start_autum_holiday";     // Herbstferien
+      "10-24" = "end_autum_holiday";       //
+      "12-19" = "start_christmas_holiday"; // Weihnachtsferien
+    };
+  };
 }
