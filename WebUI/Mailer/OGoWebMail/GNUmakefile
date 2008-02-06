@@ -9,7 +9,8 @@ LIBRARY_NAME  = libOGoWebMail
 
 libOGoWebMail_HEADER_FILES_DIR         = .
 libOGoWebMail_HEADER_FILES_INSTALL_DIR = /OGoWebMail
-libOGoWebMail_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoWebMail_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoWebMail_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoWebMail_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 FHS_HEADER_DIRS = OGoWebMail
 
@@ -80,8 +81,9 @@ OGoWebMail_RESOURCE_FILES += Defaults.plist Version
 include GNUmakefile.components
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
--include ../../fhsbundle.make
--include fhs.make

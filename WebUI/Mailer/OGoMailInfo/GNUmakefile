@@ -21,9 +21,7 @@ OGoMailInfo_COMPONENTS = \
 	SkyImapMailPopUp.wo		\
 
 -include OGo.make
--include SKYRIX.make
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
--include ../../fhsbundle.make

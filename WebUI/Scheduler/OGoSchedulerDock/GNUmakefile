@@ -23,9 +23,6 @@ OGoSchedulerDock_LANGUAGES = \
 
 OGoSchedulerDock_RESOURCE_FILES += Version
 
--include SKYRIX.make
-
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
--include ../../fhsbundle.make

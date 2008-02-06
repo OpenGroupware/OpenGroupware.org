@@ -76,7 +76,6 @@ static NSDictionary *iconMap = nil;
 
 - (void)_fetchJobs {
   NSUserDefaults    *d;
-  NSAutoreleasePool *pool;
   NSMutableArray    *result;
   NSCalendarDate    *today, *future;
   unsigned int      seconds;
@@ -86,7 +85,6 @@ static NSDictionary *iconMap = nil;
   WOSession         *s;
 
   s      = [self session];
-  pool   = [[NSAutoreleasePool alloc] init];
   result = [NSMutableArray array];
   ac     = [s activeAccount];
   d      = [s userDefaults];
@@ -158,8 +156,13 @@ static NSDictionary *iconMap = nil;
 
   [self->dataSource setArray:result];
   self->fetchJobs = YES;
-
-  [pool release]; pool = nil;
+ 
+  [d release];
+  [result release];
+  [today release];
+  [future release];
+  [s release];
+  [j release];
 }
 
 - (void)syncAwake {

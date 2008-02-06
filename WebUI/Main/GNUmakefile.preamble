@@ -48,6 +48,6 @@ endif
 
 # platform specific stuff
 
-ifeq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
+ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
 $(WEBUID_NAME)_TOOL_LIBS += -liconv
 endif

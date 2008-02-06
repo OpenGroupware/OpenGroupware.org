@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../config.make
+include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 
 SUBPROJECTS += \
@@ -17,6 +17,8 @@ SUBPROJECTS += \
 	Mailer			\
 	Project			\
 	SoOGo			\
+	Resources		\
+	Templates		\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make

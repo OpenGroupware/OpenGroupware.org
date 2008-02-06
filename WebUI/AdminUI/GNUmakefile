@@ -4,7 +4,6 @@ include ../common.make
 
 WOBUNDLE_NAME        = AdminUI
 WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/WebUI
 
 AdminUI_PRINCIPAL_CLASS = LSWUserManagerModule
 
@@ -45,4 +44,3 @@ AdminUI_RESOURCE_FILES += 		\
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
--include ../fhsbundle.make

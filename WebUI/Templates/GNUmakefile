@@ -1,6 +1,45 @@
 # GNUstep makefile
 
+include ../../config.make
+
 WOX_FILES = $(shell find . -name "*.wox")
+TEMPLATE_DIRS = \
+	AddressUI		\
+	AdminUI			\
+	BaseUI			\
+	EnterprisesUI		\
+	GroupsUI		\
+	HelpUI			\
+	JobUI			\
+	LDAPAccounts		\
+	LSWMail			\
+	LSWProject		\
+	LSWScheduler		\
+	NewsUI			\
+	OGoDocInlineViewers	\
+	OGoMailEditor		\
+	OGoMailFilter		\
+	OGoMailInfo		\
+	OGoMailViewers		\
+	OGoNote			\
+	OGoProject		\
+	OGoProjectInfo		\
+	OGoProjectZip		\
+	OGoRecipientLists	\
+	OGoResourceScheduler	\
+	OGoScheduler		\
+	OGoSchedulerDock	\
+	OGoSchedulerViews	\
+	OGoUIElements		\
+	OGoWebMail		\
+	PersonsUI		\
+	PreferencesUI		\
+	PropertiesUI		\
+	RegUI			\
+	RelatedLinksUI		\
+	Themes			\
+	ogo-webui-1.1		\
+
 
 validate-wox ::
 	@echo validating .wox templates ...
@@ -9,4 +48,17 @@ validate-wox ::
 	done
 
 all :: validate-wox
+
+install ::
+	mkdir -p $(OGO_SHARED_TEMPLATES) 
+	for TEMPLATEDIR in $(TEMPLATE_DIRS); do \
+		cp -r $$TEMPLATEDIR $(OGO_SHARED_TEMPLATES)/; \
+	done;
+
+uninstall ::
+	rm -rf $(OGO_SHARED_TEMPLATES)
+
+clean ::
+
+distclean ::
 

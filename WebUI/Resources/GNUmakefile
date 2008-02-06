@@ -4,7 +4,7 @@
 include $(GNUSTEP_MAKEFILES)/common.make
 
 RESOURCES_INSTALLATION_DIR = \
-		$(GNUSTEP_INSTALLATION_DIR)/Resources
+		$(OGO_SHARED_TRANSLATIONS)
 
 Skyrix_LANGUAGE_Projects = \
 	English.lproj 		\
@@ -17,7 +17,8 @@ Skyrix_LANGUAGE_Projects = \
 	Portuguese.lproj	\
 	Polish.lproj		\
 	ptBR.lproj		\
-	Swedish.lproj		\
+
+all ::
 
 install :: ${RESOURCES_INSTALLATION_DIR}
 	cp -RPp ${Skyrix_LANGUAGE_Projects} ${RESOURCES_INSTALLATION_DIR}
@@ -26,3 +27,11 @@ install :: ${RESOURCES_INSTALLATION_DIR}
 ${RESOURCES_INSTALLATION_DIR}	 ::
 	if (test ! -d ${RESOURCES_INSTALLATION_DIR});		\
 		then mkdir ${RESOURCES_INSTALLATION_DIR}; fi;	\
+
+uninstall :: 
+	rm -rf ${RESOURCES_INSTALLATION_DIR}
+
+clean ::
+
+distclean ::
+

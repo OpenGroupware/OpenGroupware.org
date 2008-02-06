@@ -25,4 +25,3 @@ EnterprisesUI_OBJC_FILES = 			\
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
--include ../../fhsbundle.make

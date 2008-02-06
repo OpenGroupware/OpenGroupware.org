@@ -4,7 +4,7 @@ include ../common.make
 
 WOBUNDLE_NAME        = OGoSoProject
 WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/WebUI/
+WOBUNDLE_INSTALL_DIR = $(OGO_WEBUI)
 
 OGoSoProject_PRINCIPAL_CLASS = OGoSoProjectModule
 
@@ -24,4 +24,3 @@ OGoSoProject_RESOURCE_FILES += \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
-include ../../fhsbundle.make

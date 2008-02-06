@@ -1,6 +1,6 @@
 # GNUstep Makefile
 
--include ../../config.make
+include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 include ./Version
@@ -18,7 +18,8 @@ $(WEBUID_NAME)_OBJC_FILES = \
 	SoOGoAuthenticator.m		\
 	OGoWebBundleLoader.m		\
 
+$(WEBUID_NAME)_INSTALL_DIR = $(OGO_ADMIN_TOOLS)
+
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
--include fhs.make

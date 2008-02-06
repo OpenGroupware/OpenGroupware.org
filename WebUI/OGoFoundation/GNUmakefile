@@ -1,13 +1,14 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 include ./Version
 
 LIBRARY_NAME = libOGoFoundation
 
 libOGoFoundation_PCH_FILE = common.h
-libOGoFoundation_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoFoundation_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoFoundation_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoFoundation_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoFoundation_HEADER_FILES_DIR         = .
@@ -105,6 +106,8 @@ libOGoFoundation_OBJC_FILES = \
 	OGoClipboard.m			\
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 -include GNUmakefile.postamble
--include fhs.make

@@ -3,12 +3,12 @@
 OGoROOT  =../../..
 WebUIROOT=../..
 
--include $(OGoROOT)/config.make
+include $(OGoROOT)/config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include $(WebUIROOT)/Version
 
 WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/WebUI/
+WOBUNDLE_INSTALL_DIR = $(OGO_WEBUI)
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-I.. -I../..		\

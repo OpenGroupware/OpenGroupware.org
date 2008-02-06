@@ -10,7 +10,6 @@ OGoProjectInfo_OBJC_FILES = SkyP4InfoModule.m SkyDockedProjects.m
 OGoProjectInfo_COMPONENTS = SkyDockedProjects.wo
 
 -include OGo.make
--include SKYRIX.make
 
 before-all :: $(OGoProjectInfo_DERIVED_RESOURCES)
 
@@ -20,4 +19,3 @@ clean ::
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
--include ../../fhsbundle.make
