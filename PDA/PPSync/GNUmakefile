@@ -8,11 +8,10 @@ include ./Version
 
 OGO_NHSD_NAME = ogo-nhsd-1.1
 OGO_PPLS_NAME = ogo-ppls-1.1
-FHS_DAEMONS   = $(OGO_NHSD_NAME)
-FHS_TOOLS     = $(OGO_PPLS_NAME)
 
 LIBRARY_NAME = libPPSync
 TOOL_NAME    = $(OGO_NHSD_NAME) $(OGO_PPLS_NAME)
+$(OGO_NHSD_NAME)_INSTALL_DIR = $(GNUSTEP_ADMIN_TOOLS)
 
 libPPSync_PCH_FILE = common.h
 libPPSync_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
@@ -69,4 +68,3 @@ libPPSync_HEADER_FILES_INSTALL_DIR = /PPSync
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
--include fhs.make

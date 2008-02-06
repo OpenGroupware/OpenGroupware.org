@@ -12,7 +12,8 @@ BUNDLE_NAME        = OGoPalmDS
 BUNDLE_EXTENSION   = .ds
 BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/DataSources/
 
-libOGoPalm_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoPalm_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoPalm_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoPalm_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoPalm_HEADER_FILES = \
@@ -64,4 +65,3 @@ OGoPalmDS_OBJC_FILES = SkyPalmBundleManager.m
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
--include ../../DocumentAPI/fhslib.make

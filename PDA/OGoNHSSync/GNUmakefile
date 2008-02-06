@@ -31,4 +31,3 @@ OpenGroupwareNHS_PRINCIPAL_CLASS = OpenGroupwareNHSConduitBundle
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
--include fhs.make
