@@ -6,7 +6,8 @@ BUNDLE_NAME  = Tasks
 LIBRARY_NAME = libZSTasks
 
 
-libZSTasks_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSTasks_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSTasks_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libZSTasks_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 
@@ -32,9 +33,12 @@ Tasks_RESOURCE_FILES += \
 	Version			\
 	product.plist
 
+BUNDLE_INSTALL_DIR = $(ZIDESTORE_WEBUIDIR)
+
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
--include ../../fhsbundle.make
--include ../../fhslib.make

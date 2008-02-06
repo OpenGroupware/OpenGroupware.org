@@ -1,12 +1,13 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ./Version
 
 LIBRARY_NAME = libZSFrontend
 
-libZSFrontend_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSFrontend_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSFrontend_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libZSFrontend_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libZSFrontend_HEADER_FILES_DIR         = .
@@ -70,6 +71,8 @@ libZSFrontend_RESOURCES += \
 libZSFrontend_SUBPROJECTS = Mails
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 -include GNUmakefile.postamble
--include ../fhslib.make

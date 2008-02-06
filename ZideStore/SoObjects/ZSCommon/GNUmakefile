@@ -12,7 +12,8 @@ ZSCommon_RESOURCE_FILES += \
 	Version			\
 	product.plist
 
+BUNDLE_INSTALL_DIR=$(ZIDESTORE_WEBUIDIR)
+
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
--include ../../fhsbundle.make
