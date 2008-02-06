@@ -1,6 +1,6 @@
 # global makefile for OGo
 
--include ./config.make
+include ./config.make
 
 ifeq ($(GNUSTEP_MAKEFILES),)
 
@@ -18,18 +18,14 @@ SUBPROJECTS += \
 	WebUI		\
 	Tools		\
 	XmlRpcAPI	\
-	ZideStore
-
-ifneq ($(libpisock),no)
-SUBPROJECTS += PDA
-endif
+	ZideStore	\
+	Themes		\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make
 -include GNUmakefile.postamble
 
 endif
-
 
 distclean ::
 	if test -f config.make; then rm config.make; fi
