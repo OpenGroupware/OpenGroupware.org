@@ -1,9 +1,9 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 
 WEBSERVER_RESOURCES_INSTALLATION_DIR = \
-		$(GNUSTEP_INSTALLATION_DIR)/WebServerResources
+		$(OGO_WEBUI)
 
 Skyrix_LANGUAGE_Projects = \
 	English.lproj		\
