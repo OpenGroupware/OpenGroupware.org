@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 
 COMMAND_BUNDLE = LSNews

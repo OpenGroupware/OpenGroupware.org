@@ -7,7 +7,7 @@ sub$(COMMAND_BUNDLE)_OBJC_FILES = $($(COMMAND_BUNDLE)_OBJC_FILES)
 
 BUNDLE_NAME        = $(COMMAND_BUNDLE)
 BUNDLE_EXTENSION   = .cmd
-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/Commands/
+BUNDLE_INSTALL_DIR = $(OGO_COMMANDS)
 
 $(COMMAND_BUNDLE)_RESOURCE_FILES  += commands.plist
 $(COMMAND_BUNDLE)_PRINCIPAL_CLASS = $(COMMAND_BUNDLE)Commands
@@ -53,27 +53,3 @@ after-all ::
 endif
 endif # mingw32
 
-
-# FHS support (this is a hack and is going to be done by gstep-make!)
-
-ifneq ($(FHS_INSTALL_ROOT),)
-
-FHS_LIB_DIR=$(CONFIGURE_FHS_INSTALL_LIBDIR)
-FHS_CMD_DIR=$(FHS_LIB_DIR)opengroupware.org-1.1/commands/
-
-fhs-sax-dirs ::
-	$(MKDIRS) $(FHS_CMD_DIR)
-
-move-bundles-to-fhs :: fhs-sax-dirs
-	@echo "moving bundles $(BUNDLE_INSTALL_DIR) to $(FHS_CMD_DIR) .."
-	for i in $(BUNDLE_NAME); do \
-          j="$(FHS_CMD_DIR)/$${i}$(BUNDLE_EXTENSION)"; \
-	  if test -d $$j; then rm -r $$j; fi; \
-	  mv "$(BUNDLE_INSTALL_DIR)/$${i}$(BUNDLE_EXTENSION)" $$j; \
-	done
-
-move-to-fhs :: move-bundles-to-fhs
-
-after-install :: move-to-fhs
-
-endif

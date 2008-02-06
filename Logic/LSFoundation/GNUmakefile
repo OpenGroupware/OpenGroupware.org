@@ -1,13 +1,14 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 include ./Version
 
 LIBRARY_NAME = libLSFoundation
 
 libLSFoundation_PCH_FILE = common.h
-libLSFoundation_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libLSFoundation_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libLSFoundation_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libLSFoundation_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 libLSFoundation_DLL_DEF = libLSFoundation.def
 
@@ -106,10 +107,14 @@ TOOL_NAME = load-LSModel
 
 load-LSModel_OBJC_FILES = load-LSModel.m
 
+load-LSModel_INSTALL_DIR = $(OGO_TOOLS)
+
 # set compile flags and go
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
--include fhs.make

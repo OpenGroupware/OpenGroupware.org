@@ -47,6 +47,6 @@ load-LSModel_TOOL_LIBS += \
 	-lDOM -lSaxObjC
 
 # OS dependend stuff
-ifeq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
+ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
 load-LSModel_TOOL_LIBS += -liconv
 endif

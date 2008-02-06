@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 include ./Version
 
@@ -9,7 +9,8 @@ LIBRARY_NAME   = libLSAddress
 
 libLSAddress_PCH_FILE = common.h
 LSAddress_PCH_FILE = common.h
-libLSAddress_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libLSAddress_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libLSAddress_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libLSAddress_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libLSAddress_OBJC_FILES = \
@@ -55,7 +56,9 @@ LSAddress_OBJC_FILES = \
 LSAddress_RESOURCE_FILES += Defaults.plist Version
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include ../commandbundle.make
 -include GNUmakefile.postamble
--include fhs.make

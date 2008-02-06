@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 -include ../Version
 -include ./Version
@@ -10,10 +10,9 @@ COMMAND_BUNDLE = LSScheduler
 LSScheduler_PCH_FILE = common.h
 libOGoSchedulerTools_PCH_FILE = common.h
 
-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
-
 LIBRARY_NAME = libOGoSchedulerTools
-libOGoSchedulerTools_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoSchedulerTools_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoSchedulerTools_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoSchedulerTools_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoSchedulerTools_HEADER_FILES = \
@@ -73,7 +72,9 @@ LSScheduler_OBJC_FILES = \
 LSScheduler_RESOURCE_FILES += Version
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include ../commandbundle.make
 -include GNUmakefile.postamble
--include fhs.make
