@@ -34,6 +34,6 @@ ADDITIONAL_INCLUDE_DIRS += \
 SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)
 
 # OS dependend stuff
-ifeq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
+ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
 $(XMLRPCD_NAME)_TOOL_LIBS += -liconv
 endif

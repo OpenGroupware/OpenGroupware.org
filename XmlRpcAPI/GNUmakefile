@@ -1,12 +1,13 @@
 # GNUstep makefile
 
--include ../config.make
+include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ./Version
 
 XMLRPCD_NAME = ogo-xmlrpcd-1.1
 
 TOOL_NAME = $(XMLRPCD_NAME)
+$(XMLRPCD_NAME)_INSTALL_DIR = $(OGO_ADMIN_TOOLS)
 
 $(XMLRPCD_NAME)_OBJC_FILES = \
 	xmlrpcd.m			\
@@ -28,4 +29,3 @@ $(XMLRPCD_NAME)_SUBPROJECTS = \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
--include fhs.make
