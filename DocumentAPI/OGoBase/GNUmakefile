@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 include ./Version
 
@@ -10,7 +10,8 @@ BUNDLE_EXTENSION   = .ds
 
 libOGoBase_PCH_FILE = common.h
 OGoBase_PCH_FILE = common.h
-libOGoBase_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoBase_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoBase_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoBase_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoBase_HEADER_FILES = \
@@ -32,7 +33,9 @@ OGoBase_OBJC_FILES = 	\
 	SkyBaseBundleManager.m \
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
--include ../fhslib.make

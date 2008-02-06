@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 include ./Version
 
@@ -15,7 +15,8 @@ libOGoRawDatabase_HEADER_FILES_DIR         = .
 libOGoRawDatabase_HEADER_FILES_INSTALL_DIR = /OGoRawDatabase
 FHS_HEADER_DIRS = OGoRawDatabase
 
-libOGoRawDatabase_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoRawDatabase_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoRawDatabase_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoRawDatabase_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoRawDatabase_HEADER_FILES = 	\
@@ -41,6 +42,9 @@ endif
 testdb_OBJC_FILES = testdb.m
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 
@@ -49,4 +53,3 @@ include $(GNUSTEP_MAKEFILES)/tool.make
 endif
 
 -include GNUmakefile.postamble
--include ../fhslib.make

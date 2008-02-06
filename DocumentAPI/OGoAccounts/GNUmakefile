@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 include ./Version
 
@@ -10,7 +10,8 @@ BUNDLE_EXTENSION   = .ds
 
 libOGoAccounts_PCH_FILE = common.h
 OGoAccounts_PCH_FILE = common.h
-libOGoAccounts_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoAccounts_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoAccounts_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoAccounts_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoAccounts_HEADER_FILES = \
@@ -39,7 +40,9 @@ OGoAccounts_OBJC_FILES = SkyAccountsBundleManager.m
 OGoAccounts_RESOURCE_FILES += Defaults.plist
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
--include ../fhslib.make

@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 include ./Version
 
@@ -11,7 +11,8 @@ BUNDLE_EXTENSION   = .ds
 libOGoDatabaseProject_PCH_FILE = common.h
 OGoDatabaseProject_PCH_FILE = common.h
 
-libOGoDatabaseProject_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoDatabaseProject_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoDatabaseProject_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoDatabaseProject_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoDatabaseProject_HEADER_FILES = \
@@ -63,7 +64,9 @@ OGoDatabaseProject_OBJC_FILES += 	\
 	SkyDocumentAccessHandler.m	\
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
--include ../fhslib.make

@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 include ./Version
 
@@ -11,7 +11,8 @@ BUNDLE_EXTENSION   = .ds
 libOGoContacts_PCH_FILE = common.h
 OGoContacts_PCH_FILE = common.h
 
-libOGoContacts_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoContacts_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoContacts_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoContacts_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoContacts_HEADER_FILES = \
@@ -68,9 +69,14 @@ endif
 test_ogocds_OBJC_FILES           += test_ogocds.m
 test_ogocds_addrfetch_OBJC_FILES += test_ogocds_addrfetch.m
 
+test_ogocds_INSTALL_DIR	= $(OGO_TOOLS)
+test_ogocds_addrfetch_INSTALL_DIR = $(OGO_TOOLS)
+
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
--include ../fhslib.make

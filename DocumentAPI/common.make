@@ -6,9 +6,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include $(OGoROOT)/Version
 include ./Version
 
-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
-
-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/DataSources/
+BUNDLE_INSTALL_DIR = $(OGO_DATASOURCES)
 
 ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol
 

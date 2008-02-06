@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 include ./Version
 
@@ -11,7 +11,8 @@ BUNDLE_EXTENSION   = .ds
 libOGoJobs_PCH_FILE = common.h
 OGoJobs_PCH_FILE = common.h
 
-libOGoJobs_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoJobs_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoJobs_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoJobs_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoJobs_HEADER_FILES = 				\
@@ -31,14 +32,15 @@ libOGoJobs_OBJC_FILES = 				\
 
 libOGoJobs_HEADER_FILES_DIR         = .
 libOGoJobs_HEADER_FILES_INSTALL_DIR = /OGoJobs
-FHS_HEADER_DIRS = OGoJobs
 
 OGoJobs_OBJC_FILES = \
 	SkyJobsBundleManager.m 	\
 	SkyJobGlobalIDResolver.m\
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
--include ../fhslib.make

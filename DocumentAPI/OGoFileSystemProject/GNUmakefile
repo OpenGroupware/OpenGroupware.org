@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 include ./Version
 
@@ -11,7 +11,8 @@ BUNDLE_EXTENSION = .ds
 libOGoFileSystemProject_PCH_FILE = common.h
 OGoFileSystemProject_PCH_FILE = common.h
 
-libOGoFileSystemProject_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoFileSystemProject_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoFileSystemProject_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoFileSystemProject_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoFileSystemProject_HEADER_FILES = 	\
@@ -41,7 +42,9 @@ OGoFileSystemProject_OBJC_FILES += \
 	SkyFSProjectModule.m	\
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
--include ../fhslib.make

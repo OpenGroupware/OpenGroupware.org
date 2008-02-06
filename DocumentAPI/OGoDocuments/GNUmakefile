@@ -1,6 +1,6 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include ../common.make
 include ./Version
 
@@ -41,10 +41,13 @@ libOGoDocuments_HEADER_FILES_DIR         = .
 libOGoDocuments_HEADER_FILES_INSTALL_DIR = /OGoDocuments
 FHS_HEADER_DIRS = OGoDocuments
 
-libOGoDocuments_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoDocuments_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoDocuments_INSTALL_DIR=$(OGO_SYSLIBDIR)
 libOGoDocuments_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 include $(GNUSTEP_MAKEFILES)/library.make
 -include GNUmakefile.postamble
--include ../fhslib.make
