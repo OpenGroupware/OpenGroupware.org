@@ -1,11 +1,11 @@
 # GNUstep makefile
 
--include ../../config.make
+include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 
 BUNDLE_NAME        = OGo
 BUNDLE_EXTENSION   = .model
-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/
+BUNDLE_INSTALL_DIR = $(OGO_COMMANDS)
 
 #ADDITIONAL_CPPFLAGS += -DUSE_EO_RECORDS=1
 
@@ -36,4 +36,3 @@ OGo_INCLUDE_DIRS = -IHeaders
 
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
--include fhs.make
