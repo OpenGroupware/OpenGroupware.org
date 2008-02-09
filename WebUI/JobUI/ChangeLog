@@ -1,13 +1,17 @@
+2008-02-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved LSWJobImport to recycler, removed from bundle-info.plist
+	  (v5.3.56)
+
 2007-11-14 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
-	* GNUmakefile: Remove reference to LSJobImport.
-	  (v5.3.55)
+	* 5.3.55
+
+	* GNUmakefile: Remove reference to LSWJobImport.
 
 	* LSWJobEditor.m: Remove old isParentJob stuff.
-	  (v5.3.55)
 
 	* LSWJobs.m: Remove old control job stuff.
-	  (v5.3.55)
 
 2007-04-26 Olivier Hallot <olivier@ig.com.br>
 
