@@ -1,6 +1,6 @@
 # Version file
 
-SUBMINOR_VERSION:=10
+SUBMINOR_VERSION:=12
 
 # v5.3.10 requires libLSFoundation v5.3.129
 # v5.0.2  requires LSProject       v5.0.27

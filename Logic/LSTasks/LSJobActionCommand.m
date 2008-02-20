@@ -111,6 +111,7 @@ extern NSString *LSWJobHasChanged;
                 @"object", [self object],
                 @"percentComplete", @"100", 
 		@"executantId", [self _loginAccountIdInContext:_context],
+		@"completionDate", [NSCalendarDate calendarDate],
 		nil);
 
   [self _addHistory:LSJobDone inContext:_context];

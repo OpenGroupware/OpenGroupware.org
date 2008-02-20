@@ -1,3 +1,8 @@
+2008-02-19  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSJobActionCommand.m: Set completion date on done action.
+	  Should close Bug#1296. (v5.3.12)
+
 2007-11-14  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSFilterArchivedJobCommand.m: Removed old control job stuff. 
