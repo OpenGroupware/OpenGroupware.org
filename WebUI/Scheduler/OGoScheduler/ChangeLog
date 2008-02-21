@@ -1,3 +1,13 @@
+2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.62
+
+	* OGoAptFormLetter.m: added ability to set content-disposition in
+	  config
+
+	* Defaults.plist: added filename/contenttype settings to formletter
+	  configuration
+
 2007-12-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkySchedulerSelectPanel.m: do not declare getpid(), already done

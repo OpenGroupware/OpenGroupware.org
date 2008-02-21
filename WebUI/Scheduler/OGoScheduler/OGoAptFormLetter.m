@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006 Helge Hess
+  Copyright (C) 2006-2008 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -44,6 +44,7 @@
 #include <NGObjWeb/WORequest.h>
 #include <NGObjWeb/WOResourceManager.h>
 #include <LSFoundation/LSFoundation.h>
+#include <NGExtensions/NSString+Ext.h>
 #include "common.h"
 
 @implementation OGoAptFormLetter
@@ -292,8 +293,9 @@ static NSArray *aptKeys    = nil;
     
     kw = [key componentsSeparatedByString:@", "];
     for (i = 0, count = [kw count]; i < count; i++) {
-      [_md setObject:[kw objectAtIndex:i] 
-	   forKey:[NSString stringWithFormat:@"keyword%i", i + 1]];
+      NSString *s = [[NSString alloc] initWithFormat:@"keyword%i", i + 1];
+      [_md setObject:[kw objectAtIndex:i] forKey:s];
+      [s release]; s = nil;
     }
   }
 }
@@ -302,7 +304,8 @@ static NSArray *aptKeys    = nil;
 /* content generation */
 
 - (NSString *)formLetterContentType {
-  return @"text/plain";
+  NSString *s = [[self formLetterDefinition] objectForKey:@"contenttype"];
+  return [s isNotEmpty] ? s : @"text/plain";
 }
 
 - (void)appendLine:(id)_line withBindings:(NSDictionary *)_bindings
@@ -527,6 +530,10 @@ static int sortContact(id eo1, id eo2, void *ctx) {
   
   r = [[self context] response];
   [r setHeader:[self formLetterContentType] forKey:@"content-type"];
+  
+  s = [[self formLetterDefinition] objectForKey:@"contentdisposition"];
+  if ([s isNotEmpty])
+    [r setHeader:s forKey:@"content-disposition"];
   
   [self appendLine:[self preamble] withBindings:nil toResponse:r];
   
