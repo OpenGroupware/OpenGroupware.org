@@ -1,3 +1,7 @@
+2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* German.lproj/PersonsUI.strings: added new salutation codes
+
 2007-09-21  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
 
 	* English.lproj|German.lproj/OGoProject.strings: added "operator",
@@ -6,15 +10,15 @@
 
 2007-03-17  Per Jensen  <per@net-es.dk>
 
-  * updated Danish translation
+	* updated Danish translation
 
 2007-03-10  Per Jensen  <per@net-es.dk>
 
-  * work on Danish translation
+	* work on Danish translation
 
 2007-03-05  Samuli Seppaenen  <samuli.seppanen@tietoteema.fi>
 
-  * Added Finish translation
+	* Added Finish translation
 
 2007-01-18  Helge Hess  <helge.hess@opengroupware.org>
 
