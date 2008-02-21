@@ -1,3 +1,8 @@
+2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoCompanyAccessHandler.m: minor code cleanups, added a few comments
+	  (v5.3.97)
+
 2007-06-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetCompanyForMemberCommand.m: fixed a typo introduced in 5.3.94
