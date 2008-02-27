@@ -1,8 +1,11 @@
-# $Id: README 1 2004-08-20 11:17:52Z znek $
-
 RSS Support for ZideStore
 =========================
 
 Write some text on RSS support for ZideStore ...
 
 Initial author: Bjoern Stierand.
+
+This attaches the 'rss' method to SxFolder and SxTaskFolder objects.
+
+Eg they should be available on:
+  http://YOURHOST/zidestore/dav/helge/Projects/P10001/Documents/rss

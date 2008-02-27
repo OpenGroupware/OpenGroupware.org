@@ -1,3 +1,14 @@
+2008-02-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.5.8
+
+	* SxRSSRenderer.m: deliver RSS in UTF-8. Properly set content-length
+	  and content-type
+
+	* fixed MacOS 10.5 compile warnings
+
+	* GNUmakefile: properly link against libZSBackend
+
 2007-06-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxRSSRenderer.m: fixed a gcc4 warning (v1.5.7)
