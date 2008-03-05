@@ -481,11 +481,12 @@
     start = [[NSDate date] timeIntervalSince1970];
 
   if (arg4 == nil) {
-    flags = [NSMutableDictionary new];
+    flags = [NSMutableDictionary dictionaryWithCapacity:4];
     if ([self isDebug])
       [self logWithFormat:@"No flags provided, assuming an empty set of flags."];
   } else flags = [arg4 mutableCopy];
 
+  /* if no limit flag is provided we assume a limit of 150 */
   if ([flags objectForKey:@"limit"] == nil) {
     if ([self isDebug])
       [self logWithFormat:@"No limit in flags, assuming default."];
@@ -493,78 +494,95 @@
   }
 
   if ([arg1 isEqualToString:@"Contact"]) {
+    /* SEARCH FOR CONTACTS */
     result = [self _searchForContacts:arg2 withDetail:arg3 withFlags:flags];
     if ([[flags objectForKey:@"revolve"] isEqualToString:@"YES"]) {
+      id                   tmp1, tmp2, enterpriseId;
       NSMutableArray      *tmpList;
-      id		              tmp1, tmp2, enterpriseId;
       NSEnumerator        *enumerator1, *enumerator2;
 
-			[self logWithFormat:@"revolving enterprises for %d contacts",
-              [result count]];
+      if ([self isDebug])
+        [self logWithFormat:@"revolving enterprises for %d contacts",
+           [result count]];
       tmpList = [NSMutableArray arrayWithCapacity:[result count]];
       enumerator1 = [result objectEnumerator];
       while ((tmp1 = [enumerator1 nextObject]) != nil) {
-        [self logWithFormat:@"revolving enterprises for contact#%@",
-                [tmp1 objectForKey:@"objectId"]];
+        if ([self isDebug])
+          [self logWithFormat:@"revolving enterprises for contact#%@",
+             [tmp1 objectForKey:@"objectId"]];
         if ([tmp1 objectForKey:@"_ENTERPRISES"] != nil) {
           enumerator2 = [[tmp1 objectForKey:@"_ENTERPRISES"] objectEnumerator];
           while ((tmp2 = [enumerator2 nextObject]) != nil) {
-            [self logWithFormat:@"contact assigned to enterprise#%@",
-                    [tmp2 objectForKey:@"targetObjectId"]];
+            if ([self isDebug])
+              [self logWithFormat:@"contact assigned to enterprise#%@",
+                 [tmp2 objectForKey:@"targetObjectId"]];
             enterpriseId = [tmp2 objectForKey:@"targetObjectId"];
             if([tmpList indexOfObjectIdenticalTo:enterpriseId] == NSNotFound)
               [tmpList addObject:enterpriseId];
           } /* end while tmp2 */
         } /* end if-tmp1-has-enterprises */
       } /* end while tmp1 */
-      [self logWithFormat:@"requesting %d enterprises for revolution",
-              [tmpList count]];
+      if ([self isDebug])
+        [self logWithFormat:@"requesting %d enterprises for revolution",
+           [tmpList count]];
       if ([tmpList count] > 0)
         [result addObjectsFromArray:[self _getEnterprisesForKeys:tmpList withDetail:arg2]];
     } /* end if-revolve-requested */
   } else if ([arg1 isEqualToString:@"Enterprise"]) {
+    /* SEARCH FOR ENTERPRISE */
     result = [self _searchForEnterprises:arg2 withDetail:arg3 withFlags:flags];
     if ([[flags objectForKey:@"revolve"] isEqualToString:@"YES"]) {
       NSMutableArray      *tmpList;
-      id		              tmp1, tmp2, contactId;
+      id	           tmp1, tmp2, contactId;
       NSEnumerator        *enumerator1, *enumerator2;
 
-			[self logWithFormat:@"revolving contacts for %d enterprises",
-              [result count]];
+      if ([self isDebug])
+        [self logWithFormat:@"revolving contacts for %d enterprises",
+          [result count]];
       tmpList = [NSMutableArray arrayWithCapacity:[result count]];
       enumerator1 = [result objectEnumerator];
       while ((tmp1 = [enumerator1 nextObject]) != nil) {
-        [self logWithFormat:@"revolving contacts for enterprise#%@",
-                [tmp1 objectForKey:@"objectId"]];
+        if ([self isDebug])
+          [self logWithFormat:@"revolving contacts for enterprise#%@",
+             [tmp1 objectForKey:@"objectId"]];
         if ([tmp1 objectForKey:@"_CONTACTS"] != nil) {
           enumerator2 = [[tmp1 objectForKey:@"_CONTACTS"] objectEnumerator];
           while ((tmp2 = [enumerator2 nextObject]) != nil) {
-            [self logWithFormat:@"enterprise assigned to contact#%@",
-                    [tmp2 objectForKey:@"targetObjectId"]];
+            if ([self isDebug])
+              [self logWithFormat:@"enterprise assigned to contact#%@",
+                 [tmp2 objectForKey:@"targetObjectId"]];
             contactId = [tmp2 objectForKey:@"targetObjectId"];
             if([tmpList indexOfObjectIdenticalTo:contactId] == NSNotFound)
               [tmpList addObject:contactId];
           } /* end while tmp2 */
         } /* end if-tmp1-has-enterprises */
       } /* end while tmp1 */
-      [self logWithFormat:@"requesting %d contacts for revolution",
-              [tmpList count]];
+      if ([self isDebug])
+        [self logWithFormat:@"requesting %d contacts for revolution",
+           [tmpList count]];
       if ([tmpList count] > 0)
         [result addObjectsFromArray:[self _getContactsForKeys:tmpList withDetail:arg2]];
     } /* end if-revolve-requested */
   } else if ([arg1 isEqualToString:@"Appointment"])
+    /* SEARCH FOR APPOINTMENTS */
     result = [self _searchForAppointments:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Task"])
+    /* SEARCH FOR TASKS */
     result = [self _searchForTasks:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Project"])
+    /* SEARCH FOR PROJECTS */
     result = [self _searchForProjects:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Resource"])
+    /* SEARCH FOR RESOURCES */
     result = [self _searchForResources:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Team"])
+    /* SEARCH FOR TEAMS */
     result = [self _searchForTeams:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"TimeZones"])
+    /* SEARCH FOR TIMEZONES */
     result = [self _searchForTimeZones:arg2 withDetail:arg3 withFlags:flags];
   else if ([arg1 isEqualToString:@"Time"]) {
+    /* SEARCH FOR TIME */
     result = [NSArray arrayWithObject:[self _getServerTime]];
   } else {
     [self warnWithFormat:@"search for unknown entity, returning empty array"];
@@ -664,6 +682,31 @@
                   @"userTime",
                nil];
    return entity;
+} /* end _getServerTime */
+
+-(id)getAuditEntriesAction {
+  NSArray           *logs;
+  NSEnumerator      *enumerator;
+  NSDictionary      *logEntry;
+  NSMutableArray    *results;
+
+  logs = [[self getCTX] runCommand:@"log::since",
+                                   @"logId", arg1,
+                                   nil];
+  results = [NSMutableArray arrayWithCapacity:150];
+  enumerator = [logs objectEnumerator];
+  while ((logEntry = [enumerator nextObject]) != nil) {
+    [results addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+       [logEntry valueForKey:@"logId"], @"objectId",
+       @"logEntry", @"entityName",
+       [logEntry valueForKey:@"creationDate"], @"actionDate",
+       [self NIL:[logEntry valueForKey:@"logText"]], @"message",
+       [logEntry valueForKey:@"action"], @"action",
+       [logEntry valueForKey:@"accountId"], @"actorObjectId",
+       [logEntry valueForKey:@"objectId"], @"entityObjectId",
+       nil]];
+  }
+  return results;
 }
 
 @end

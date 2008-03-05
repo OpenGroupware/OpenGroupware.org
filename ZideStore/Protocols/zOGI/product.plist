@@ -29,7 +29,7 @@
         protectedBy = "View";
         actionClass = "zOGIRPCAction";
         actionName = "getObjectsByObjectId";
-        arguments = { positionalKeys = ( arg1, arg2 ); };
+        arguments = { positionalKeys = ( arg1, arg2, arg3 ); };
        };
       "zogi.getObjectById" = {
         protectedBy = "View";
@@ -84,6 +84,12 @@
         actionClass = "zOGIRPCAction";
         actionName = "getNotifications";
         arguments = { positionalKeys = ( arg1, arg2 ); };
+       };
+      "zogi.getAuditEntries" = {
+        protectedBy = "View";
+        actionClass = "zOGIRPCAction";
+        actionName = "getAuditEntries";
+        arguments = { positionalKeys = ( arg1 ); };
        }
       };
     };
