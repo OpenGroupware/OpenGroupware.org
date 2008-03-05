@@ -1,3 +1,9 @@
+2008-03-05  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSQueryLogsSince.m:  allows retrieval of log entries by id,  clients 
+	  cal walk through all the changes performed on the server since a
+	  specified entry. Relates to bug#1736. (v5.4.31)
+
 2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSAddLogCommand.m: allow primarykeys and globalids in the
