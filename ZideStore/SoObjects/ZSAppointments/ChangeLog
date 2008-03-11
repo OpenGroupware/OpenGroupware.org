@@ -1,3 +1,7 @@
+2008-03-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAppointmentFolder.m: added gdavComponentSet (v1.5.111)
+
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.5.110
