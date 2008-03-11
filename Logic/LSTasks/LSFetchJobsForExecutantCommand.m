@@ -78,7 +78,7 @@
   qualifier = [[EOSQLQualifier allocWithZone:[self zone]]
                                initWithEntity:[self destinationEntity]
                                qualifierFormat:
-                               @"((%A <> '%@') AND (%A IN (%@))",
+                               @"((%A <> '%@') AND (%A IN (%@)))",
                                @"jobStatus", LSJobArchived,
                                @"executantId", s,
                                nil];
