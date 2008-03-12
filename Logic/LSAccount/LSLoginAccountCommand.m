@@ -104,6 +104,7 @@
   NSString       *userName            = nil;
   EOSQLQualifier *authQualifier;
   EOSQLQualifier *isArchivedQualifier;  
+  NSAutoreleasePool *p;
 
   static int UseSkyrixLoginForImap = -1;
 
@@ -112,6 +113,7 @@
       [[NSUserDefaults standardUserDefaults]
                        boolForKey:@"UseSkyrixLoginForImap"]?1:0;
   }
+  p = [[NSAutoreleasePool alloc] init];
   
   userName      = [self->recordDict valueForKey:@"login"];
   authQualifier = [[EOSQLQualifier alloc] initWithEntity:[self entity]
@@ -147,8 +149,6 @@
     [authQualifier       release]; authQualifier       = nil;
     [isArchivedQualifier release]; isArchivedQualifier = nil;
 
-    [dbChannel release];
-    [result release];
   }
   accounts = [self returnValue];
 
@@ -220,8 +220,6 @@
 
       if (![cryptedPwd isEqualToString:accountPassword])
         account = nil; // password didn't match
-
-      [cryptedPwd release];
     }
   }
 
@@ -264,9 +262,7 @@
     }
     [defs release]; defs = nil;
   }
-  [userName release];
-  [authQualifier release];
-  [isArchivedQualifier release];
+  [p release];
 }
 
 /* accessors */

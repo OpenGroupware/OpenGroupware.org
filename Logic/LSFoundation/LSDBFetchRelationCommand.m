@@ -244,7 +244,9 @@ static int RelMaxSearchCount = 0;
 - (void)_executeInContext:(id)_context {
   NSString          *relKey;
   NSArray           *rels;
+  NSAutoreleasePool *pool;
 
+  pool   = [[NSAutoreleasePool alloc] init];
   relKey = [self relationKey];
   rels   = [self _fetchRelations];
   
@@ -279,16 +281,11 @@ static int RelMaxSearchCount = 0;
 	[obj takeValue:relObj forKey:relKey];
       }
     }
-   [srcKey release];
-   [destKey release];
-   [relKey release];
-   [objs release];
   }
   if (relKey == nil)
     [self setReturnValue:rels];
   
-  [relKey release];
-  [rels release];
+  [pool release]; pool = nil;
 }
 
 /* accessors */
