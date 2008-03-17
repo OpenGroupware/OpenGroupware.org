@@ -102,6 +102,13 @@ static NSArray *aptKeys    = nil;
 - (NSString *)quoteFields {
   return [[self formLetterDefinition] valueForKey:@"quoteFields"];
 }
+- (NSString *)quoteQuotes {
+  return [[self formLetterDefinition] valueForKey:@"quoteQuotes"];
+}
+- (BOOL)doubleQuoteQuote {
+  return [[[self formLetterDefinition] valueForKey:@"doubleQuoteQuote"]
+	   boolValue];
+}
 
 - (id)preamble {
   return [[self formLetterDefinition] valueForKey:@"preamble"];
@@ -316,15 +323,23 @@ static NSArray *aptKeys    = nil;
 
   if (![_line isNotNull])
     return;
-  
+
   if ([_line isKindOfClass:[NSArray class]]) {
-    /* special support for CSV */
+    /* Line is an array, special support for CSV. Each line item is treated
+     * as a column.
+     */
     unsigned i, count;
     NSString *fs, *ls, *quote;
+    NSString *quoteQuote = nil;
     
-    fs    = [self fieldSeparator];
-    ls    = [self lineSeparator];
-    quote = [self quoteFields];
+    fs    = [self fieldSeparator]; // eg '\t'
+    ls    = [self lineSeparator];  // eg '\n'
+    quote = [self quoteFields];    // eg '"'
+    if ([self doubleQuoteQuote])
+      quoteQuote = quote;
+    if (quoteQuote == nil)
+      quoteQuote = @"\\";
+    
 
     if (debugOn) {
       [self debugWithFormat:@"  field separator: %@", 
@@ -333,6 +348,7 @@ static NSArray *aptKeys    = nil;
 	      [ls stringByApplyingCEscaping]];
     }
     
+    /* for each column */
     for (i = 0, count = [_line count]; i < count; i++) {
       NSString *pat;
       
@@ -345,34 +361,54 @@ static NSArray *aptKeys    = nil;
 	pat = [pat stringByReplacingVariablesWithBindings:_bindings
 		   stringForUnknownBindings:@""];
       }
-      
+
+      /* add opening quote char */
+
       if ([quote isNotEmpty]) { /* open quote */
+	/* check whether the column value contains the quote */
+      
 	if ([pat rangeOfString:quote].length > 0) {
 	  /* we quote the quote with a backslash "a\"bc" */
 	  // TODO: we might want to have this configurable?
 	  pat = [pat stringByReplacingString:quote
-		     withString:[@"\\" stringByAppendingString:quote]];
+		     withString:[quoteQuote stringByAppendingString:quote]];
 	}
 	
 	[_r appendContentString:quote];
       }
+
+      /* add column value */
       
       if (pat != nil) {
 	/* Note: if the content contains the field separator, use quotes! */
 	// TODO: we might want to add some escaping in addition?
-	if (![quote isNotEmpty]) {
-	  if ([pat rangeOfString:fs].length > 0) {
+	NSString *autoQuotes = nil;
+	
+	if (![quote isNotEmpty]) { /* quote is empty */
+	  if ([fs length] > 0 && [pat rangeOfString:fs].length > 0) {
 	    [self warnWithFormat:
 		    @"found field separator in content, use quotes!"];
+	    autoQuotes = @"\"";
 	  }
-	  if ([pat rangeOfString:ls].length > 0) {
+	  if ([ls length] > 0 && [pat rangeOfString:ls].length > 0) {
 	    [self warnWithFormat:
 		    @"found line separator in content, use quotes!"];
+	    autoQuotes = @"\"";
+	  }
+	  
+	  if ([autoQuotes isNotEmpty] &&
+	      [pat rangeOfString:autoQuotes].length > 0) {
+	    pat = [pat stringByReplacingString:quote
+		       withString:[quoteQuote stringByAppendingString:quote]];
 	  }
 	}
 	
+	if ([autoQuotes isNotEmpty]) [_r appendContentString:autoQuotes];
 	[_r appendContentString:pat];
+	if ([autoQuotes isNotEmpty]) [_r appendContentString:autoQuotes];
       }
+      
+      /* add closing quote char */
       
       if ([quote isNotEmpty]) /* close quote */
 	[_r appendContentString:quote];

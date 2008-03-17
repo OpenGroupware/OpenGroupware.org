@@ -192,11 +192,13 @@
     OOo = {
       filename           = "OOoFormLetter.csv";
       contenttype        = "text/plain";
-      contentdisposition = "attachment; filename=\"OOoFormLetter.csv\"";
+      //contentdisposition = "attachment; filename=\"OOoFormLetter.csv\"";
 
       fieldSeparator = "\t";
       lineSeparator  = "\n";
       quoteFields    = "\"";
+      doubleQuoteQuote = YES;
+
       /* dateformat     = "%d.%m.%Y"; */
       preamble = (
         "Title", "First Name", "Last Name", "Company Name",

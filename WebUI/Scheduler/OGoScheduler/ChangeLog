@@ -1,3 +1,8 @@
+2008-03-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoAptFormLetter.m: added quoting of quotes (doubleQuoteQuote or
+	  quoteQuotes config keys) (v5.3.63)
+
 2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.62
