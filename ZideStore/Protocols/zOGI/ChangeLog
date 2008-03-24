@@ -26,6 +26,9 @@
 	  specified in request return the base64 encoded contents of the
 	  Document entity in the content attribute. (v1.5.42)
 
+	* zOGIAction+Note.m: Note entityName should be "note" not "Note".
+	  (v1.5.43)
+
 2008-03-05 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIRPCAction.m: Added getAuditEntries support, clients can 

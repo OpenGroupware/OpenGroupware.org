@@ -47,7 +47,7 @@
 -(id)_renderNote:(NSDictionary *)_note {
   return [NSDictionary dictionaryWithObjectsAndKeys:
     [_note valueForKey:@"documentId"], @"objectId",
-    @"Note", @"entityName",
+    @"note", @"entityName",
     [_note valueForKey:@"title"], @"title",
     [_note valueForKey:@"firstOwnerId"], @"creatorObjectId",
     [_note valueForKey:@"currentOwnerId"], @"ownerObjectId",
