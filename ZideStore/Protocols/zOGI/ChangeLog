@@ -1,3 +1,31 @@
+2008-03-24 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Appointment.m: Minor cleanup. (v1.5.42)
+
+	* zOGIAction+Enterprise.m: Added elapsted time to Enterprise
+	  rendering if debugging enabled. (v1.5.42)
+
+	* zOGIAction.h|m: Added support for zOGIProfileEnabled default
+	  to separate debugging and profiling. (v1.5.42)
+
+	* zOGIAction+Task.m: _getTaskForKey should only return one
+	  task and not an array of one task. (v1.5.42)
+
+	* zOGIAction+Notifications.h|m: Add support for flags to
+	  the getNotifications method.  Allow the noCommit flags so
+	  that notifications can be retrieved without clearing the
+	  notifications. (v1.5.42)
+
+	* zOGIAction+Project.m: Never return a null rootDocument.  A 
+	  zero equals no folder assigned;  possibly this is a bug in
+	  Logic?  (v1.5.42)
+
+	* zOGIRPCAction.m: Support flags in getNotifications. (v1.5.42)
+
+	* zOGIAction+Document.m: If zOGI_INCLUDE_CONTENTS detail is 
+	  specified in request return the base64 encoded contents of the
+	  Document entity in the content attribute. (v1.5.42)
+
 2008-03-05 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIRPCAction.m: Added getAuditEntries support, clients can 

@@ -155,7 +155,7 @@
      to perform bulk get from Logic. */
   NSMutableArray  *remainder = nil;
 
-  if ([self isDebug])
+  if ([self isProfile])
     start = [[NSDate date] timeIntervalSince1970];
 
   /* if arg1 is not an array then make a single object array
@@ -253,7 +253,7 @@
   }
 
   /* log command duration */
-  if ([self isDebug]) {
+  if ([self isProfile]) {
     end = [[NSDate date] timeIntervalSince1970];
     [self logWithFormat:@"getObjectsByObjectId returning %d objects",
             [results count]];
@@ -477,7 +477,7 @@
   NSMutableDictionary *flags;
   NSTimeInterval       start, end;
 
-  if ([self isDebug]) 
+  if ([self isProfile]) 
     start = [[NSDate date] timeIntervalSince1970];
 
   if (arg4 == nil) {
@@ -604,7 +604,7 @@
   }
  
   /* log command duration */
-  if ([self isDebug]) {
+  if ([self isProfile]) {
     end = [[NSDate date] timeIntervalSince1970];
     [self logWithFormat:@"searchForObjects returning %d objects",
             [result count]];
@@ -613,19 +613,28 @@
     [self logWithFormat:@"end searchForObjects"];
   } 
  
- [flags release];
+ ///[flags release];
  return result;
 } /* end searchForObjectsAction */
 
 -(id)getNotificationsAction {
+  NSMutableDictionary *flags;
+
   if ([[self _getCompanyId] intValue] != 10000)
     return [NSException exceptionWithHTTPStatus:500
              reason:@"RPC only available to superuser."];
+
+  if (arg3 == nil) {
+    flags = [NSMutableDictionary new];
+    if ([self isDebug])
+      [self logWithFormat:@"No flags provided, assuming an empty set of flags."];
+  } else flags = [arg3 mutableCopy];
+
   if ([arg1 isKindOfClass:[NSString class]])
     arg1 = [self _makeCalendarDate:arg1];
   if ([arg2 isKindOfClass:[NSString class]])
     arg2 = [self _makeCalendarDate:arg2];
-  return [self _getNotifications:arg1 until:arg2];
+  return [self _getNotifications:arg1 until:arg2 withFlags:flags];
 } /* end getNotificationsAction */
 
 -(id)_searchForTimeZones:(id)_criteria 

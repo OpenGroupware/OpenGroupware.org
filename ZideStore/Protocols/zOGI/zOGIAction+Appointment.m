@@ -742,7 +742,7 @@
       /* readAccessTeamObjectId -> accessTeamId 
          A blank string or a value of zero nulls the attribute. */
       tmp = nil;
-      if  ([value isKindOfClass:[NSString class]]) {
+      if ([value isKindOfClass:[NSString class]]) {
         if ([value length] == 0)
           tmp = intObj(0);
         else tmp = intObj([value intValue]);

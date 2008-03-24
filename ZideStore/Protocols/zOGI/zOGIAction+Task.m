@@ -118,7 +118,7 @@
 } /* end _getTasksForKeys */
 
 -(id)_getTaskForKey:(id)_pk withDetail:(NSNumber *)_detail {
-  return [self _getTasksForKeys:_pk withDetail:intObj(0)];
+  return [[self _getTasksForKeys:_pk withDetail:_detail] objectAtIndex:0];
 } /* end _getTasksForKey */
 
 -(id)_getTaskForKey:(id)_pk {
@@ -143,6 +143,7 @@
 
   tasks = [[self getCTX] runCommand:listCommand,
                           @"gid", [[self getCTX] valueForKey:LSAccountKey],
+                          @"limit", intObj(65535),
                           nil];
   taskList = [self _renderTasks:tasks withDetail:_detail];
   return taskList;

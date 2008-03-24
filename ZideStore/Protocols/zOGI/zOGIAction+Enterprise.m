@@ -34,7 +34,10 @@
   NSMutableArray      *result;
   EOGenericRecord     *eoEnterprise;
   int                  count;
+  NSTimeInterval       start;
 
+  if ([self isDebug])
+    start = [[NSDate date] timeIntervalSince1970];
   result = [NSMutableArray arrayWithCapacity:[_enterprises count]];
   for (count = 0; count < [_enterprises count]; count++) {
     eoEnterprise = [_enterprises objectAtIndex:count];
@@ -82,6 +85,9 @@
     } /*  End detail-is-required  */
     [self _stripInternalKeys:[result objectAtIndex:count]];
   } /* End rendering loop */
+  if ([self isDebug]) 
+    [self logWithFormat:@"_renderEnterprises consumed %.3f seconds",
+            ([[NSDate date] timeIntervalSince1970] - start)];
   return result;
 } /* end _renderEnterprises */
 
