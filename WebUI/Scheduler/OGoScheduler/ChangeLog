@@ -1,3 +1,8 @@
+2008-03-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoAptFormLetter.m: added support for extended telephone
+	  attributes (eg 01_tel_info) (v5.3.64)
+
 2008-03-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoAptFormLetter.m: added quoting of quotes (doubleQuoteQuote or

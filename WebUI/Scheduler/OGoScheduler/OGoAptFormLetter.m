@@ -207,12 +207,33 @@ static NSArray *aptKeys    = nil;
   }
 }
 
+- (void)applyBindingsOfTelephone:(id)_tel
+  onDictionary:(NSMutableDictionary *)_md
+{
+  static NSString *keys[] = {
+    @"number", @"info", @"url", @"dbStatus", nil
+  };
+  NSString *p;
+  unsigned i;
+  
+  p = [[_tel valueForKey:@"type"] stringByAppendingString:@"_"];
+  for (i = 0; keys[i] != nil; i++) {
+    NSString *pk;
+    
+    pk = [p stringByAppendingString:keys[i]];
+    [_md setObject:[self stringValueForObject:[_tel valueForKey:keys[i]] 
+			 ofKey:pk]
+	 forKey:pk];
+  }
+}
+
 - (WOResourceManager *)resourceManager {
   return [[[self context] application] resourceManager];
 }
 
 - (void)applyBindingsForCompany:(NSDictionary *)_company
   addresses:(NSArray *)_addresses
+  telephones:(NSArray *)_tels
   ofAppointment:(id)_aptEO
   withProperties:(NSDictionary *)_aptProps
   onDictionary:(NSMutableDictionary *)_md
@@ -221,7 +242,7 @@ static NSArray *aptKeys    = nil;
   NSDictionary *d;
   NSEnumerator *e;
   NSString     *key;
-  id address;
+  id address, tel;
   
   rm = [self resourceManager];
   
@@ -273,6 +294,12 @@ static NSArray *aptKeys    = nil;
   e = [_addresses objectEnumerator];
   while ((address = [e nextObject]) != nil)
     [self applyBindingsOfAddress:address onDictionary:_md];
+  
+  /* telephones */
+
+  e = [_tels objectEnumerator];
+  while ((tel = [e nextObject]) != nil)
+    [self applyBindingsOfTelephone:tel onDictionary:_md];
   
   /* appointment properties */
   
@@ -466,12 +493,17 @@ static int sortContact(id eo1, id eo2, void *ctx) {
   for (i = 0, count = [_contacts count]; i < count; i++) {
     NSDictionary *companyAttrs;
     NSArray      *addresses;
-
+    NSArray      *tels;
+    
     companyAttrs = [_contacts objectAtIndex:i];
     
     /* fetch addresses of company */
     
     addresses = [self->cmdctx runCommand:@"address::get",
+		     @"companyId",  [companyAttrs valueForKey:@"companyId"],
+		     @"returnType", intObj(LSDBReturnType_ManyObjects),
+		     nil];
+    tels      = [self->cmdctx runCommand:@"telephone::get",
 		     @"companyId",  [companyAttrs valueForKey:@"companyId"],
 		     @"returnType", intObj(LSDBReturnType_ManyObjects),
 		     nil];
@@ -495,7 +527,8 @@ static int sortContact(id eo1, id eo2, void *ctx) {
     
     [bindings removeAllObjects];
     
-    [self applyBindingsForCompany:companyAttrs addresses:addresses
+    [self applyBindingsForCompany:companyAttrs
+	  addresses:addresses telephones:tels
 	  ofAppointment:_aptEO withProperties:_aptProps
 	  onDictionary:bindings];
     
