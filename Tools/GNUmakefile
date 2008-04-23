@@ -26,6 +26,9 @@ TOOL_NAME += \
 	ogo-qsearch-persons
 
 TOOL_NAME += \
+	ogo-qsearch-tasks
+
+TOOL_NAME += \
 	ogo-account-list	\
 	ogo-account-add		\
 	ogo-account-del		\
@@ -45,6 +48,7 @@ sky_send_bulk_messages_OBJC_FILES  = sky_send_bulk_messages.m
 ogo-jobs-export_OBJC_FILES         = ogo-jobs-export.m
 
 ogo-qsearch-persons_OBJC_FILES     = ogo-qsearch-persons.m
+ogo-qsearch-tasks_OBJC_FILES       = ogo-qsearch-tasks.m
 
 ogo-account-list_OBJC_FILES        = SkyTool.m SkyGetLoginNames.m
 ogo-account-add_OBJC_FILES         = SkyTool.m SkyAddAccount.m

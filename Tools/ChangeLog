@@ -1,3 +1,9 @@
+2008-04-23  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* GNUmakefile: added ogo-qsearch-tasks command
+
+	* ogo-qsearch-tasks.m: new ogo-qsearch-tasks utility
+
 2007-10-10  Frank Reppin  <fr@skyrix.com>
 
 	* SkyAddAccount.m: some more minor enhancements
