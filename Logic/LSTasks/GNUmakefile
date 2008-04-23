@@ -35,6 +35,7 @@ LSTasks_OBJC_FILES = \
 	LSNewJobHistoryCommand.m		\
 	LSRemoveWasteJobsCommand.m		\
 	LSSetJobCommand.m			\
+	LSQualifierSearchTaskCommand.m
 
 LSTasks_RESOURCE_FILES += Defaults.plist Version
 

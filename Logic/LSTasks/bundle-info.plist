@@ -48,6 +48,7 @@
         { name = "job::setactor";                         },
         { name = "job::setcreator";                       },
         { name = "job::setexecutant";                     },
+        { name = "job::qsearch";                          },
         { name = "jobassignment::delete";                 },
         { name = "jobassignment::get";                    },
         { name = "jobassignment::new";                    },
@@ -92,6 +93,7 @@
       { name = LSRemoveWasteJobsCommand;       },
       { name = LSSetJobCommand;                },
       { name = LSTasksCommands;                },
+      { name = LSQualifierSearchTaskCommand;   },
     );
   };
 }

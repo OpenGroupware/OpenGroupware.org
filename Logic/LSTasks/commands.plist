@@ -86,6 +86,7 @@
         "get-archived-jobs"    = { class = "LSFetchArchivedJobsCommand";  };
         "get-delegated-jobs"   = { class = "LSFetchDelegatedJobsCommand"; };
         "get-executant-jobs"   = { class = "LSFetchJobsForExecutantCommand";};
+        "qsearch"               = { class = "LSQualifierSearchTaskCommand"; };
         "remove-waste-jobs"    = { class = "LSRemoveWasteJobsCommand";    };
         "extended-search" = {
           class            = "LSExtendedSearchCommand";

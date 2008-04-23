@@ -1,5 +1,13 @@
 2008-04-23 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* LSQualifierSearchTaskCommand.m: new job::qsearch command (v5.3.15)
+
+	* commands.plist: add qsearch command binding (v5.3.15)
+	
+	* GNUmakefile: add LSQualifierSearchTaskCommand.m (v5.3.15)
+
+	* bundle-info.plist: add qsearch command to bundle (v5.3.15)
+
 	* LSJobActionCommand.m: fixed missing closing paren in SQL. (v5.3.14)
 
 2008-03-11  Helge Hess  <helge.hess@opengroupware.org>
