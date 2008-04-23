@@ -107,11 +107,18 @@ extern NSString *LSWJobHasChanged;
 }
 
 - (void)_doneJobInContext:(id)_context {
+  NSCalendarDate        *complete;
+  NSTimeZone            *tz;
+
+  complete = [NSCalendarDate calendarDate];
+  tz = [complete timeZoneDetail];
+  [complete setTimeZone:tz];
+ 
   LSRunCommandV(_context, @"job", @"set",
                 @"object", [self object],
                 @"percentComplete", @"100", 
 		@"executantId", [self _loginAccountIdInContext:_context],
-		@"completionDate", [NSCalendarDate calendarDate],
+		@"completionDate", complete, 
 		nil);
 
   [self _addHistory:LSJobDone inContext:_context];
