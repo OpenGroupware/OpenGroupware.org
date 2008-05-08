@@ -1,3 +1,8 @@
+2008-05-08 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* GNUmakefile: Added reference to LSSearch to please linker on BSD
+	  and the new qsearch command. (v5.3.16)
+
 2008-04-23 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSQualifierSearchTaskCommand.m: new job::qsearch command (v5.3.15)

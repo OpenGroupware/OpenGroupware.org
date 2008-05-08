@@ -37,6 +37,9 @@ LSTasks_OBJC_FILES = \
 	LSSetJobCommand.m			\
 	LSQualifierSearchTaskCommand.m
 
+LSTasks_BUNDLE_LIBS += \
+	-lLSSearch
+
 LSTasks_RESOURCE_FILES += Defaults.plist Version
 
 include ../commandbundle.make
