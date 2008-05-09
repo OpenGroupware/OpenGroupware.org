@@ -125,21 +125,6 @@
   return isOk;
 }
 
-- (void)_checkForHistoryProject {
-  id       obj;
-  NSString *pName;
-  NSString *pKind;
-
-  obj   = [self object];
-  pName = [obj valueForKey:@"name"];
-  pKind = [obj valueForKey:@"kind"];
-
-  if ([pName hasPrefix:@"History - "])
-    [obj takeValue:@"05_historyProject" forKey:@"kind"];
-  else if (pKind != nil && [pKind isEqualToString:@"05_historyProject"])
-    [obj takeValue:[EONull null] forKey:@"kind"];
-}
-
 - (void)_checkStartDateIsBeforeEndDate {
   NSCalendarDate *startDate, *endDate;
   
@@ -178,7 +163,6 @@
    [super _prepareForExecutionInContext:_context];
 
    [self bumpChangeTrackingFields];
-   [self _checkForHistoryProject];
 
    /* first check for owner/root, they always have access */
 

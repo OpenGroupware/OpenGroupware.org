@@ -1,3 +1,11 @@
+2008-05-09  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSNewProjectCommand.m: Removed obsolete 05_historyProject feature.
+	  (v5.3.43)
+
+	* LSSetProjectCommand.m: Removed obsolete 05_historyProject feature.
+	  (v5.3.43)
+
 2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* changed all commands to use new methods for updating change tracking
