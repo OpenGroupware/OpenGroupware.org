@@ -25,7 +25,7 @@
 @class NSArray;
 @class OGoContextManager, LSCommandContext;
 
-@interface OGoPersonQualifierSearchTool : NSObject
+@interface OGoEnterpriseQualifierSearchTool : NSObject
 {
   OGoContextManager *lso;
   LSCommandContext  *ctx;
@@ -44,7 +44,7 @@
 #include <LSFoundation/LSCommandContext.h>
 #include <LSFoundation/LSCommandKeys.h>
 
-@implementation OGoPersonQualifierSearchTool
+@implementation OGoEnterpriseQualifierSearchTool
 
 - (id)init {
   if ((self = [super init])) {
@@ -68,7 +68,7 @@
 /* usage */
 
 - (void)usage:(NSString *)_toolName {
-  static const char *toolname = "ogo-qsearch-persons";
+  static const char *toolname = "ogo-qsearch-enterprise";
   fprintf(stderr,
 	  "Usage:\n"
           "  %s -login <login> -password <pwd> <qualifier>\n\n"
@@ -186,7 +186,7 @@
   /* fetch records */
   
 #warning TODO
-  records = [_ctx runCommand:@"person::qsearch", 
+  records = [_ctx runCommand:@"enterprise::qsearch", 
 		    @"qualifier", [_args objectAtIndex:1],
 		  nil];
 
@@ -214,8 +214,7 @@
   return [[[[self alloc] init] autorelease] run:_args];
 }
 
-@end /* OGoPersonQualifierSearchTool */
-
+@end /* OGoEnterpriseQualifierSearchTool */
 
 int main(int argc, char **argv, char **env) {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -223,7 +222,7 @@ int main(int argc, char **argv, char **env) {
 #if LIB_FOUNDATION_LIBRARY
   [NSProcessInfo initializeWithArguments:argv count:argc environment:env];
 #endif
-  rc = [OGoPersonQualifierSearchTool run:[[NSProcessInfo processInfo] 
+  rc = [OGoEnterpriseQualifierSearchTool run:[[NSProcessInfo processInfo] 
 					   argumentsWithoutDefaults]];
   [pool release];
   return rc;

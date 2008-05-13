@@ -1,3 +1,9 @@
+2008-05-13  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* ogo-qsearch-persons: now prints company values (extended attributes)
+
+	* added ogo-qsearch-enterprises test tool
+
 2008-04-23  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* GNUmakefile: added ogo-qsearch-tasks command
