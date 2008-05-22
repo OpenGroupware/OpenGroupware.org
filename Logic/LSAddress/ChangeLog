@@ -1,3 +1,8 @@
+2008-05-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSDeleteCompanyCommand.m: remove properties and object links.
+	  Relates to OGo Bug#1976. (v5.4.98)
+
 2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoCompanyAccessHandler.m: minor code cleanups, added a few comments

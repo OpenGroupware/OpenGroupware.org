@@ -112,6 +112,11 @@
   else {
     [[self object] takeValue:@"30_archived" forKey:@"status"];
   }
+
+  /* delete links */
+
+  [[_context linkManager] deleteLinksTo:(id)[[self object] globalID] type:nil];
+  [[_context linkManager] deleteLinksFrom:(id)[[self object] globalID] type:nil];
   
   /* delete primary object */
   

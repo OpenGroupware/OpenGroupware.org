@@ -1,4 +1,12 @@
-2008-05-08 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+2008-05-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* GNUmakefile: Fix to include LSSearch library required by ::qsearch.
+	  (v5.3.17)
+
+	* LSDeleteJobCommand.m: Delete links relating to task upon deletion.
+	  (v5.3.17)
+
+2008-05-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* GNUmakefile: Added reference to LSSearch to please linker on BSD
 	  and the new qsearch command. (v5.3.16)

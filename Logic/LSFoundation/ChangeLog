@@ -1,3 +1,7 @@
+2008-05-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSFoundation.h: include OGoObjectLinkManager.h (v5.4.134)
+
 2007-12-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSBaseCommand.m: do not use exception handler in combination with

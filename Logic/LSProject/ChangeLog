@@ -1,3 +1,8 @@
+2008-05-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSDeleteProjectCommand.m: Remove links relating to project when
+	  the project is deleted.  Relates to OGo Bug#1976. (v5.3.44)
+
 2008-05-09  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSNewProjectCommand.m: Removed obsolete 05_historyProject feature.

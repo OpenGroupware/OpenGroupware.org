@@ -1,6 +1,6 @@
 # Version file
 
-SUBMINOR_VERSION:=43
+SUBMINOR_VERSION:=44
 
 # v5.3.42 requires libLSFoundation v5.3.129
 # v5.1.38 requires LSAddress       v5.1.51
