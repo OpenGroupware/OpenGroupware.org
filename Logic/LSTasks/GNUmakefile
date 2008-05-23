@@ -35,6 +35,7 @@ LSTasks_OBJC_FILES = \
 	LSNewJobHistoryCommand.m		\
 	LSRemoveWasteJobsCommand.m		\
 	LSSetJobCommand.m			\
+	OGoJobAccessHandler.m			\
 	LSQualifierSearchTaskCommand.m
 
 LSTasks_BUNDLE_LIBS += \

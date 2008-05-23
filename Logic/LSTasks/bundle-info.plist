@@ -93,7 +93,15 @@
       { name = LSRemoveWasteJobsCommand;       },
       { name = LSSetJobCommand;                },
       { name = LSTasksCommands;                },
+      { name = OGoJobAccessHandler;            },
       { name = LSQualifierSearchTaskCommand;   },
     );
+
+    SkyAccessHandlers = (
+      { name = "Job"; },
+    );
+  };
+  SkyAccessHandlers = {
+    Job         = "OGoJobAccessHandler";
   };
 }
