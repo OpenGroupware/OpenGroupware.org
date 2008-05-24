@@ -100,6 +100,11 @@
          [self NIL:[_eoAppointment valueForKey:@"accessTeamId"]], 
             @"readAccessTeamObjectId",
          endDate, @"end", startDate, @"start",
+         [timeZone abbreviation], @"offsetTimeZone",
+         [NSNumber numberWithInt:[timeZone secondsFromGMTForDate:startDate]], 
+           @"startOffset",
+         [NSNumber numberWithInt:[timeZone secondsFromGMTForDate:endDate]], 
+           @"endOffset",
          nil];
        if([_detail intValue] & zOGI_INCLUDE_PARTICIPANTS)
          [self _addParticipantsToDate:appointment];
@@ -716,6 +721,9 @@
   } else {
       timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
     }
+  if ([self isDebug]) {
+    [self logWithFormat:@"translating app with timezone %@", timeZone];
+  }
 
   appointment = [NSMutableDictionary dictionaryWithCapacity:32];
   keys = [_appointment allKeys];

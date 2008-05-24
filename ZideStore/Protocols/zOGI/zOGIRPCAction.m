@@ -400,6 +400,8 @@
     return [self _deleteEnterprise:objectId withFlags:flags];
   else if ([entityName isEqualToString:@"Project"])
     return [self _deleteProject:objectId withFlags:flags];
+  else if ([entityName isEqualToString:@"Note"])
+    return [self _deleteNote:objectId withCommit:YES];
 
   /* blow back an exception if we got this far */
   return [NSException exceptionWithHTTPStatus:500
@@ -423,6 +425,13 @@
     return [self _createContact:_dictionary withFlags:_flags];
   else if ([entityName isEqualToString:@"Enterprise"])
     return [self _createEnterprise:_dictionary withFlags:_flags];
+  else if ([entityName isEqualToString:@"note"])
+    return [self _insertNote:[_dictionary objectForKey:@"content"]
+                   withTitle:[_dictionary objectForKey:@"title"]
+                  forProject:[_dictionary objectForKey:@"projectObjectId"]
+              forAppointment:[_dictionary objectForKey:@"appointmentObjectId"]
+                  forCompany:[_dictionary objectForKey:@"companyObjectId"]
+                  withCommit:1];
   else if ([entityName isEqualToString:@"defaults"])
     return [self _storeDefaults:_dictionary withFlags:_flags];
   return nil;

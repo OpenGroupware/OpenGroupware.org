@@ -1,3 +1,23 @@
+2008-05-23 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Contact.m: include contactId attribute, encode a null
+	  isPrivate flag as a zero rather than an empty string. (v1.5.44)
+
+	* zOGIAction+Appointment.m: encode start and end offset based upon
+	  users timezone setting. (v1.5.44)
+
+	* zOGIAction+Note.h|m: support direct update of notes. (v1.5.44)
+
+	* zOGIAction+Object.m: improved object link handling (v1.5.44)
+
+	* zOGIAction+Enterprise.m: include contactId attribute (v1.5.44)
+
+	* zOGIRPCAction.m: support direct creation and deletion of
+	  notes. (v1.5.44)
+
+	* product.plist: bind getAuditEntries method. Support three
+	  arguements for getNotifications (v1.5.44)
+
 2008-03-24 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Appointment.m: Minor cleanup. (v1.5.42)

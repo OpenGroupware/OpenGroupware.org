@@ -57,6 +57,7 @@
        [self NIL:[eoEnterprise valueForKey:@"bankCode"]], @"bankCode",
        [self NIL:[eoEnterprise valueForKey:@"fileas"]], @"fileAs",
        [self ZERO:[eoEnterprise valueForKey:@"isPrivate"]], @"isPrivate",
+       [self ZERO:[eoEnterprise valueForKey:@"contactId"]], @"contactId",
        [self NIL:[eoEnterprise valueForKey:@"keywords"]], @"keywords",
        [self NIL:[eoEnterprise valueForKey:@"description"]], @"name",
        [self NIL:[eoEnterprise valueForKey:@"url"]], @"url",
