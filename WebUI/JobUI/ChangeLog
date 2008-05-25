@@ -1,3 +1,12 @@
+2008-05-25  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* common.h: added definition of extended attribute namespace.
+	  (v5.3.57)
+
+	* LSWJobViewer.m: loads object properties and pushes properties
+	  defined as extended attributes into the job for object 
+	  viewer. OGo Bug#1043. (v5.3.57)
+
 2008-02-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* moved LSWJobImport to recycler, removed from bundle-info.plist
