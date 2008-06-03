@@ -1,3 +1,7 @@
+2008-06-03  Adam Tauno Williams  <awilliam@whitemiceconsulting.com>
+
+	* English.lproj/JobUI.strings: added "overdue" label.
+
 2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* German.lproj/PersonsUI.strings: added new salutation codes

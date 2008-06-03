@@ -1,3 +1,8 @@
+2008-06-03  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSWJobs.m: Add "overdue" time filter to previously available
+	  "current" and "upcoming. (v5.3.58)
+
 2008-05-25  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* common.h: added definition of extended attribute namespace.
