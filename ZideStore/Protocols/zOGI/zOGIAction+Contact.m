@@ -81,7 +81,7 @@
            [self NIL:comment], @"comment",
            [self ZERO:[eoContact valueForKey:@"isPrivate"]], @"isPrivate",
            [self ZERO:[eoContact valueForKey:@"contactId"]], @"contactId",
-           [self NIL:[eoContact valueForKey:@"isAccount"]], @"isAccount",
+           [self ZERO:[eoContact valueForKey:@"isAccount"]], @"isAccount",
            [self NIL:[eoContact valueForKey:@"keywords"]], @"keywords",
            [self NIL:[eoContact valueForKey:@"occupation"]], @"occupation",
            [self NIL:[eoContact valueForKey:@"office"]], @"office",
