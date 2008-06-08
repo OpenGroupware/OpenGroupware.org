@@ -1,3 +1,9 @@
+2008-06-07  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSFetchToDoJobsCommand.m: to-do list query matches creator id to the
+	  id of the current user, rather than to all the user's teams.
+	  (v5.3.19)
+
 2008-05-23  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* GNUmakefile: Add OGoJobAccessHandler. (v5.3.18)
