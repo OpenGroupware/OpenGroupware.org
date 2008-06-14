@@ -1,3 +1,17 @@
+2008-06-14  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxAppointmentFolder.m|h: added method defaultReadAccessInContext that
+	  returns the value of the scheduler_default_readaccessteam default.
+	  (v1.5.112)
+
+	* SxAppointment+Participants.m: cleaned up some really crazy indenting 
+	  and lack of indenting. (v1.5.112)
+
+	* SxAppointment.m: when an appointment is created in the Overview view
+	  and there is no group for the context the default read access team
+	  defined in the scheduler_default_readaccessteam (if any) default is
+	  used for the read access team. (v1.5.112)
+
 2008-03-11  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAppointmentFolder.m: added gdavComponentSet (v1.5.111)

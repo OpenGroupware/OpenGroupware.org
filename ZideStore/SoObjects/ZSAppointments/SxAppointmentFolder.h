@@ -35,6 +35,7 @@
 */
 
 @class NSCalendarDate;
+@class NSNumber;
 @class SxAptSetIdentifier;
 
 @interface SxAppointmentFolder : SxFolder
@@ -57,6 +58,7 @@
 - (NSCalendarDate *)defaultEndDate;
 
 - (NSArray *)defaultWriteAccessListInContext:(id)_ctx;
+- (NSNumber *)defaultReadAccessInContext:(id)_ctx;
 
 @end
 

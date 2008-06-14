@@ -358,9 +358,17 @@ static BOOL embedViewURL             = NO;
   SX_NEWKEY(@"sensitivity");
 
   /* read-access-group */
-  
-  if ([(tmp = [self pkeyOfGroupInContext:_ctx]) isNotNull])
+ 
+  if ([(tmp = [self pkeyOfGroupInContext:_ctx]) isNotNull]) {
     [changeSet setObject:tmp forKey:@"accessTeamId"];
+  } else {
+      if ([[self container] isOverview]) {
+        tmp = [[self container] defaultReadAccessInContext:_ctx];
+        if (tmp != nil) { 
+          [changeSet setObject:tmp forKey:@"accessTeamId"];
+        } 
+      }
+    }
   
   /* write access */
   

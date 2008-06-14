@@ -513,56 +513,56 @@ static BOOL debugOn = NO;
   pkey = [mapped valueForKey:@"companyId"];
 
   if ([(newVal = [tmp valueForKey:@"rsvp"]) isNotNull]) {
-      oldVal = [mapped valueForKey:@"rsvp"];
-      if (![oldVal isNotNull]) /* default value (OGo WebUI) */
-	oldVal = [NSNumber numberWithInt:0]; /* rsvp: false */
+    oldVal = [mapped valueForKey:@"rsvp"];
+    if (![oldVal isNotNull]) /* default value (OGo WebUI) */
+	    oldVal = [NSNumber numberWithInt:0]; /* rsvp: false */
       
-      if (![newVal isEqual:oldVal]) {
-	if ([SxAppointment logAptChange]) {
-	  [self logWithFormat:@"%s: %@ has changed rsvp '%@' -> '%@'",
-		__PRETTY_FUNCTION__, pkey, oldVal, newVal];
-	}
-	if (debugOn) {
-	  [self logWithFormat:@"   rsvp changed: %@ (%@ => %@)", 
-	          pkey, oldVal, newVal];
-	}
-	return YES;
-      }
+    if (![newVal isEqual:oldVal]) {
+	    if ([SxAppointment logAptChange]) {
+	      [self logWithFormat:@"%s: %@ has changed rsvp '%@' -> '%@'",
+		            __PRETTY_FUNCTION__, pkey, oldVal, newVal];
+	    }
+	    if (debugOn) {
+	      [self logWithFormat:@"   rsvp changed: %@ (%@ => %@)", 
+	              pkey, oldVal, newVal];
+	    }
+	    return YES;
+    }
   }
 
   if ([(newVal = [tmp valueForKey:@"role"]) isNotNull]) {
-      oldVal = [mapped valueForKey:@"role"];
-      if (![oldVal isNotNull]) /* default value (OGo WebUI) */
-	oldVal = @"OPT-PARTICIPANT";
+    oldVal = [mapped valueForKey:@"role"];
+    if (![oldVal isNotNull]) /* default value (OGo WebUI) */
+	    oldVal = @"OPT-PARTICIPANT";
       
-      if (![newVal isEqual:oldVal]) {
-	if ([SxAppointment logAptChange]) {
-	  [self logWithFormat:@"%s: %@ has changed role '%@' -> '%@'",
-		__PRETTY_FUNCTION__, pkey, oldVal, newVal];
-	}
-	if (debugOn) {
-	  [self logWithFormat:@"   role changed: %@ (%@ => %@)", pkey,
-		oldVal, newVal];
-	}
-	return YES;
-      }
+    if (![newVal isEqual:oldVal]) {
+	    if ([SxAppointment logAptChange]) {
+	      [self logWithFormat:@"%s: %@ has changed role '%@' -> '%@'",
+		            __PRETTY_FUNCTION__, pkey, oldVal, newVal];
+	    }
+	    if (debugOn) {
+	      [self logWithFormat:@"   role changed: %@ (%@ => %@)", pkey,
+		            oldVal, newVal];
+	    }
+	    return YES;
+    }
   }
     
   if ([(newVal = [tmp valueForKey:@"partStatus"]) isNotNull]) {
-      oldVal = [mapped valueForKey:@"partStatus"];
-      if (![oldVal isNotNull]) /* default value (OGo WebUI) */
-	oldVal = @"NEEDS-ACTION";
+    oldVal = [mapped valueForKey:@"partStatus"];
+    if (![oldVal isNotNull]) /* default value (OGo WebUI) */
+	    oldVal = @"NEEDS-ACTION";
       
-      if (![newVal isEqual:oldVal]) {
-	if ([SxAppointment logAptChange])
-	  [self logWithFormat:@"%s: %@ has changed partStatus '%@' -> '%@'",
-		__PRETTY_FUNCTION__, pkey, oldVal, newVal];
-	if (debugOn) {
-	  [self logWithFormat:@"   partstat changed: %@ (%@ => %@)", pkey,
-		oldVal, newVal];
-	}
-	return YES;
-      }
+    if (![newVal isEqual:oldVal]) {
+	    if ([SxAppointment logAptChange])
+	      [self logWithFormat:@"%s: %@ has changed partStatus '%@' -> '%@'",
+		            __PRETTY_FUNCTION__, pkey, oldVal, newVal];
+      if (debugOn) {
+	      [self logWithFormat:@"   partstat changed: %@ (%@ => %@)", pkey,
+		            oldVal, newVal];
+	    }
+	    return YES;
+    }
   }
   return NO;
 }

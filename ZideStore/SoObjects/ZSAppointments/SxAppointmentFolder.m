@@ -153,6 +153,20 @@ static BOOL addGroupToWriteACL = YES;
   return acl;
 }
 
+- (NSNumber *)defaultReadAccessInContext:(id)_ctx {
+  int            readTeamId;
+  NSUserDefaults *ud;
+
+  ud = [[self commandContextInContext:_ctx] userDefaults];
+  readTeamId = [ud integerForKey:@"scheduler_default_readaccessteam"];
+  if (readTeamId > 0) {
+    [self logWithFormat:@"default read access returning %d", readTeamId];
+    return [NSNumber numberWithInt:readTeamId];
+  }
+  [self logWithFormat:@"default read access is null"];
+  return nil;
+}
+
 
 /* factory */
 
