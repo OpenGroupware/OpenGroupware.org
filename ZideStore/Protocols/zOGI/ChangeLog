@@ -1,3 +1,14 @@
+2008-06-15 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Account.m: added appointmentWriteAccess and
+	  calendarPanelObjectIds defaults to _DEFAULTS key.
+	  (v1.5.46)
+
+	* zOGIAction+Defaults.h|m: added _getDefaultWriteAccessFromDefaults
+	  method to render default write access of events to object id
+	  list. Storing defaults now supports the appointmentWriteAccess
+	  and calendarPanelObjectIds defaults. (v1.5.46)
+
 2008-06-08 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Contact.m: encode a null isAccount flag as a zero
