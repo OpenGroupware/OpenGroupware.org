@@ -1,3 +1,13 @@
+2008-06-27  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* product.plist: map calendar-multiget request to the 
+	  SxDavCalendarMultiget class (v1.5.113)
+
+	* SxDavCalendarMultiget.m: process calendar-multiget requests,
+	  only tested with Sunbird.  (v1.5.113)
+
+	* GNUmakefile: build the SxDavCalendarMultiget class. (v1.5.113)
+
 2008-06-14  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxAppointmentFolder.m|h: added method defaultReadAccessInContext that

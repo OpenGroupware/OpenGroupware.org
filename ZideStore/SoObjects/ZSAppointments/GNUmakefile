@@ -19,10 +19,11 @@ libZSAppointments_OBJC_FILES = \
 	SxFreeBusy.m			\
 	SxICalendar.m			\
 	\
-	SxDavAptAction.m		\
-	SxDavAptCreate.m		\
-	SxDavAptChange.m		\
+	SxDavAptAction.m		    \
+	SxDavAptCreate.m		    \
+	SxDavAptChange.m		    \
 	SxDavCalendarQuery.m		\
+  SxDavCalendarMultiget.m
 
 Appointments_RESOURCE_FILES += \
 	bundle-info.plist	\
