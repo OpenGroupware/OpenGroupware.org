@@ -1,3 +1,9 @@
+2008-06-30  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxAptManager+iCal.m: added version attribute to dictionary produced
+	  by pkeysAndModDatesAndICalsForGlobalIDs method.  This allows
+	  proper etags to be constructed. (v1.5.91)
+
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAptManager.m: minor code cleanups (v1.5.90)
