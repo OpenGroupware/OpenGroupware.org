@@ -214,6 +214,8 @@ static BOOL debugOn = NO;
     if ([[event valueForKey:@"pkey"] isNotNull]) {
       [_r appendContentString:@"<D:getetag>"];
       [_r appendContentXMLString:[[event valueForKey:@"pkey"] stringValue]];
+      [_r appendContentXMLString:@":"];
+      [_r appendContentXMLString:[[event valueForKey:@"version"] stringValue]];
       [_r appendContentString:@"</D:getetag>\n"];
     }
     

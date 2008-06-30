@@ -1,5 +1,13 @@
 2008-06-30  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* SxDavCalendarMultiget.m: produce proper etags in results, this fixes
+	  "object has been updated" warnings when updating appointments via
+	  Evolution & Mozilla calendar. (v1.5.114)
+
+	* SxDavCalendarQuery.m: produce proper etags in results, this fixes
+	  "object has been updated" warnings when updating appointments via
+	  Evolution & Mozilla calendar. (v1.5.114)
+
 	* SxDavCalendarQuery.m: always include the getetag property in the
 	  result as the parsing of requested properties does not work.  This
 	  enables Evolution to display the calendar,  Sunbird 0.8 works as

@@ -201,7 +201,9 @@ static BOOL debugOn = NO;
     [_r appendContentString:@"      <D:prop>\n"];
     /* etag */
     [_r appendContentString:@"<D:getetag>"];
-    [_r appendContentXMLString:[etag stringValue]]; 
+    [_r appendContentXMLString:[[event valueForKey:@"pkey"] stringValue]];
+    [_r appendContentXMLString:@":"];
+    [_r appendContentXMLString:[[event valueForKey:@"version"] stringValue]];
     [_r appendContentString:@"</D:getetag>\n"];
     /* ical */
     if ([ical isNotEmpty]) {
