@@ -1,3 +1,10 @@
+2008-06-30  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxDavCalendarQuery.m: always include the getetag property in the
+	  result as the parsing of requested properties does not work.  This
+	  enables Evolution to display the calendar,  Sunbird 0.8 works as
+	  well. (v1.5.114)
+
 2008-06-27  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* product.plist: map calendar-multiget request to the 
