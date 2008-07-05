@@ -1,3 +1,9 @@
+2008-07-05  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSDeleteAppointmentCommand.m: Clean up object-links and object
+	  properties; added some comments.  Relates to OGo Bug#1976.
+	  (v5.3.107)
+
 2007-10-07  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSDateAssignmentCommand.m: Deal with LSPerson objects as
