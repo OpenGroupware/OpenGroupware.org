@@ -310,12 +310,12 @@ static BOOL embedViewURL             = NO;
   // TODO: added 
   NSMutableArray      *keys;
   NSMutableDictionary *changeSet;
-  NSException    *error;
-  NSString       *etag;
-  NSArray        *participants;
-  WOResponse     *r;
-  NSString       *url;
-  id tmp;
+  NSException         *error;
+  NSString            *etag;
+  NSArray             *participants;
+  WOResponse          *r;
+  NSString            *url;
+  id                   tmp;
   
   if (logAptChange) [self logWithFormat:@"GOT: %@", _info];
   
@@ -356,6 +356,7 @@ static BOOL embedViewURL             = NO;
   SX_NEWKEY(@"importance");
   SX_NEWKEY(@"lastModified");
   SX_NEWKEY(@"sensitivity");
+  SX_NEWKEY(@"evoReminder");
 
   /* read-access-group */
  
@@ -375,11 +376,11 @@ static BOOL embedViewURL             = NO;
   tmp = [[self container] defaultWriteAccessListInContext:_ctx];
   if ([tmp isNotEmpty])
     [changeSet setObject:tmp forKey:@"writeAccessList"];
-  
+
   /* conflicts */
   
   [changeSet setObject:yesNum forKey:@"isWarningIgnored"];
-  
+
   /* perform changes */
   
   error = [[self aptManagerInContext:_ctx] 

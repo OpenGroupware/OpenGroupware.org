@@ -122,6 +122,7 @@ static SaxObjectDecoder *sax = nil;
                                         forKey:@"trigger"];
   if ((tmp = [_alarm attach]))  [record setObject:[self processAttachment:tmp]
                                         forKey:@"attachment"];
+  if ((tmp = [_alarm lastACK]))  [record setObject:tmp forKey:@"lastACK"];
 
   return record;
 }
@@ -165,7 +166,6 @@ static SaxObjectDecoder *sax = nil;
     tmp = [alarm objectForKey:@"comment"];
     if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
     else [ms appendString:@","];
-
     
     tmp = [trigger objectForKey:@"valueType"];
     if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
@@ -182,6 +182,10 @@ static SaxObjectDecoder *sax = nil;
     tmp = [attach objectForKey:@"value"];
     if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
     else [ms appendString:@","];
+
+    tmp = [alarm objectForKey:@"lastACK"];
+    if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
+    else [ms appendString:@"'',"];
     
     [ms appendString:@"\n"];
   }
@@ -276,10 +280,10 @@ static SaxObjectDecoder *sax = nil;
                 [tmp objectAtIndex:i]];
       }
       [record setObject:[self alarmsToCSV:alarms] forKey:@"evoReminder"];
-    }
-    else
-      [record setObject:@"" forKey:@"evoReminder"];
-  }
+    } /* else {
+        [record setObject:@"" forKey:@"evoReminder"];
+      } */
+  } else { [record setObject:@"" forKey:@"evoReminder"]; }
 
   // TODO: timestamp
   //if ((timestamp = [_event timestamp])) 

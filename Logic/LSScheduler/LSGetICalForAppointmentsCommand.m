@@ -331,6 +331,7 @@ static NSString   *skyrixId = nil;
                        @"action", @"comment",
                        @"valueType", @"value", // trigger
                        @"valueType", @"value", // attach
+                       @"lastACK", // mozilla X-MOZ-LASTACK hack
                        nil];
   }
 
@@ -347,7 +348,7 @@ static NSString   *skyrixId = nil;
     numColumns = [columns count];
     k          = 0;
 
-    alarm   = [NSMutableDictionary dictionaryWithCapacity:4];
+    alarm   = [NSMutableDictionary dictionaryWithCapacity:7];
     trigger = [NSMutableDictionary dictionaryWithCapacity:2];
     attach  = [NSMutableDictionary dictionaryWithCapacity:2];
 
@@ -357,11 +358,12 @@ static NSString   *skyrixId = nil;
     // trigger-value
     // attach-type
     // attach-value
-    while ((numColumns > k) && (k < 6)) {
+    // lastACK (X-MOZ-LASTACK Mozilla extended attribute)
+    while ((numColumns > k) && (k < 7)) {
       tmp = [self checkCSVEntry:[columns objectAtIndex:k]];
       if ([tmp isNotEmpty]) {
         switch (k) {
-          case 0: case 1:
+          case 0: case 1: case 6:
             [alarm setObject:tmp   forKey:[csvColumns objectAtIndex:k]]; break;
           case 2: case 3:
             [trigger setObject:tmp forKey:[csvColumns objectAtIndex:k]]; break;
@@ -401,6 +403,8 @@ static NSString   *skyrixId = nil;
       [self _appendName:@"ACTION" andValue:tmp toICal:_iCal];
     if ((tmp = [alarm objectForKey:@"comment"]))
       [self _appendName:@"DESCRIPTION" andValue:tmp toICal:_iCal];
+    if ((tmp = [alarm objectForKey:@"lastACK"]))
+      [self _appendName:@"X-MOZ-LASTACK" andValue:tmp toICal:_iCal];
 
     if ((tmp = [alarm objectForKey:@"trigger"])) {
       id       v   = [tmp valueForKey:@"value"];
