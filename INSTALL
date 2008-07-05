@@ -5,7 +5,7 @@ OpenGroupware.org Installation Guide
 Prerequisites
 =============
 
-SOPE 4.5
+SOPE 4.7
 - gnustep-make (gstep-make 1.13 from www.gnustep.org)
 - Foundation library (eg SOPE-4.5/libFoundation)
 - libxml2/libxml2-dev
