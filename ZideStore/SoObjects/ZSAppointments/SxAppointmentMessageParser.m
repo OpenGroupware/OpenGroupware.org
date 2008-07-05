@@ -237,7 +237,7 @@ static SaxObjectDecoder *sax = nil;
     if (tmp != nil) [record setObject:tmp forKey:@"sensitivity"];
   }
   if ((tmp = [_event priority])) 
-    [record setObject:tmp forKey:@"priority"];
+    [record setObject:tmp forKey:@"importance"];
     
   // TODO: flatten organizer
   if ((tmp = [_event organizer])) 
@@ -307,7 +307,7 @@ static SaxObjectDecoder *sax = nil;
       [record setObject:tmp forKey:@"importance"];
     if ((tmp = [_header objectForKey:@"priority"]))
       // TODO: "normal" => number
-      [record setObject:tmp forKey:@"priority"];
+      [record setObject:tmp forKey:@"importance"];
   }
   
   return record;

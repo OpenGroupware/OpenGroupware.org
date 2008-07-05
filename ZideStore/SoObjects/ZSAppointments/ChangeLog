@@ -1,5 +1,9 @@
 2008-07-05  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* SxAppointmentMessageParser.m: Fix storing of importance value into 
+	  record.  Model field is "importance",  parser was putting the 
+	  value into "priority".  Closes OGo bug#1991. (v1.5.116)
+
 	* SxAppointmentMessageParser.m: Include the X-MOZ-LASTACK attribue in
 	  the alarm data stored in evoReminder. (v1.5.115)
 
