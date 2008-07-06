@@ -284,8 +284,23 @@ static NSString   *skyrixId = nil;
   [self _appendName:@"DTSTAMP" andValue:[NSCalendarDate date] toICal:_iCal];
 
   // X attributes
-  if (![(tmp = [_date valueForKey:@"importance"]) isNotNull]) tmp = @"0";
-  [self _appendName:@"X-MICROSOFT-CDO-IMPORTANCE" andValue:tmp toICal:_iCal];
+  if ([(tmp = [_date valueForKey:@"importance"]) isNotNull]) {
+    int priority = [tmp intValue];
+    if ((priority < 5) && (priority > 0)) {
+      [self _appendName:@"X-MICROSOFT-CDO-IMPORTANCE" 
+               andValue:@"2"
+                 toICal:_iCal];
+    } else if ((priority < 9) && (priority > 0)) {
+        [self _appendName:@"X-MICROSOFT-CDO-IMPORTANCE" 
+                 andValue:@"1"
+                   toICal:_iCal];
+      } else {
+          [self _appendName:@"X-MICROSOFT-CDO-IMPORTANCE" 
+                   andValue:@"0"
+                     toICal:_iCal];
+        }
+  } /* end X-MICROSOFT-CDO-IMPORTANCE */
+
   if (![(tmp = [_date valueForKey:@"fbtype"]) isNotNull])     tmp = @"BUSY";
   [self _appendName:@"X-MICROSOFT-CDO-BUSYSTATUS" andValue:tmp toICal:_iCal];
   [_iCal appendString:@"X-MICROSOFT-CDO-INSTTYPE:0\r\n"];
@@ -565,8 +580,9 @@ static NSString   *skyrixId = nil;
     [self _appendName:ms andValue:[@"MAILTO:" stringByAppendingString:email]
           toICal:_iCal];
     [ms release]; ms = nil;
-    
-    // TODO: explain this
+   
+    // Create the ORGANIZER attribute from the current participant
+    // if that participant is the creator of the appointment
     if (([companyId intValue] == [ownerId intValue]) &&
         ([companyId intValue] != 0)) {
       tmp = [[NSString alloc] initWithFormat:@"ORGANIZER;CN=\"%@\"", cn];
