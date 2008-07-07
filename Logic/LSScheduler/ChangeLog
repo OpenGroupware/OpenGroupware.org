@@ -1,5 +1,10 @@
 2008-07-06  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* LSGetICalForAppointmentsCommand.m: present the fbtype value
+	  in the rendered iCal data.  TRANSP "OPAQUE" is equal to
+	  X-MICROSOFT-CDO-BUSYSTATUS "BUSY" and TRANSP "TRANSPARENT"
+	  is equal to X-MICROSOFT-CDO-BUSYSTATUS "FREE". (v5.3.110)
+
 	* LSGetICalForAppointmentsCommand.m: translate the importance
 	  scale 9 .. 0 to X-MICROSOFT-CDO-IMPORTANCE scale to 0 .. 2.
 	  (v5.3.109)

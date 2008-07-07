@@ -265,7 +265,10 @@ static NSString   *skyrixId = nil;
   }
 
   // TODO: map to fbtype database field?
-  [self _appendName:@"TRANSP" andValue:@"OPAQUE" toICal:_iCal];
+  if ([(tmp = [_date valueForKey:@"fbtype"]) isNotNull])
+    [self _appendName:@"TRANSP" andValue:tmp toICal:_iCal];
+  else 
+    [self _appendName:@"TRANSP" andValue:@"OPAQUE" toICal:_iCal];
   
   // RELATED-TO
   if ([(tmp = [_date valueForKey:@"parentDateId"]) isNotNull])
@@ -283,7 +286,9 @@ static NSString   *skyrixId = nil;
   }
   [self _appendName:@"DTSTAMP" andValue:[NSCalendarDate date] toICal:_iCal];
 
-  // X attributes
+  /* X attributes */
+
+  // X-MICROSOFT-CDO-IMPORTANCE
   if ([(tmp = [_date valueForKey:@"importance"]) isNotNull]) {
     int priority = [tmp intValue];
     if ((priority < 5) && (priority > 0)) {
@@ -301,8 +306,16 @@ static NSString   *skyrixId = nil;
         }
   } /* end X-MICROSOFT-CDO-IMPORTANCE */
 
-  if (![(tmp = [_date valueForKey:@"fbtype"]) isNotNull])     tmp = @"BUSY";
+  // X-MICROSOFT-CDO-BUSYSTATUS
+  if ([(tmp = [_date valueForKey:@"fbtype"]) isNotNull]) {
+    if ([tmp isEqualToString:@"OPAQUE"]) {
+      tmp = @"BUSY";
+    } else {
+        tmp = @"FREE";
+      }
+  } else tmp = @"BUSY";
   [self _appendName:@"X-MICROSOFT-CDO-BUSYSTATUS" andValue:tmp toICal:_iCal];
+
   [_iCal appendString:@"X-MICROSOFT-CDO-INSTTYPE:0\r\n"];
   
   [_iCal appendString:@"X-MICROSOFT-CDO-ALLDAYEVENT:"];
