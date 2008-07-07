@@ -213,6 +213,8 @@ static SaxObjectDecoder *sax = nil;
   if ((tmp = [_event summary]))   [record setObject:tmp forKey:@"title"];
   if ((tmp = [_event comment]))   [record setObject:tmp forKey:@"comment"];
   if ((tmp = [_event location]))  [record setObject:tmp forKey:@"location"];
+  if ((tmp = [_event transparency]))
+    [record setObject:tmp forKey:@"fbtype"];
 
   // do not add lastModified (done by command)
   

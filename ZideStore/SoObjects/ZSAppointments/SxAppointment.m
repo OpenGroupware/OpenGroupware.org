@@ -357,6 +357,7 @@ static BOOL embedViewURL             = NO;
   SX_NEWKEY(@"lastModified");
   SX_NEWKEY(@"sensitivity");
   SX_NEWKEY(@"evoReminder");
+  SX_NEWKEY(@"fbtype");
 
   /* read-access-group */
  
@@ -501,6 +502,7 @@ static BOOL embedViewURL             = NO;
   SX_DIFFKEY(@"importance");
   SX_DIFFKEY(@"sensitivity");
   SX_DIFFKEY(@"evoReminder");
+  SX_DIFFKEY(@"fbtype");
   
   participants = [NSMutableArray arrayWithCapacity:1];
   if ([self isInOverviewFolder]) {

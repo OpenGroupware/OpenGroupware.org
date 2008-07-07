@@ -1,3 +1,11 @@
+2008-07-06  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxAppointmentMessageParser.m: take the transparency value from the
+	  iCalEvent into the record. (v1.5.118)
+
+	* SxAppointment.m: save the fbtype in both create and update.
+	  (v1.5.118)
+
 2008-07-05  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxAppointmentMessageParser.m: Fix storing of importance value into 
