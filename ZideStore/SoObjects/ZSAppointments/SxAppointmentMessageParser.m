@@ -213,8 +213,20 @@ static SaxObjectDecoder *sax = nil;
   if ((tmp = [_event summary]))   [record setObject:tmp forKey:@"title"];
   if ((tmp = [_event comment]))   [record setObject:tmp forKey:@"comment"];
   if ((tmp = [_event location]))  [record setObject:tmp forKey:@"location"];
-  if ((tmp = [_event transparency]))
+
+
+  // transparency / freebusy type
+  if ((tmp = [_event transparency])) {
     [record setObject:tmp forKey:@"fbtype"];
+    if ([tmp isEqualToString:@"TRANSPARENT"]) {
+      [record setObject:intObj(1) forKey:@"isConflictDisabled"];
+    } else {
+        [record setObject:intObj(0) forKey:@"isConflictDisabled"];
+      }
+  } else {
+      [record setObject:@"OPAQUE" forKey:@"fbtype"];
+      [record setObject:intObj(0) forKey:@"isConflictDisabled"];
+    }
 
   // do not add lastModified (done by command)
   

@@ -1,3 +1,11 @@
+2008-07-07  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxAppointmentMessageParser.m: set the isConflictDisabled field
+	  based upon the provided TRANSP attribute. (v1.5.119)
+
+	* SxAppointment.m: preserve the isConflictDisabled value.
+	  (v1.5.119)
+
 2008-07-06  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxAppointmentMessageParser.m: take the transparency value from the

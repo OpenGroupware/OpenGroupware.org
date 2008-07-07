@@ -1,3 +1,11 @@
+2008-07-07  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetICalForAppointmentsCommand.m: bind isConflictDisabled
+	  and fbtype together.  Use fbtype is set otherwise derive
+	  fbtype (and X-MICROSOFT-CDO-BUSYSTATUS) from the
+	  isConflictDisabled field;  0 or null = OPAQUE/BUSY and a
+	  value of 1 = TRANSPARENT/FREE. (v5.3.111)
+
 2008-07-06  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSGetICalForAppointmentsCommand.m: present the fbtype value
