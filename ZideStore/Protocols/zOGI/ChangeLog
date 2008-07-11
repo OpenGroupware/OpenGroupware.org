@@ -1,3 +1,10 @@
+2008-07-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Appointment.m: mapped priorDuration and postDuration
+	  attributes to the travel time attributes of the Appointment
+	  entity.   The intent of these is to allow specification of busy
+	  time prior to and after an appointment. (v1.5.47)
+
 2008-06-15 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Account.m: added appointmentWriteAccess and
