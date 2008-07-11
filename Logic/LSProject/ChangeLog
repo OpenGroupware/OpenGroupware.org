@@ -1,3 +1,8 @@
+2008-07-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSDeleteProjectCommand.m: Unlink or delete notes.  Relates to
+	  OGo Bug#1976. (v5.3.45)
+
 2008-05-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSDeleteProjectCommand.m: Remove links relating to project when
