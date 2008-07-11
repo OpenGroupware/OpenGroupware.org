@@ -1294,6 +1294,11 @@ Project = {
       source:      "projectId",
       destination: "ProjectInfo.projectId",
     },
+    "toNote": {
+      flags:       [ property, isToMany, ],
+      source:      "Note.projectId",
+      destination: "projectId",
+    },
 } # entity Project
 
 Enterprise = {
@@ -2792,6 +2797,21 @@ Date = {
       width:      255,
       flags:      [ property, allowsNull, ],
     },
+    "travelDurationBefore": {
+      column:     "travel_duration_before",
+      coltype:    't_int',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ property, allowsNull, ],
+    },
+    "travelDurationAfter": {
+      column:     "travel_duration_after",
+      coltype:    't_int',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ property, allowsNull, ],
+    },
+
     
     # relationships
     
