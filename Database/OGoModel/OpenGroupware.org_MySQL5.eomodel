@@ -22,6 +22,7 @@
         addressId,
         companyId,
         country,
+        objectVersion,
         state,
         street,
         name2,
@@ -37,6 +38,7 @@
         addressId,
         companyId,
         country,
+        objectVersion,
         state,
         street,
         name2,
@@ -112,6 +114,14 @@
           valueClassName = "NSString";
           allowsNull     = Y;
           width          = 255;
+        },
+        {
+          name           = "objectVersion";
+          columnName     = "object_version";
+          externalType   = "INT";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
         },
         {
           name           = "sourceUrl";
@@ -6813,6 +6823,7 @@
         companyId,
         url,
         number,
+        objectVersion,
         type,
       );
       classProperties = (
@@ -6823,6 +6834,7 @@
         companyId,
         url,
         number,
+        objectVersion,
         type,
         toEnterprise,
         toPerson,
@@ -6861,6 +6873,14 @@
           valueClassName = "NSString";
           allowsNull     = Y;
           width          = 255;
+        },
+        {
+          name           = "objectVersion";
+          columnName     = "object_version";
+          externalType   = "INT";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
         },
         {
           name           = "realNumber";

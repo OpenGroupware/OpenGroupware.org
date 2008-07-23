@@ -1730,6 +1730,13 @@ Address = {
       valueType:  'i',
       flags:      [ primaryKey, lock, property, allowsNull, ],
     },
+    "objectVersion": {
+      column:     "object_version",
+      coltype:    't_int',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ lock, property, allowsNull, ],
+    },
     "companyId": {
       column:     "company_id",
       coltype:    't_id',
@@ -2493,6 +2500,13 @@ Telephone = {
       valueClass: 'NSNumber',
       valueType:  'i',
       flags:      [ primaryKey, lock, property, allowsNull, ],
+    },
+    "objectVersion": {
+      column:     "object_version",
+      coltype:    't_int',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ lock, property, allowsNull, ],
     },
     "companyId": {
       column:     "company_id",

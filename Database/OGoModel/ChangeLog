@@ -1,3 +1,8 @@
+2008-07-23  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* OGoModel.py (Telephone & Address): added objectVersion
+	  attribute, already present in database. (v5.3.23)
+
 2008-07-10  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* OGoModel.py (Appointment): added travel duration before and
