@@ -1,3 +1,9 @@
+2008-08-19 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Task.m: fix-up to avoid crash if an objectId is listed
+	  in obj_info as a task but has subsequently been deleted without
+	  obj_info having been cleaned out. (v1.5.48)
+
 2008-07-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Appointment.m: mapped priorDuration and postDuration
