@@ -19,6 +19,7 @@ RSS_OBJC_FILES = \
 	\
 	SxFolderRSS.m		\
 	NSObject+SoRSSObject.m	\
+	SxRSSFeed.m
 
 RSS_RESOURCE_FILES += \
 	bundle-info.plist	\

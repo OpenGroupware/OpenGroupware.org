@@ -14,6 +14,10 @@
           protectedBy = "View";
           pageName    = "SxFolderRSS"; 
         };
+        "RSS" = {
+           protectedBy = "View";
+           pageName    = "SxRSSFeed";
+        };
       };
     };
 
@@ -25,5 +29,6 @@
         };
       };
     };
+
   };
 }

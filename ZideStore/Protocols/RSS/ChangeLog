@@ -1,3 +1,10 @@
+2008-08-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxRSSFeed.m: A WOComponent that maps the requested feed to an 
+	  LSGetAsRSSFeed command. (v1.5.9)
+
+	* product.plist: Bind /RSS to SxRSSFeed. (v1.5.9)
+
 2008-02-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.5.8
