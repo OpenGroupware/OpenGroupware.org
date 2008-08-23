@@ -28,6 +28,7 @@
 @interface SxRSSFeed : WOComponent
 {
   id  feedContent;
+  id  feedURL;
   id  accountId;
 }
 
@@ -39,12 +40,9 @@
 
 - (void)dealloc {
   [self->feedContent release];
-  [self->accountId release];
+  [self->accountId   release];
+  [self->feedURL     release];
   [super dealloc];
-}
-
-- (NSString *)requestURL {
-  return [[[self context] request] uri];
 }
 
 - (NSNumber *)accountId {
@@ -63,13 +61,21 @@
   ASSIGNCOPY(self->feedContent, _content);
 }
 
+- (NSString *)feedURL {
+  return self->feedURL;
+}
+
+- (void)setFeedURL:(NSString *)_feedURL {
+  ASSIGNCOPY(self->feedURL, _feedURL);
+}
+
 /* feeds */
 
 - (void)delegatedActionsFeedWithContext:(LSCommandContext *)_ctx {
     [self setFeedContent:[_ctx runCommand:@"job::get-delegated-rss",
                                  @"accountId", accountId,
                                  @"limit", intObj(10),
-                                 @"feedURL", [self requestURL],
+                                 @"feedURL", [self feedURL],
                                  @"channelURL", @"http://www.mormail.com/",
                                  nil]];
 }
@@ -88,7 +94,16 @@
 
   ctx = [[self clientObject] commandContextInContext:[self context]];
   if ([ctx isNotNull]) {
+    NSMutableString   *tmp;
+
     request = [[self context] request];
+    
+    tmp = [[NSMutableString alloc] init];
+    [tmp appendString:[request headerForKey:@"x-webobjects-server-url"]];
+    [tmp appendString:[request uri]];
+    [self setFeedURL:tmp];
+    [tmp release];
+
     feedName = [request formValueForKey:@"feed"];
     [self setAccountId:[[ctx valueForKey:LSAccountKey] valueForKey:@"companyId"]];
 

@@ -5,6 +5,9 @@
 
 	* product.plist: Bind /RSS to SxRSSFeed. (v1.5.9)
 
+	* SxRSSFeed.m: The atom link back to the channel is now the correct
+	  URL used to request the feed. (v1.5.10)
+
 2008-02-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.5.8
