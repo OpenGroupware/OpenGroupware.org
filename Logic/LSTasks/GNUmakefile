@@ -36,7 +36,8 @@ LSTasks_OBJC_FILES = \
 	LSRemoveWasteJobsCommand.m		\
 	LSSetJobCommand.m			\
 	OGoJobAccessHandler.m			\
-	LSQualifierSearchTaskCommand.m
+	LSQualifierSearchTaskCommand.m		\
+	LSGetDelegatedActionsAsRSSCommand.m
 
 LSTasks_BUNDLE_LIBS += \
 	-lLSSearch

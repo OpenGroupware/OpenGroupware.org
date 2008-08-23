@@ -1,3 +1,9 @@
+2008-08-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetDelegatedActionsAsRSSCommand.m: added command which returns an
+	  RSS feed of recent actions on delegated jobs;  that is, jobs created
+	  by the account specified in accountId. (v5.3.20)
+
 2008-06-07  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSFetchToDoJobsCommand.m: to-do list query matches creator id to the

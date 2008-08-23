@@ -84,6 +84,7 @@
         "get-todo-jobs"        = { class = "LSFetchToDoJobsCommand";      };
         "get-private-jobs"     = { class = "LSFetchPrivateJobsCommand";   };
         "get-archived-jobs"    = { class = "LSFetchArchivedJobsCommand";  };
+        "get-delegated-rss"    = { class = "LSGetDelegatedActionsAsRSSCommand";  };
         "get-delegated-jobs"   = { class = "LSFetchDelegatedJobsCommand"; };
         "get-executant-jobs"   = { class = "LSFetchJobsForExecutantCommand";};
         "qsearch"               = { class = "LSQualifierSearchTaskCommand"; };
