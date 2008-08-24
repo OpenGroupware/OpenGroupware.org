@@ -3,6 +3,9 @@
 	* SxRSSFeed.m: Cleanup and added support for limit parameter in URL.
 	  (v1.5.10)
 
+	* SxRSSFeed.m: Fixed double release.
+	  (v1.5.11)
+
 2008-08-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxRSSFeed.m: A WOComponent that maps the requested feed to an 

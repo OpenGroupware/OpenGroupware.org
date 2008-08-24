@@ -110,7 +110,6 @@
     [tmp appendString:[request headerForKey:@"x-webobjects-server-url"]];
     [tmp appendString:[request uri]];
     [self setFeedURL:tmp];
-    [tmp release];
 
     // determine limit, 150 if not specified in URL
     tmp = [request formValueForKey:@"limit"];
@@ -119,7 +118,6 @@
     } else {
         [self setLimit:intObj(150)];
       }
-    [tmp release];
 
     // get feed name from URL
     feedName = [request formValueForKey:@"feed"];
