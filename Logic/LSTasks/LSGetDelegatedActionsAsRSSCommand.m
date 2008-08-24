@@ -98,8 +98,6 @@
   NSMutableString *title, *description, *author;
   NSString        *tmp, *guid;
 
-  [self logWithFormat:@"record = %@", _record];
-
   /* Create a title */
   title = [NSMutableString stringWithCapacity:128];
   tmp = [_record valueForKey:@"jobname"];

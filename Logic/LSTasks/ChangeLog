@@ -3,6 +3,9 @@
 	* LSGetDelegatedActionsAsRSSCommand.m: updated to allow link generation
 	  in LSGetAsRSSFeed super class.  Cleanup.  (v5.3.21)
 
+	* LSGetDelegatedActionsAsRSSCommand.m: removed extraneous logging. 
+	  (v5.3.22)
+
 2008-08-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSGetDelegatedActionsAsRSSCommand.m: added command which returns an
