@@ -61,10 +61,15 @@
 /* Data expression */
 
 - (void)buildQueryExpression {
-  [[self query] appendString:@"SELECT jh.job_history_id, j.name AS job_name, "
-                      @"       p.name AS project_name, "
-                      @"       jh.action_date, jh.action, s.login AS actor, "
-                      @"       jhi.comment, cv.value_string AS email1 "
+  [[self query] appendString:@"SELECT jh.job_history_id, "
+                      @"       j.job_id, "
+                      @"       j.name AS jobname, "
+                      @"       p.name AS projectname, "
+                      @"       jh.action_date AS actionDate, "
+                      @"       jh.action AS action, "
+                      @"       s.login AS actor, "
+                      @"       jhi.comment AS comment, "
+                      @"        cv.value_string AS email1 "
                       @"FROM "];
   [self addTable:@"Job" as:@"j"];
   [self addInnerJoin:@"JobHistory" as:@"jh" on:@"jh.job_id = j.job_id"];
@@ -93,9 +98,11 @@
   NSMutableString *title, *description, *author;
   NSString        *tmp, *guid;
 
+  [self logWithFormat:@"record = %@", _record];
+
   /* Create a title */
   title = [NSMutableString stringWithCapacity:128];
-  tmp = [_record valueForKey:@"jobName"];
+  tmp = [_record valueForKey:@"jobname"];
   [title appendString:[tmp stringByEscapingHTMLString]];
   tmp = [_record valueForKey:@"action"];
   tmp = [tmp substringWithRange:NSMakeRange(3,[tmp length]-3)];
@@ -106,7 +113,7 @@
   tmp = [_record valueForKey:@"comment"];
   [description appendString:[tmp stringByEscapingHTMLString]];
   [description appendString:@"\n-----\n"];
-  tmp = [_record valueForKey:@"projectName"];
+  tmp = [_record valueForKey:@"projectname"];
   if ([tmp isNotNull]) {
     [description appendFormat:@"<STRONG>Project:</STRONG> %@\n", tmp];
   }
@@ -122,10 +129,11 @@
  
   [self appendRSSItem:description
             withTitle:title
-              andDate:[_record valueForKey:@"actionDate"]
+              andDate:[_record valueForKey:@"actiondate"]
             andAuthor:author
-              andLink:@"http://www.example.com"
-              andGUID:guid];
+              andLink:nil
+              andGUID:guid
+             forObject:[_record valueForKey:@"jobId"]];
 } // end appendRSSItem
 
 /* key-value coding */
