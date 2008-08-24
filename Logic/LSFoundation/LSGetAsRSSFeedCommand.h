@@ -57,7 +57,8 @@
              andDate:(NSCalendarDate *)_date
            andAuthor:(NSString *)_author
              andLink:(NSString *)_link
-             andGUID:(NSString *)_guid;
+             andGUID:(NSString *)_guid
+           forObject:(id)_objectId;
 
 @end /* LSGetAsRSSFeedCommand */
 

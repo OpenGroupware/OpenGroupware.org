@@ -79,7 +79,13 @@ static BOOL       debugOn      = NO;
 }
 
 - (NSString*)channelURL {
-  return self->channelURL;
+  NSUserDefaults      *ud;
+ 
+  if ([self->channelURL isNotNull])
+    return self->channelURL;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  return [ud stringForKey:@"RSSDefaultChannelLinkURL"];
 }
 
 - (void)setChannelURL:(NSString *)_url {
@@ -135,9 +141,9 @@ static BOOL       debugOn      = NO;
   if ([[self feedURL] isNotNull])
      [rss appendFormat:@"  <atom:link href=\"%@\" rel=\"self\" type=\"application/rss+xml\"/>\n", 
                        [[self feedURL] stringByEscapingHTMLString]];
-  if ([[self channelURL] isNotNull])
-     [rss appendFormat:@"  <link>%@</link>\n", 
-                       [[self channelURL] stringByEscapingHTMLString]];
+  if ([[self channelURL] isNotNull]) 
+    [rss appendFormat:@"  <link>%@</link>\n",
+                      [[self channelURL] stringByEscapingHTMLString]];
   [rss appendFormat:@"  <pubDate>%@</pubDate>\n", 
      [[NSCalendarDate date] descriptionWithCalendarFormat:@"%a, %d %b %Y %H:%M:%S GMT"]];
 }
@@ -155,9 +161,10 @@ static BOOL       debugOn      = NO;
              andDate:(NSCalendarDate *)_date
            andAuthor:(NSString *)_author
              andLink:(NSString *)_link
-             andGUID:(NSString *)_guid {
+             andGUID:(NSString *)_guid
+           forObject:(id)_objectId {
 
-  NSString   *comment, *timestamp;
+  NSString   *comment, *timestamp, *url;
 
   comment = [_description stringByReplacingString:@"\n" withString:@"<BR>"];
   comment = [comment stringByReplacingString:@"\r" withString:@""];
@@ -174,14 +181,34 @@ static BOOL       debugOn      = NO;
                     @"    <title>%@</title>\n"
                     @"    <description>%@</description>\n"
                     @"    <pubDate>%@</pubDate>\n"
-                    @"    <link>%@</link>\n"
                     @"    <guid isPermaLink=\"false\">%@</guid>\n",
-                    _title, comment, timestamp, _link, _guid];
+                    _title, comment, timestamp, _guid];
 
   if ([_author isNotNull]) {
     [rss appendFormat:@"    <author>%@</author>\n", _author];
   }
 
+  if ([_link isNotNull]) {
+    url = _link;
+  } else {
+      // get the default URL pattern from defaults
+      NSUserDefaults *ud;
+
+      ud = [NSUserDefaults standardUserDefaults]; 
+      url = [ud stringForKey:@"RSSDefaultItemLinkURL"];
+      if ([url isNotNull]) {
+        // replace $objectId in default pattern with provided objectId
+        if ([_objectId isNotNull]) {
+          url = [url stringByReplacingString:@"$objectId" 
+                                  withString:[_objectId stringValue]];
+        }
+        // replace $GUID in default pattern with provided GUID
+        url = [url stringByReplacingString:@"$GUID" withString:_guid];
+      }
+    }
+  if ([url isNotNull])
+    [rss appendFormat:@"    <link>%@</link>\n",
+                      [url stringByEscapingHTMLString]];
   [rss appendFormat:@"  </item>\n"];
 }
 

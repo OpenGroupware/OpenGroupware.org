@@ -1,3 +1,10 @@
+2008-08-23  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetAsRSSFeedCommand.m: Support for generating channel and item
+	  links from the RSSDefaultChannelLinkURL and RSSDefaultItemLinkURL
+	  defaults if the subclass or KVC does not provide link values.
+	  (v5.4.136)
+
 2008-08-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSGetAsRSSFeedCommand.m|h: Added the LSGetAsRSSFeedCommand class
