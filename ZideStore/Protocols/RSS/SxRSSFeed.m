@@ -27,9 +27,8 @@
 
 @interface SxRSSFeed : WOComponent
 {
-  id  feedContent;
-  id  feedURL;
-  id  accountId;
+  id          feedContent, feedURL, accountId;
+  NSNumber   *limit;
 }
 
 @end
@@ -42,6 +41,7 @@
   [self->feedContent release];
   [self->accountId   release];
   [self->feedURL     release];
+  [self->limit       release];
   [super dealloc];
 }
 
@@ -69,14 +69,21 @@
   ASSIGNCOPY(self->feedURL, _feedURL);
 }
 
+- (NSNumber *)limit {
+  return self->limit;
+}
+
+- (void)setLimit:(NSNumber *)_limit {
+  ASSIGNCOPY(self->limit, _limit);
+}
+
 /* feeds */
 
 - (void)delegatedActionsFeedWithContext:(LSCommandContext *)_ctx {
     [self setFeedContent:[_ctx runCommand:@"job::get-delegated-rss",
                                  @"accountId", accountId,
-                                 @"limit", intObj(10),
+                                 @"limit", [self limit],
                                  @"feedURL", [self feedURL],
-                                 @"channelURL", @"http://www.mormail.com/",
                                  nil]];
 }
 
@@ -94,19 +101,31 @@
 
   ctx = [[self clientObject] commandContextInContext:[self context]];
   if ([ctx isNotNull]) {
-    NSMutableString   *tmp;
+    id             tmp;
 
     request = [[self context] request];
-    
+   
+    // construct and store URL used to retrieve feed 
     tmp = [[NSMutableString alloc] init];
     [tmp appendString:[request headerForKey:@"x-webobjects-server-url"]];
     [tmp appendString:[request uri]];
     [self setFeedURL:tmp];
     [tmp release];
 
+    // determine limit, 150 if not specified in URL
+    tmp = [request formValueForKey:@"limit"];
+    if ([tmp isNotNull]) {
+      [self setLimit:intObj([tmp intValue])];
+    } else {
+        [self setLimit:intObj(150)];
+      }
+    [tmp release];
+
+    // get feed name from URL
     feedName = [request formValueForKey:@"feed"];
     [self setAccountId:[[ctx valueForKey:LSAccountKey] valueForKey:@"companyId"]];
 
+    // invoke the requested feed
     if ([feedName isEqualTo:@"delegatedActions"]) {
       [self delegatedActionsFeedWithContext:ctx];
     }
