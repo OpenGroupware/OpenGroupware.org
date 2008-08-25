@@ -87,6 +87,14 @@
                                  nil]];
 }
 
+- (void)toDoActionsFeedWithContext:(LSCommandContext *)_ctx {
+    [self setFeedContent:[_ctx runCommand:@"job::get-todo-rss",
+                                 @"accountId", accountId,
+                                 @"limit", [self limit],
+                                 @"feedURL", [self feedURL],
+                                 nil]];
+}
+
 /* folder */
 
 - (id<WOActionResults>)defaultAction {
@@ -126,6 +134,8 @@
     // invoke the requested feed
     if ([feedName isEqualTo:@"delegatedActions"]) {
       [self delegatedActionsFeedWithContext:ctx];
+    } else if ([feedName isEqualTo:@"toDoActions"]) {
+      [self toDoActionsFeedWithContext:ctx];
     }
   }
   return self;
