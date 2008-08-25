@@ -1,5 +1,13 @@
 2008-08-25  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* commands.plist: get-project-task-rss, get-todo-rss, and
+	  get-delegated-rss commands have been registered. (v5.3.23)
+
+	* LSGetProjectTaskActionsAsRSSCommand.m: added command which returns
+	  an RSS feed of recent actions on all tasks assigned to projects to
+	  which the user or a team the user is a member of is assigned.
+	  (v5.3.23)
+
 	* LSGetToDoActionsAsRSSCommand.m: added command which returns an
 	  RSS feed of recent actions where the user is the executor or
 	  member of a team which is the executor. (v5.3.22)

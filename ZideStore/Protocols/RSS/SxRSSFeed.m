@@ -95,6 +95,14 @@
                                  nil]];
 }
 
+- (void)projectTaskActionsFeedWithContext:(LSCommandContext *)_ctx {
+    [self setFeedContent:[_ctx runCommand:@"job::get-project-task-rss",
+                                 @"accountId", accountId,
+                                 @"limit", [self limit],
+                                 @"feedURL", [self feedURL],
+                                 nil]];
+}
+
 /* folder */
 
 - (id<WOActionResults>)defaultAction {
@@ -136,6 +144,8 @@
       [self delegatedActionsFeedWithContext:ctx];
     } else if ([feedName isEqualTo:@"toDoActions"]) {
       [self toDoActionsFeedWithContext:ctx];
+    } else if ([feedName isEqualTo:@"projectActions"]) {
+      [self projectTaskActionsFeedWithContext:ctx];
     }
   }
   return self;

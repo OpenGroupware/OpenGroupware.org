@@ -1,5 +1,8 @@
 2008-08-25  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* SxRSSFeed.m: Added support for projectActions feed which calls the
+	  LSGetProjectTaskActionsAsRSSCommand Logic object. (v1.5.13)
+
 	* SxRSSFeed.m: Added support for toDoActions feed which calls the
 	  LSGetToDoActionsAsRSSCommand Logic object. (v1.5.12) 
 
