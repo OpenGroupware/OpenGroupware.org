@@ -1,3 +1,8 @@
+2008-08-29  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetAsRSSFeedCommand.m: Returns an UTF-8 encoded NSData rather than
+	  a string.  Specifies utf-8 encoding in the output XML. (v5.4.137)
+
 2008-08-23  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSGetAsRSSFeedCommand.m: Support for generating channel and item

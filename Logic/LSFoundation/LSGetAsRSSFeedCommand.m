@@ -37,7 +37,7 @@ static BOOL       debugOn      = NO;
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
   if ((self = [super initForOperation:_operation inDomain:_domain])) {
-    rss = [NSMutableString stringWithString:@"<?xml version=\"1.0\"?>"];
+    rss = [NSMutableString stringWithString:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
     [rss appendString:@"<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n"];
     sql = [NSMutableString stringWithCapacity:512];
   }
@@ -257,7 +257,8 @@ static BOOL       debugOn      = NO;
      [self _closeRSS];
     }
   }
-  [self setReturnValue:rss];
+  //[self setReturnValue:rss];
+  [self setReturnValue:[rss dataUsingEncoding:NSUTF8StringEncoding]];
   [_context rollback]; 
 }
 
