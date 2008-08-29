@@ -1,3 +1,18 @@
+2008-08-29  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxRssFeed.m: Deleted.  Now mapping RSS feeds to folders within the
+	  ZideStore hierarchy. (v1.5.14)
+
+	* SxFolder+RSS2.m|h: Add support methods for RSS feeds to SxFolder in
+	  the RSS2 category. (v1.5.14)
+
+	* GNUmakefile: include SxFolder+RSS2.m in build. (v1.5.14)
+
+	* product.plist: Map keys to RSS providing methods. (v1.5.14)
+
+	* SxTaskFolder+RSS.m: Provide RSS feeds via the SxTaskFolder. 
+	  (v1.5.14)
+
 2008-08-25  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxRSSFeed.m: Added support for projectActions feed which calls the
