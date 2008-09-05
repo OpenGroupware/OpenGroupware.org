@@ -411,6 +411,8 @@ static BOOL debugOn = NO;
    *
    */  
   static int      usePKeyMails = -1;
+
+  [self logWithFormat:@"participants fetch got: %@", _persons];
   
   LSCommandContext    *cmdctx;
   SxContactManager    *cm;
@@ -476,7 +478,8 @@ static BOOL debugOn = NO;
   persons = [NSMutableArray arrayWithCapacity:8];
   [emails removeAllObjects];
   [self findAccountsForGIDs:e
-        accounts:emails nonAccounts:persons
+        accounts:emails 
+        nonAccounts:persons
         contactManager:cm];
   
   /* get persons for collected gids */
@@ -501,7 +504,8 @@ static BOOL debugOn = NO;
           addToResult:emails
           commandContext:cmdctx];
   }
-  
+ 
+  [self logWithFormat:@"fetch participants returning: %@", emails]; 
   return emails;
 }
 
@@ -687,36 +691,6 @@ static BOOL debugOn = NO;
   email = [_participant valueForKey:@"email"];
   if (![email isNotEmpty]) email = [_participant valueForKey:@"email1"];
   return email;
-}
-
-+ (NSNumber *)pKeyForPKeyEmail:(NSString *)_email isTeam:(BOOL *)_isTeamFlag {
-  if (_isTeamFlag != NULL) (*_isTeamFlag) = NO;
-  
-  if ([_email hasPrefix:@"skyrix-"]) {
-    int pkey;
-    
-    _email = [_email substringFromIndex:7];
-    if ([_email hasPrefix:@"team-"]) {
-      if (_isTeamFlag != NULL) (*_isTeamFlag) = YES;
-      _email = [_email substringFromIndex:5];
-    }
-    if ((pkey = [_email intValue]) > 1000) {
-      return [NSNumber numberWithInt:pkey];
-    }
-  }
-  return nil;
-}
-
-+ (EOGlobalID *)gidForPKeyEmail:(NSString *)_email {
-  id   pkey;
-  BOOL isTeam;
-  
-  if ((pkey = [SxAppointment pKeyForPKeyEmail:_email isTeam:&isTeam]) != nil) {
-    return [EOKeyGlobalID globalIDWithEntityName:
-                          (isTeam ? @"Team" : @"Person")
-                          keys:&pkey keyCount:1 zone:NULL];
-  }
-  return nil;
 }
 
 @end /* SxAppointment(Participants) */

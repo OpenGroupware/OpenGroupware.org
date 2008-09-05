@@ -1,3 +1,13 @@
+2008-09-05  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxFreeBusyManager.m|h: added freeBusyDataForLogin method to support 
+	  free/busy retrieval based on login. See OGo Bug#377.  Removed HACK
+	  where backend called front-end SxAppointment's gidForPKeyEmail
+	  method. (v1.5.92)
+
+	* SxAptManager.m|h: added gidForPKeyEmail method.  Front-end can
+	  use this method of the backend instead of the reverse. (v1.5.92)
+
 2008-06-30  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxAptManager+iCal.m: added version attribute to dictionary produced

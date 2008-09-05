@@ -1,3 +1,13 @@
+	
+	* SxAppointment+Participants.m: removed pKeyForPKeyEmail method, this
+	  is now in the backed SxAptManager.  Some clean-up. (v1.5.120)
+
+	* SxFreeBusy.m: refactored to support short-form F/B requests. See
+	  OGo Bug#377. (v1.5.120)
+
+	* SxAppointment.m: Some clean-up. Possible fix for OGo Bug#1992.
+	  (v1.5.120)
+
 2008-07-07  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxAppointmentMessageParser.m: set the isConflictDisabled field
