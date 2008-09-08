@@ -1,4 +1,5 @@
-	
+2008-09-06  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
 	* SxAppointment+Participants.m: removed pKeyForPKeyEmail method, this
 	  is now in the backed SxAptManager.  Some clean-up. (v1.5.120)
 
