@@ -1,3 +1,9 @@
+2008-09-23  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* LSGetGeoCoordinatesForAddressCommand.m: added command to retrieve
+	  geographic coordinates from geo service, currently supports Google.
+	  (v5.4.101)
+
 2008-09-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSVCardCompanyFormatter.m: create a free/busy URL for accounts when

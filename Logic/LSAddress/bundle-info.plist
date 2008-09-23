@@ -23,6 +23,7 @@
   provides = {
     LSCommands = (
         { name = "address::build-converter-data";  },
+        { name = "address::google-geocode"; 	   },
         { name = "address::convert";               },
         { name = "address::delete";                },
         { name = "address::fetchAttributes";       },
@@ -89,7 +90,8 @@
         { name = LSNewTelephoneCommand;               },
         { name = LSSetTelephoneCommand;               },
         { name = LSGetVCardForGlobalIDsCommand;       },
-        { name = LSSetVCardCommand;                   }
+        { name = LSSetVCardCommand;                   },
+        { name = LSGetGeoCoordinatesForAddressCommand; }
     );
 
     SkyAccessHandlers = (
