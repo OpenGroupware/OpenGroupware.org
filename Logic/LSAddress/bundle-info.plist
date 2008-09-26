@@ -23,7 +23,7 @@
   provides = {
     LSCommands = (
         { name = "address::build-converter-data";  },
-        { name = "address::google-geocode"; 	   },
+        { name = "address::get-geocode"; 	   },
         { name = "address::convert";               },
         { name = "address::delete";                },
         { name = "address::fetchAttributes";       },
