@@ -22,15 +22,14 @@
 #include <LSFoundation/LSBaseCommand.h>
 #include <OGoContacts/SkyAddressDocument.h>
 
-
 @interface LSGetGeoCoordinatesForAddressCommand : LSBaseCommand
 {
-  SkyAddressDocument *address;
+  id address;
 }
 
-- (SkyAddressDocument *)address;
-- (id)_cachedCoordinatesForAddress:(SkyAddressDocument *)_address inContext:(id)_context;
-- (void)_cacheCoordinates:(NSString *)_coords forAddress:(SkyAddressDocument *)_address inContext:(id)_context;
+- (id)address;
+- (id)_cachedCoordinatesForAddress:(id)_address inContext:(id)_context;
+- (void)_cacheCoordinates:(NSString *)_coords forAddress:(id)_address inContext:(id)_context;
 @end
 
 #include "common.h"
@@ -49,7 +48,6 @@ static NSString     *LSAttachmentPath;
 }
 
 - (void)dealloc {
-  [self->address	release];
   [super dealloc];
 }
 
@@ -72,13 +70,23 @@ static NSString     *LSAttachmentPath;
     [coordinateDict takeValue:[coordItems objectAtIndex:3] forKey:@"longitude"];
   } else {
     coordinateDict = [[NSMutableDictionary alloc] init];
-    bindings =
-      [[NSDictionary alloc] initWithObjectsAndKeys:
+    if ([address respondsToSelector:@selector(city)]) {
+      bindings =
+        [[NSDictionary alloc] initWithObjectsAndKeys:
                     [[[self address] country] stringByEscapingURL],     @"COUNTRY",
                     [[[self address] zip] stringByEscapingURL], @"ZIP",
                     [[[self address] city] stringByEscapingURL],        @"CITY",
                     [[[self address] street] stringByEscapingURL],      @"STREET",
                   nil];
+    } else {
+      bindings =
+        [[NSDictionary alloc] initWithObjectsAndKeys:
+                    [[[self address] valueForKey:@"country"] stringByEscapingURL],     @"COUNTRY",
+                    [[[self address] valueForKey:@"zip"] stringByEscapingURL], @"ZIP",
+                    [[[self address] valueForKey:@"city"] stringByEscapingURL],        @"CITY",
+                    [[[self address] valueForKey:@"street"] stringByEscapingURL],      @"STREET",
+                  nil];
+    }
     GoogleURLString = [GoogleGeocodingURL copy];
     GoogleURLString = [GoogleURLString stringByReplacingVariablesWithBindings:bindings
               stringForUnknownBindings:@""];
@@ -101,16 +109,21 @@ static NSString     *LSAttachmentPath;
 }  
 
 /* caching */
-- (id)_cachedCoordinatesForAddress:(SkyAddressDocument *)_address inContext:(id)_context {
+- (id)_cachedCoordinatesForAddress:(id)_address inContext:(id)_context {
   NSString      *path;
   NSString      *file;
   NSFileManager *manager;
-  NSNumber      *aId, *oV;
+  NSString      *aId, *oV;
 
   [self assert:(_address != nil) reason:@"no record to fetch address for!"];
 
-  aId = [[_address asDict] valueForKey:@"addressId"];
-  oV  = [_address objectVersion];
+  if ([_address respondsToSelector:@selector(asDict)]) {
+    aId = [[_address asDict] valueForKey:@"addressId"];
+    oV  = [[_address objectVersion] stringValue];
+  } else {
+    aId = [_address valueForKey:@"addressId"];
+    oV  = [_address valueForKey:@"objectVersion"];
+  }
   if (aId == nil) {
     [self warnWithFormat:
             @"%s: missing addressId in address: %@",
@@ -133,7 +146,7 @@ static NSString     *LSAttachmentPath;
   return nil;
 }
 
-- (void)_cacheCoordinates:(NSString *)_coords forAddress:(SkyAddressDocument *)_address
+- (void)_cacheCoordinates:(NSString *)_coords forAddress:(id)_address
   inContext:(id)_context
 {
   NSString       *path;
@@ -145,8 +158,14 @@ static NSString     *LSAttachmentPath;
   [self assert:(_coords != nil) reason:@"no coordinates to save!"];
   [self assert:(_address != nil)  reason:@"no address to save coordinates for!"];
 
-  aId = [[_address asDict] valueForKey:@"addressId"];
-  oV  = [_address objectVersion];
+  if ([_address respondsToSelector:@selector(asDict)]) {
+    aId = [[_address asDict] valueForKey:@"addressId"];
+    oV  = [[_address objectVersion] stringValue];
+  } else {
+    aId = [_address valueForKey:@"addressId"];
+    oV  = [_address valueForKey:@"objectVersion"];
+  }
+
   if (aId == nil) {
     [self warnWithFormat:
             @"%s: missing addressId in address: %@",
@@ -174,10 +193,11 @@ static NSString     *LSAttachmentPath;
 
 /* accessors */
 
-- (void)setAddress:(SkyAddressDocument *)_address {
+- (void)setAddress:(id)_address {
   ASSIGN(self->address, _address);
 }
-- (SkyAddressDocument *)address {
+
+- (id)address {
   return self->address;
 }
 

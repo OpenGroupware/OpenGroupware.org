@@ -1,3 +1,9 @@
+2008-09-29  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetGeoCoordinatesForAddressCommand.m: should now support either an
+	  LSAddress or a SkyAddressDocument object.  See OGo Bug#2002.
+	  (v5.4.103)
+
 2008-09-26  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
 
 	* bundle-info.plist: fix to reflect name of new geo command.
