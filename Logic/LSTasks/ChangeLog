@@ -1,3 +1,14 @@
+2008-10-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetProjectTaskActionsAsRSSCommand.m: tweak global uuid of entry.
+	  (v5.3.24)
+
+	* LSGetToDoActionsAsRSSCommand.m: tweak global uuid of entry.
+	  (v5.3.24)
+
+	* LSGetDelegatedActionsAsRSSCommand.m: tweak global uuid of entry. 
+	  (v5.3.24)
+
 2008-08-25  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* commands.plist: get-project-task-rss, get-todo-rss, and

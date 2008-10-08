@@ -128,7 +128,7 @@
 
   /* Create a GUID */
   tmp = [_record valueForKey:@"jobHistoryId"];
-  guid = [NSString stringWithFormat:@"OGo-TaskAction-%@", tmp];
+  guid = [NSString stringWithFormat:@"OGo-TaskAction-%@-project", tmp];
  
   [self appendRSSItem:description
             withTitle:title
