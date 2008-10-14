@@ -13,9 +13,6 @@ SOPE 4.7
 - openldap2/openldap2-dev
 - postgresql-dev
 
-PDA
-- libpisock (eg libpisock-dev on Debian)
-
 (Internal) Dependencies
 =======================
 

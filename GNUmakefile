@@ -20,10 +20,6 @@ SUBPROJECTS += \
 	XmlRpcAPI	\
 	ZideStore
 
-ifneq ($(libpisock),no)
-SUBPROJECTS += PDA
-endif
-
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make
 -include GNUmakefile.postamble
