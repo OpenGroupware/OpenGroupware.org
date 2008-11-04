@@ -1,3 +1,9 @@
+2008-11-03 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Assignment.m: potential fix for zOGI Issue#34.  
+	  Enterprise assignment modification will not remove Teams
+	  assignments. (v1.5.49)
+
 2008-08-19 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Task.m: fix-up to avoid crash if an objectId is listed
