@@ -156,6 +156,7 @@ EditorIcon: WOImage {
 }
 
 EditorLink: WOHyperlink {
+  // puts [self object] into the pasteboard, and takeValues this as the account
   action = showEditor;
 }
 

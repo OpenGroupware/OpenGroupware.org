@@ -48,6 +48,10 @@
         { name = "job::setactor";                         },
         { name = "job::setcreator";                       },
         { name = "job::setexecutant";                     },
+        { name = "job::qsearch";                          },
+        { name = "job::get-delegated-rss";                },
+        { name = "job::get-todo-rss";                     },
+        { name = "job::get-project-task-rss";             },
         { name = "jobassignment::delete";                 },
         { name = "jobassignment::get";                    },
         { name = "jobassignment::new";                    },
@@ -71,6 +75,9 @@
       { name = LSDetachProjectFromJobCommand;  },
       { name = LSFetchArchivedJobsCommand;     },
       { name = LSFetchDelegatedJobsCommand;    },
+      { name = LSGetDelegatedActionsAsRSSCommand; },
+      { name = LSGetToDoActionsAsRSSCommand;   },
+      { name = LSGetProjectTaskActionsAsRSSCommand; },
       { name = LSFetchJobCommand;              },
       { name = LSFetchJobExecutantCommand;     },
       { name = LSFetchJobsForExecutantCommand; },
@@ -92,6 +99,15 @@
       { name = LSRemoveWasteJobsCommand;       },
       { name = LSSetJobCommand;                },
       { name = LSTasksCommands;                },
+      { name = OGoJobAccessHandler;            },
+      { name = LSQualifierSearchTaskCommand;   },
     );
+
+    SkyAccessHandlers = (
+      { name = "Job"; },
+    );
+  };
+  SkyAccessHandlers = {
+    Job         = "OGoJobAccessHandler";
   };
 }

@@ -1,3 +1,42 @@
+2008-09-29  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetGeoCoordinatesForAddressCommand.m: should now support either an
+	  LSAddress or a SkyAddressDocument object.  See OGo Bug#2002.
+	  (v5.4.103)
+
+2008-09-26  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* bundle-info.plist: fix to reflect name of new geo command.
+	  (v5.4.102)
+
+2008-09-23  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* LSGetGeoCoordinatesForAddressCommand.m: added command to retrieve
+	  geographic coordinates from geo service, currently supports Google.
+	  (v5.4.101)
+
+2008-09-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSVCardCompanyFormatter.m: create a free/busy URL for accounts when
+	  creating vCards, otherwise use the free/busy URL stored in the
+	  database.  See OGo Bug#1996.  (v5.4.100)
+
+2008-07-23  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSSetAddressCommand.m: bump addresses object version
+	  attribute when the address is updated. Bug#1983.
+	  (v5.4.99)
+
+2008-05-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSDeleteCompanyCommand.m: remove properties and object links.
+	  Relates to OGo Bug#1976. (v5.4.98)
+
+2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoCompanyAccessHandler.m: minor code cleanups, added a few comments
+	  (v5.3.97)
+
 2007-06-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetCompanyForMemberCommand.m: fixed a typo introduced in 5.3.94

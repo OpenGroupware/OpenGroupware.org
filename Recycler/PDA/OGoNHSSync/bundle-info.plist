@@ -1,0 +1,13 @@
+// $Id$
+{
+  requires = {
+    bundleManagerVersion = 1;
+  };
+
+  provides = {
+    PPConduits = (
+      { name = "OpenGroupwareNHS"; class = "OGoNHSConduit"; }
+      //{ name = "TEST"; class = "TestConduit"; }
+    );
+  };
+};

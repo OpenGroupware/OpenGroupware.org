@@ -1,0 +1,260 @@
+// $Id: SkyPalmAssignMemo.wod,v 1.2 2003/11/04 18:36:13 martin Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.SkyPalmAssignMemo;
+  onClose = cancel;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Font: SkyConfigFont {}
+
+Title: LSWViewerTitle {
+  title = labels.$titleKey;
+}
+
+// labels
+ProjectLabel: SkyRichString {
+  value = labels.label_project;
+}
+FileLabel: SkyRichString {
+  value = labels.label_file;
+}
+FilesLabel: SkyRichString {
+  value = labels.label_files;
+}
+FolderLabel: SkyRichString {
+  value = labels.label_folder;
+}
+FilenameLabel: SkyRichString {
+  value = labels.label_filename;
+}
+DeviceAttr: WOString { value = labels.attribute_deviceId; }
+SyncTypeLabel: SkyRichString {
+  value = labels.attribute_skyrixSyncType;
+}
+Project: SkyRichString {
+  value = project.name;
+}
+FileIcon: SkyP4DocumentIcon {
+  documentPath = skyrixRecord.NSFilePath;
+  mimeType     = skyrixRecord.NSFileMimeType;
+}
+FilePath: SkyRichString {
+  value = skyrixRecord.NSFilePath;
+}
+CurrentFolder: SkyRichString {
+  value = fileManager.currentDirectoryPath;
+}
+PalmOverSkyLabel: SkyRichString {
+  value = labels.sync_type_2;
+}
+SkyOverPalmLabel: SkyRichString {
+  value = labels.sync_type_1;
+}
+PalmMemoLabel: WOString {
+  value = labels.label_palmMemo;
+}
+
+SkyrixRecordsRep: WORepetition {
+  list = skyrixRecords;
+  item = item;
+}
+ItemIcon: SkyP4DocumentIcon {
+  documentPath = item.NSFilePath;
+  mimeType     = item.NSFileMimeType;
+}
+ItemPath: SkyRichString {
+  value = item.NSFilePath;
+}
+
+PalmRecordsRep: WORepetition {
+  list  = palmRecords;
+  item  = item;
+  index = index;
+}
+PalmRecordsItem: SkyRichString {
+  value = item.description;
+}
+ArrowRight: WOImage {
+  filename = "collapsed.gif";
+  BORDER   = 0;
+}
+FilenameItem: WOTextField {
+  value = filenamesItem;
+  size  = 40;
+}
+
+PalmMemo: SkyRichString {
+  value = doc.description;
+}
+
+// conditions
+ListProjectsCond: WOConditional {
+  condition = listProjects;
+}
+ListProjectsCondElse: WOConditional {
+  condition = listProjects;
+  negate    = YES;
+}
+
+ListFilesCond: WOConditional {
+  condition = listFiles;
+}
+ListFilesCondElse: WOConditional {
+  condition = listFiles;
+  negate    = YES;
+}
+
+HasProjectCond: WOConditional {
+  condition = hasProject;
+}
+HasProjectCondElse: WOConditional {
+  condition = hasProject;
+  negate    = YES;
+}
+HasFileCond: WOConditional {
+  condition = hasFile;
+}
+HasFileCondElse: WOConditional {
+  condition = hasFile;
+  negate    = YES;
+}
+
+CreateNewFileCond: WOConditional {
+  condition = createNewFileCond;
+}
+CreateNewFileCondElse: WOConditional {
+  condition = createNewFileCond;
+  negate    = YES;
+}
+
+NoNewFileCond: WOConditional {
+  condition = createNewRecord;
+  negate    = YES;
+}
+AssignFileCond: WOConditional {
+  condition = assignToRecord;
+}
+CreateNewFromFileCond: WOConditional {
+  condition = createFromRecord;
+}
+CreateNewFromFileCondElse: WOConditional {
+  condition = createFromRecord;
+  negate    = YES;
+}
+
+IsSingleSelectionCond: WOConditional {
+  condition = isSingleSelection;
+}
+IsSingleSelectionCondElse: WOConditional {
+  condition = isSingleSelection;
+  negate    = YES;
+}
+HasSinglePalmMemo: WOConditional {
+  condition = hasSinglePalmDoc;
+}
+
+// Form
+
+Form: WOForm {}
+
+PublicProjectList: SkyPalmProjectListing {
+  list       = publicProjects;
+  item       = item;
+  selectItem = selectProject;
+  title      = labels.label_publicProjects;
+}
+PrivateProjectList: SkyPalmProjectListing {
+  list       = privateProjects;
+  item       = item;
+  selectItem = selectProject;
+  title      = labels.label_privateProjects;
+}
+
+FolderTree: SkyFileManagerTreeView {
+  fileManager = fileManager;
+  title       = projectTitle;
+  zoomDefault = "skypalm_assignmemo_zoom";
+}
+FileList: SkyPalmFileListing {
+  list        = files;
+  item        = item;
+  selectItem  = selectFile;
+  title       = labels.label_validFiles;
+  selections  = skyrixRecords;
+  selectItems = selectFiles;
+
+  // if createFromRecord than file must be readable
+  mustBeReadable = createFromRecord;
+}
+
+NewFileLink: WOHyperlink {
+  action = createNewFile;
+  TITLE  = labels.action_createNewFile;
+}
+NewFileLabel: SkyRichString {
+  value = labels.label_newFile;
+}
+
+Filename: WOTextField {
+  value = filename;
+  size  = 40;
+}
+
+// device
+Device: WOPopUpButton {
+  list            = devices;
+  item            = item;
+  selection       = deviceId;
+  singleSelection = YES;
+}
+
+SyncType: WOPopUpButton {
+  //  list            = ( 0, 1, 2 );
+  list            = validSyncTypes;
+  item            = item;
+  singleSelection = YES;
+  selection       = syncType;
+  string          = labels.$syncTypeKey;
+}
+
+ChangeProject: WOHyperlink {
+  action = changeProject;
+  TITLE  = labels.action_changeProject;
+}
+ChangeFile: WOHyperlink {
+  action = changeFile;
+  TITLE  = labels.action_changeFile;
+}
+ChangeFolder: WOHyperlink {
+  action = changeFile;
+  TITLE  = labels.action_changeFolder;
+}
+
+Save: WOImageButton {
+  action   = save;
+  filename = "save.gif";
+  name     = labels.action_save;
+  ALT      = labels.action_save;
+  title    = labels.action_save;
+  BORDER   = 0;
+}
+SaveDisabled: WOImage {
+  filename = "save_inactive.gif";
+  ALT      = labels.action_save;
+  title    = labels.action_save;
+  BORDER   = 0;
+}
+
+Cancel: WOImageButton {
+  action   = cancel;
+  filename = "cancel.gif";
+  name     = labels.cancelButtonLabel;
+  ALT      = labels.cancelButtonLabel;
+  title    = labels.cancelButtonLabel;
+  BORDER   = 0;
+}

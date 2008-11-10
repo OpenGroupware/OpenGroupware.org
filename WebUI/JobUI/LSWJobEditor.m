@@ -1055,7 +1055,7 @@ static BOOL HasSkyProject4Desktop    = NO;
   id projId = nil;
 
   NSAssert2([obj isKindOfClass:[NSMutableDictionary class]],
-	    @"Imported job isn`t a NSMutableDictionary %@ %@",
+	    @"Imported job is not a NSMutableDictionary %@ %@",
 	    [obj class], obj);
 
   [obj addEntriesFromDictionary:s];

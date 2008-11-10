@@ -37,6 +37,7 @@
         { name = "object::get-logs"            },
         { name = "object::increase-version"    },
         { name = "log::set-actor"              },
+        { name = "log::since"                  },
         { name = "object::get-current-log"     },
         { name = "object::get-by-globalid"     },
     );
@@ -51,6 +52,7 @@
         { name = LSGetSessionLogsForGlobalIDs; },
         { name = LSGetObjectByGlobalID;        },
         { name = LSSuperUserCommand;           },
+        { name = LSQueryLogsSince;             },
     );
   };
 }

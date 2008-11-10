@@ -29,6 +29,7 @@ libLSFoundation_HEADER_FILES = \
 	LSDBObjectNewKeyCommand.h	\
 	LSDBObjectSetCommand.h		\
 	LSDBObjectTransactionCommand.h	\
+        LSGetAsRSSFeedCommand.h		\
 	LSDBTransaction.h		\
 	LSFoundation.h			\
 	LSMail.h			\
@@ -71,6 +72,7 @@ libLSFoundation_OBJC_FILES = \
 	LSDBObjectNewKeyCommand.m		\
 	LSDBObjectSetCommand.m			\
 	LSDBObjectTransactionCommand.m		\
+	LSGetAsRSSFeedCommand.m			\
 	LSDBTransaction.m			\
 	LSMail.m				\
 	LSModuleManager.m			\

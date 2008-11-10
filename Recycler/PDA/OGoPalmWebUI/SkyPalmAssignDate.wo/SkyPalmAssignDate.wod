@@ -1,0 +1,268 @@
+// $Id: SkyPalmAssignDate.wod,v 1.3 2003/12/10 18:27:06 martin Exp $
+
+Frame:  LSWSkyrixFrame {}
+Window: LSWWindowFrame {
+  title   = labels.SkyPalmAssignDate;
+  onClose = cancel;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Title: LSWViewerTitle {
+  title = labels.$titleKey;
+}
+
+IsJavaScriptEnabled: WOConditional {
+  condition = session.isJavaScriptEnabled;
+}
+//Calendar: WOJavaScript {
+//  scriptFile = "calendar.js";
+//}
+Calendar: SkyCalendarScript {}
+
+// labels
+OnlyMeLabel: SkyRichString {
+  value = labels.label_onlyMyAppointments;
+}
+ShowAppointmentsLabel: SkyRichString {
+  value = labels.label_showAppointments;
+}
+ForTheNextLabel: SkyRichString {
+  value = labels.forTheNext;
+}
+DaysLabel: SkyRichString {
+  value = labels.label_days;
+}
+FromLabel: SkyRichString {
+  value = labels.from;
+}
+ToLabel: SkyRichString {
+  value = labels.to;
+}
+AppointmentLabel: SkyRichString {
+  value = labels.label_skyrixAppointment;
+}
+AppointmentsLabel: SkyRichString {
+  value = labels.label_skyrixAppointments;
+}
+SyncTypeLabel: SkyRichString {
+  value = labels.attribute_skyrixSyncType;
+}
+DeviceAttr: WOString { value = labels.attribute_deviceId; }
+SkyOverPalmLabel: SkyRichString {
+  value = labels.sync_type_1;
+}
+PalmOverSkyLabel: SkyRichString {
+  value = labels.sync_type_2;
+}
+PalmDateLabel: WOString {
+  value = labels.label_palmDate;
+}
+
+// conditions
+SearchAppointmentsCond: WOConditional {
+  condition = searchAppointmentsCond;
+}
+ShowSearchResultCond: WOConditional {
+  condition = showSearchResultCond;
+}
+HasOneAppointmentCond: WOConditional {
+  condition = hasAppointment;
+}
+HasMultipleAppointmentsCond: WOConditional {
+  condition = hasAppointments;
+}
+CanSaveCond: WOConditional {
+  condition = canSave;
+}
+CanSaveCondElse: WOConditional {
+  condition = canSave;
+  negate    = YES;
+}
+NewFromSkyrixCond: WOConditional {
+  condition = createFromRecord;
+}
+NewSkyrixRecordCond: WOConditional {
+  condition = createNewRecord;
+}
+AssignRecordCond: WOConditional {
+  condition = assignToRecord;
+}
+HasSinglePalmDate: WOConditional {
+  condition = hasSinglePalmDoc;
+}
+HasMultiplePalmDates: WOConditional {
+  condition = palmRecords.count;
+}
+PalmDateRepetition: WORepetition {
+  list = palmRecords;
+  item = doc;
+}
+
+// from
+
+Form: WOForm {
+  name   = "editform";
+  action = showAppointments;
+}
+
+OnlyMeCheckBox: WOCheckBox {
+  checked  = onlyMyAppointments;
+  onChange = "document.editform.submit(); return true";
+}
+DaysPopup: WOPopUpButton {
+  list            = ( 3, 7, 14, 20, 50 );
+  item            = item;
+  selection       = days;
+  singleSelection = YES;
+}
+ShowAptsOfRangeSubmit : WOImageButton {
+  action   = showAppointments;
+  filename = "show.gif";
+  ALT      = labels.action_showAppointments;
+  title    = labels.action_showAppointments;
+  BORDER   = 0;
+}
+
+FromTF: WOTextField {
+  name  = "from";
+  value = fromDate;
+  size  = 10;
+}
+ToTF: WOTextField {
+  name  = "to";
+  value = toDate;
+  size  = 10;
+}
+//FromCalPopUp: WOHyperlink {
+//  filename = "icon_popupcalendar.gif";
+//  href     = "javascript::doNothing()";
+//  ALT      = labels.calendarPopupStartdateLabel;
+//  BORDER   = 0;
+//  onClick  = fromOnClickEvent;
+//  onMouseOver = "window.status='browse startdate'; return true";
+//  onMouseOut  = "window.status='SKYRIX'; return true";
+//}
+FromCalPopUp: SkyCalendarPopUp {
+  elementName = "from";
+  formName    = "editform";
+}
+//ToCalPopUp: WOHyperlink {
+//  filename = "icon_popupcalendar.gif";
+//  href     = "javascript::doNothing()";
+//  ALT      = labels.calendarPopupEnddateLabel;
+//  BORDER   = 0;
+//  onClick  = toOnClickEvent;
+//  onMouseOver = "window.status='browse enddate'; return true";
+//  onMouseOut  = "window.status='SKYRIX'; return true";
+//}
+ToCalPopUp: SkyCalendarPopUp {
+  elementName = "to";
+  formName    = "editform";
+}
+SearchAptsSubmit : WOImageButton {
+  action   = searchAppointments;
+  filename = "show.gif";
+  ALT      = labels.action_showAppointments;
+  title    = labels.action_showAppointments;
+  BORDER   = 0;
+}
+
+SkyrixRecordEditableCond: WOConditional {
+  condition = isSkyrixRecordEditable;
+}
+SkyrixRecordEditableCondElse: WOConditional {
+  condition = isSkyrixRecordEditable;
+  negate    = YES;
+}
+SyncTypeFullPopUp: WOPopUpButton {
+  list            = ( 0, 1, 2, 3 );
+  item            = item;
+  singleSelection = YES;
+  selection       = syncType;
+  string          = labels.$syncTypeKey;
+}
+SyncTypePopUp: WOPopUpButton {
+  list            = ( 0, 1 );
+  item            = item;
+  singleSelection = YES;
+  selection       = syncType;
+  string          = labels.$syncTypeKey;
+}
+// device
+Device: WOPopUpButton {
+  list            = devices;
+  item            = item;
+  selection       = deviceId;
+  singleSelection = YES;
+}
+DeviceStr: SkyRichString {
+  value = deviceId;
+}
+
+Save: WOImageButton {
+  action   = save;
+  filename = "save.gif";
+  name     = labels.action_save;
+  ALT      = labels.action_save;
+  title    = labels.action_save;
+  BORDER   = 0;
+}
+SaveDisabled: WOImage {
+  filename = "save_inactive.gif";
+  ALT      = labels.action_save;
+  title    = labels.action_save;
+  BORDER   = 0;
+}
+
+Cancel: WOImageButton {
+  action   = cancel;
+  filename = "cancel.gif";
+  name     = labels.cancelButtonLabel;
+  ALT      = labels.cancelButtonLabel;
+  title    = labels.cancelButtonLabel;
+  BORDER   = 0;
+}
+
+
+// results
+AppointmentsList: SkyPalmAppointmentListing {
+  list        = apts;
+  item        = item;
+  selections  = skyrixRecords;
+  selectItem  = selectAppointment;
+  selectItems = selectAppointments;
+
+  title       = aptsTitle;
+}
+
+AppointmentTitle: SkyRichString {
+  value = appointment.title;
+}
+AppointmentTime: SkyRichString {
+  value = aptTimeString;
+}
+
+AppointmentsRep: WORepetition {
+  list  = skyrixRecords;
+  item  = item;
+}
+RepItemTitle: SkyRichString {
+  value = item.title;
+}
+RepItemTime: SkyRichString {
+  value = itemTimeString;
+}
+PalmDate: SkyRichString {
+  value = doc.description;
+}
+PalmDateTime: SkyRichString {
+  value = palmDateTimeString;
+}
+
+// chage apt
+ChangeAppointment: WOHyperlink {
+  action = changeAppointment;
+  TITLE  = labels.action_changeAppointment;
+}

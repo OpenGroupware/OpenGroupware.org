@@ -1,0 +1,34 @@
+<table width="100%" cellpadding="4" cellspacing="0" border="0">
+<#IsEventCond>
+  <tr><#EventDateAttr><#Eventdate /></#EventDateAttr></tr>
+</#IsEventCond><!-- IsEventCond -->
+<#IsEventCondElse>
+  <tr><#StartdateAttr><#Startdate /></#StartdateAttr></tr>
+  <tr><#EnddateAttr><#Enddate /></#EnddateAttr></tr>
+</#IsEventCondElse><!-- IsEventCondElse -->
+<#HasActionCond>
+  <tr><#DescriptionAttr><#Action><#Description /></#Action></#DescriptionAttr></tr>
+</#HasActionCond>
+<#HasActionCondElse>
+  <tr><#DescriptionAttr /></tr>
+</#HasActionCondElse>
+<#IsAlarmedCond>
+  <tr><#AlarmedAttr /></tr>
+</#IsAlarmedCond><!-- IsAlarmedCond -->
+<#ShowNoteCond>
+  <tr><#NoteAttr><#Note /></#NoteAttr></tr>
+</#ShowNoteCond>
+<#IsRepeatingCond>
+  <tr><#RepeatTypeAttr /></tr>
+  <#HasRepeatEnddateCond>
+    <tr><#RepeatEnddateAttr><#RepeatEnddate /></#RepeatEnddateAttr></tr>
+  </#HasRepeatEnddateCond><!-- HasRepeatEnddateCond -->
+  <#HasExceptions>
+    <tr><#ExceptionsAttr /></tr>
+  </#HasExceptions><!-- HasExceptions -->
+</#IsRepeatingCond><!-- IsRepeatingCond -->
+<#ShowSyncCond>
+  <tr><#DeviceAttr /></tr>
+  <tr><#SyncAttr /></tr>
+</#ShowSyncCond><!-- ShowSyncCond -->
+</table>

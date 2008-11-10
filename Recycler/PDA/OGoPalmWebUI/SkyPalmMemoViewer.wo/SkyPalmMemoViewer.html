@@ -1,0 +1,49 @@
+<!-- $Id: SkyPalmMemoViewer.html,v 1.1 2003/07/14 16:18:25 helge Exp $ -->
+<#Frame>
+  <#Window>
+
+    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+    <#ViewerTitle>
+      <#Buttons />
+    </#ViewerTitle>
+    <tr><#TitleAttr /></tr>
+  </table>
+
+    <p>
+    <#TabView>
+      <#MemoTab>
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+          <tr><#MemoAttr><#Memo /></#MemoAttr></tr>
+      </table>
+      </#MemoTab>
+
+      <#PalmSyncTab>
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+          <tr><#CategoryAttr /></tr>
+        <tr><#DeviceAttr /></tr>
+        <tr><#SyncAttr /></tr>
+      </table>
+      </#PalmSyncTab>
+
+      <#HasSkyrixRecord>
+        <#SkyrixSyncTab>
+          <table width="100%" border="0" cellpadding="4" cellspacing="0">
+            <tr>
+          <#DocumentAttr>
+            <#ViewDocument>
+              <#Icon /><#Document /></#ViewDocument><!-- ViewDocument -->
+          </#DocumentAttr><!-- DocumentAttr -->
+        </tr>
+          <tr><#SkyrixSyncAttr /></tr>
+          <tr><#SkyrixSyncStateAttr /></tr>
+        </table>
+        </#SkyrixSyncTab><!-- SkyrixSyncTab -->
+      </#HasSkyrixRecord><!-- HasSkyrixRecord -->
+
+    </#TabView><!-- TabView -->
+
+  </p>
+
+  </#Window><!-- Window -->
+</#Frame><!-- Frame -->

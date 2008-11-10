@@ -1,0 +1,11 @@
+// $Id: SkyPalmCategoryPopUp.wod,v 1.1 2003/07/14 16:18:25 helge Exp $
+
+Categories: WOPopUpButton {
+  list            = categories;
+  item            = item;
+  selection       = selection;
+  singleSelection = YES;
+  string          = categoryLabel;
+  nilString       = labels.label_popup_all;
+  onChange        = onChange;
+}

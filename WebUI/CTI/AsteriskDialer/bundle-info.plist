@@ -1,0 +1,18 @@
+{
+  requires = {
+    bundleManagerVersion = 1;
+    classes = (
+      { name = NSObject;    }
+    );
+  };
+  
+  provides = {
+    CTIDialers = ( 
+        { name = AsteriskDialer;     }
+    );
+    classes    = ( 
+        { name = AsteriskDialer;     },
+        { name = AsteriskConnection; }
+    );
+  };
+}

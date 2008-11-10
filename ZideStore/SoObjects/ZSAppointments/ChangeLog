@@ -1,3 +1,86 @@
+2008-09-06  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxAppointment+Participants.m: removed pKeyForPKeyEmail method, this
+	  is now in the backed SxAptManager.  Some clean-up. (v1.5.120)
+
+	* SxFreeBusy.m: refactored to support short-form F/B requests. See
+	  OGo Bug#377. (v1.5.120)
+
+	* SxAppointment.m: Some clean-up. Possible fix for OGo Bug#1992.
+	  (v1.5.120)
+
+2008-07-07  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxAppointmentMessageParser.m: set the isConflictDisabled field
+	  based upon the provided TRANSP attribute. (v1.5.119)
+
+	* SxAppointment.m: preserve the isConflictDisabled value.
+	  (v1.5.119)
+
+2008-07-06  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxAppointmentMessageParser.m: take the transparency value from the
+	  iCalEvent into the record. (v1.5.118)
+
+	* SxAppointment.m: save the fbtype in both create and update.
+	  (v1.5.118)
+
+2008-07-05  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxAppointmentMessageParser.m: Fix storing of importance value into 
+	  record.  Model field is "importance",  parser was putting the 
+	  value into "priority".  Closes OGo bug#1991. (v1.5.116)
+
+	* SxAppointmentMessageParser.m: Include the X-MOZ-LASTACK attribue in
+	  the alarm data stored in evoReminder. (v1.5.115)
+
+	* SxAppointment.m: Include the evoReminder value in new appointments,
+	  previously alarms where only stored for updated appointments.
+	  (v1.5.115)
+
+2008-06-30  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxDavCalendarMultiget.m: produce proper etags in results, this fixes
+	  "object has been updated" warnings when updating appointments via
+	  Evolution & Mozilla calendar. (v1.5.114)
+
+	* SxDavCalendarQuery.m: produce proper etags in results, this fixes
+	  "object has been updated" warnings when updating appointments via
+	  Evolution & Mozilla calendar. (v1.5.114)
+
+	* SxDavCalendarQuery.m: always include the getetag property in the
+	  result as the parsing of requested properties does not work.  This
+	  enables Evolution to display the calendar,  Sunbird 0.8 works as
+	  well. (v1.5.114)
+
+2008-06-27  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* product.plist: map calendar-multiget request to the 
+	  SxDavCalendarMultiget class (v1.5.113)
+
+	* SxDavCalendarMultiget.m: process calendar-multiget requests,
+	  only tested with Sunbird.  (v1.5.113)
+
+	* GNUmakefile: build the SxDavCalendarMultiget class. (v1.5.113)
+
+2008-06-14  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxAppointmentFolder.m|h: added method defaultReadAccessInContext that
+	  returns the value of the scheduler_default_readaccessteam default.
+	  (v1.5.112)
+
+	* SxAppointment+Participants.m: cleaned up some really crazy indenting 
+	  and lack of indenting. (v1.5.112)
+
+	* SxAppointment.m: when an appointment is created in the Overview view
+	  and there is no group for the context the default read access team
+	  defined in the scheduler_default_readaccessteam (if any) default is
+	  used for the read access team. (v1.5.112)
+
+2008-03-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAppointmentFolder.m: added gdavComponentSet (v1.5.111)
+
 2007-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.5.110

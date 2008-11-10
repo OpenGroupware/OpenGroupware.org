@@ -1,0 +1,52 @@
+<!-- $Id: SkyPalmMemoEditor.html,v 1.1 2003/07/14 16:18:25 helge Exp $ -->
+<#Frame>
+  <#Window>
+    <#EditorForm>
+
+      <TABLE WIDTH="100%" BORDER="0" CELLPADDING="4" CELLSPACING="0">
+
+      <#PalmMemoCollapsible>
+        <B><#Font>
+          <#CollTitleMode>
+            <#IsNewCond>
+              <#NewMemoLabel />
+            </#IsNewCond><!-- IsNewCond -->
+            <#IsNotNewCond>
+              <#MemoTitle />
+            </#IsNotNewCond><!-- IsNotNewCond -->
+          </#CollTitleMode>
+        </#Font></B>
+
+        <#CollContentMode>
+
+          <TR><TD COLSPAN="2"></TD></TR>
+
+          <TR>
+          <#AttributeCell><#MemoAttr />:</#AttributeCell>
+          <#ValueCell><#Memo /></#ValueCell>
+        </TR>
+
+          <TR>
+          <#AttributeCell><#DeviceAttr />:</#AttributeCell>
+          <#ValueCell><#Device /><#DeviceSubmit /></#ValueCell>
+        </TR>
+
+          <TR>
+          <#AttributeCell><#CategoryAttr />:</#AttributeCell>
+          <#ValueCell><#Category /></#ValueCell>
+        </TR>
+        </#CollContentMode><!-- CollContentMode -->
+
+      </#PalmMemoCollapsible><!-- PalmMemoCollapsible -->
+      <TR>
+        <TD></TD>
+        <TD>
+          <#SaveSubmit />
+          <#CancelSubmit />
+        </TD>
+      </TR>
+      </TABLE>
+
+    </#EditorForm><!-- EditorForm -->
+  </#Window><!-- Window -->
+</#Frame><!-- Frame -->

@@ -1,0 +1,310 @@
+// $Id: SkyPalmAddressList.wod,v 1.2 2003/12/10 18:27:03 martin Exp $
+
+// --------- table structure ----------
+
+AddressTableView: SkyTableView {
+  dataSource    = dataSource;
+  batchSize     = state.batchSize;
+  currrentBatch = state.currentBatch;
+  item          = record;
+  selections    = selections;
+  identifier    = recordIdentifier;
+  
+  sortedKey     = state.sortedKey;
+  isDescending  = state.isDescending;
+  autoScroll    = state.autoscrollSize;
+}
+TitleMode:  WETableViewTitleMode {};
+ButtonMode: WETableViewButtonMode {};
+FooterMode: WETableViewFooterMode {};
+
+// title
+AddressTableHeader: SkyPalmEntryListHeader {
+  type       = "address";
+  dataSource = dataSource;
+}
+
+// buttons
+Content: WOComponentContent {}
+CategoryPopUp: SkyPalmCategoryPopUp {
+  selectedCategory = state.selectedCategory;
+  selectedDevice   = state.selectedDevice;
+  palmDataSource   = palmDataSource;
+  onChange         = "document.editform.submit(); return true";
+}
+Update: WOImageButton {
+  name     = "updateAction";
+  filename = "icon_view_all.gif";
+  ALT      = labels.action_select_category_device;
+  title    = labels.action_select_category_device;
+  action   = updateSelection;
+  BORDER   = 0;
+}
+FilterButtons: SkyButtonRow {
+  ordering = ( hidedeleted, unhidedeleted );
+
+  hasRefresh = YES;
+  onRefresh  = refresh;
+  refresh    = labels.action_refresh;
+
+  hasHidedeleted = canHideDeleted;
+  onHidedeleted  = hideDeleted;
+  hidedeleted    = labels.action_hidedeleted;
+
+  hasUnhidedeleted = canUnhideDeleted;
+  onUnhidedeleted  = unhideDeleted;
+  unhidedeleted    = labels.action_unhidedeleted;
+}
+
+IsInForm: WOConditional {
+  condition = context.isInForm;
+}
+
+CreatePersons: WOImageButton {
+  disabled = YES;
+  filename = "icon_palm_26x21.gif";
+    
+  action   = selectionCreatePersons;
+  name     = labels.action_createPersons;
+  ALT      = labels.action_createPersons;
+  title    = labels.action_createPersons;
+  BORDER   = 0;
+}
+
+CreateEnterprises: WOImageButton {
+  disabled = YES;
+  filename = "icon_palm_26x21.gif";
+    
+  action   = selectionCreateEnterprises;
+  name     = labels.action_createEnterprises;
+  ALT      = labels.action_createEnterprises;
+  title    = labels.action_createEnterprises;
+  BORDER   = 0;
+}
+
+DetachSkyrixEntry: WOImageButton {
+  filename = "icon_palm_detach_entry.gif";
+    
+  action   = selectionDetachSkyrixEntry;
+  name     = labels.action_detachSkyrixEntry;
+  ALT      = labels.action_detachSkyrixEntry;
+  title    = labels.action_detachSkyrixEntry;
+  BORDER   = 0;
+}
+
+Delete: WOImageButton {
+  filename = "icon_palm_delete_entry.gif";
+    
+  action   = selectionDelete;
+  name     = labels.action_delete;
+  ALT      = labels.action_delete;
+  title    = labels.action_delete;
+  BORDER   = 0;
+}
+
+Undelete: WOImageButton {
+  filename = "icon_palm_undelete_entry.gif";
+    
+  action   = selectionUndelete;
+  name     = labels.action_undelete;
+  ALT      = labels.action_undelete;
+  title    = labels.action_undelete;
+  BORDER   = 0;
+}
+
+MarkAsNew: WOImageButton {
+  filename = "icon_palm_new_entry.gif";
+    
+  action   = selectionMarkAsNew;
+  name     = labels.action_markAsNew;
+  ALT      = labels.action_markAsNew;
+  title    = labels.action_markAsNew;
+  BORDER   = 0;
+}
+
+SyncWithSkyrixEntry: WOImageButton {
+  filename = "icon_palm_sync_entry.gif";
+    
+  action   = selectionSyncWithSkyrixEntry;
+  name     = labels.action_syncWithSkyrixEntry;
+  ALT      = labels.action_syncWithSkyrixEntry;
+  title    = labels.action_syncWithSkyrixEntry;
+  BORDER   = 0;
+}
+
+CreateSkyrixEntry: WOImageButton {
+  filename = "icon_palm_palmoverskyrix.gif";
+
+  action   = selectionCreateSkyrixRecord;
+  name     = labels.action_createSkyrixRecords;
+  ALT      = labels.action_createSkyrixRecords;
+  title    = labels.action_createSkyrixRecords;
+  BORDER   = 0;
+}
+
+// switcher
+AttributeSwitcher: WESwitch {
+  selections = state.attributes;
+}
+LastnameCase:    WECase    { key = "attribute_lastname";  }
+FirstnameCase:   WECase    { key = "attribute_firstname"; }
+CompanyCase:     WECase    { key = "attribute_company";   }
+MainPhoneCase:   WECase    { key = "attribute_main";      }
+WorkPhoneCase:   WECase    { key = "attribute_work";      }
+MobilePhoneCase: WECase    { key = "attribute_mobile";    }
+EmailCase:       WECase    { key = "attribute_email";     }
+DeviceCase:      WECase    { key = "attribute_deviceId";  }
+PalmSyncCase:    WECase    { key = "attribute_palmSync";  }
+CategoryCase:    WECase    { key = "attribute_categoryName";   }
+SkyrixRecordCase:   WECase { key = "attribute_skyrixRecord";   }
+DescriptionCase:    WECase { key = "attribute_description";    }
+SkyrixSyncCase:     WECase { key = "attribute_skyrixSync";     }
+
+// table data
+LastnameData: WETableData { 
+  title   = labels.attribute_lastname;
+  sortKey = "lastname";
+}
+FirstnameData: WETableData {
+  title   = labels.attribute_firstname;
+  sortKey = "firstname";
+}
+CompanyData: WETableData {
+  title   = labels.attribute_company;
+  sortKey = "company";
+}
+MainPhoneData: WETableData {
+  title   = labels.attribute_main;
+  sortKey = "main";
+}
+WorkPhoneData: WETableData {
+  title   = labels.attribute_work;
+  sortKey = "work";
+}
+MobilePhoneData: WETableData {
+  title   = labels.attribute_mobile;
+  sortKey = "mobile";
+}
+EmailData: WETableData {
+  title   = labels.attribute_email;
+  sortKey = "email";
+}
+DeviceData: WETableData {
+  title   = labels.attribute_deviceId;
+  sortKey = "deviceId";
+}
+PalmSyncData: WETableData {
+  title   = labels.attribute_palmSync;
+  sortKey = "syncState";
+}
+CategoryData: WETableData {
+  title   = labels.attribute_categoryName;
+  sortKey = "categoryName";
+}
+SkyrixRecordData: WETableData {
+  title   = labels.attribute_skyrixRecord;
+  sortKey = "skyrixId";
+}
+DescriptionData: WETableData {
+  title   = labels.attribute_description;
+  sortKey = "description";
+}
+SkyrixSyncHeader: WETableHeader {
+  sortKey = "skyrixSyncState";
+}
+SkyrixSyncData: WETableData {}
+
+// values
+Lastname: SkyPalmEntryListContent {
+  value      = record.lastname;
+  clickKey   = clickKey;
+  key        = "attribute_lastname";
+  actionType = "componentAction";
+  action     = viewAction;
+}
+Firstname: SkyPalmEntryListContent {
+  value      = record.firstname;
+  clickKey   = clickKey;
+  key        = "attribute_firstname";
+  actionType = "componentAction";
+  action     = viewAction;
+}
+Company: SkyPalmEntryListContent {
+  value      = record.company;
+  clickKey   = clickKey;
+  key        = "attribute_company";
+  actionType = "componentAction";
+  action     = viewAction;
+}
+MainPhone:   SkyRichString { value = record.main;       }
+WorkPhone:   SkyRichString { value = record.work;       }
+MobilePhone: SkyRichString { value = record.mobile;     }
+Email:       SkyRichString { value = record.email;      }
+Device:      SkyRichString { value = record.deviceId;   }
+PalmSync:    SkyRichString { value = labels.$syncState; }
+Category:    SkyRichString { value = record.categoryName; }
+Description: SkyPalmEntryListContent {
+  value      = record.description;
+  clickKey   = clickKey;
+  key        = "attribute_description";
+  actionType = "componentAction";
+  action     = viewAction;
+}
+SkyrixSyncIcon: WOImage {
+  filename = "icon_palm_sync_entry.gif";
+  ALT      = labels.attribute_skyrixSync;
+  title    = labels.attribute_skyrixSync;
+  BORDER   = 0;
+}
+SkyrixSync:     SkyRichString {
+  color = skyrixSyncStateColor;
+  value = labels.$skyrixSyncStateShortKey;
+}
+SkyrixSyncType: WOImage {
+  filename = skyrixSyncTypeIcon;
+  ALT      = skyrixSyncTypeString;
+  title    = skyrixSyncTypeString;
+  BORDER   = 0;
+}
+SkyrixSyncBothChangedCond: WOConditional {
+  condition = skyrixSyncStateBothChanged;
+}
+ForcePalmOverOGoIcon: WOHyperlink {
+  filename = "icon_palm_palmoverskyrix.gif";
+  border   = 0;
+  alt      = labels.action_forcePalmOverOGo;
+  title    = labels.action_forcePalmOverOGo;
+  action   = forcePalmOverOGo;
+}
+ForceOGoOverPalmIcon: WOHyperlink {
+  filename = "icon_palm_skyrixoverpalm.gif";
+  border   = 0;
+  alt      = labels.action_forceOGoOverPalm;
+  title    = labels.action_forceOGoOverPalm;
+  action   = forceOGoOverPalm;
+}
+
+RecordsNotSynchroneCond: WOConditional {
+  condition = record.skyrixSyncState;
+  value     = 100;
+  negate    = YES;
+}
+
+// skyrix record
+HasSkyrixRecord: WOConditional {
+  condition = record.hasSkyrixRecord;
+}
+
+ViewSkyrixRecord: WOHyperlink {
+  action = viewSkyrixRecordComponentAction;
+}
+SkyrixRecordIcon: WOImage {
+  filename = addressIcon;
+  ALT      = record.skyrixRecord.name;
+  title    = record.skyrixRecord.name;
+  BORDER   = 0;
+}
+
+SkyrixRecord: SkyRichString {
+  value = record.skyrixRecord.name;
+}

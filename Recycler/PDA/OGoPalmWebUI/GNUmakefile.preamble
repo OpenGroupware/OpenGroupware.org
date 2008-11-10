@@ -1,0 +1,28 @@
+# compilation flags
+
+ADDITIONAL_INCLUDE_DIRS += -I../OGoPalm/ -I..
+ADDITIONAL_LIB_DIRS += -L../OGoPalm/$(GNUSTEP_OBJ_DIR)
+ADDITIONAL_LIB_DIRS += -L../OGoPalmUI/$(GNUSTEP_OBJ_DIR)
+ADDITIONAL_BUNDLE_LIBS += -lOGoPalm -lOGoPalmUI
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I$(OGoROOT)/WebUI/		\
+	-I$(OGoROOT)/DocumentAPI/	\
+	-I$(OGoROOT)/Logic
+
+ADDITIONAL_BUNDLE_LIBS += \
+	-lOGoFoundation	\
+	-lNGObjWeb  	\
+	-lOGoScheduler 	\
+	-lOGoRawDatabase\
+	-lOGoProject
+
+ADDITIONAL_LIB_DIRS += \
+	-L$(OGoROOT)/WebUI/OGoFoundation/$(GNUSTEP_OBJ_DIR)/	    \
+	-L$(OGoROOT)/DocumentAPI/OGoScheduler/$(GNUSTEP_OBJ_DIR)/   \
+	-L$(OGoROOT)/DocumentAPI/OGoRawDatabase/$(GNUSTEP_OBJ_DIR)/ \
+	-L$(OGoROOT)/DocumentAPI/OGoProject/$(GNUSTEP_OBJ_DIR)/	    \
+	-L$(OGoROOT)/Logic/LSScheduler//$(GNUSTEP_OBJ_DIR)/	    \
+	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)/
+
+SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)

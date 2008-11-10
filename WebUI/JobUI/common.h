@@ -39,4 +39,9 @@
 #define OGoJobNotifyAlways          1
 #define OGoJobNotifyOnAcceptAndDone 2
 
+#ifndef XMLNS_OGoExtAttrPropNamespace
+#  define XMLNS_OGoExtAttrPropNamespace \
+     @"http://www.opengroupware.org/properties/ext-attr"
+#endif
+
 #endif /* __OGo_JobUI_common_H__ */

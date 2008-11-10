@@ -103,9 +103,15 @@
 } /* end _renderTasks */
 
 -(id)_getUnrenderedTasksForKeys:(id)_arg {
-  return [[[self getCTX] runCommand:@"job::get-by-globalid",
-                                    @"gids", [self _getEOsForPKeys:_arg],
-                                    nil] retain];
+  id      result;
+
+  result = [[self getCTX] runCommand:@"job::get-by-globalid",
+                                     @"gids", [self _getEOsForPKeys:_arg],
+                                     nil];
+  if (result == nil)
+    return nil;
+
+  return [result retain]; 
 } /* end _getUnrenderedTasksForKeys */
 
 -(id)_getTasksForKeys:(id)_arg withDetail:(NSNumber *)_detail {
@@ -118,11 +124,18 @@
 } /* end _getTasksForKeys */
 
 -(id)_getTaskForKey:(id)_pk withDetail:(NSNumber *)_detail {
-  return [self _getTasksForKeys:_pk withDetail:intObj(0)];
+  id   result;
+
+  result = [self _getTasksForKeys:_pk withDetail:_detail];
+
+  if ([result count] > 0)
+    return [[self _getTasksForKeys:_pk withDetail:_detail] objectAtIndex:0];
+ 
+  return nil;
 } /* end _getTasksForKey */
 
 -(id)_getTaskForKey:(id)_pk {
-  return [[self _getTasksForKeys:_pk withDetail:intObj(0)] objectAtIndex:0];
+  return [self _getTaskForKey:_pk withDetail:intObj(0)];
 } /* end _getTasksForKey */
 
 /* Retreive tasks from specified list
@@ -143,6 +156,7 @@
 
   tasks = [[self getCTX] runCommand:listCommand,
                           @"gid", [[self getCTX] valueForKey:LSAccountKey],
+                          @"limit", intObj(65535),
                           nil];
   taskList = [self _renderTasks:tasks withDetail:_detail];
   return taskList;

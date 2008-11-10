@@ -68,6 +68,8 @@
                     @"objectId", companyId, nil);
   }
   LSRunCommandV(_context, @"object", @"increase-version",
+                @"object", [self object], nil);
+  LSRunCommandV(_context, @"object", @"increase-version",
                 @"object", [companies lastObject], nil);
 }
 

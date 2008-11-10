@@ -87,7 +87,46 @@
     [defaults setObject:persons forKey:@"scheduler_panel_persons"];
     [defaults setObject:resourceNames forKey:@"scheduler_panel_resourceNames"];
     [defaults setObject:teams forKey:@"scheduler_panel_teams"];
+    accounts = nil;
+    persons = nil;
+    resourceNames = nil;
+    teams = nil;
   } /* end store panel */
+
+  /* store default read access, if provided */
+  tmp = [_defaults objectForKey:@"appointmentReadAccessTeam"];
+  if ([tmp isNotNull]) {
+    [defaults setObject:tmp forKey:@"scheduler_default_readaccessteam"];
+  }
+
+  /* store default write access, if provided */
+  tmp = [_defaults objectForKey:@"appointmentWriteAccess"];
+  if ([tmp isNotNull]) {
+    NSEnumerator   *enumerator;
+    id              object;
+    NSString       *entityName;
+    NSMutableArray *accounts, *teams;
+
+    accounts      = [NSMutableArray arrayWithCapacity:32];
+    teams         = [NSMutableArray arrayWithCapacity:32];
+    enumerator = [tmp objectEnumerator];
+    while((object = [enumerator nextObject]) != nil) {
+      entityName = [self _getEntityNameForPKey:object];
+      if ([entityName isEqualToString:@"Person"]) {
+        [accounts addObject:[object stringValue]];
+      } else if ([entityName isEqualToString:@"Team"]) {
+          [teams addObject:[object stringValue]];
+        }
+    }
+    [defaults setObject:accounts
+                 forKey:@"scheduler_write_access_accounts"];
+    [defaults setObject:teams
+                 forKey:@"scheduler_write_access_teams"];
+    enumerator = nil;
+    accounts = nil;
+    teams = nil;
+  }
+ 
   [defaults synchronize];
   return [self _getLoginAccount:arg1];
 } /* end _storeDefaults */
@@ -117,6 +156,26 @@
                  [[self _getDefault:@"LSAttachmentPath"] stringValue],
                  [_account stringValue]]];
 } /* End _getDefaultsForAccount */
+
+-(NSArray *)_getDefaultWriteAccessFromDefaults:(NSUserDefaults *)_ud {
+   NSMutableArray                               *objectIds;
+   NSEnumerator                                 *e;
+   id                                            tmp;
+
+   objectIds = [NSMutableArray arrayWithCapacity:32];
+   e = [[_ud arrayForKey:@"scheduler_write_access_teams"] objectEnumerator];
+   while ((tmp = [e nextObject]) != nil) {
+     [objectIds addObject:intObj([tmp intValue])];
+   }
+   e = nil;
+   e = [[_ud arrayForKey:@"scheduler_write_access_accounts"] objectEnumerator];
+   while ((tmp = [e nextObject]) != nil) {
+     [objectIds addObject:intObj([tmp intValue])];
+   }
+   e = nil;
+
+   return objectIds;
+}
 
 -(NSArray *)_getSchedularPanel {
   id            calendarPanel;

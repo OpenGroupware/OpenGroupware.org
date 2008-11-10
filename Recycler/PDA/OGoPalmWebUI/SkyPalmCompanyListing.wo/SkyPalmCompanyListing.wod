@@ -1,0 +1,69 @@
+// $Id: SkyPalmCompanyListing.wod,v 1.1 2003/07/14 16:18:25 helge Exp $
+
+// conditions
+
+ListPersons: WOConditional {
+  condition = companyType;
+  value     = "person";
+}
+ListEnterprises: WOConditional {
+  condition = companyType;
+  value     = "enterprise";
+}
+
+// table view
+ListingTable: SkyTableView {
+  list         = companies;
+  item         = company;
+
+  batchSize    = 30;
+  autoScroll   = 250;
+}
+
+// title
+TitleMode:  WETableViewTitleMode {};
+Title: SkyRichString {
+  value = labels.label_searchResult;
+}
+
+// data
+LastnameData: WETableData {
+  title   = labels.attribute_lastname;
+  //  sortKey = "lastname";
+}
+NicknameData: WETableData {
+  title   = labels.attribute_nickname;
+  //  sortKey = "nickname";
+}
+FirstnameData: WETableData {
+  title   = labels.attribute_firstname;
+  //  sortKey = "firstname";
+}
+NameData: WETableData {
+  title   = labels.attribute_name;
+  //  sortKey = "name";
+}
+NumberData: WETableData {
+  title   = labels.attribute_number;
+  //  sortKey = "number";
+}
+
+// content
+Nickname: SkyRichString {
+  value = company.nickname;
+}
+Firstname: SkyRichString {
+  value = company.firstname;
+}
+
+Name: SkyRichString {
+  value = company.name;
+}
+Number: SkyRichString {
+  value = company.number;
+}
+
+// links
+SelectCompany: WOHyperlink {
+  action = chooseCompany;
+}

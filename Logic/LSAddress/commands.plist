@@ -48,6 +48,9 @@
         "build-converter-data" = {
           class   = "LSBuildConverterDataCommand";
         };
+        "get-geocode" = {
+          class   = "LSGetGeoCoordinatesForAddressCommand";
+        };
       };
     };
 

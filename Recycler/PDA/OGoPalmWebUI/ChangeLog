@@ -1,0 +1,213 @@
+2006-08-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyPalmAssignDate.m, SkyPalmCategoryPopUp.m: fixed some gcc 4.1 
+	  warnings (v5.3.30)
+
+2005-06-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.29
+
+	* fixed gcc 4.0 warnings
+
+	* SkyPalmAssignDate.m: code cleanups, use 00:00/23:59 for from-date and
+	  to-date ranges, avoid an assertion (should fix bug #1413) - spotted
+	  by Marc Lardy
+
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* bundle-info.plist: removed missing SkyPalmEntryListViewer (v5.1.28)
+
+2005-02-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyPalmAssignMemo.m: various code improvements (v5.1.27)
+
+2004-10-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyPalmAssignDate.m: major code cleanups (v5.1.26)
+
+2004-10-01  Tiny Toon  <tiny@tinytoon.de>
+	
+	* SkyPalmAssignDate.m: added 'location' to fetch attributes
+	
+	* bundle-info.plist: removed dependency on BaseUI and OGoUIElements
+
+2004-09-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* code cleanups in all files (v5.1.25)
+
+2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added FHS installation (v5.1.24)
+
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.23)
+
+2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* install into Library/OpenGroupware.org-1.0a/WebUI (v5.1.22)
+
+2004-07-28  Frank Reppin  <frank@opengroupware.org>
+
+	* SkyPalmAssignMemo.m: SkyFileManagerFactory is now
+	  known as OGoFileManagerFactory (v5.0.21)
+
+2004-05-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyPalmPage.wo: removed license conditional (v5.0.20)
+
+2004-04-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.19
+
+	* SkyPalmAssignMemo.m: some code cleanups, fixed a compilation warning
+	
+	* SkyPalmAssignAddress.m: properly release the datasource if an error
+	  occures, removed dependency on SkyCompanyDataSource
+	
+	* added a common.h file
+
+Thu Jan  8 14:38:16 2004  Martin Hoerning  <martin@opengroupware.org>
+
+	* SkyPalmPreferences.m: fixed default saving (OGo bug #520) (v5.0.18)
+
+Fri Dec 19 18:58:07 2003  Martin Hoerning  <martin@opengroupware.org>
+	
+	* SkyPalmPreferences.m: redesigned preferences ui, added pre/post sync
+	  options (v5.0.17)
+
+Wed Dec 10 20:29:03 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* v4.1.16
+	
+	* SkyPalmAssignAddress.m: added 2way sync
+	
+	* SkyPalmAssignDate.m: added 2way sync
+
+Wed Dec  3 19:34:06 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* v4.1.15
+	* SkyPalmPreferences.m: default access settings for ogo dates editable
+	* SkyPalmAssignDate.m: respect default access settings when creating
+	  new ogo entries
+
+Wed Nov 19 20:59:21 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmAssignAddress.m: create an default name for ogo record if
+	  there is no filled palm attribute mapped
+	  (solves ogo bug 303) (v4.1.14)
+
+Tue Nov  4 20:36:30 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmAssignMemo.m: fixed ok-button in new-from-ogo-docs mode 
+	  (v4.1.13)
+
+Mon Nov  3 12:07:04 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyPalmAssignMemo.m: The selectFiles Action set a @"dummy" NSString 
+	  as skyrixRecord. Don`t now why, but skyrixRecord has to be 
+	  SkyDocument. Replace the string with 'nil'. (v4.1.12)
+
+Thu Aug 14 13:03:58 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmAddressEditor.wo/SkyPalmAddressEditor.html: fixed hash-tags
+	  mixed up by hash format script 
+	* SkyPalmAssignMemo.m: fixed memory bug (folderDataSource received 
+	  release-message once to often) (v4.1.11)
+
+Tue Aug  5 16:51:30 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmDateEditor.wo/SkyPalmDateEditor.html: fixed weekday popups
+	  (corruped by hash format script :-) (v4.1.10)	
+
+Mon Jul 28 17:50:16 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmPreferences.m: fixed template and mappings for 
+	  Palm <> OGo sync (v4.1.9)
+
+Tue Jul 22 17:27:33 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmAssignDate.m: added skyrix-record bulk create (bug 1029)
+	  (v4.1.8)
+
+Tue Jul 22 17:00:27 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmMemoList.wo/SkyPalmMemoList.html: skyrix-sync buttons now 
+	  always available (v4.1.7)
+
+Mon Jul  7 12:14:43 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v4.1.6)
+
+Thu Jun 26 16:19:05 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmPage.wo/SkyPalmPage.html: -> hash-format (v4.1.5)
+
+Tue Jun 17 18:41:13 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyPalmPreferences.m: enable 'save defaults' for other accounts than
+	  the current login (v4.1.4) (bug 1768)
+
+2003-01-24  Thomas Schild  <ts@skyrix.com>
+
+  * autoscroll preference disabled
+
+Wed Jan 15 16:11:17 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmAssignJob.m: fixed multi-palm functionality
+
+Wed Jan 15 14:51:02 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmAssignJob.m: fixed double appearance of skyrix-jobs (bug 625)
+
+Fri Dec 13 14:29:38 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmEntryListHeader.m: fixed releas-bug (bug 703)
+
+Thu Nov 28 14:00:05 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* v4.1.3
+	
+	* bundle-info.plist:   removed required SkyProjectFileManager
+	
+	* SkyPalmAssignMemo.m: use dataSourceAtPath
+
+2002-11-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* v4.1.2
+
+	* SkyPalmAssignMemo.m: fixed a memory bug (project datasource wasn't
+	  properly released !)
+	  removed dependency on SkyProject
+
+	* SkyPalmFileListing.m: removed dependency on SkyProject
+
+Tue Nov 19 15:42:50 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* GNUmakefile: fixed makefile
+
+Wed Aug 28 16:46:24 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmAddressList.m: limited number of records to import to 20 
+	                       (Bug 593)
+
+Fri Aug  9 14:29:52 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmPage.[wo|html]: checking for license key 'Scheduler2'(Bug 551)
+
+Mon May 13 13:29:55 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmPreferences.m: added SkyrixAddress Attribute Sync-Mapping
+
+Mon May  6 17:11:14 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmPreferences.m: fixed setObject:forKey:<nil> BUG
+
+Tue Apr 16 19:36:01 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmMemoList.wo/SkyPalmMemoList.wod: fixed icon BUG 425
+
+Mon Oct 18 17:31:43 1999  Jan Reichmann  <jan@mdlink.de>
+
+	* GNUmakefile: remove -ldap entry
+

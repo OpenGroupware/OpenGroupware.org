@@ -1,0 +1,254 @@
+// $Id: SkyPalmAddressEditor.wod,v 1.1 2003/07/14 16:18:25 helge Exp $
+
+Frame:  LSWSkyrixFrame {}
+Window: LSWWindowFrame {
+  title   = labels.SkyPalmAddressEditor;
+  onClose = cancel;
+}
+Font: SkyConfigFont {};
+
+// conditionals
+IsNewCond: WOConditional {
+  condition = isInNewMode;
+}
+IsNotNewCond: WOConditional {
+  condition = isInNewMode;
+  negate    = YES;
+}
+
+// labels
+AddressTitle:           WOString { value = address.description;           }
+NewAddressLabel:        WOString { value = labels.new_address;            }
+LastnameAttr:           WOString { value = labels.attribute_lastname;     }
+FirstnameAttr:          WOString { value = labels.attribute_firstname;    }
+TitleAttr:              WOString { value = labels.attribute_title;        }
+CompanyAttr:            WOString { value = labels.attribute_company;      }
+AddressAttr:            WOString { value = labels.attribute_address;      }
+CityAttr:               WOString { value = labels.attribute_city;         }
+AddrStateAttr:          WOString { value = labels.attribute_state;        }
+ZipcodeAttr:            WOString { value = labels.attribute_zipcode;      }
+CountryAttr:            WOString { value = labels.attribute_country;      }
+Custom0Attr:            WOString { value = labels.attribute_custom0;      }
+Custom1Attr:            WOString { value = labels.attribute_custom1;      }
+Custom2Attr:            WOString { value = labels.attribute_custom2;      }
+Custom3Attr:            WOString { value = labels.attribute_custom3;      }
+Custom4Attr:            WOString { value = labels.attribute_custom4;      }
+NoteAttr:               WOString { value = labels.attribute_note;         }
+DeviceAttr:             WOString { value = labels.attribute_deviceId;     }
+CategoryAttr:           WOString { value = labels.attribute_categoryName; }
+
+// collapsibles
+PalmAddressCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.SkyPalmAddressEditor_expand_attributes;
+  structuredMode   = YES;
+}
+CollTitleMode:   SkyCollapsibleTitleMode   {};
+CollContentMode: SkyCollapsibleContentMode {};
+
+// form
+EditorForm: WOForm {
+  name = "editform";
+}
+AttributeCell: SkyAttributeCell {};
+ValueCell:     SkyValueCell     {};
+
+// form values
+Lastname: SkyTextEditor {
+  text           = address.lastname;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+
+Firstname: SkyTextEditor {
+  text           = address.firstname;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Title: SkyTextEditor {
+  text           = address.title;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Company: SkyTextEditor {
+  text           = address.company;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+
+PhoneLabel0: WOPopUpButton {
+  list            = ( 0, 1, 2, 3, 4, 5, 6, 7 );
+  item            = item;
+  string          = labels.$phoneLabelIdLabel;
+  selection       = address.phoneLabelId0;
+  singleSelection = YES;
+}
+PhoneLabel1: WOPopUpButton {
+  list            = ( 0, 1, 2, 3, 4, 5, 6, 7 );
+  item            = item;
+  string          = labels.$phoneLabelIdLabel;
+  selection       = address.phoneLabelId1;
+  singleSelection = YES;
+}
+PhoneLabel2: WOPopUpButton {
+  list            = ( 0, 1, 2, 3, 4, 5, 6, 7 );
+  item            = item;
+  string          = labels.$phoneLabelIdLabel;
+  selection       = address.phoneLabelId2;
+  singleSelection = YES;
+}
+PhoneLabel3: WOPopUpButton {
+  list            = ( 0, 1, 2, 3, 4, 5, 6, 7 );
+  item            = item;
+  string          = labels.$phoneLabelIdLabel;
+  selection       = address.phoneLabelId3;
+  singleSelection = YES;
+}
+PhoneLabel4: WOPopUpButton {
+  list            = ( 0, 1, 2, 3, 4, 5, 6, 7 );
+  item            = item;
+  string          = labels.$phoneLabelIdLabel;
+  selection       = address.phoneLabelId4;
+  singleSelection = YES;
+}
+
+Phone0: SkyTextEditor {
+  text           = address.phone0;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Phone1: SkyTextEditor {
+  text           = address.phone1;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Phone2: SkyTextEditor {
+  text           = address.phone2;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Phone3: SkyTextEditor {
+  text           = address.phone3;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Phone4: SkyTextEditor {
+  text           = address.phone4;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+
+Address: SkyTextEditor {
+  text           = address.address;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+City: SkyTextEditor {
+  text           = address.city;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+State: SkyTextEditor {
+  text           = address.state;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Zipcode: SkyTextEditor {
+  text           = address.zipcode;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Country: SkyTextEditor {
+  text           = address.country;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Custom0: SkyTextEditor {
+  text           = address.custom0;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Custom1: SkyTextEditor {
+  text           = address.custom1;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Custom2: SkyTextEditor {
+  text           = address.custom2;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Custom3: SkyTextEditor {
+  text           = address.custom3;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+Custom4: SkyTextEditor {
+  text           = address.custom4;
+  rows           = 1;
+  columns        = 40;
+  noSizeControls = YES;
+}
+
+Note: SkyTextEditor {
+  text    = address.note;
+  rows    = session.userDefaults.SkyPalmAddressEditor_note_rows;
+  columns = session.userDefaults.SkyPalmAddressEditor_note_cols;
+}
+
+Device: WOPopUpButton {
+  list            = devices;
+  item            = item;
+  selection       = address.deviceId;
+  singleSelection = YES;
+}
+DeviceSubmit: WOImageButton {
+  action   = searchCategories;
+  filename = "search.gif";
+  name     = labels.action_searchCategories;
+  ALT      = labels.action_searchCategories;
+  title    = labels.action_searchCategories;
+  BORDER   = 0;
+}
+Category: WOPopUpButton {
+  list            = categories;
+  item            = item;
+  string          = item.categoryName;
+  selection       = address.category;
+  singleSelection = YES;
+}
+
+SaveSubmit: WOImageButton {
+  action   = save;
+  filename = "save.gif";
+  name     = labels.action_save;
+  ALT      = labels.action_save;
+  title    = labels.action_save;
+  BORDER   = 0;
+}
+CancelSubmit: WOImageButton {
+  action   = cancel;
+  filename = "cancel.gif";
+  name     = labels.cancelButtonLabel;
+  ALT      = labels.cancelButtonLabel;
+  title    = labels.cancelButtonLabel;
+  BORDER   = 0;
+}
+

@@ -26,6 +26,12 @@ TOOL_NAME += \
 	ogo-qsearch-persons
 
 TOOL_NAME += \
+	ogo-qsearch-tasks
+
+TOOL_NAME += \
+	ogo-qsearch-enterprises
+
+TOOL_NAME += \
 	ogo-account-list	\
 	ogo-account-add		\
 	ogo-account-del		\
@@ -49,7 +55,11 @@ ogo-jobs-export_OBJC_FILES         = ogo-jobs-export.m
 ogo-jobs-export_INSTALL_DIR = $(OGO_TOOLS)
 
 ogo-qsearch-persons_OBJC_FILES     = ogo-qsearch-persons.m
+ogo-qsearch-tasks_OBJC_FILES       = ogo-qsearch-tasks.m
+ogo-qsearch-enterprises_OBJC_FILES = ogo-qsearch-enterprises.m
 ogo-qsearch-persons_INSTALL_DIR = $(OGO_TOOLS)
+ogo-qsearch-tasks_INSTALL_DIR = $(OGO_TOOLS)
+ogo-qsearch-enterprises_INSTALL_DIR = $(OGO_TOOLS)
 
 ogo-account-list_OBJC_FILES        = SkyTool.m SkyGetLoginNames.m
 ogo-account-list_INSTALL_DIR = $(OGO_TOOLS)

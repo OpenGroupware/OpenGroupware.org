@@ -354,8 +354,11 @@
   if ([_key isEqualToString:@"zidestore"]) return YES;
   return NO;
 }
+
 - (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
   id obj;
+
+  [self logWithFormat:@"root folder got key %@", _key];
   
   if ([_key isEqualToString:@"check_id.wcap"])
     return [self wcapCheckIDInContext:_ctx];
@@ -384,8 +387,10 @@
   if ([_key isEqualToString:@"images"])
     return [self images:_key container:self];
 
-  if ([_key isEqualToString:@"freebusy"])
+  if ([_key isEqualToString:@"freebusy"] ||
+      [_key hasSuffix:@".vfb"]) {
     return [self freeBusyInContext:_ctx];
+  }
   
   return [self userFolderForKey:_key inContext:_ctx];
 }

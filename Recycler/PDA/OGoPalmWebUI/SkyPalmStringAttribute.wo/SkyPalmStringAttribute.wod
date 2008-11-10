@@ -1,0 +1,21 @@
+// $Id: SkyPalmStringAttribute.wod,v 1.2 2003/12/10 18:27:10 martin Exp $
+
+Attribute: SkySubAttribute {
+  label = label;
+}
+Value: WOString {
+  value    = string;
+  insertBR = YES;
+}
+InsertRowCond: WOConditional {
+  condition = insertRow;
+}
+InsertRowCondElse: WOConditional {
+  condition = insertRow;
+  negate    = YES;
+}
+HasContentCond: WOConditional {
+  condition = hasContent;
+}
+
+Content: WOComponentContent {}
