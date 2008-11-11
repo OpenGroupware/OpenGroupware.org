@@ -782,7 +782,7 @@ static BOOL     coreOnException = NO;
   endD    = [tmp descriptionWithCalendarFormat:CALENDARFORMAT];
 
   if (_subject == nil)
-    _subject = @"SKYRiX Notification";
+    _subject = @"OGo Notification";
   
   if (_hide) {
     subject = [NSString stringWithFormat:@"%@: - %@",

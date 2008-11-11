@@ -1,3 +1,7 @@
+2008-11-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* skyaptnotify.m: Changed "SKYRiX" to "OGo".  Relates to bug#1461.
+
 2008-05-13  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* ogo-qsearch-persons: now prints company values (extended attributes)
