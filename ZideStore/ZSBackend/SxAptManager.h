@@ -69,8 +69,6 @@
   NSMutableDictionary *setIdToHandler;
 }
 
-+ (EOGlobalID *)gidForPKeyEmail:(NSString *)_email;
-
 /* accessors */
 
 - (NSCalendarDate *)defaultStartDate;

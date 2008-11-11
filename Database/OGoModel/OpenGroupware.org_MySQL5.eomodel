@@ -22,7 +22,6 @@
         addressId,
         companyId,
         country,
-        objectVersion,
         state,
         street,
         name2,
@@ -38,7 +37,6 @@
         addressId,
         companyId,
         country,
-        objectVersion,
         state,
         street,
         name2,
@@ -114,14 +112,6 @@
           valueClassName = "NSString";
           allowsNull     = Y;
           width          = 255;
-        },
-        {
-          name           = "objectVersion";
-          columnName     = "object_version";
-          externalType   = "INT";
-          valueClassName = "NSNumber";
-          valueType      = i;
-          allowsNull     = Y;
         },
         {
           name           = "sourceUrl";
@@ -977,7 +967,6 @@
         calendarName,
         objectVersion,
         onlineMeeting,
-        travelDurationAfter,
         aptType,
         isAbsence,
         busyType,
@@ -985,7 +974,6 @@
         accessTeamId,
         lastModified,
         fbtype,
-        travelDurationBefore,
         ownerId,
         isAttendance,
         toOwner,
@@ -1236,22 +1224,6 @@
           valueClassName = "NSString";
           allowsNull     = Y;
           width          = 255;
-        },
-        {
-          name           = "travelDurationAfter";
-          columnName     = "travel_duration_after";
-          externalType   = "INT";
-          valueClassName = "NSNumber";
-          valueType      = i;
-          allowsNull     = Y;
-        },
-        {
-          name           = "travelDurationBefore";
-          columnName     = "travel_duration_before";
-          externalType   = "INT";
-          valueClassName = "NSNumber";
-          valueType      = i;
-          allowsNull     = Y;
         },
         {
           name           = "type";
@@ -5531,39 +5503,38 @@
       primaryKeyAttributes = ( "projectId" );
       
       attributesUsedForLocking = (
+        status,
         startDate,
         endDate,
-        number,
-        teamId,
-        projectId,
-        status,
-        objectVersion,
-        dbStatus,
         name,
+        projectId,
+        number,
+        dbStatus,
         isFake,
+        teamId,
+        objectVersion,
         ownerId,
       );
       classProperties = (
-        startDate,
-        endDate,
-        number,
-        teamId,
-        projectId,
         status,
-        objectVersion,
+        startDate,
         kind,
-        dbStatus,
+        endDate,
         name,
         url,
+        projectId,
+        number,
+        dbStatus,
         isFake,
+        teamId,
+        objectVersion,
         ownerId,
-        toStaffTeam,
         toProjectInfo,
-        toJob,
         toProjectCompanyAssignment,
-        toDocument,
-        toNote,
         toOwner,
+        toStaffTeam,
+        toDocument,
+        toJob,
       );
 
       attributes = (
@@ -5688,17 +5659,6 @@
         {
           name        = "toJob";
           destination = "Job";
-          joins       = ( {
-            sourceAttribute      = "projectId";
-            destinationAttribute = "projectId";
-            joinSemantic         = EOInnerJoin;
-            joinOperator         = EOJoinEqualTo;
-          });
-          isToMany       = Y;
-        },
-        {
-          name        = "toNote";
-          destination = "Note";
           joins       = ( {
             sourceAttribute      = "projectId";
             destinationAttribute = "projectId";
@@ -6823,7 +6783,6 @@
         companyId,
         url,
         number,
-        objectVersion,
         type,
       );
       classProperties = (
@@ -6834,7 +6793,6 @@
         companyId,
         url,
         number,
-        objectVersion,
         type,
         toEnterprise,
         toPerson,
@@ -6873,14 +6831,6 @@
           valueClassName = "NSString";
           allowsNull     = Y;
           width          = 255;
-        },
-        {
-          name           = "objectVersion";
-          columnName     = "object_version";
-          externalType   = "INT";
-          valueClassName = "NSNumber";
-          valueType      = i;
-          allowsNull     = Y;
         },
         {
           name           = "realNumber";

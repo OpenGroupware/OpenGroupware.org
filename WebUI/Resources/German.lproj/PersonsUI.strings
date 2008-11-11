@@ -40,13 +40,9 @@
 10_fax_search                      = "Fax";
 10_geehrt_frau_prof                = "Sehr geehrte Frau Prof.";
 11_geehrt_frau_dr                  = "Sehr geehrte Frau Dr.";
-12_monsieur                        = "Monsieur";
-13_madame                          = "Madame";
-14_signora                         = "Signora";
 15_fax_private                     = "Fax privat";
 15_fax_private_info                = "Fax privat";
 15_fax_private_search              = "Fax privat";
-15_signore                         = "Signore";
 20_email                           = "Email";
 21_email                           = "Email";
 25_isdn                            = "ISDN";

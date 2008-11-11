@@ -190,15 +190,9 @@
   OGoSchedulerFormLetterDebugEnabled = NO;
   OGoSchedulerFormLetterTypes = {
     OOo = {
-      filename           = "OOoFormLetter.csv";
-      contenttype        = "text/plain";
-      //contentdisposition = "attachment; filename=\"OOoFormLetter.csv\"";
-
       fieldSeparator = "\t";
       lineSeparator  = "\n";
       quoteFields    = "\"";
-      doubleQuoteQuote = YES;
-
       /* dateformat     = "%d.%m.%Y"; */
       preamble = (
         "Title", "First Name", "Last Name", "Company Name",
@@ -221,17 +215,11 @@
     };
 
     FrameMaker = {
-      filename    = "FrameMaker_FormLetter.txt";
-      contenttype = "text/plain";
-
       lineSeparator = "";
       line = "$mailing_name1$\n$mailing_name2$\n$mailing_name3$\n$degree$ $firstname$ $name$\n\n$mailing_street$\n$mailing_zip$ $mailing_city$\n\n\n\n\n\n$salutation$ $name$,\n\n";
     };
 
     WinWord = {
-      filename    = "WordFormLetter.csv";
-      contenttype = "text/plain";
-
       fieldSeparator = ";";
       lineSeparator  = "\n";
       line = (

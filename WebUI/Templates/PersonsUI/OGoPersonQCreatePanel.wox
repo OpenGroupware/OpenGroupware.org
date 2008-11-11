@@ -45,21 +45,8 @@
                      var:value="values.firstname" />
             </OGo:attribute>
             <OGo:attribute label="salutation" editfont="1">
-              <var:if condition=
-              "session.userDefaults.person_editor_salutation_popup.isNotEmpty"
-                const:negate="1">
-                <input type="text" name="salutation" size="20"
-                       var:value="values.salutation" />
-              </var:if>
-              <var:if condition=
-              "session.userDefaults.person_editor_salutation_popup.isNotEmpty">
-                <var:popup const:name="salpopup"
-                   list="session.userDefaults.person_editor_salutation_popup"
-                   item="currentSalutation"
-                   string="labels.$currentSalutation"
-                   value="currentSalutation"
-                   selectedValue="values.salutation" />
-              </var:if>
+              <input type="text" name="salutation" size="20"
+                     var:value="values.salutation" />
             </OGo:attribute>
 
             <OGo:attribute label="telephoneLabel" editfont="1">

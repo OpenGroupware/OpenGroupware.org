@@ -129,8 +129,7 @@
         format:@"got no global-id for appointment object: %@", obj];
   
   permissions = LSRunCommandV(_context, @"appointment", @"access",
-                                        @"gid", gid, 
-                                        nil);
+                              @"gid", gid, nil);
   return ([permissions rangeOfString:@"d"].length > 0) ? YES : NO;
 }
 
@@ -139,18 +138,14 @@
   
   obj = [self object];
   [self assert:(obj != nil) reason:@"no object available"];
-  LSRunCommandV(_context, @"object", @"remove-logs", 
-                          @"object", obj, 
-                          nil);
+  LSRunCommandV(_context, @"object", @"remove-logs", @"object", obj, nil);
   return nil;
 }
 
 - (NSArray *)_getCyclicForAppointment:(id)_apt inContext:(id)_context {
   return LSRunCommandV(_context, @"appointment", @"get-cyclic",
-                                 @"object", _apt, 
-                                 nil);      
+                       @"object", _apt, nil);      
 }
-
 - (NSArray *)_getCyclicInContext:(id)_context {
   id obj;
   
@@ -161,11 +156,8 @@
 }
 
 - (NSException *)_deleteAppointment:(id)_apt physically:(BOOL)_physically
-                          inContext:(id)_context
+  inContext:(id)_context
 {
-  /* this runs this command again, but always with no cyclic
-     deletions. So in the recursive runs the deleteAllCyclic value
-     will be false. */
   if (!_physically) {
     LSRunCommandV(_context, @"appointment", @"delete",
                   @"object", _apt, nil);
@@ -193,9 +185,7 @@
     return nil;
   
   firstCyclic = [cyclics objectAtIndex:0];
-
-  /* this sets the parentDataId of the first appointment in the cycle to 
-     NULL and maintains all the other values. */    
+    
   LSRunCommandV(_context, @"appointment", @"set",
                     @"object", firstCyclic,
                     @"parentDateId", [EONull null],
@@ -213,12 +203,11 @@
                     @"resourceNames", [firstCyclic valueForKey:@"resourceNames"],
                     @"isWarningIgnored", [NSNumber numberWithBool:YES],
                     nil);
-  /* loop through all the remaining appointments in the cycle setting the
-     parentDateId to the id of the first appointment in the cycle */
   for (i = 1, cnt = [cyclics count]; i < cnt; i++) {
     id apmt;
         
     apmt = [cyclics objectAtIndex:i];
+        
     /* 
        TODO: this is expensive, use a mutable dictionary for the params
              and clear/refill instead of doing the vargs parsing over and 
@@ -244,43 +233,36 @@
 }
 
 - (NSException *)_deleteCyclicInContext:(id)_context {
-  //EODatabaseContext *dbCtx;
+  EODatabaseContext *dbCtx;
   NSArray  *cyclics = nil;
   NSNumber *pId     = nil;
-  id        firstCyclic = nil;
-  id        obj;
-  int       i, cnt;
+  id  firstCyclic = nil;
+  id  obj;
+  int i, cnt;
   
   obj = [self object];
   [self assert:(obj != nil) reason:@"no object available"];
 
   pId   = [obj valueForKey:@"parentDateId"];
-  //dbCtx = [_context valueForKey:LSDatabaseContextKey];
+  dbCtx = [_context valueForKey:LSDatabaseContextKey];
   
   if (pId == nil) {
-    /* the appointment passed to this command had a nil parentDateId meaning
-       that it must be the "root" appointment? */
     cyclics = [self _getCyclicInContext:_context];
-  } else {
-      /* the appointment passed to this command is NOT the root appointment
-         in the cyclic chain, so we need to load the parent date */
-      NSMutableArray *c;
+  }
+  else {
+    NSMutableArray *c;
     
-      c = [NSMutableArray array];
-      firstCyclic = LSRunCommandV(_context, @"appointment", @"get",
-                                            @"dateId", pId, 
-                                            nil);
+    c = [NSMutableArray array];
+    firstCyclic= LSRunCommandV(_context, @"appointment", @"get",
+                               @"dateId", pId, nil);
       
-      if ([firstCyclic count] == 1) 
-        firstCyclic = [firstCyclic objectAtIndex:0];
-  
-      /* load all the appointments rooted with the parent appointment */  
-      cyclics = [self _getCyclicForAppointment:firstCyclic inContext:_context];
-      [c addObjectsFromArray:cyclics];
-      /* remove current object, it is deleted by the super */
-      [c removeObject:[self object]];
-      cyclics = c;
-    }
+    if ([firstCyclic count] == 1) firstCyclic = [firstCyclic objectAtIndex:0];
+    
+    cyclics = [self _getCyclicForAppointment:firstCyclic inContext:_context];
+    [c addObjectsFromArray:cyclics];
+    [c removeObject:[self object]];
+    cyclics = c;
+  }
 
   for (i = 0, cnt = [cyclics count]; i < cnt; i++) {
     id appointment;
@@ -295,10 +277,10 @@
      
      Shouldn't the caller (execute) commit the transaction? And why doesn't
      happen everything in a single transaction?
+  */
   [(EODatabaseContext *)dbCtx commitTransaction];
   [(EODatabaseContext *)dbCtx beginTransaction];
-  */
-
+    
   [super _executeInContext:_context];
     
   if (firstCyclic)
@@ -311,11 +293,11 @@
   id       obj;
   NSNumber *pId        = nil;
   NSString *type       = nil;
-  //EODatabaseContext *dbCtx;
+  EODatabaseContext *dbCtx;
   
   obj = [self object];
   [self assert:(obj != nil) reason:@"no object available"];
-  //dbCtx = [_context valueForKey:LSDatabaseContextKey];
+  dbCtx = [_context valueForKey:LSDatabaseContextKey];
 
   if (self->checkPermissions) {
     [self assert:[self checkDeletePermissionInContext:_context]
@@ -332,29 +314,24 @@
   [self _deleteDateInfo:_context];
   [self _separateNotesInContext:_context];
   [self _deleteRelations:[self relations] inContext:_context];
-
-  /* delete properties */
-  [[_context propertyManager] removeAllPropertiesForGlobalID:
-		  [[self object] globalID]];
-  /* delete links */
-  [[_context linkManager] deleteLinksTo:(id)[[self object] globalID] 
-                                   type:nil];
-  [[_context linkManager] deleteLinksFrom:(id)[[self object] globalID] 
-                                     type:nil];
   
   /* TODO: document the following section */
 
-  if (self->deleteAllCyclic) {
-    [[self _deleteCyclicInContext:_context] raise];
-  } else {
-      /* reset the parentDateId of all the appointments in the cycle as
-         we are deleting an appointment from the cycle chain and thus
-         run the risk that we are deleting the root appointment */
-      [[self _deleteNoCyclicInContext:_context] raise];
-      [[self _removeObjectLogsInContext:_context] raise];
-      //[self assert:[dbCtx beginTransaction] reason:@"couldn't begin tx .."];
+  if (!self->deleteAllCyclic) {
+    /* TODO: doc! I guess this will reset the "anker" appointment? */
+    [[self _deleteNoCyclicInContext:_context] raise];
+    [[self _removeObjectLogsInContext:_context] raise];
+    
+    if ([dbCtx commitTransaction]) {
+      [self assert:[dbCtx beginTransaction] reason:@"couldn't begin tx .."];
       [super _executeInContext:_context];
     }
+    else
+      [dbCtx rollbackTransaction];
+  }
+  else {
+    [[self _deleteCyclicInContext:_context] raise];
+  }
 }
 
 /* entity name for DB-delete-command (superclass) */

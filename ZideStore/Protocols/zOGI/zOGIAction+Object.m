@@ -33,7 +33,6 @@
 #include "zOGIAction+Defaults.h"
 #include "zOGIAction+Resource.h"
 #include "zOGIAction+Document.h"
-#include "zOGIAction+Note.h"
 #include "zOGIAction+News.h"
 
 @implementation zOGIAction(Object)
@@ -65,8 +64,6 @@
     result = [self _getResourceForKey:_objectId withDetail:_detail];
   else if ([entityName isEqualToString:@"Doc"])
     result = [self _getDocumentForKey:_objectId withDetail:_detail];
-  else if ([entityName isEqualToString:@"Note"])
-    result = [self _getNoteById:_objectId];
   else if ([entityName isEqualToString:@"NewsArticle"])
     result = [self _getArticleForKey:_objectId withDetail:_detail];
   if (result == nil)
@@ -258,60 +255,39 @@
   NSEnumerator        *clientEnumerator, *serverEnumerator;
   NSDictionary        *clientLink;
   NSArray             *serverLinks;
-  id                  linkManager, objectLink, serverLink, tmp;
+  id                  linkManager, objectLink, serverLink;
   NSString            *linkPK;
   int                 match;
 
   linkManager = [[self getCTX] linkManager];
   if (_links == nil) {
-    if ([self isDebug])
-      [self logWithFormat:@"No OBJECTLINKS key, bailing out of link save."];
     return nil;
-  }
+   }
   if ([_links count] == 0) {
-    if ([self isDebug])
-      [self logWithFormat:@"OBJECTLINKS key empty, deleting all links."];
     [linkManager deleteLinksFrom:(id)[self _getEOForPKey:_objectId]
                             type:[NSString stringWithString:@""]];             
     return nil;
-  }
-  if ([self isDebug]) {
-    [self logWithFormat:@"Have %d links in OBJECTLINKS, processing changes.",
-       [_links count]];
-  }
-  /* We must get the server links *before* we add new links or we end up
-     deleting the new links when we loop the server links */
+   }
   serverLinks = [linkManager allLinksFrom:(id)[self _getEOForPKey:_objectId]];
   // Check for links to create (objectId = 0)
-  if ([self isDebug]) 
-    [self logWithFormat:@"Checking OBJECTLINKS for new links."];
   clientEnumerator = [_links objectEnumerator];
   while ((clientLink = [clientEnumerator nextObject]) != nil) {
-    tmp = [[clientLink objectForKey:@"objectId"] stringValue];
-    if ([tmp isEqualToString:@"0"]) {
-      if ([self isDebug]) {
-        [self logWithFormat:@"Creating new link to %@", 
-           [clientLink objectForKey:@"targetObjectId"]];
-      }
+    if ([[clientLink objectForKey:@"objectId"] isEqualToString:@"0"]) {
       [linkManager createLink:[self _translateObjectLink:clientLink
                                               fromObject:_objectId]];
-    } // End objectId == 0
-  } // End while clientLink = [clientEnumerator nextObject]
+     } // End objectId == 0
+   } // End while clientLink = [clientEnumerator nextObject]
   /* Loop through links on server to finds ones modified by client
      or removed by the client;  if the client provided _OBJECTLINKS on
      and object put then we assume that links no longer provided should
      be deleted. */
   serverEnumerator = [serverLinks objectEnumerator];
-  if ([self isDebug])
-    [self logWithFormat:@"Server has %d objectLinks for object.",
-       [serverLinks count]];
   while ((serverLink = [serverEnumerator nextObject]) != nil) {
     linkPK = [self _getPKeyForEO:(id)[serverLink globalID]];
     match = 0;
     clientEnumerator = [_links objectEnumerator];
     while ((clientLink = [clientEnumerator nextObject]) != nil) {
-      tmp = [[clientLink objectForKey:@"objectId"] stringValue];
-      if ([linkPK isEqualToString:tmp]) {
+      if ([linkPK isEqualToString:[clientLink objectForKey:@"objectId"]]) {
         objectLink = (OGoObjectLink *)[self _translateObjectLink:clientLink
                                                       fromObject:_objectId];
         match = 1;

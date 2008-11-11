@@ -75,6 +75,15 @@
   }
 }
 
+- (void)_checkForHistoryProject {
+  NSString *pName;
+
+  pName = [self valueForKey:@"name"];
+
+  if ([pName hasPrefix:@"History - "])
+    [self takeValue:@"05_historyProject" forKey:@"kind"];
+}
+
 - (void)_newProjectInfoInContext:(id)_context {
   id           project;
   NSNumber     *pkey;
@@ -146,6 +155,7 @@
   NSString *n;
   
   [self _checkStartDateIsBeforeEndDate];
+  [self _checkForHistoryProject];
   [self prepareChangeTrackingFields];
 
   [super _prepareForExecutionInContext:_context];

@@ -23,20 +23,7 @@
           protectedBy = "View";
           selector    = "rssInContext:";
         };
-        "delegated-actions-rss" = {
-          protectedBy = "View";
-          selector    = "rssDelegatedActionsFeed:";
-        };
-        "todo-actions-rss" = {
-          protectedBy = "View";
-          selector    = "rssToDoActionsFeed:";
-        };
-        "project-actions-rss" = {
-          protectedBy = "View";
-          selector    = "rssProjectActionsFeed:";
-        };
       };
     };
-
   };
 }

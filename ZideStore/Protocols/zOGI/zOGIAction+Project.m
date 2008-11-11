@@ -75,7 +75,7 @@
        [self NIL:[eoProject valueForKey:@"kind"]], @"kind",
        comment, @"comment",
        [self ZERO:[eoProject valueForKey:@"isFake"]], @"placeHolder",
-       [self ZERO:[[eoProject valueForKey:@"rootDocument"] valueForKey:@"documentId"]],
+       [[eoProject valueForKey:@"rootDocument"] valueForKey:@"documentId"], 
          @"folderObjectId",
        [self NIL:[eoProject valueForKey:@"number"]], @"number",
        [self NIL:[eoProject valueForKey:@"startDate"]], @"startDate",

@@ -30,7 +30,7 @@ RDF="""<?xml version="1.0" encoding="iso-8859-1"?>
 <link>http://www.opengroupware.org/</link>
 <description>Latest OpenGroupware.org development ChangeLogs, keeping you up to date with its current development</description>
 <dc:language>en-us</dc:language>
-<dc:creator>ChangeBlogger clrdf.py</dc:creator>
+<dc:creator></dc:creator>
 <dc:date>%(dcCreationDate)s</dc:date>
 <admin:generatorAgent rdf:resource="http://www.opengroupware.org/PyChangeLogAggregator/" />
 <items>

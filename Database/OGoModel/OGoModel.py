@@ -1294,11 +1294,6 @@ Project = {
       source:      "projectId",
       destination: "ProjectInfo.projectId",
     },
-    "toNote": {
-      flags:       [ property, isToMany, ],
-      source:      "Note.projectId",
-      destination: "projectId",
-    },
 } # entity Project
 
 Enterprise = {
@@ -1729,13 +1724,6 @@ Address = {
       valueClass: 'NSNumber',
       valueType:  'i',
       flags:      [ primaryKey, lock, property, allowsNull, ],
-    },
-    "objectVersion": {
-      column:     "object_version",
-      coltype:    't_int',
-      valueClass: 'NSNumber',
-      valueType:  'i',
-      flags:      [ lock, property, allowsNull, ],
     },
     "companyId": {
       column:     "company_id",
@@ -2501,13 +2489,6 @@ Telephone = {
       valueType:  'i',
       flags:      [ primaryKey, lock, property, allowsNull, ],
     },
-    "objectVersion": {
-      column:     "object_version",
-      coltype:    't_int',
-      valueClass: 'NSNumber',
-      valueType:  'i',
-      flags:      [ lock, property, allowsNull, ],
-    },
     "companyId": {
       column:     "company_id",
       coltype:    't_id',
@@ -2811,21 +2792,6 @@ Date = {
       width:      255,
       flags:      [ property, allowsNull, ],
     },
-    "travelDurationBefore": {
-      column:     "travel_duration_before",
-      coltype:    't_int',
-      valueClass: 'NSNumber',
-      valueType:  'i',
-      flags:      [ property, allowsNull, ],
-    },
-    "travelDurationAfter": {
-      column:     "travel_duration_after",
-      coltype:    't_int',
-      valueClass: 'NSNumber',
-      valueType:  'i',
-      flags:      [ property, allowsNull, ],
-    },
-
     
     # relationships
     

@@ -1,6 +1,6 @@
 # Version file
 
-SUBMINOR_VERSION:=97
+SUBMINOR_VERSION:=96
 
 # v1.5.95 requires libSaxObjC    v4.5.65
 # v1.3.91 requires libZSFrontend v1.3.111

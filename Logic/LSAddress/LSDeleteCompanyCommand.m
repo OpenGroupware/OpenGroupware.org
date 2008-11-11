@@ -99,13 +99,7 @@
   
   [self _deleteCompanyInfo];
   [self _deleteRelations:[self relations] inContext:_context];
-  /* delete properties */
-  [[_context propertyManager] removeAllPropertiesForGlobalID:
-                  [[self object] globalID]];
-  /* delete links */
-  [[_context linkManager] deleteLinksTo:(id)[[self object] globalID] type:nil];
-  [[_context linkManager] deleteLinksFrom:(id)[[self object] globalID] type:nil];
-
+  
   LSRunCommandV(_context, @"object", @"remove-logs",
                           @"object", [self object], nil);
   

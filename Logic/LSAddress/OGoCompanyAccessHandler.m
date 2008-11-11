@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2000-2008 SKYRIX Software AG
-  Copyright (C) 2008      Helge Hess
+  Copyright (C) 2000-2007 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -233,7 +232,6 @@ static BOOL debugOn = YES;
   teamGIds:(NSArray **)_teamsGIDs
   cache:(NSDictionary *)_cache
 {
-  // TBD: does this only process read permissions?
   /* called by -objects:forOperation:forAccessGlobalID:searchAll: */
   /*
     The cache contains a mapping of an access-global-id to a permission string,
@@ -242,7 +240,6 @@ static BOOL debugOn = YES;
   NSString     *perm;
   EOGlobalID   *gid;
   NSNumber     *gidId;
-  
   
   /* check whether the access-id is the owner if the record */
   
@@ -254,12 +251,9 @@ static BOOL debugOn = YES;
     }
     return YES;
   }
-
-
-  /* teams are always public */
   
   if ([[_permInfos entityName] isEqualToString:@"Team"]) {
-    // TODO: always allows access to teams?! All operations?? (inc 'w'?)
+    // TODO: always allows access to teams?!
     if (debugOn) 
       [self debugWithFormat:@"  allowed access to team, op %@", _operation];
     
@@ -268,7 +262,6 @@ static BOOL debugOn = YES;
   
   gid   = [_permInfos valueForKey:@"globalID"];
   gidId = [[(EOKeyGlobalID *)gid keyValuesArray] lastObject];
-
   
   /* the access 'account' is the same like the object */
   
@@ -277,11 +270,7 @@ static BOOL debugOn = YES;
     return YES;
   
   
-  if ([_cache isNotEmpty]) {
-    perm = [self _permMaskFromAccessCache:_cache forAccessGID:_accessGID
-                 withTeamGIDs:_teamsGIDs];
-  }
-  else {  /* no access (ACL?) was set */
+  if (![_cache isNotEmpty]) { /* no access was set */
     /*
       => I think this "means" that no separate ACL was set on the record.
          Apparently an ACL will supercede 'isPrivate' and 'isReadOnly'
@@ -289,6 +278,10 @@ static BOOL debugOn = YES;
     */
     perm = [self _calculateReadOnlyAndPrivateForCompanyPermRecord:_permInfos
                  accessGID:_accessGID];
+  }
+  else {
+    perm = [self _permMaskFromAccessCache:_cache forAccessGID:_accessGID
+                 withTeamGIDs:_teamsGIDs];
   }
   
   [self cacheOperation:perm for:gidId];
@@ -495,8 +488,6 @@ static BOOL debugOn = YES;
   permInfos = [self fetchCompanyPermAttrsForGIDs:_oids];
   
   // TODO: explain that section
-  // I think this fetches all ACL entries for the 'globalID's contained in the
-  // permInfos
   
   accessCache = [self accessCacheForObjects:permInfos];
   
@@ -507,10 +498,6 @@ static BOOL debugOn = YES;
   while ((permInfoRec = [enumerator nextObject]) != nil) {
     NSDictionary *cache;
     
-    /* I think this retrieves the ACL entries for the current object. We
-     * fetched it above. If this returns nothing, there are no ACL entries
-     * defined on the object.
-     */
     cache = [accessCache objectForKey:[permInfoRec valueForKey:@"globalID"]];
     
     if ([self _checkAccess:_operation forCompanyPermRecord:permInfoRec

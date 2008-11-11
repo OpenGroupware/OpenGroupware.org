@@ -66,40 +66,6 @@
   return YES;
 }
 
-- (void)_separateNotesInContext:(id)_context {
-  id  notes;
-  int i, cnt;
-
-  notes  = [[self object] valueForKey:@"toNote"];
-
-  for (i = 0, cnt = [notes count]; i < cnt; i++) {
-    /*
-      detach if date is assigned
-      delete if nothing assigned
-      access to delete notes should be granted since the notes are assigend
-      to the appointment
-    */
-    id note = [notes objectAtIndex:i];
-
-    if ([[note valueForKey:@"dateId"] isNotNull]) {
-      // project still assigned
-      LSRunCommandV(_context, @"note", @"set",
-                              @"object", note, 
-                              @"projectId", [EONull null],
-                              @"dontCheckAccess", 
-                                 [NSNumber numberWithBool:YES],
-                              nil);
-    } else {
-        LSRunCommandV(_context, @"note", @"delete",
-                                @"object", note, 
-                                nil);
-      }
-  }
-
-  if ([notes respondsToSelector:@selector(clear)])
-    [notes clear];
-}
-
 - (BOOL)isRootPrimaryKey:(id)_key inContext:(id)_context {
   return [_key intValue] == 10000 ? YES : NO;
 }
@@ -128,19 +94,17 @@
 }
 
 - (void)_executeInContext:(id)_context {
-
   [self _deleteProjectInfo];
 
-  /* detach or delete notes */
-  [self _separateNotesInContext:_context];
-
   /* delete properties */
+
   if ([self reallyDelete]) {
     [[_context propertyManager] removeAllPropertiesForGlobalID:
                                   [[self object] globalID]];
   }
   
   /* delete documents */
+  
   if ([[[self object] valueForKey:@"toDocument"] count] <= 1
       && [self reallyDelete]) {
     [self _deleteRootDocumentInContext:_context];
@@ -148,15 +112,13 @@
   else {
     [[self object] takeValue:@"30_archived" forKey:@"status"];
   }
-
-  /* delete links */
-  [[_context linkManager] deleteLinksTo:(id)[[self object] globalID] type:nil];
-  [[_context linkManager] deleteLinksFrom:(id)[[self object] globalID] type:nil];
   
   /* delete primary object */
+  
   [super _executeInContext:_context];
   
   /* notify others */
+
   [[NSNotificationCenter defaultCenter]
     postNotificationName:@"SkyProjectDidChangeNotification"
     object:nil];

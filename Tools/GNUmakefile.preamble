@@ -44,10 +44,6 @@ skyaptnotify_TOOL_LIBS += \
 
 ogo-qsearch-persons_TOOL_LIBS     += $(LSFoundationLIBS)
 
-ogo-qsearch-tasks_TOOL_LIBS     += $(LSFoundationLIBS)
-
-ogo-qsearch-enterprises_TOOL_LIBS     += $(LSFoundationLIBS)
-
 ogo-account-add_TOOL_LIBS         += $(LSFoundationLIBS)
 ogo-account-list_TOOL_LIBS        += $(LSFoundationLIBS)
 ogo-account-del_TOOL_LIBS         += $(LSFoundationLIBS)

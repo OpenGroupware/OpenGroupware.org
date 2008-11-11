@@ -108,8 +108,7 @@ static BOOL       LSCoreOnCommandException = NO;
       self->timeList = nil;
     }
     self->timeList = [[NSArray alloc] initWithObjects:
-					@"current", @"future", @"overdue", 
-                                        nil];
+					@"current", @"future", nil];
     self->timeSelection = @"current";
     
     // TODO: replace with lazy call to teams
@@ -180,10 +179,9 @@ static BOOL       LSCoreOnCommandException = NO;
   NSEnumerator   *enumerator = nil;
   id             obj         = nil;
   NSCalendarDate *now;
-  BOOL           isFuture, isOverdue;
+  BOOL           isFuture;
     
   isFuture = [self->timeSelection isEqualToString:@"future"];
-  isOverdue = [self->timeSelection isEqualToString:@"overdue"];
   
   now = [NSCalendarDate date];
   [now setTimeZone:[[self session] timeZone]];
@@ -192,19 +190,18 @@ static BOOL       LSCoreOnCommandException = NO;
 
   enumerator = [self->filteredJobList objectEnumerator];
   while ((obj = [enumerator nextObject])) {
-    NSCalendarDate *sd, *ed;
+    NSCalendarDate *sd;
     
     sd = [obj valueForKey:@"startDate"];
-    ed = [obj valueForKey:@"endDate"];
-   
-    if ((!isFuture) && (!isOverdue)) {
-      [result addObject:obj];
-    } else if (isFuture) {
-        if ([sd compare:[now endOfDay]] == NSOrderedDescending)
-          [result addObject:obj];
-    } else if (isOverdue) {
-        if ([ed compare:[now endOfDay]] == NSOrderedAscending)
-          [result addObject:obj];
+    
+    if ([sd compare:[now endOfDay]]
+        == NSOrderedDescending) {
+      if (isFuture)
+        [result addObject:obj];
+    }
+    else {
+      if (!isFuture)
+        [result addObject:obj];
     }
   }
   ASSIGN(self->filteredJobList, result);

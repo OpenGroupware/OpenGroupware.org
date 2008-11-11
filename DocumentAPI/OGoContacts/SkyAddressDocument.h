@@ -38,7 +38,6 @@
   country    -> string
   state      -> string
   type       -> string
-  objectVersion    -> number
 */
 
 @class SkyContactAddressDataSource;
@@ -55,7 +54,6 @@
   NSString *state;
   NSString *type;
   NSNumber *companyId;
-  NSNumber *objectVersion;
 
   // TODO: make it a bitset-struct
   struct {
@@ -116,9 +114,6 @@
 
 - (void)setType:(NSString *)type;
 - (NSString *)type;
-
-- (void)setObjectVersion:(NSNumber *)objectVersion;
-- (NSNumber *)objectVersion;
 
 - (void)invalidate;
 - (BOOL)isValid;

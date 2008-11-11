@@ -27,7 +27,6 @@
 {
   NSCalendarDate *startDate;
   NSCalendarDate *endDate;
-  NSString       *accountId;
 }
 
 @end
@@ -39,7 +38,6 @@
 - (void)dealloc {
   [self->startDate release];
   [self->endDate   release];
-  [self->accountId release];
   [super dealloc];
 }
 
@@ -57,13 +55,6 @@
 }
 - (NSCalendarDate *)endDate {
   return self->endDate;
-}
-
-- (void)setAccountId:(NSString *)_accountId {
-  ASSIGNCOPY(self->accountId, _accountId);
-}
-- (NSString *)accountId {
-  return self->accountId;
 }
 
 - (NSString *)destinationKey {
@@ -103,11 +94,6 @@
   
 }
 
-- (void)_prepareForExecutionInContext:(id)_context {
-  [self setAccountId:[[_context valueForKey:LSAccountKey] valueForKey:@"companyId"]];
-  [super _prepareForExecutionInContext:_context];
-}
-
 - (EOSQLQualifier *)_qualifier {
   EOSQLQualifier *qualifier;
   NSString *s;
@@ -131,29 +117,30 @@
     qualifier = [qualifier initWithEntity:[self destinationEntity]
 			   qualifierFormat:
                                  @"((%A <> '%@') AND ((%A <> '%@') OR "
-                                 @"(%A = %@)) AND "
+                                 @"(%A IN (%@))) AND "
                                  @"(%A IN (%@)) AND "
                                  @"(((%A > %@) OR (%A = '%@')) AND "
                                  @"(%A < %@)))",
                                  @"jobStatus", LSJobArchived,
                                  @"jobStatus", LSJobDone,
-                                 @"creatorId", [self accountId],
+                                 @"creatorId", s,
                                  @"executantId", s,
                                  @"endDate",   formattedBegin,
                                  @"jobStatus", LSJobCreated,
                                  @"endDate",   formattedEnd, nil];
-  } else {
-      qualifier = [qualifier initWithEntity:[self destinationEntity]
-                            qualifierFormat:
-                              @"((%A <> '%@') AND "
-                              @" ((%A <> '%@') OR(%A = %@)) AND "
-                              @" (%A IN (%@)))",
-                              @"jobStatus", LSJobArchived,
-                              @"jobStatus", LSJobDone,
-                              @"creatorId", [self accountId],
-                              @"executantId", s,
-                              nil];
-     }
+  }
+  else {
+    qualifier = [qualifier initWithEntity:[self destinationEntity]
+			   qualifierFormat:
+                                 @"((%A <> '%@') AND "
+                                 @" ((%A <> '%@') OR(%A IN (%@))) AND "
+                                 @" (%A IN (%@)))",
+                                 @"jobStatus", LSJobArchived,
+                                 @"jobStatus", LSJobDone,
+                                 @"creatorId", s,
+                                 @"executantId", s,
+                                 nil];
+  }
   return [qualifier autorelease];
 }
 

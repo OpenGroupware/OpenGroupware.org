@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2002-2008 SKYRIX Software AG
-  Copyright (C) 2007-2008 Helge Hess
+  Copyright (C) 2002-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -151,20 +151,6 @@ static BOOL addGroupToWriteACL = YES;
   if (defTeams    != nil) [acl addObjectsFromArray:defTeams];
   if (defAccounts != nil) [acl addObjectsFromArray:defAccounts];
   return acl;
-}
-
-- (NSNumber *)defaultReadAccessInContext:(id)_ctx {
-  int            readTeamId;
-  NSUserDefaults *ud;
-
-  ud = [[self commandContextInContext:_ctx] userDefaults];
-  readTeamId = [ud integerForKey:@"scheduler_default_readaccessteam"];
-  if (readTeamId > 0) {
-    [self logWithFormat:@"default read access returning %d", readTeamId];
-    return [NSNumber numberWithInt:readTeamId];
-  }
-  [self logWithFormat:@"default read access is null"];
-  return nil;
 }
 
 
@@ -695,9 +681,6 @@ static BOOL addGroupToWriteACL = YES;
     [cdCol release];
   }
   return coltype;
-}
-- (NSString *)gdavComponentSet {
-  return @"VEVENT";
 }
 
 - (NSArray *)defaultWebDAVPropertyNamesInContext:(id)_ctx {

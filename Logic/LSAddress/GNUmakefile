@@ -52,7 +52,6 @@ LSAddress_OBJC_FILES = \
 	LSQueryCompanyValues.m              	\
 	NSString+VCard.m			\
 	NSString+Phone.m			\
-	LSGetGeoCoordinatesForAddressCommand.m 
 
 LSAddress_RESOURCE_FILES += Defaults.plist Version
 

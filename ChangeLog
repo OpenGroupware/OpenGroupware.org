@@ -1,13 +1,3 @@
-2008-10-14  Adam Tauno Williams  <awilliam@whitemiceconsulting.com>
-
-	* PDA: moved to Recyler
-
-	* GNUmakefile: removed reference to PDA subproject.
-
-	* configure: removed detection of pilot-link (pisock).
-
-	* INSTALL: removed comment about pisock & PDA module.
-
 2005-08-08  Helge Hess  <helge.hess@skyrix.com>
 
 	* configure: add linking-results as vars to config.make, do not enforce

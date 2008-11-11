@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
 # ZNeK - 20031012
 
 """
@@ -103,7 +102,7 @@ DATE_ENTRY="""<div id="content">
 """
 
 LOG_ENTRY_HEADER="""
-<h1 class="title"><a style="text-decoration: none" href="%(viewcvs)s%(subProjectViewcvs)s">%(subProject)s</a></h1>
+<h1 class="title"><a style="text-decoration: none" href="%(viewcvs)s%(subProjectPath)s/ChangeLog">%(subProject)s</a></h1>
 <div class="subtitle">%(subProjectPath)s</div>
 <!-- <div class="category">[%(subProject)s]</div> -->
 <p>
@@ -149,7 +148,7 @@ if __name__ == '__main__':
         month = sys.argv[2]
         datematch = year + month + ".."
 
-        CONFIG["monthName"] = time.strftime("%B", (int(year), int(month), 1, 0, 0, 0, 0, 1, 0))
+        CONFIG["monthName"] = time.strftime("%B", (int(year), int(month), 1, 0, 0, 0, 0, 0, 0))
         CONFIG["month"] = month
         CONFIG["year"] = year
         CONFIG["archiveName"] = year + month + ".html"
@@ -180,11 +179,7 @@ if __name__ == '__main__':
                 logEntryDict["author"] = author
                 logEntryDict["quotedAuthor"] = htmlQuotedString(author)
                 logEntryDict["subProjectPath"] = entry["path"]
-                logEntryDict["subProjectViewcvs"] = entry["viewcvs"]
-                if logEntryDict["subProjectViewcvs"].startswith("http://"):
-                    logEntryDict["viewcvs"] = ""
-                else:
-                    logEntryDict["viewcvs"] = CONFIG["viewcvs"]
+                logEntryDict["viewcvs"] = CONFIG["viewcvs"]
                 logEntryDict["mailto"] = mailto
 
                 logEntries = ""
@@ -252,7 +247,7 @@ if __name__ == '__main__':
             for month in months:
                 datestamp = year + month
                 archiveDict["year"] = year
-                archiveDict["monthName"] = time.strftime("%B", (int(year), int(month), 1, 0, 0, 0, 0, 1, 0))
+                archiveDict["monthName"] = time.strftime("%B", (int(year), int(month), 1, 0, 0, 0, 0, 0, 0))
                 archiveDict["pageName"] = datestamp
                 archives += ARCHIVE_ENTRY % archiveDict
  

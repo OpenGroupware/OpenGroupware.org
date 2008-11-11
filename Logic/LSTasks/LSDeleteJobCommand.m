@@ -68,14 +68,9 @@
 
 - (void)_executeInContext:(id)_context {
   [self _deleteRelations:[self relations] inContext:_context];
-  /* delete properties */
-  [[_context propertyManager] removeAllPropertiesForGlobalID:
-		  [[self object] globalID]];
-  /* delete links */
-  [[_context linkManager] deleteLinksTo:(id)[[self object] globalID] type:nil];
-  [[_context linkManager] deleteLinksFrom:(id)[[self object] globalID] type:nil];
-  /* log deletion */
+
   if (![self reallyDelete]) {
+  
     LSRunCommandV(_context, @"object", @"add-log",
                   @"logText"    , [self valueForKey:@"logText"],
                   @"action"     , [self valueForKey:@"logAction"],

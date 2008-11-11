@@ -1,9 +1,3 @@
-2008-09-05  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
-
-	* ZideStore.m: capture requests to anything.vfb as well as
-	  "freebusy" in order to server short-form F/B requests.
-	  See OGo Bug#377. (v1.5.92)
-
 2006-07-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* ZideStore.m: changed to find OGo bundles on 64bit systems

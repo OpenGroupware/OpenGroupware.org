@@ -244,22 +244,10 @@
     else if ([values isKindOfClass:[NSArray class]])
       valueKeys = (NSArray *)values;
   }
-  
-  /* when 'valueKeys' is a String, resolve it as a KVC value */
-  
-  if ([valueKeys isKindOfClass:[NSString class]])
-    valueKeys = [self valueForKeyPath:(NSString *)valueKeys];
-  
+
   /* sort results, *before* adding extra values */
 
-  if ([valueKeys respondsToSelector:@selector(sortedArrayUsingSelector:)])
-    valueKeys = [valueKeys sortedArrayUsingSelector:@selector(compare:)];
-  else {
-    [self errorWithFormat:
-	    @"expected an array for 'valueKeys', got: %@ (%@), dict: %@",
-	    valueKeys, NSStringFromClass([valueKeys class]), dict];
-    return nil;
-  }
+  valueKeys = [valueKeys sortedArrayUsingSelector:@selector(compare:)];
   
   /* ensure that the currently saved value is in the popup */
   

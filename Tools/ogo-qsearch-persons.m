@@ -132,26 +132,6 @@
     
     printf("\n");
   }
-
-  if ([[_record valueForKey:@"attributeMap"] isNotNull]) {
-    NSString        *key;
-    id               value;
-    NSEnumerator    *enumerator;
-
-    enumerator = [[_record valueForKey:@"attributeMap"] objectEnumerator];
-    while ((value = [enumerator nextObject]) != nil) {
-      key = [value objectForKey:@"attribute"];
-      if ([key isNotNull]) {
-        value = [value objectForKey:@"value"];
-        printf("  %-20s: ", [key cString]);
-        if ([value isNotNull]) {
-          printf("%-20s", [[value stringValue] cString]);
-          printf(" <%s>", [NSStringFromClass([value class]) cString]);
-        }
-        printf("\n");
-      }
-    }
-  }
 }
 
 - (void)printResult:(id)_result {
@@ -175,6 +155,7 @@
 
 - (int)run:(NSArray *)_args onContext:(LSCommandContext *)_ctx {
   NSArray  *records;
+  unsigned i, count;
   
   /* clean up arguments */
   

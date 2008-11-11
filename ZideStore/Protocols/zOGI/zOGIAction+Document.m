@@ -78,16 +78,6 @@
            [self NIL:[eoDoc valueForKey:@"lastmodifiedDate"]], @"lastModified",
            [self NIL:[eoDoc valueForKey:@"versionCount"]], @"version",
            nil];
-         if([_detail intValue] & zOGI_INCLUDE_CONTENTS) {
-           NSData       *data;
-           NSString     *encodedData;
-           NSString     *attachmentName;
-
-           attachmentName = [eoDoc valueForKey:@"attachmentName"];
-           data = [NSData dataWithContentsOfFile:attachmentName];
-           encodedData = [data stringByEncodingBase64];
-           [document setObject:encodedData forKey:@"content"];
-         }
          [self _addObjectDetails:document withDetail:_detail];
          [self _stripInternalKeys:document];
          [results addObject:document];

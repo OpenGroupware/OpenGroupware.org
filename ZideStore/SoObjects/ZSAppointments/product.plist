@@ -16,10 +16,8 @@
         "{urn:ietf:params:xml:ns:caldav}calendar-query" = {
           protectedBy = "View";
           actionClass = SxDavCalendarQuery;
-        };
-        "{urn:ietf:params:xml:ns:caldav}calendar-multiget" = {
-          protectedBy = "View";
-          actionClass = SxDavCalendarMultiget;
+          // TODO: would be cool to have SOAP like element extraction (see
+	  //       SoActionInvocation.h
         };
       };
       

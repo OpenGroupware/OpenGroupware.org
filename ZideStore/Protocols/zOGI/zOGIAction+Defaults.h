@@ -34,7 +34,6 @@
 -(NSArray *)_getSchedularPanel;
 -(NSTimeZone *)_getTimeZoneForAccount:(id)_account;
 -(NSString *)_getCCAddressForAccount:(id)_account;
--(NSArray *)_getDefaultWriteAccessFromDefaults:(NSUserDefaults *)_ud;
 
 @end
 

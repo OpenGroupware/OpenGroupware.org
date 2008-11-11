@@ -30,9 +30,6 @@
         "delete"      = { class  = "LSDBObjectDeleteCommand";      
                           entity = "Log";
         };
-        "since"       = { class  = "LSQueryLogsSince";      
-                          entity = "Log";
-        };
         "set-actor"   = { 
           class = "LSDBFetchRelationCommand"; 
           init  = {

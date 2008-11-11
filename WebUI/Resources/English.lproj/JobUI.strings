@@ -115,7 +115,6 @@ fileUpload                 = "File Upload";
 footerRowLabel1            = "OpenGroupware.org";
 footerRowLabel2            = "2000-2005 SKYRIX Software AG";
 future                     = "upcoming tasks";
-overdue                    = "overdue tasks";
 gotoMailUrlLabel           = "mail url";
 hideErrors                 = "Hide errors";
 hierachie                  = "Hierachie";

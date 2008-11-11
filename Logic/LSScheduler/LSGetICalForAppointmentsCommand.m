@@ -264,29 +264,8 @@ static NSString   *skyrixId = nil;
     
   }
 
-  // TRANSP (Free/Busy) & X-MICROSOFT-CDO-BUSYSTATUS
-  if ([(tmp = [_date valueForKey:@"fbtype"]) isNotNull]) {
-    [self _appendName:@"TRANSP" andValue:tmp toICal:_iCal];
-    if ([tmp isEqualToString:@"TRANSPARENT"])
-      tmp = @"FREE";
-    else tmp = @"BUSY";
-    [self _appendName:@"X-MICROSOFT-CDO-BUSYSTATUS"
-             andValue:tmp
-               toICal:_iCal];
-  } else {
-      tmp = [_date valueForKey:@"isConflictDisabled"];
-      if ((tmp != nil) && ([tmp intValue] == 1)) {
-        [self _appendName:@"TRANSP" andValue:@"TRANSPARENT" toICal:_iCal];
-        [self _appendName:@"X-MICROSOFT-CDO-BUSYSTATUS"
-                 andValue:@"FREE"
-                   toICal:_iCal];
-      } else {
-          [self _appendName:@"TRANSP" andValue:@"OPAQUE" toICal:_iCal];
-          [self _appendName:@"X-MICROSOFT-CDO-BUSYSTATUS"
-                   andValue:@"BUSY"
-                     toICal:_iCal];
-        }
-    }
+  // TODO: map to fbtype database field?
+  [self _appendName:@"TRANSP" andValue:@"OPAQUE" toICal:_iCal];
   
   // RELATED-TO
   if ([(tmp = [_date valueForKey:@"parentDateId"]) isNotNull])
@@ -304,26 +283,11 @@ static NSString   *skyrixId = nil;
   }
   [self _appendName:@"DTSTAMP" andValue:[NSCalendarDate date] toICal:_iCal];
 
-  /* X attributes */
-
-  // X-MICROSOFT-CDO-IMPORTANCE
-  if ([(tmp = [_date valueForKey:@"importance"]) isNotNull]) {
-    int priority = [tmp intValue];
-    if ((priority < 5) && (priority > 0)) {
-      [self _appendName:@"X-MICROSOFT-CDO-IMPORTANCE" 
-               andValue:@"2"
-                 toICal:_iCal];
-    } else if ((priority < 9) && (priority > 0)) {
-        [self _appendName:@"X-MICROSOFT-CDO-IMPORTANCE" 
-                 andValue:@"1"
-                   toICal:_iCal];
-      } else {
-          [self _appendName:@"X-MICROSOFT-CDO-IMPORTANCE" 
-                   andValue:@"0"
-                     toICal:_iCal];
-        }
-  } /* end X-MICROSOFT-CDO-IMPORTANCE */
-
+  // X attributes
+  if (![(tmp = [_date valueForKey:@"importance"]) isNotNull]) tmp = @"0";
+  [self _appendName:@"X-MICROSOFT-CDO-IMPORTANCE" andValue:tmp toICal:_iCal];
+  if (![(tmp = [_date valueForKey:@"fbtype"]) isNotNull])     tmp = @"BUSY";
+  [self _appendName:@"X-MICROSOFT-CDO-BUSYSTATUS" andValue:tmp toICal:_iCal];
   [_iCal appendString:@"X-MICROSOFT-CDO-INSTTYPE:0\r\n"];
   
   [_iCal appendString:@"X-MICROSOFT-CDO-ALLDAYEVENT:"];
@@ -367,7 +331,6 @@ static NSString   *skyrixId = nil;
                        @"action", @"comment",
                        @"valueType", @"value", // trigger
                        @"valueType", @"value", // attach
-                       @"lastACK", // mozilla X-MOZ-LASTACK hack
                        nil];
   }
 
@@ -384,7 +347,7 @@ static NSString   *skyrixId = nil;
     numColumns = [columns count];
     k          = 0;
 
-    alarm   = [NSMutableDictionary dictionaryWithCapacity:7];
+    alarm   = [NSMutableDictionary dictionaryWithCapacity:4];
     trigger = [NSMutableDictionary dictionaryWithCapacity:2];
     attach  = [NSMutableDictionary dictionaryWithCapacity:2];
 
@@ -394,12 +357,11 @@ static NSString   *skyrixId = nil;
     // trigger-value
     // attach-type
     // attach-value
-    // lastACK (X-MOZ-LASTACK Mozilla extended attribute)
-    while ((numColumns > k) && (k < 7)) {
+    while ((numColumns > k) && (k < 6)) {
       tmp = [self checkCSVEntry:[columns objectAtIndex:k]];
       if ([tmp isNotEmpty]) {
         switch (k) {
-          case 0: case 1: case 6:
+          case 0: case 1:
             [alarm setObject:tmp   forKey:[csvColumns objectAtIndex:k]]; break;
           case 2: case 3:
             [trigger setObject:tmp forKey:[csvColumns objectAtIndex:k]]; break;
@@ -439,8 +401,6 @@ static NSString   *skyrixId = nil;
       [self _appendName:@"ACTION" andValue:tmp toICal:_iCal];
     if ((tmp = [alarm objectForKey:@"comment"]))
       [self _appendName:@"DESCRIPTION" andValue:tmp toICal:_iCal];
-    if ((tmp = [alarm objectForKey:@"lastACK"]))
-      [self _appendName:@"X-MOZ-LASTACK" andValue:tmp toICal:_iCal];
 
     if ((tmp = [alarm objectForKey:@"trigger"])) {
       id       v   = [tmp valueForKey:@"value"];
@@ -601,9 +561,8 @@ static NSString   *skyrixId = nil;
     [self _appendName:ms andValue:[@"MAILTO:" stringByAppendingString:email]
           toICal:_iCal];
     [ms release]; ms = nil;
-   
-    // Create the ORGANIZER attribute from the current participant
-    // if that participant is the creator of the appointment
+    
+    // TODO: explain this
     if (([companyId intValue] == [ownerId intValue]) &&
         ([companyId intValue] != 0)) {
       tmp = [[NSString alloc] initWithFormat:@"ORGANIZER;CN=\"%@\"", cn];
@@ -654,7 +613,7 @@ static NSString   *skyrixId = nil;
                        @"olReminder",         @"keywords",
                        @"associatedContacts", @"objectVersion",
                        @"comment",            @"parentDateId", 
-                       @"isConflictDisabled", nil];
+                       nil];
   }
   return aptAttributes;
 }

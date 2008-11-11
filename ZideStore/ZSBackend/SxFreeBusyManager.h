@@ -38,8 +38,6 @@
 
 + (id)freeBusyManager;
 
-- (id)emailForLogin:(NSString *)_login;
-
 // return NSArray or NSException
 - (id)freeBusyDataForEmail:(NSString *)_email;
 
@@ -52,12 +50,6 @@
 - (id)freeBusyDataForCompanyId:(id)_companyId
                           from:(NSCalendarDate *)_from
                             to:(NSCalendarDate *)_to;
-
-- (id)freeBusyDataForLogin:(id)_login;
-
-- (id)freeBusyDataForLogin:(id)_login
-                      from:(NSCalendarDate *)_from
-                        to:(NSCalendarDate *)_to;
 
 @end /* SxFreeBusyManager */
 

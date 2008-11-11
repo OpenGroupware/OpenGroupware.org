@@ -1,17 +1,3 @@
-2008-07-23  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
-
-	* OGoModel.py (Telephone & Address): added objectVersion
-	  attribute, already present in database. (v5.3.23)
-
-2008-07-10  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
-
-	* OGoModel.py (Appointment): added travel duration before and
-	  travel duration after fields. (v5.3.22)
-
-2008-05-30  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
-
-	* OGoModel.py (Project): add 'toNote' relation (v5.3.21)
-
 2007-05-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoModel.py (Project): expose 'objectVersion' property (v5.3.20)

@@ -22,7 +22,6 @@ LSBase_OBJC_FILES =               	\
 	LSGetSessionLogsForGlobalIDs.m	\
 	LSGetObjectByGlobalID.m		\
 	LSSuperUserCommand.m		\
-	LSQueryLogsSince.m
 
 LSBase_RESOURCE_FILES += Defaults.plist Version
 

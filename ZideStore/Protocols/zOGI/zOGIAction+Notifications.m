@@ -26,7 +26,7 @@
 
 @implementation zOGIAction(Notifications)
 
-- (NSArray *)_getNotifications:(id)_start until:(id)_end withFlags:(id)_flags {
+- (NSArray *)_getNotifications:(id)_start until:(id)_end {
   NSCalendarDate  *notifyDate, *startDate;
   NSEnumerator   *dateEnumerator, *participantEnumerator;
   id              date, args, participant;
@@ -107,16 +107,7 @@
                         @"(resourceNames = ''))", [EONull null]];
   dates = [dates filteredArrayUsingQualifier:filter];
    */
-
-  if ([_flags objectForKey:@"noCommit"] != nil) {
-    /* database commit has been disabled by the noCommit flag */
-    if ([self isDebug])
-      [self logWithFormat:@"commit disabled via flag!"];
-  } else {
-      /* committing database transaction */
-      [[self getCTX] commit];
-    }
-
+  [[self getCTX] commit];
   return results;
 }
 

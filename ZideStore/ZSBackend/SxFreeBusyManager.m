@@ -20,16 +20,15 @@
 */
 
 #include "SxFreeBusyManager.h"
-#include "SxAptManager.h"
 #include "common.h"
 #include <GDLAccess/GDLAccess.h>
 #include <EOControl/EOKeyGlobalID.h>
 #include <NGExtensions/NGExtensions.h>
 
 // TODO: HACK! Why is the backend calling into the frontend?!
-//@interface NSObject(SxAppointmentParticipants)
-//+ (EOGlobalID *)gidForPKeyEmail:(NSString *)_email;
-//@end
+@interface NSObject(SxAppointmentParticipants)
++ (EOGlobalID *)gidForPKeyEmail:(NSString *)_email;
+@end
 
 @implementation SxFreeBusyManager
 
@@ -80,6 +79,7 @@ static SxFreeBusyManager *sharedInstance = NULL;
 
 - (NSString *)modelName {
   NSString *modelName;
+   
   
   if (self->model) 
     return [self->model name];
@@ -277,10 +277,6 @@ static SxFreeBusyManager *sharedInstance = NULL;
   return [[[self model] entityNamed:@"Team"] externalName];
 }
 
-/* Execute the provided expression and returl an array of records with
-   keys: startDate, endDate, fbtype, busytype
-   TODO: return travel time attributes so that pre- and post- travel on
-         appointments can be considered in F/B calculations. */
 - (id)freeBusyDataForExpression:(NSString *)_sql {
   NSString         *sql;
   EOAdaptorChannel *chan;
@@ -328,10 +324,11 @@ static SxFreeBusyManager *sharedInstance = NULL;
       [chan closeChannel];
     }
     return [NSException exceptionWithName:@"SQLException"
-			reason:@"could not get a description of the SQL results"
+			reason:
+                        @"could not get a description of the SQL results"
 			userInfo:nil];
   }
- 
+  
   result = [NSMutableArray arrayWithCapacity:128];
   while ((record = [chan fetchAttributes:attributes withZone:NULL]) != nil) {
     values[0] = [record objectForKey:@"startdate"];
@@ -339,8 +336,9 @@ static SxFreeBusyManager *sharedInstance = NULL;
     values[2] = [record objectForKey:@"fbtype"];
     values[3] = [record objectForKey:@"busytype"];
 
-    [result addObject:[NSDictionary dictionaryWithObjects:values
-                                                   forKeys:keys count:4]];
+    [result addObject:
+            [NSDictionary dictionaryWithObjects:values
+                          forKeys:keys count:4]];
   }
 
   [ctx rollbackTransaction];
@@ -348,11 +346,8 @@ static SxFreeBusyManager *sharedInstance = NULL;
     [chan closeChannel];
   
   return result;
-} // end freeBusyDataForExpression
+}
 
-/* Create query expression for retrieving dates relating to the a
-   specified email. 
-   NOTE: Only a user's first e-mail (email1) address is considered! */
 - (NSString *)buildExpressionForEmail:(NSString *)_email
   from:(NSCalendarDate *)_from to:(NSCalendarDate *)_to
 {
@@ -400,10 +395,8 @@ static SxFreeBusyManager *sharedInstance = NULL;
       emailString, fromString, toString];
 
   return ms;
-} // end buildExpressionForEmail
+}
 
-/* Create query expression for retrieving dates relating to the a
-   specified companyId. */ 
 - (NSString *)buildExpressionForCompanyId:(id)_companyId
                                      from:(NSCalendarDate *)_from
                                        to:(NSCalendarDate *)_to
@@ -450,162 +443,30 @@ static SxFreeBusyManager *sharedInstance = NULL;
       companyIdString, fromString, toString];
 
   return ms;
-} // end buildExpressionForCompanyId
-
-/* Create query expression for retrieving dates relating to the a
-   specified login.
-   TODO:  Support forcing login to lower-case if the LSUseLowercaseLogin
-          default has been set to YES */
-- (NSString *)buildExpressionForLogin:(NSString *)_login
-                                 from:(NSCalendarDate *)_from 
-                                   to:(NSCalendarDate *)_to
-{
-  NSString        *fromString;
-  NSString        *toString;
-  NSMutableString *ms;
-
-  ms = [NSMutableString stringWithCapacity:32];
-
-  fromString  = [self formatDate:_from];
-  toString    = [self formatDate:_to];
-
-  // SELECT
-  [ms appendString:@"SELECT DISTINCT "
-      @"d.date_id as pkey, "
-      @"d.start_date as startdate, "
-      @"d.end_date as enddate, "
-      @"d.fbtype as fbtype, "
-      @"d.busy_type as busytype"];
-
-  // FROM
-  [ms appendString:@" FROM "];
-  [self appendFirst:[self dateTableName]             as:@"d"   to:ms];
-  [self append:[self dateCompanyAssignmentTableName] as:@"dca" to:ms];
-  [self append:[self personTableName]                as:@"p"   to:ms];
-  [self append:[self companyAssignmentTableName]     as:@"ca"  to:ms];
-  [self append:[self teamTableName]                  as:@"t"   to:ms];
-
-  [ms appendFormat:@" WHERE "
-      @"(p.login = '%@')                      AND "
-      @"(p.db_status <> 'archived')         AND "
-      
-      @"(ca.sub_company_id = p.company_id)  AND "
-      @"(t.company_id      = ca.company_id) AND "
-      
-      @"(dca.company_id = p.company_id OR dca.company_id = t.company_id) AND "
-      @"(d.end_date   > %@) AND "
-      @"(d.start_date < %@) AND "
-      @"(d.date_id = dca.date_id)",
-      _login, fromString, toString];
-
-  return ms;
-} // end buildExpressionForLogin 
-
-/* Retrieve the e-mail1 companyValue for the specified login 
-   TODO: Support forcing login to lower-case if the LSUseLowercaseLogin
-          default has been set to YES */
-- (id)emailForLogin:(NSString *)_login
-{
-  NSMutableString  *sql;
-  EOAdaptorChannel *chan;
-  EOAdaptorContext *ctx;
-  NSString         *email;
-  NSArray          *attributes;
-  BOOL              closeConnection;
-  NSDictionary     *record;
-
-  sql = [NSMutableString stringWithCapacity:32];
-
-  // SELECT
-  [sql appendString:@"SELECT DISTINCT "
-         @"p.login as login, "
-         @"cv.value_string as email"];
-
-  // FROM
-  [sql appendString:@" FROM "];
-  [self appendFirst:[self personTableName]                as:@"p"   to:sql];
-  [self append:[self companyValueTableName]          as:@"cv"  to:sql];
-
-  [sql appendFormat:@" WHERE "
-         @"(p.login = '%@')                 AND "
-         @"(LOWER(cv.attribute) = 'email1') AND "
-         @"(p.db_status <> 'archived')      AND "
-         @"(p.company_id = cv.company_id)",
-         _login];
-
-  closeConnection = NO;
-
-  chan = [self adaptorChannel];
-  ctx  = [self adaptorContext];
-
-  if (![chan isOpen]) {
-    [chan openChannel];
-    closeConnection = YES;
-  }
-
-  [ctx beginTransaction];
-
-  if (![chan isOpen]) {
-    return [NSException exceptionWithName:@"SQLException"
-                        reason:@"channel is not open"
-                        userInfo:nil];
-  }
-  if (![chan evaluateExpression:sql]) {
-    [ctx rollbackTransaction];
-    if (closeConnection) {
-      [chan closeChannel];
-    }
-    return [NSException exceptionWithName:@"SQLException"
-                        reason:@"could not execute SQL statement"
-                        userInfo:nil];
-  }
-
-  if ((attributes = [chan describeResults]) == nil) {
-    [chan cancelFetch];
-    [ctx rollbackTransaction];
-    if (closeConnection) {
-      [chan closeChannel];
-    }
-    return [NSException exceptionWithName:@"SQLException"
-                        reason:@"could not get a description of the SQL results"
-                        userInfo:nil];
-  }
-
-  while ((record = [chan fetchAttributes:attributes withZone:NULL]) != nil) {
-    email = [record objectForKey:@"email"];
-  }
-
-  [ctx rollbackTransaction];
-  if (closeConnection)
-    [chan closeChannel];
-
-  return email;
-} // end emailForLogin
-
-
-/* Free/Busy data methods - these are called by frontend */
+}
 
 - (id)freeBusyDataForEmail:(NSString *)_email {
   NSCalendarDate *now = [NSCalendarDate date];
   return [self freeBusyDataForEmail:_email
                from:[now dateByAddingYears:0 months:-3 days:0]
                to:[now dateByAddingYears:0 months:3 days:0]];
-} // end freeBusyDataForEmail (no dates)
+}
 
 - (id)freeBusyDataForEmail:(NSString *)_email
-                      from:(NSCalendarDate *)_from
-                        to:(NSCalendarDate *)_to
+  from:(NSCalendarDate *)_from
+  to:(NSCalendarDate *)_to
 {
   EOKeyGlobalID *gid;
   
   // TODO: HACK HACK: why is the backend calling into the frontend?
-  gid = (EOKeyGlobalID *)[SxAptManager gidForPKeyEmail:_email];
+  gid = (EOKeyGlobalID *)[NSClassFromString(@"SxAppointment")
+                                           gidForPKeyEmail:_email];  
   return [self freeBusyDataForExpression:
                (gid != nil)
                ? [self buildExpressionForCompanyId:[gid keyValues][0]
                        from:_from to:_to]
                : [self buildExpressionForEmail:_email from:_from to:_to]];
-} // end freeBusyDataForEmail
+}
 
 
 - (id)freeBusyDataForCompanyId:(id)_companyId {
@@ -613,7 +474,7 @@ static SxFreeBusyManager *sharedInstance = NULL;
   return [self freeBusyDataForCompanyId:_companyId
                from:[now dateByAddingYears:0 months:-3 days:0]
                to:[now dateByAddingYears:0 months:3 days:0]];
-} // end freeBusyDataForCompanyId (no dates)
+}
 
 - (id)freeBusyDataForCompanyId:(id)_companyId
                           from:(NSCalendarDate *)_from
@@ -622,24 +483,6 @@ static SxFreeBusyManager *sharedInstance = NULL;
   return [self freeBusyDataForExpression:
                [self buildExpressionForCompanyId:_companyId
                      from:_from to:_to]];
-} // end freeBusyDataForCompanyId
-
-- (id)freeBusyDataForLogin:(id)_login {
-  NSCalendarDate *now = [NSCalendarDate date];
-
-  return [self freeBusyDataForLogin:_login
-                               from:[now dateByAddingYears:0 months:-3 days:0]
-                                 to:[now dateByAddingYears:0 months:3 days:0]];
-} // end freeBusyDataForLogin (no dates)
-
-- (id)freeBusyDataForLogin:(id)_login
-                          from:(NSCalendarDate *)_from
-                            to:(NSCalendarDate *)_to
-{
-  return [self freeBusyDataForExpression:
-               [self buildExpressionForLogin:_login
-                                        from:_from 
-                                          to:_to]];
-} // end freeBusyDataForLogin
+}
 
 @end /* SxFreeBusyManager */

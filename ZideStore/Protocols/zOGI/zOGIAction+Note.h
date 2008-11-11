@@ -26,28 +26,18 @@
 
 @interface zOGIAction(Note)
 -(id)_getNotesForKey:(NSString *)_objectId;
--(id)_getNoteById:(id)_objectId;
 -(id)_renderNote:(NSDictionary *)_note;
 -(id)_getUnrenderedNotesForKey:(NSString *)_objectId;
 -(id)_saveNotes:(NSArray *)_notes
       forObject:(NSString *)_objectId;
 -(id)_deleteAllNotesFromObject:(NSString *)_objectId;
--(id)_deleteNote:(id)_noteId withCommit:(BOOL)_doCommit;
-
--(id)_updateNote:(id)_noteId
-       withTitle:(id)_title
-     withContent:(id)_content;
-
+-(id)_deleteNote:(id)_noteId;
 -(id)_insertNote:(id)_objectId
        withTitle:(id)_title
      withContent:(id)_content;
-
--(id)_insertNote:(id)_content
+-(id)_updateNote:(id)_noteId
        withTitle:(id)_title
-      forProject:(id)_projectId 
-  forAppointment:(id)_dateId 
-      forCompany:(id)_companyId
-      withCommit:(BOOL)_doCommit;
+     withContent:(id)_content;
 @end
 
 #endif /* __zOGIAction_Note_H__ */

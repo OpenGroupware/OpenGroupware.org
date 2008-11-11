@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2008 SKYRIX Software AG
+  Copyright (C) 2000-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -25,6 +25,6 @@
 #define __ZideStore_SxRSSTaskRenderer_H__
 
 @interface SxRSSTaskRenderer : SxRSSRenderer
-@end
+@end /* SxRSSTaskRenderer */
 
 #endif /* __ZideStore_SxRSSTaskRenderer_H__ */

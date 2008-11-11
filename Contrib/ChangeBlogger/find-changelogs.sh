@@ -1,7 +1,7 @@
 #!/bin/bash
 
-REPOS_PATH=/path/to/checked/out/svn/repos
-CLS=`find ${REPOS_PATH}$1 -type f -name ChangeLog`
+cd /path/to/checked/out/svn/repos
+CLS=`find . -type f -name ChangeLog | cut -c 3-`
 cat << EOF
     # the changelogs
     # Note: each entry consists of a dictionary with the following keys:
@@ -15,11 +15,11 @@ cat << EOF
 EOF
 for i in $CLS
 do
-    clpath=${i##${REPOS_PATH}}
-    repos=${clpath%%/*}
-    path=${clpath%%/ChangeLog}
-    x=${path##*/}
-    project=${x%%/*}
+    clpath=$i
+	repos=${i%%/*}
+	path=${clpath%%/ChangeLog}
+	x=${path##*/}
+	project=${x%%/*}
     if [ "$repos" = "OpenGroupware.org" ]; then
 		viewcvs_repos="OGo"
 	else

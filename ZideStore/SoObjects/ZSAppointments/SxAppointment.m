@@ -106,7 +106,6 @@ static BOOL embedViewURL             = NO;
   [cmdctx runCommand:@"appointment::get-comments", @"object", dateEO, nil];
   return [dateEO valueForKey:@"comment"];
 }
-
 - (NSString *)comment {
   return [self fetchCommentInContext:[[WOApplication application] context]];
 }
@@ -137,7 +136,6 @@ static BOOL embedViewURL             = NO;
   return [[self aptManagerInContext:_ctx] 
                 globalIDForGroupWithName:[self group]];
 }
-
 - (NSNumber *)pkeyOfGroupInContext:(id)_ctx {
   EOKeyGlobalID *gid;
   
@@ -145,7 +143,6 @@ static BOOL embedViewURL             = NO;
     return nil;
   return [gid keyValues][0];
 }
-
 - (id)groupInContext:(id)_ctx {
   id team;
 
@@ -156,7 +153,6 @@ static BOOL embedViewURL             = NO;
 	         runCommand:@"team::get", @"companyId", team, nil] lastObject];
   return team;
 }
-
 - (BOOL)isInOverviewFolder {
   return [[self container] isOverview];
 }
@@ -252,26 +248,14 @@ static BOOL embedViewURL             = NO;
 - (NSArray *)defaultParticipantsInContext:(id)_ctx {
   /* for new appointments which have no participant set */
   id account, team;
-   
-  /* if we are in a team folder return the team as the default participant
-     TODO: support flattening of teams via ZideStore/WebDAV */ 
+    
   if ((createGroupAptsInGroupFolder) && ((team = [self groupInContext:_ctx])))
     return team ? [NSArray arrayWithObject:team] : nil;
   
   account = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
-  /* Create a date-company-assignment record with role and participant
-     status for the current user */
-  return account ? [NSArray arrayWithObject:
-                      [NSDictionary dictionaryWithObjectsAndKeys:
-                         [account valueForKey:@"companyId"], @"companyId",
-                         intObj(1), @"isAccount",
-                         @"NEEDS-ACTION", @"partStatus",
-                         @"REQ-PARTICIPANT", @"role",
-                         intObj(0), @"rsvp",
-                         nil]] : nil;
-} /* end defaultParticipantsInContext */
+  return account ? [NSArray arrayWithObject:account] : nil;
+}
 
-/* How is this different from defaultParticipantsInContext: ? */
 - (NSMutableArray *)participantsForCreateInContext:(id)_ctx {
   NSMutableArray *participants;
   id team;
@@ -280,16 +264,16 @@ static BOOL embedViewURL             = NO;
   if (![self isInOverviewFolder])
     return participants;
     
-  if ((team = [self groupInContext:_ctx]) != nil) {
+  if ((team = [self groupInContext:_ctx]) != nil)
     [participants addObject:team];
-  } else {
-      id account;
+  else {
+    id account;
     
-      account = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
-      [participants addObject:account];
-    }
+    account = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
+    [participants addObject:account];
+  }
   return participants;
-} /* end participantsForCreateInContext: */
+}
 
 - (NSString *)logTextForChangeSet:(NSDictionary *)_cs keys:(NSArray *)_k {
   NSMutableString *log;
@@ -318,22 +302,20 @@ static BOOL embedViewURL             = NO;
   if ([log length] == 3)
     [log appendString:@" no change detected."];
   return log;
-} /* end logTextForChangeSet: */
+}
 
-/* The result of this method, used to create new appointments is a
-   WOResponse.  This result is passed directly to the client. */
 - (id)createAptWithInfo:(NSDictionary *)_info inContext:(id)_ctx {
   // TODO: should we make a redirect to the created file? probably confuses
   //       clients but is likely to be the correct thing to do.
   // TODO: added 
   NSMutableArray      *keys;
   NSMutableDictionary *changeSet;
-  NSException         *error;
-  NSString            *etag;
-  NSMutableArray      *participants;
-  WOResponse          *r;
-  NSString            *url;
-  id                   tmp;
+  NSException    *error;
+  NSString       *etag;
+  NSArray        *participants;
+  WOResponse     *r;
+  NSString       *url;
+  id tmp;
   
   if (logAptChange) [self logWithFormat:@"GOT: %@", _info];
   
@@ -349,30 +331,23 @@ static BOOL embedViewURL             = NO;
   
   /* participants */
 
-  participants = [NSMutableArray arrayWithCapacity:64];
-  if ([[_info objectForKey:@"participants"] isNotNull]) {
-    /* fetchParticipantsForPersons: comes from the Participants category */
-    tmp = [self fetchParticipantsForPersons:
-                  [_info objectForKey:@"participants"]
-                inContext:_ctx];
-    if ([tmp isNotEmpty]) {
-      [participants addObjectsFromArray:tmp];
-    }
+  participants = [self participantsForCreateInContext:_ctx];
+  
+  tmp = [self fetchParticipantsForPersons:
+                [_info objectForKey:@"participants"]
+              inContext:_ctx];
+  if ([tmp isNotEmpty]) { // if at least one participant
+    [(NSMutableArray *)participants addObjectsFromArray:tmp];
+    [keys removeObject:@"participants"];
   }
-  /* if we got zero participants from the submission then we add
-     the default participants from the current context */
-  if ([participants count] == 0) {
-    tmp = [self defaultParticipantsInContext:_ctx];
-    [participants addObjectsFromArray:tmp];
-  }
-  [keys removeObject:@"participants"];
+  else if (![participants isNotEmpty]) // if no parts, add current account
+    participants = [self defaultParticipantsInContext:_ctx];
   
   /* check values */
   
   changeSet = [NSMutableDictionary dictionaryWithCapacity:16];
   
   [changeSet setObject:participants forKey:@"participants"];
-  
   SX_NEWKEY(@"startDate");
   SX_NEWKEY(@"endDate");
   SX_NEWKEY(@"title");
@@ -381,33 +356,22 @@ static BOOL embedViewURL             = NO;
   SX_NEWKEY(@"importance");
   SX_NEWKEY(@"lastModified");
   SX_NEWKEY(@"sensitivity");
-  SX_NEWKEY(@"evoReminder");
-  SX_NEWKEY(@"fbtype");
-  SX_NEWKEY(@"isConflictDisabled");
 
   /* read-access-group */
   
-  if ([(tmp = [self pkeyOfGroupInContext:_ctx]) isNotNull]) {
+  if ([(tmp = [self pkeyOfGroupInContext:_ctx]) isNotNull])
     [changeSet setObject:tmp forKey:@"accessTeamId"];
-  } else {
-      if ([[self container] isOverview]) {
-        tmp = [[self container] defaultReadAccessInContext:_ctx];
-        if (tmp != nil) { 
-          [changeSet setObject:tmp forKey:@"accessTeamId"];
-        } 
-      }
-    }
   
   /* write access */
   
   tmp = [[self container] defaultWriteAccessListInContext:_ctx];
   if ([tmp isNotEmpty])
     [changeSet setObject:tmp forKey:@"writeAccessList"];
-
+  
   /* conflicts */
   
   [changeSet setObject:yesNum forKey:@"isWarningIgnored"];
-
+  
   /* perform changes */
   
   error = [[self aptManagerInContext:_ctx] 
@@ -464,7 +428,6 @@ static BOOL embedViewURL             = NO;
     [keys removeObject:__key__];\
   }
 
-/* This method performs updates,  the result value is a WOResponse */
 - (id)patchAptWithInfo:(NSDictionary *)_info inContext:(id)_ctx {
   WOResponse          *r;
   NSMutableArray      *keys;
@@ -478,19 +441,16 @@ static BOOL embedViewURL             = NO;
   /* fetch EO */
   
   if ((obj = [self objectInContext:_ctx]) == nil) {
-    /* By default ZideLook will create a new appointment if it cannot find an
-       appointment to update.  However, this behaviour can be disabled by
-       setting the ZLApt404OnMissingPUTTargets default to YES in which case
-       a 404 error will be returned. */
     if (createNewAptWhenNotFound) {
       [self logWithFormat:
               @"Note: object not yet available in DB, creating a new one!"];
       return [self createAptWithInfo:_info inContext:_ctx];
-    } else {
-        [self logWithFormat:@"got no EO object !"];
-        return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-                            reason:@"could not locate database object for ID!"];
-      }
+    }
+    else {
+      [self logWithFormat:@"got no EO object !"];
+      return [NSException exceptionWithHTTPStatus:404 /* Not Found */
+                          reason:@"could not locate database object for ID!"];
+    }
   }
   
   /* check version */
@@ -532,11 +492,8 @@ static BOOL embedViewURL             = NO;
   SX_DIFFKEY(@"importance");
   SX_DIFFKEY(@"sensitivity");
   SX_DIFFKEY(@"evoReminder");
-  SX_DIFFKEY(@"fbtype");
-  SX_DIFFKEY(@"isConflictDisabled");
   
   participants = [NSMutableArray arrayWithCapacity:1];
-  /*
   if ([self isInOverviewFolder]) {
     id team = [self groupInContext:_ctx];
     if (logAptChange) {
@@ -551,18 +508,13 @@ static BOOL embedViewURL             = NO;
       loginEO = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
       [participants addObject:loginEO];
     }
-  } */
-
-  /* fetchParticipantsForPersons: comes from the Participants category */ 
+  }
+  
   tmp = [self fetchParticipantsForPersons:[_info objectForKey:@"participants"]
               inContext:_ctx];
   
-  if ([tmp isNotEmpty]) {
+  if ([tmp isNotEmpty])
     [participants addObjectsFromArray:tmp];
-  } else {
-      /* update contains no participants! */
-      /* TODO: add user */
-    }
   
   /* TODO: mh: hack */
   /*
@@ -804,7 +756,6 @@ static BOOL embedViewURL             = NO;
   ical = [am renderAppointmentAsICal:obj timezone:nil];
   return [self hackVEvent:ical];
 }
-
 - (NSString *)iCalString {
   NSMutableString *m;
   NSString *ical;
@@ -871,18 +822,19 @@ static BOOL embedViewURL             = NO;
     
     [r setHeader:@"text/calendar; charset=utf-8" forKey:@"content-type"];
     [r appendContentString:ical];
-  } else {
-      NSString *mime;
+  }
+  else {
+    NSString *mime;
     
-      // TODO: tz
-      if ((mime = [self iCalMailString]) == nil) {
-        return [NSException exceptionWithHTTPStatus:500
-                            reason:@"could not render EO as MIME"];
-      }
-    
-      [r setHeader:@"message/rfc822; charset=utf-8" forKey:@"content-type"];
-      [r appendContentString:mime];
+    // TODO: tz
+    if ((mime = [self iCalMailString]) == nil) {
+      return [NSException exceptionWithHTTPStatus:500
+                          reason:@"could not render EO as MIME"];
     }
+    
+    [r setHeader:@"message/rfc822; charset=utf-8" forKey:@"content-type"];
+    [r appendContentString:mime];
+  }
   
   if ((etag = [self davEntityTag]) != nil)
     [r setHeader:etag forKey:@"etag"];
@@ -900,7 +852,6 @@ static BOOL embedViewURL             = NO;
                               forAppointment:self] autorelease];
   return [creator runInContext:_ctx];
 }
-
 - (NSException *)davSetProperties:(NSDictionary *)_setProps
   removePropertiesNamed:(NSArray *)_delProps
   inContext:(id)_ctx

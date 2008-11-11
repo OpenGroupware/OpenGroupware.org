@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2008 SKYRIX Software AG
-  Copyright (C) 2006-2008 Helge Hess
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -84,7 +84,6 @@ static NSDictionary *AptFetchHints            = nil;
 static NGMimeType   *eoJobType                = nil;
 static BOOL         hasSkyGenericLDAPViewer   = NO;
 static BOOL         hasSkyProject4Desktop     = NO;
-static NSDictionary *formLetterConfigs        = nil;
 static NSArray      *formLetterTypes          = nil;
 
 + (void)initialize {
@@ -114,9 +113,9 @@ static NSArray      *formLetterTypes          = nil;
                         @"attributeKeys", nil];
   }
   
-  formLetterConfigs = [[ud dictionaryForKey:@"LSPersonFormLetter"] copy];
-  formLetterTypes = [[[formLetterConfigs allKeys]
-		       sortedArrayUsingSelector:@selector(compare:)] copy];
+  formLetterTypes = 
+    [[[[ud dictionaryForKey:@"LSPersonFormLetter"] allKeys]
+       sortedArrayUsingSelector:@selector(compare:)] copy];
   NSLog(@"SkyPersonViewer: form letter types: %@",
 	[formLetterTypes componentsJoinedByString:@", "]);
   

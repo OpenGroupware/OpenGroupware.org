@@ -795,33 +795,4 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
   return error;
 }
 
-+ (NSNumber *)pKeyForPKeyEmail:(NSString *)_email isTeam:(BOOL *)_isTeamFlag {
-  if (_isTeamFlag != NULL) (*_isTeamFlag) = NO;
-
-  if ([_email hasPrefix:@"skyrix-"]) {
-    int pkey;
-
-    _email = [_email substringFromIndex:7];
-    if ([_email hasPrefix:@"team-"]) {
-      if (_isTeamFlag != NULL) (*_isTeamFlag) = YES;
-      _email = [_email substringFromIndex:5];
-    }
-    if ((pkey = [_email intValue]) > 1000) {
-      return [NSNumber numberWithInt:pkey];
-    }
-  }
-  return nil;
-}
-
-+ (EOGlobalID *)gidForPKeyEmail:(NSString *)_email {
-  id   pkey;
-  BOOL isTeam;
-
-  if ((pkey = [self pKeyForPKeyEmail:_email isTeam:&isTeam]) != nil) {
-    return [EOKeyGlobalID globalIDWithEntityName:
-                          (isTeam ? @"Team" : @"Person")
-                          keys:&pkey keyCount:1 zone:NULL];
-  }
-  return nil;
-}
 @end /* SxAptManager */

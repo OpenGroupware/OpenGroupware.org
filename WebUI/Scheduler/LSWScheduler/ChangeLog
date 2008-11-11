@@ -1,13 +1,3 @@
-2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
-
-	* LSWAppointmentViewer.m: append filename to formletter action
-	  (v5.3.115)
-
-2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
-
-	* LSWSchedulerPreferences.m: fixed a bug with loading an ACL default
-	  (v5.3.114)
-
 2007-06-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWSchedulerPreferences.m: changed to use string-keys in label

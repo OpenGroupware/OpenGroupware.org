@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2002-2008 SKYRIX Software AG
-  Copyright (C) 2007-2008 Helge Hess
+  Copyright (C) 2002-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -374,10 +374,6 @@
     [cdCol release];
   }
   return coltype;
-}
-
-- (NSString *)gdavComponentSet {
-  return @"VCARD";
 }
 
 /* description */

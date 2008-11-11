@@ -5,13 +5,16 @@ OpenGroupware.org Installation Guide
 Prerequisites
 =============
 
-SOPE 4.7
+SOPE 4.5
 - gnustep-make (gstep-make 1.13 from www.gnustep.org)
 - Foundation library (eg SOPE-4.5/libFoundation)
 - libxml2/libxml2-dev
 - autoconf
 - openldap2/openldap2-dev
 - postgresql-dev
+
+PDA
+- libpisock (eg libpisock-dev on Debian)
 
 (Internal) Dependencies
 =======================

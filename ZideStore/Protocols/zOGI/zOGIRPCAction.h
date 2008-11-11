@@ -51,7 +51,6 @@
               withDetail:(id)_detail
                withFlags:(id)_flags;
 -(id)_getServerTime;
--(id)getAuditEntriesAction;
 @end
 
 #endif /* __zOGIRPCAction_H__ */

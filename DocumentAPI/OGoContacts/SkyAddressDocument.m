@@ -129,19 +129,18 @@
   if (self->addAsObserver)
     [[NSNotificationCenter defaultCenter] removeObserver:self];
   
-  [self->globalID       release];
-  [self->dataSource     release];
-  [self->name1          release];
-  [self->name2          release];
-  [self->name3          release];
-  [self->street         release];
-  [self->zip            release];
-  [self->city           release];
-  [self->country        release];
-  [self->state          release];
-  [self->type           release];
-  [self->companyId      release];
-  [self->objectVersion  release];
+  [self->globalID   release];
+  [self->dataSource release];
+  [self->name1      release];
+  [self->name2      release];
+  [self->name3      release];
+  [self->street     release];
+  [self->zip        release];
+  [self->city       release];
+  [self->country    release];
+  [self->state      release];
+  [self->type       release];
+  [self->companyId  release];
   
   [super dealloc];
 }
@@ -259,13 +258,6 @@
   return self->type;
 }
 
-- (void)setObjectVersion:(NSNumber *)_objectVersion {
-  ASSIGNCOPY_IFNOT_EQUAL(self->objectVersion, _objectVersion, self->status.isEdited);
-}
-- (NSNumber *)objectVersion {
-  return self->objectVersion;
-}
-
 /* eo commands support */
 - (id)asDict {
   NSMutableDictionary *dict;
@@ -287,7 +279,6 @@
   [dict takeValue:[self state]    forKey:@"state"];
   [dict takeValue:[self type]     forKey:@"type"];
   [dict takeValue:self->companyId forKey:@"companyId"];
-  [dict takeValue:self->objectVersion forKey:@"objectVersion"];
   
   return dict;
 }
@@ -358,6 +349,7 @@
 
     obj = [[[self context] runCommand:@"object::get-by-globalid",
                            @"gid", [self globalID], nil] lastObject];
+    
     [self _loadDocument:obj];
   }
   
@@ -409,7 +401,6 @@
   [self setCountry:    [_object valueForKey:@"country"]];
   [self setState:      [_object valueForKey:@"state"]];
   [self setType:       [_object valueForKey:@"type"]];
-  [self setObjectVersion: [_object valueForKey:@"objectVersion"]];
   [self _setCompanyId: [_object valueForKey:@"companyId"]];
 
   self->status.isValid    = YES;

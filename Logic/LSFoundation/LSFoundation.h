@@ -46,7 +46,6 @@
 #include <LSFoundation/LSDBObjectCommandException.h>
 #include <LSFoundation/LSMail.h>
 #include <LSFoundation/SkyObjectPropertyManager.h>
-#include <LSFoundation/OGoObjectLinkManager.h>
 #include <LSFoundation/SkyAttributeDataSource.h>
 #include <LSFoundation/SkyAccessManager.h>
 

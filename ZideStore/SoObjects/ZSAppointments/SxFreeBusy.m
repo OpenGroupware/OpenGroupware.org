@@ -407,22 +407,7 @@ static NSArray *startDateOrdering = nil;
                       nil] lastObject];
     return [login valueForKey:@"email1"];
   }
-  [self debugWithFormat:@"no command context available!"];
   return nil;
-}
-
-- (NSString *)emailForLogin:(NSString *)_login withContext:(id)_ctx {
-  id cmdctx;
-  id login;
-
-  cmdctx = [self commandContextInContext:_ctx];
-  if (cmdctx != nil) {
-    login  = [[cmdctx runCommand:@"person::get",
-                      @"login", _login,
-                      nil] lastObject];
-    return [login valueForKey:@"email1"];
-  }
-  return [[self freeBusyManager] emailForLogin:_login];
 }
 
 - (id)GETAction:(id)_ctx {
@@ -439,78 +424,66 @@ static NSArray *startDateOrdering = nil;
   WORequest      *request;
   WOResponse     *response;
   NSCalendarDate *from, *to;
-  NSArray        *dates;
-  NSString       *fmt, *val, *mail;
-  id              interval, key;
+  NSArray  *dates;
+  NSString *usr, *fmt, *val;
+  id       interval;
   
   request = [(WOContext *)_ctx request];
-
-  fmt = val = mail = nil;
-  if ([[request requestHandlerPath] hasSuffix:@".vfb"]) {
-    val  = [request requestHandlerPath];
-    key  = [[val componentsSeparatedByString:@"."] objectAtIndex:0];
-    fmt  = @"vfb";
-    to   = nil;
-    from = nil;
-    mail = [self emailForLogin:key withContext:_ctx];
-  } else {
-      // query form request, like /freebusy?u=%EMAIL1%&fmt=xml
-      val      = [request formValueForKey:@"start"];
-      from     = [NSCalendarDate dateWithExDavString:val];
-      val      = [request formValueForKey:@"end"];
-      to       = [NSCalendarDate dateWithExDavString:val];
-      key      = [request formValueForKey:@"u"];
-      interval = [request formValueForKey:@"interval"];
-      fmt      = [request formValueForKey:@"format"];
-      if ([fmt length] == 0)
-        fmt = @"xml";
-      if ([key length] == 0) {
-        // Outlook form request, like /freebusy?name=%NAME%&server=%SERVER%
-        // We are assuming this because there was no u=%EMAIL1% in the 
-        // request URL and the URL was not a short form.
-        NSString *name, *server;
-    
-        name   = [request formValueForKey:@"name"];
-        server = [request formValueForKey:@"server"];
-    
-        if ([server length] > 0 && [name length] > 0) {
-          mail = [NSString stringWithFormat:@"%@@%@", name, server];
-          key = mail;
-          fmt = @"vfb";
-        }
-      } else mail = key;
-      /*
-        if ([key length] == 0) key = self->user;
-        if ([key length] == 0) key = [self defaultEmailWithContext:_ctx];
-       */
-  }
-
-  // set defaults for non-provided values 
-  if (from == nil) from = [self defaultStartDate];
-  if (to   == nil) to   = [self defaultEndDate];
   
-  // return a bad request response if insufficient data was provided
-  // in the request URL.
-  if (from == nil || to == nil || key == nil || mail == nil) {
+  val  = [request formValueForKey:@"start"];
+  from = [NSCalendarDate dateWithExDavString:val];
+  val  = [request formValueForKey:@"end"];
+  to   = [NSCalendarDate dateWithExDavString:val];
+  if (from == nil) from = [self defaultStartDate];
+  if (to == nil)   to   = [self defaultEndDate];
+  
+  usr      = [request formValueForKey:@"u"];
+  interval = [request formValueForKey:@"interval"];
+  fmt      = [request formValueForKey:@"format"];
+  
+  if ([usr length] == 0) {
+    // for outlook default url:
+    // http://my.zidestore.de:80/exchange/so/m/public/freebusy?
+    // name=%NAME%&server=%SERVER%
+    NSString *name, *server;
+    
+    name   = [request formValueForKey:@"name"];
+    server = [request formValueForKey:@"server"];
+    
+    if ([server length] > 0 && [name length] > 0) {
+      usr = [NSString stringWithFormat:@"%@@%@", name, server];
+      fmt = @"vfb";
+    }
+  }
+  
+  if ([fmt length] == 0) {
+    fmt = self->format;
+    if ([fmt length] == 0)
+      fmt = @"xml";
+  }
+  
+  if ([usr length] == 0) usr = self->user;
+  if ([usr length] == 0) usr = [self defaultEmailWithContext:_ctx];
+  
+  if (from == nil || to == nil || usr == nil) {
     WOResponse *response = [(WOContext *)_ctx response];
     [response setStatus:400]; /* bad request */
     if (from == nil) [response appendContentString:@"got no start date !\n"];
     if (to   == nil) [response appendContentString:@"got no end date !\n"];
-    if (key  == nil) [response appendContentString:@"got no user-key !\n"];
-    if (mail == nil) [response appendContentString:@"got no email !\n"];
+    if (usr  == nil) [response appendContentString:@"got no user-key !\n"];
     return response;
   }
   
-  // todo generate freebusy entries
-  if ([[key componentsSeparatedByString:@"@"] count] > 1) {
-    dates = [[self freeBusyManager]
-                   freeBusyDataForEmail:key
-                   from:from to:to];
-  } else {
-      dates = [[self freeBusyManager]
-                     freeBusyDataForLogin:key
-                     from:from to:to];
-    }
+  /* todo generate freebusy entries */
+#if 0
+  dates = [[self aptManagerInContext:_ctx] 
+                 freeBusyDataForUser:usr
+                 from:from to:to];
+#else
+  dates = [[self freeBusyManager]
+                 freeBusyDataForEmail:usr
+                 from:from to:to];
+#endif
 
   if ([dates isKindOfClass:[NSException class]])
     return dates;
@@ -520,42 +493,40 @@ static NSArray *startDateOrdering = nil;
     [response setStatus:400]; /* bad request */
     [response appendContentString:@"got no result for freebusy request"];
     [self logWithFormat:@"bad freebusy request: from:%@ to:%@ user:%@",
-            from, to , key];
+            from, to , usr];
     return response;
   }
   
   dates    = [dates sortedArrayUsingKeyOrderArray:startDateOrdering];
   response = [(WOContext *)_ctx response];
   
-  // create response in desired format
-  if ([fmt isEqualToString:@"xml"]) {
+  if ([fmt isEqualToString:@"iCal"] ||
+      [fmt isEqualToString:@"ics"]  ||
+      [fmt isEqualToString:@"vfb"]) {
+    /* do ical */
+    
+    [response setHeader:@"text/calendar"
+              forKey:@"content-type"];
+    
+#if 0 /* what about that ? required or not ? */
+    [response setHeader:@"inline; filename=freebusy.cvs"
+              forKey:@"content-disposition"];
+#endif
+    [self appendICalDates:dates
+          startDate:from endDate:to email:usr
+          toResponse:response inContext:_ctx];
+  }
+  else {
     /* do xml */
     [response setHeader:@"text/html" forKey:@"content-type"];
 
     [self appendXMLDates:dates
-               startDate:from 
-                 endDate:to 
-                   email:mail
-                 options:[NSDictionary dictionaryWithObjectsAndKeys:
-                                         interval, @"interval", 
-                                         nil]
-              toResponse:response 
-               inContext:_ctx];
-  } else {
-      /* do ical */
-      [response setHeader:@"text/calendar"
-                   forKey:@"content-type"];
-      /*
-      [response setHeader:@"inline; filename=freebusy.cvs"
-              forKey:@"content-disposition"];
-      */
-      [self appendICalDates:dates
-                  startDate:from 
-                    endDate:to 
-                      email:mail
-                 toResponse:response 
-                  inContext:_ctx];
-    }
+          startDate:from endDate:to email:usr
+          options:[NSDictionary dictionaryWithObjectsAndKeys:
+                                  interval, @"interval", nil]
+          toResponse:response inContext:_ctx];
+  }
+  
   return response;
 }
 

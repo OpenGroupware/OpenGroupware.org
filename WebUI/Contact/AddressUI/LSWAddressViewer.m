@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2000-2008 SKYRIX Software AG
-  Copyright (C) 2008      Helge Hess
+  Copyright (C) 2000-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -65,9 +64,7 @@
   NSString *key;
   NSString *result;
   
-  if (![(type = [self->address type]) isNotEmpty])
-    return nil;;
-  
+  type   = [self->address type];
   key    = [@"addresstype_" stringByAppendingString:type];
   result = [[self labels] valueForKey:key];
   

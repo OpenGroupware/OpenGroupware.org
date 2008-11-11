@@ -22,6 +22,7 @@
         { name = LSWJobs;            },
         { name = LSWJobEditor;       },
 	{ name = LSWJobAction;       },
+	{ name = LSWJobImport;       },
         { name = LSWJobMailPage;     },
         { name = LSWJobHtmlMailPage; },
         { name = LSWJobTextMailPage; },
@@ -46,6 +47,7 @@
         { name = LSWJobs;      },
         { name = LSWJobEditor; },
         { name = LSWJobAction; },
+        { name = LSWJobImport; },
         { name = LSWJobHtmlMailPage; },
         { name = LSWJobTextMailPage; },
         { name = LSWJobPreferences; },
@@ -148,6 +150,11 @@
         verb      = reject;   
         type      = "eo/job";      
         component = LSWJobAction; 
+      },
+      { 
+        verb      = import;   
+        type      = "eo/project";  
+        component = LSWJobImport; 
       },
       { 
         verb      = mailview; 

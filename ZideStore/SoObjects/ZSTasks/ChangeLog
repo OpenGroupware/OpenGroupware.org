@@ -1,7 +1,3 @@
-2008-03-11  Helge Hess  <helge.hess@opengroupware.org>
-
-	* SxTaskFolder.m: added gdavComponentSet (v1.5.82)
-
 2007-02-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxTaskFolder.m: added CalDAV marker to WebDAV resource type (v1.5.81)
