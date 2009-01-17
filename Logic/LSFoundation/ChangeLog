@@ -1,3 +1,9 @@
+2009-01-17  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSDBObjectDeleteCommand.m|h: Added support for the defaults 
+	  LSTombstoneOnDeleteEnabled and LSDisableLogDeletion which
+	  control how deletes are recorded in the log. (v5.4.138)
+
 2008-08-29  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSGetAsRSSFeedCommand.m: Returns an UTF-8 encoded NSData rather than

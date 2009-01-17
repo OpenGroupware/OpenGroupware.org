@@ -35,9 +35,14 @@
 }
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
+  NSUserDefaults *ud;
+
   if ((self = [super initForOperation:_operation inDomain:_domain])) {
     self->reallyDelete = YES;
   }
+  ud = [NSUserDefaults standardUserDefaults];
+  self->tombstoneOn = [ud boolForKey:@"LSTombstoneOnDeleteEnabled"];
+  self->disableLogDelete = [ud boolForKey:@"LSDisableLogDeletion"];
   return self;
 }
 
@@ -133,6 +138,14 @@
   else {
     [self assert:[[self databaseChannel] updateObject:[self object]]];
   }
+}
+
+- (BOOL)isDeleteLogsEnabled {
+  return (!(self->disableLogDelete));
+}
+
+- (BOOL)isTombstoneEnabled {
+  return self->tombstoneOn;
 }
 
 /* accessors */

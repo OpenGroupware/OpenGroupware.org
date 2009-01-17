@@ -106,8 +106,16 @@
   [[_context linkManager] deleteLinksTo:(id)[[self object] globalID] type:nil];
   [[_context linkManager] deleteLinksFrom:(id)[[self object] globalID] type:nil];
 
-  LSRunCommandV(_context, @"object", @"remove-logs",
-                          @"object", [self object], nil);
+  if ([self isDeleteLogsEnabled])
+    LSRunCommandV(_context, @"object", @"remove-logs",
+                            @"object", [self object], nil);
+
+  if ([self isTombstoneEnabled])
+    LSRunCommandV(_context, @"object", @"add-log",
+                            @"logText"    , @"Company deleted",
+                            @"action"     , @"99_delete",
+                            @"objectToLog", [self object],
+                            nil);
   
   [super _executeInContext:_context];
 }
