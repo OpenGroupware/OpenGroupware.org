@@ -136,12 +136,21 @@
 
 - (NSException *)_removeObjectLogsInContext:(id)_context {
   id obj;
-  
+
   obj = [self object];
   [self assert:(obj != nil) reason:@"no object available"];
-  LSRunCommandV(_context, @"object", @"remove-logs", 
-                          @"object", obj, 
-                          nil);
+
+  if ([self isDeleteLogsEnabled])
+    LSRunCommandV(_context, @"object", @"remove-logs", 
+                            @"object", obj, 
+                            nil);
+
+  if ([self isTombstoneEnabled])
+    LSRunCommandV(_context, @"object", @"add-log",
+                            @"logText"    , @"Appointment deleted",
+                            @"action"     , @"99_delete",
+                            @"objectToLog", obj,
+                            nil);
   return nil;
 }
 
