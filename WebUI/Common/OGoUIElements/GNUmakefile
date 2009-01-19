@@ -36,6 +36,7 @@ OGoUIElements_OBJC_FILES = 		\
 	OGoEmbedExternalLink.m		\
 	OGoFieldSet.m			\
 	OGoField.m			\
+	OGoAddressMapLinks.m		\
 
 OGoUIElements_LANGUAGES = English German
 

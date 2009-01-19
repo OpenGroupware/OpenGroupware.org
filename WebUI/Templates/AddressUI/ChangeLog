@@ -1,3 +1,8 @@
+2009-01-19 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSWAddressViewer.wod|html: Addess viewer references the 
+	  AddressMapLinks for integration with map services (Bug#1955).
+
 2005-10-04 Olivier Hallot (olivier@ig.com.br>
 
 	* SkyBusinessCardGathering.wod: changed 'salutation' field of editor
