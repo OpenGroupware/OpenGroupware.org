@@ -55,32 +55,36 @@
 
 
 -(void)dealloc {
-  RELEASE(self->dialContext);
-  RELEASE(self->outgoingContext);
-  RELEASE(self->internalContext);
+  [self->dialContext     release];
+  [self->outgoingContext release];
+  [self->internalContext release];
   [super dealloc];
 }
 
 /* accessors */
--(void)setInternalExtensionLength:(unsigned )_length {
+
+- (void)setInternalExtensionLength:(unsigned )_length {
   self->internalExtensionLength = _length;
 }
 - (unsigned)internalExtensionLength {
   return self->internalExtensionLength;
 }
--(void)setInternalContext:(NSString *)_context {
+
+- (void)setInternalContext:(NSString *)_context {
   ASSIGN(self->internalContext, _context);
 }
 - (NSString *)internalContext {
   return self->internalContext;
 }
--(void)setOutgoingContext:(NSString *)_context {
+
+- (void)setOutgoingContext:(NSString *)_context {
   ASSIGN(self->outgoingContext, _context);
 }
 - (NSString *)outgoingContext {
   return self->outgoingContext;
 }
--(void)setDialContext:(NSString *)_context {
+
+- (void)setDialContext:(NSString *)_context {
   ASSIGN(self->dialContext, _context);
 }
 - (NSString *)dialContext {
@@ -154,7 +158,7 @@ return _number;
     NSLog(@"%s: couldn't login to the asterisk '%@': %@",
           __PRETTY_FUNCTION__, _device, [asterisk lastException]);
     [asterisk bye];
-    RELEASE(asterisk);
+    [asterisk release]; asterisk = nil;
     ok = NO;
     return NO;
   }
@@ -173,7 +177,7 @@ return _number;
   /* tear down */
   
   [asterisk bye];
-  RELEASE(asterisk);
+  [asterisk release]; asterisk = nil;
   
   return ok;
 }

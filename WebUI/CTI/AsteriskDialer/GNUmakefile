@@ -1,6 +1,6 @@
-# $Id: GNUmakefile,v 1.1.1.1 2002/11/14 10:50:58 jan Exp $
+# GNUstep makefile
 
-include $(GNUSTEP_MAKEFILES)/common.make
+include ../common.make
 
 BUNDLE_NAME        = AsteriskDialer
 BUNDLE_EXTENSION   = .cti
