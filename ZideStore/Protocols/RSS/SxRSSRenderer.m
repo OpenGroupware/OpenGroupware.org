@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2008 SKYRIX Software AG
+  Copyright (C) 2008      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -34,15 +35,30 @@
 }
 
 - (NSString *)title {
+#if NeXT_Foundation_LIBRARY || APPLE_FOUNDATION_LIBRARY
+  [self errorWithFormat:@"method must be overridden: %s", __PRETTY_FUNCTION__];
+  return nil;
+#else
   return [self subclassResponsibility:_cmd];
+#endif
 }
 
 - (NSString *)info {
+#if NeXT_Foundation_LIBRARY || APPLE_FOUNDATION_LIBRARY
+  [self errorWithFormat:@"method must be overridden: %s", __PRETTY_FUNCTION__];
+  return nil;
+#else
   return [self subclassResponsibility:_cmd];
+#endif
 }
 
 - (NSString *)viewURI {
+#if NeXT_Foundation_LIBRARY || APPLE_FOUNDATION_LIBRARY
+  [self errorWithFormat:@"method must be overridden: %s", __PRETTY_FUNCTION__];
+  return nil;
+#else
   return [self subclassResponsibility:_cmd];
+#endif
 }
 
 - (NSString *)skyrixLinkForEO:(EOGenericRecord *)_task {
@@ -92,7 +108,12 @@
 }
 
 - (NSString *)rssStringForFolder:(SxFolder *)_folder inContext:(id)_ctx {
+#if NeXT_Foundation_LIBRARY || APPLE_FOUNDATION_LIBRARY
+  [self errorWithFormat:@"method must be overridden: %s", __PRETTY_FUNCTION__];
+  return nil;
+#else
   return [self subclassResponsibility:_cmd];
+#endif
 }
 
 - (WOResponse *)rssResponseForFolder:(SxFolder *)_folder inContext:(id)_ctx {
@@ -102,16 +123,19 @@
   response = [WOResponse responseWithRequest:[(WOContext *)_ctx request]];
   
   if ((data = [self rssStringForFolder:_folder inContext:_ctx]) != nil) {
-    NSData *contentData;
-
-    contentData = [NSData dataWithBytes:[data cString]
-                          length:[data cStringLength]];
+    NSData   *contentData = [data dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *clen = [NSString stringWithFormat:@"%i", [contentData length]];
     
     [response setStatus:200 /* OK */];
+    [response setHeader:clen forKey:@"content-length"];
+    [response setHeader:
+		@"application/rss+xml; disposition-type=text; charset=utf-8"
+	      forKey:@"content-type"];
+    
     [response setContent:contentData];
   }
   else {
-    [self logWithFormat:@"ERROR: got no RSS for folder: %@", _folder];
+    [self errorWithFormat:@"got no RSS for folder: %@", _folder];
     [response setStatus:500 /* server error */];
   }
   

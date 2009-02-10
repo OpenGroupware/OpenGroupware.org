@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2000-2008 SKYRIX Software AG
+  Copyright (C) 2006-2008 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -964,8 +964,8 @@ static NSString *_personName(id self, id _person) {
 
 /* formletter support */
 
-- (NSArray *)formLetterTypes {
-  static NSArray *formLetterTypes = nil;
+- (NSDictionary *)formLetterTypesConfig {
+  static NSDictionary *formLetterTypes = nil; // THREAD
 
   if (formLetterTypes == nil) {
     /* 
@@ -975,11 +975,40 @@ static NSString *_personName(id self, id _person) {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
     formLetterTypes = 
-      [[ud dictionaryForKey:@"OGoSchedulerFormLetterTypes"] allKeys];
+      [[ud dictionaryForKey:@"OGoSchedulerFormLetterTypes"] copy];
+  }
+  return formLetterTypes;
+}
+
+- (NSArray *)formLetterTypes {
+  static NSArray *formLetterTypes = nil;
+
+  if (formLetterTypes == nil) {
+    /* 
+       Note: this cannot be done in +initialize because the default comes from
+             the OGoScheduler bundle
+    */
+    formLetterTypes = [[self formLetterTypesConfig] allKeys];
     formLetterTypes =
       [[formLetterTypes sortedArrayUsingSelector:@selector(compare:)] copy];
   }
   return formLetterTypes;
+}
+
+- (NSDictionary *)currentFormLetterConfig {
+  NSString *ft;
+
+  if (![(ft = [self valueForKey:@"formLetterType"]) isNotNull])
+    return nil;
+  
+  return [[self formLetterTypesConfig] objectForKey:ft];
+}
+
+- (NSString *)formLetterActionName {
+  NSString *fn = [[self currentFormLetterConfig] objectForKey:@"filename"];
+  if (![fn isNotEmpty]) return @"default";
+  
+  return [@"default/" stringByAppendingString:fn];
 }
 
 @end /* LSWAppointmentViewer */

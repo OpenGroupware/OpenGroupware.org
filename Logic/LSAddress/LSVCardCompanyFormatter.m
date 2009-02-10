@@ -531,13 +531,17 @@ static int compareKey(id o1, id o2, void *ctx) {
   if ([(tmp = [_person valueForKey:@"job_title"]) isNotNull])
     [self _appendName:@"TITLE" andValue:tmp toVCard:_vCard];
   
-  // TODO: add support for ZideStore CalURLs? (CALURI:)
-  // TODO: add support for ZideStore FreeBusy URLs?
   // FBURL
-  if ([(tmp = [_person valueForKey:@"freebusyUrl"]) isNotNull]) {
-    //[self logWithFormat:@"GEN FB: %@ (%@)", tmp, [tmp class]];
+  tmp = [_person valueForKey:@"isAccount"];
+  if ([tmp isNotNull] && ([tmp intValue] == 1)) {
+    tmp = [NSString stringWithFormat:@"http://%@/zidestore/so/%@.vfb",
+                                     [[NSHost currentHost] name],
+                                     [_person valueForKey:@"login"]];
     [self _appendName:@"FBURL" andValue:tmp toVCard:_vCard];
-  }
+  } else {
+      if ([(tmp = [_person valueForKey:@"freebusyUrl"]) isNotNull]) 
+        [self _appendName:@"FBURL" andValue:tmp toVCard:_vCard];
+    }
 }
 
 - (void)appendContentForObject:(id)_comp toString:(NSMutableString *)_ms {

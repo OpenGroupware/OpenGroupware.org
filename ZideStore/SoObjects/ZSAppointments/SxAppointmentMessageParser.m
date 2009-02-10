@@ -122,6 +122,7 @@ static SaxObjectDecoder *sax = nil;
                                         forKey:@"trigger"];
   if ((tmp = [_alarm attach]))  [record setObject:[self processAttachment:tmp]
                                         forKey:@"attachment"];
+  if ((tmp = [_alarm lastACK]))  [record setObject:tmp forKey:@"lastACK"];
 
   return record;
 }
@@ -165,7 +166,6 @@ static SaxObjectDecoder *sax = nil;
     tmp = [alarm objectForKey:@"comment"];
     if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
     else [ms appendString:@","];
-
     
     tmp = [trigger objectForKey:@"valueType"];
     if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
@@ -182,6 +182,10 @@ static SaxObjectDecoder *sax = nil;
     tmp = [attach objectForKey:@"value"];
     if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
     else [ms appendString:@","];
+
+    tmp = [alarm objectForKey:@"lastACK"];
+    if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
+    else [ms appendString:@"'',"];
     
     [ms appendString:@"\n"];
   }
@@ -210,6 +214,20 @@ static SaxObjectDecoder *sax = nil;
   if ((tmp = [_event comment]))   [record setObject:tmp forKey:@"comment"];
   if ((tmp = [_event location]))  [record setObject:tmp forKey:@"location"];
 
+
+  // transparency / freebusy type
+  if ((tmp = [_event transparency])) {
+    [record setObject:tmp forKey:@"fbtype"];
+    if ([tmp isEqualToString:@"TRANSPARENT"]) {
+      [record setObject:intObj(1) forKey:@"isConflictDisabled"];
+    } else {
+        [record setObject:intObj(0) forKey:@"isConflictDisabled"];
+      }
+  } else {
+      [record setObject:@"OPAQUE" forKey:@"fbtype"];
+      [record setObject:intObj(0) forKey:@"isConflictDisabled"];
+    }
+
   // do not add lastModified (done by command)
   
   if ((tmp = [_event created])) 
@@ -233,7 +251,7 @@ static SaxObjectDecoder *sax = nil;
     if (tmp != nil) [record setObject:tmp forKey:@"sensitivity"];
   }
   if ((tmp = [_event priority])) 
-    [record setObject:tmp forKey:@"priority"];
+    [record setObject:tmp forKey:@"importance"];
     
   // TODO: flatten organizer
   if ((tmp = [_event organizer])) 
@@ -276,10 +294,10 @@ static SaxObjectDecoder *sax = nil;
                 [tmp objectAtIndex:i]];
       }
       [record setObject:[self alarmsToCSV:alarms] forKey:@"evoReminder"];
-    }
-    else
-      [record setObject:@"" forKey:@"evoReminder"];
-  }
+    } /* else {
+        [record setObject:@"" forKey:@"evoReminder"];
+      } */
+  } else { [record setObject:@"" forKey:@"evoReminder"]; }
 
   // TODO: timestamp
   //if ((timestamp = [_event timestamp])) 
@@ -303,7 +321,7 @@ static SaxObjectDecoder *sax = nil;
       [record setObject:tmp forKey:@"importance"];
     if ((tmp = [_header objectForKey:@"priority"]))
       // TODO: "normal" => number
-      [record setObject:tmp forKey:@"priority"];
+      [record setObject:tmp forKey:@"importance"];
   }
   
   return record;

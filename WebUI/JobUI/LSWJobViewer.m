@@ -71,6 +71,7 @@
 - (void)_getExtendedAttributes;
 - (void)_getJobHistoryActors;
 - (void)_getJobExecutants;
+- (SkyObjectPropertyManager *)propertyManager;
 
 @end /* PrivateMethods */
 
@@ -83,6 +84,7 @@ static BOOL     isLinkEnabled = NO;
 static BOOL     HasRefPersons = NO;
 static BOOL     HasProject    = NO;
 static BOOL     PreferredAccountsEnabled = NO;
+static BOOL     debugOn = NO;
 
 + (void)initialize {
   NSUserDefaults  *ud = [NSUserDefaults standardUserDefaults];
@@ -91,9 +93,15 @@ static BOOL     PreferredAccountsEnabled = NO;
   if (YesNumber == nil) YesNumber = [[NSNumber numberWithBool:YES] retain];
   if (NoNumber  == nil) NoNumber  = [[NSNumber numberWithBool:NO]  retain];
   if (null      == nil) null      = [[NSNull null] retain];
-  
+ 
+  /* turns on/off appearance of links tab (object links) */ 
   isLinkEnabled            = [ud boolForKey:@"OGoTaskLinksEnabled"];
+  /* turns on/off referred person feature,  this on adds a create-task
+     option to the person viewer,  a task refers back to the person
+     via an object property.   Should probably be an InReplyTo link
+     as discussed in Bug#1974 */
   HasRefPersons            = [ud boolForKey:@"JobReferredPersonEnabled"];
+  /* turns on/off option to create preferred executant object links */
   PreferredAccountsEnabled = [ud boolForKey:@"JobPreferredExecutantsEnabled"];
   
   HasProject    = [bm bundleProvidingResource:@"SkyProject4Desktop"
@@ -126,15 +134,15 @@ static BOOL     PreferredAccountsEnabled = NO;
   
   [self->newComment        release];
   [self->selectedAttribute release];
-  [self->status     release];
-  [self->jobId      release];
-  [self->userId     release];
-  [self->tabKey     release];
-  [self->item       release];
-  [self->job        release];
-  [self->jobHistory release];
-  [self->project    release];
-  [self->groups     release];
+  [self->status            release];
+  [self->jobId             release];
+  [self->userId            release];
+  [self->tabKey            release];
+  [self->item              release];
+  [self->job               release];
+  [self->jobHistory        release];
+  [self->project           release];
+  [self->groups            release];
   [super dealloc];
 }
 
@@ -172,7 +180,7 @@ static BOOL     PreferredAccountsEnabled = NO;
     NS_HANDLER
       didRollback = [self rollback];
     NS_ENDHANDLER;
-    
+
     if (didRollback)
       [self setErrorString:@"Transaction was rolled back (an error occured)."];
     else {
@@ -227,6 +235,15 @@ static BOOL     PreferredAccountsEnabled = NO;
 
 - (NSUserDefaults *)defaults {
   return [[self session] userDefaults];
+}
+
+- (NSArray *)privateExtendedJobAttributeInfos {
+  return [[self defaults]
+                arrayForKey:@"SkyPrivateExtendedJobAttributes"];
+}
+- (NSArray *)publicExtendedJobAttributeInfos {
+  return [[self defaults]
+                arrayForKey:@"SkyPublicExtendedJobAttributes"];
 }
 
 - (NSString*)priority {
@@ -358,7 +375,8 @@ static BOOL     PreferredAccountsEnabled = NO;
 
   p = [self runCommand:@"project::get",
             @"projectId", [self->job valueForKey:@"projectId"], nil];
-
+ 
+  /* if no project was found a NULL is returned */
   return ([p count] > 0) ? [p lastObject] : nil;
 }
 
@@ -369,7 +387,10 @@ static BOOL     PreferredAccountsEnabled = NO;
   configuration:(NSDictionary *)_cmdCfg
 {
   id obj;
-  
+ 
+  if (debugOn)
+    [self debugWithFormat:@"preparing for activiation command %@", _command]; 
+
   if (![super prepareForActivationCommand:_command type:_type
 	      configuration:_cmdCfg])
     return NO;
@@ -385,7 +406,6 @@ static BOOL     PreferredAccountsEnabled = NO;
       gid = obj;
       obj = [[self run:@"job::get",
                      @"jobId", [gid keyValues][0], nil] lastObject];
-      
       [self setObject:obj];
   }
 
@@ -741,15 +761,72 @@ static BOOL     PreferredAccountsEnabled = NO;
   OGoSession   *sn;
   id           pm;
   NSDictionary *dict;
-  
+ 
+  if (debugOn)
+    [self logWithFormat:@"call to _getExtendedAttributes"];
+ 
   sn = (id)[self existingSession];
-  pm = [[sn commandContext] propertyManager];
+  pm = [self propertyManager];
 
+  /* get all properties of the job,  we do not filter to just the ext-attr
+     namespace because of "referred person" feature */
   dict = [pm propertiesForGlobalID:[self->job globalID]];
 
+  /* properties dictionary is placed into the job only for the "referred
+     person".  The properties key has to exist for the _jobProperties
+     method used by hasReferredPerson, referredPersonLink, and
+     referredPersonLabel.  When "referred person" feature is replaced
+     by InReplyTo object link support (Bug#1974) then this and the
+     related methods can be removed */
   if (dict != nil)
     [self->job takeValue:dict forKey:@"properties"];
-}
+
+  if (debugOn)
+    [self logWithFormat:@"propety manager loaded %d properties for %@",
+       [dict count], [self->job globalID]];
+
+  /* TODO: does this check the namespace? */
+  {
+    NSArray        *privateExtendedAttributes;
+    NSArray        *publicExtendedAttributes;
+    NSArray        *attrKeys;
+    NSEnumerator   *enumerator1 = nil;
+    NSEnumerator   *enumerator2 = nil;
+    id 		  obj, attr;
+
+    privateExtendedAttributes = [self privateExtendedJobAttributeInfos];
+    publicExtendedAttributes = [self publicExtendedJobAttributeInfos];
+
+    attrKeys = [dict allKeys];
+    enumerator1 = [attrKeys objectEnumerator];
+    while ((obj = [enumerator1 nextObject])) {
+      enumerator2 = [publicExtendedAttributes objectEnumerator];
+      while ((attr = [enumerator2 nextObject])) {
+        if ([obj hasSuffix:[@"}"stringByAppendingString:[attr valueForKey:@"key"]]]) {
+          if (debugOn) 
+            [self logWithFormat:@"push public %@ property into job", 
+                                [attr valueForKey:@"key"]];
+          [self->job takeValue:[dict objectForKey:obj] forKey:[attr valueForKey:@"key"]];
+          continue;
+        }
+      } /* end while-public-ext-attrs */
+    } /* end while-properties */
+
+    enumerator1 = [attrKeys objectEnumerator];
+    while ((obj = [enumerator1 nextObject])) {
+      enumerator2 = [privateExtendedAttributes objectEnumerator];
+      while ((attr = [enumerator2 nextObject])) {
+        if ([obj hasSuffix:[@"}"stringByAppendingString:[attr valueForKey:@"key"]]]) {
+          if (debugOn)
+            [self logWithFormat:@"push private %@ property into job", 
+                                [attr valueForKey:@"key"]];
+          [self->job takeValue:[dict objectForKey:obj] forKey:[attr valueForKey:@"key"]];
+          continue;
+        }
+      } /* end while-private-ext-attrs */
+    } /* end while-properties */
+  }
+} /* end  _getExtendedAttributes method */
 
 - (void)_getJobHistoryActors {
   OGoSession   *sn;
@@ -784,6 +861,10 @@ static BOOL     PreferredAccountsEnabled = NO;
     if ([j valueForKey:@"executant"] == nil)
       [j run:@"job::setexecutant", @"relationKey", @"executant", nil];
   }
+}
+
+- (SkyObjectPropertyManager *)propertyManager {
+  return [[(OGoSession *)[self session] commandContext] propertyManager];
 }
 
 /* timer functionality */

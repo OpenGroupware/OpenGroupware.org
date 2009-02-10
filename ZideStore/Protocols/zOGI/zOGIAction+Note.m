@@ -44,17 +44,34 @@
   return noteList;
 } /* end _getNotesForKey */
 
+-(id)_getNoteById:(id)_objectId {
+  id note;
+
+  note = [[self getCTX] runCommand:@"note::get", 
+                        @"documentId", _objectId, 
+                        nil];
+  [[self getCTX] runCommand:@"note::get-attachment-name", 
+                 @"notes", note, 
+                 nil];
+  if ([note isKindOfClass:[NSArray class]])
+    note = [note lastObject];
+  if ([note isNotNull])
+    return [self _renderNote:note];
+  else
+    return [self _makeUnknownObject:_objectId];
+} /* end _getNoteById */
+
 -(id)_renderNote:(NSDictionary *)_note {
   return [NSDictionary dictionaryWithObjectsAndKeys:
     [_note valueForKey:@"documentId"], @"objectId",
-    @"Note", @"entityName",
+    @"note", @"entityName",
     [_note valueForKey:@"title"], @"title",
     [_note valueForKey:@"firstOwnerId"], @"creatorObjectId",
     [_note valueForKey:@"currentOwnerId"], @"ownerObjectId",
     [_note valueForKey:@"creationDate"], @"createdTime",
-    [self NIL:[_note valueForKey:@"projectId"]], @"projectObjectId",
-    [self NIL:[_note valueForKey:@"dateId"]], @"appointmentObjectId",
-    [NSString stringWithContentsOfFile:[_note valueForKey:@"attachmentName"]],
+    [self ZERO:[_note valueForKey:@"projectId"]], @"projectObjectId",
+    [self ZERO:[_note valueForKey:@"dateId"]], @"appointmentObjectId",
+    [self NIL:[NSString stringWithContentsOfFile:[_note valueForKey:@"attachmentName"]]],
       @"content",
     nil];
 } /* end _renderNote */
@@ -145,7 +162,7 @@
     objectId = [note objectForKey:@"documentId"];
     if ([noteList containsObject:objectId]) {
      } else {
-         [self _deleteNote:objectId];
+         [self _deleteNote:objectId withCommit:NO];
         }
    } // End while ((note = [[self _getNotesForKey:objectId] nextObject])
   return nil;
@@ -160,7 +177,7 @@
   objectNotes = [self _getUnrenderedNotesForKey:_objectId];
   enumerator = [objectNotes objectEnumerator];
   while ((note = [enumerator nextObject]) != nil) {
-    [self _deleteNote:_objectId];
+    [self _deleteNote:_objectId withCommit:NO];
    } // End while ((note = [enumerator nextObject]) != nil)
   return nil;
 } /* end _deleteAllNotesFromObject */
@@ -170,23 +187,49 @@
 -(id)_insertNote:(id)_objectId
        withTitle:(id)_title
      withContent:(id)_content {
-  id                    note, entityName, objectKey;
+  id                                             entityName;
+
+  entityName = [self _getEntityNameForPKey:_objectId];
+  if ([entityName isEqualToString:@"Date"]) {
+    return [self _insertNote:_content 
+                   withTitle:_title
+                  forProject:nil
+              forAppointment: _objectId
+                  forCompany:nil
+                  withCommit:0];
+  } else if ([entityName isEqualToString:@"Project"]) {
+      return [self _insertNote:_content  
+                     withTitle:_title
+                    forProject:_objectId
+                forAppointment:nil
+                    forCompany:nil
+                    withCommit:0];
+  }
+  return [NSException exceptionWithHTTPStatus:500
+            reason:@"Cannot attach note to this object type"];
+} /* end _insertNote */
+
+-(id)_insertNote:(id)_content
+       withTitle:(id)_title
+      forProject:(id)_projectId 
+  forAppointment:(id)_dateId 
+      forCompany:(id)_companyId 
+      withCommit:(BOOL)_doCommit {
+  id                    note, dateId, projectId, companyId;
   NSNumber             *accountId;
 
   accountId =[self _getCompanyId];
-  entityName = [self _getEntityNameForPKey:_objectId];
-  if ([entityName isEqualToString:@"Date"]) {
-    objectKey = [NSString stringWithString:@"dateId"];
-  } else if ([entityName isEqualToString:@"Project"]) {
-      objectKey = [NSString stringWithString:@"projectId"];
-    } else return [NSException exceptionWithHTTPStatus:500
-                      reason:@"Cannot attach note to this object type"];
+  dateId = (_dateId != nil) ? _dateId : (id)[EONull null];
+  projectId = (_projectId != nil) ? _projectId : (id)[EONull null];
+  companyId = (_companyId != nil) ? _companyId : (id)[EONull null];
   if ([self isDebug])
-    [self logWithFormat:@"Inserting note on  %@ %@", objectKey, _objectId];
+    [self logWithFormat:@"Inserting note on  %@,%@,%@", dateId, projectId, companyId];
   note = [NSDictionary dictionaryWithObjectsAndKeys:
-            _objectId, objectKey, 
+            dateId, @"dateId",
+            projectId, @"projectId",
             accountId, @"firstOwnerId",
-            accountId, @"currentOwnerId", _title, @"title",
+            accountId, @"currentOwnerId", 
+            _title, @"title",
             _content, @"fileContent",
             [NSNumber numberWithBool:NO], @"isFolder",
             [NSNumber numberWithInt:[_content length]], @"fileSize",
@@ -195,11 +238,16 @@
   if (note == nil)
       return [NSException exceptionWithHTTPStatus:500
                           reason:@"Note creation failed"];
+  if (_doCommit)
+    [[self getCTX] commit];
+  [[self getCTX] runCommand:@"note::get-attachment-name",
+                            @"note", note,
+                            nil];
   return [self _renderNote:note];
 } /* end _insertNote */
 
 /* Delete the specified note */
-- (id)_deleteNote:(id)_noteId {
+- (id)_deleteNote:(id)_noteId withCommit:(BOOL)_doCommit {
   id note, result;
 
   if ([_noteId isKindOfClass:[NSString class]])
@@ -214,6 +262,9 @@
                    @"documentId", _noteId,
                    @"reallyDelete", [NSNumber numberWithBool:YES],
                  nil];
+
+  if (_doCommit)
+    [[self getCTX] commit];
   return [NSNumber numberWithBool:YES];
 } /* end _deleteNote */
 
@@ -222,21 +273,28 @@
 -(id)_updateNote:(id)_noteId
        withTitle:(id)_title
      withContent:(id)_content {
-  id note;
+  id                                             note;
+  NSString                                      *content;
 
   note = [[[self getCTX] runCommand:@"note::get",
              @"documentId", _noteId,
              nil] lastObject];
-  [note takeValue:[NSNumber numberWithInt:[_content length]]
-           forKey:@"fileSize"];
-  [note takeValue:_content forKey:@"fileContent"];
-  [note takeValue:_title forKey:@"title"];
-  [[self getCTX] runCommand:@"note::set",
-     @"object", note,
-     @"fileContent", _content, nil];
-  note = [[[self getCTX] runCommand:@"note::get",
-             @"documentId", _noteId,
-             nil] lastObject];
+  [[self getCTX] runCommand:@"note::get-attachment-name",
+                            @"note", note,
+                            nil];
+  content = [NSString stringWithContentsOfFile:[note valueForKey:@"attachmentName"]];
+  if (![content isEqualTo:_content]) {
+    [note takeValue:[NSNumber numberWithInt:[_content length]]
+             forKey:@"fileSize"];
+    [note takeValue:_content forKey:@"fileContent"];
+    [note takeValue:_title forKey:@"title"];
+    [[self getCTX] runCommand:@"note::set",
+       @"object", note,
+       @"fileContent", _content, nil];
+    note = [[[self getCTX] runCommand:@"note::get",
+               @"documentId", _noteId,
+               nil] lastObject];
+  }
   return [self _renderNote:note];
 } /* end _updateNote */
 

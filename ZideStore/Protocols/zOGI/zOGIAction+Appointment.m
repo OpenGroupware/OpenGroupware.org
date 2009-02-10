@@ -79,6 +79,8 @@
          @"startOffset",
       [NSNumber numberWithInt:[timeZone secondsFromGMTForDate:endDate]], 
          @"endOffset",
+      [self ZERO:[_eoAppointment valueForKey:@"travelDurationBefore"]], @"priorDuration",
+      [self ZERO:[_eoAppointment valueForKey:@"travelDurationAfter"]], @"postDuration",
       nil];
     /* Add object details */
     [appointment setObject:_eoAppointment forKey:@"*eoObject"];
@@ -100,6 +102,15 @@
          [self NIL:[_eoAppointment valueForKey:@"accessTeamId"]], 
             @"readAccessTeamObjectId",
          endDate, @"end", startDate, @"start",
+         [timeZone abbreviation], @"offsetTimeZone",
+         [NSNumber numberWithInt:[timeZone secondsFromGMTForDate:startDate]], 
+           @"startOffset",
+         [NSNumber numberWithInt:[timeZone secondsFromGMTForDate:endDate]], 
+           @"endOffset",
+         [self ZERO:[_eoAppointment valueForKey:@"travelDurationBefore"]], 
+           @"priorDuration",
+         [self ZERO:[_eoAppointment valueForKey:@"travelDurationAfter"]], 
+           @"postDuration",
          nil];
        if([_detail intValue] & zOGI_INCLUDE_PARTICIPANTS)
          [self _addParticipantsToDate:appointment];
@@ -716,6 +727,9 @@
   } else {
       timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
     }
+  if ([self isDebug]) {
+    [self logWithFormat:@"translating app with timezone %@", timeZone];
+  }
 
   appointment = [NSMutableDictionary dictionaryWithCapacity:32];
   keys = [_appointment allKeys];
@@ -742,7 +756,7 @@
       /* readAccessTeamObjectId -> accessTeamId 
          A blank string or a value of zero nulls the attribute. */
       tmp = nil;
-      if  ([value isKindOfClass:[NSString class]]) {
+      if ([value isKindOfClass:[NSString class]]) {
         if ([value length] == 0)
           tmp = intObj(0);
         else tmp = intObj([value intValue]);
@@ -769,6 +783,10 @@
       [appointment setObject:value forKey:@"type"];
     } else if ([key isEqualToString:@"parentObjectId"]) {
       [appointment setObject:[self NIL:value] forKey:@"parentDateId"];
+    } else if ([key isEqualToString:@"priorDuration"]) {
+      [appointment setObject:[self ZERO:value] forKey:@"travelDurationBefore"];
+    } else if ([key isEqualToString:@"postDuration"]) {
+      [appointment setObject:[self ZERO:value] forKey:@"travelDurationAfter"];
     } else if ([key isEqualToString:@"objectId"]) {
       // Only translate this attribute if it has a non-zero value
       if ([objectId isEqualToString:@"0"]) {

@@ -35,7 +35,17 @@ LSTasks_OBJC_FILES = \
 	LSNewJobHistoryCommand.m		\
 	LSRemoveWasteJobsCommand.m		\
 	LSSetJobCommand.m			\
+	OGoJobAccessHandler.m			\
+	LSQualifierSearchTaskCommand.m		\
+	LSGetDelegatedActionsAsRSSCommand.m	\
+	LSGetToDoActionsAsRSSCommand.m		\
+	LSGetProjectTaskActionsAsRSSCommand.m
+
+LSTasks_BUNDLE_LIBS += \
+	-lLSSearch
 
 LSTasks_RESOURCE_FILES += Defaults.plist Version
+
+ADDITIONAL_LIB_DIRS += -L../LSSearch/$(GNUSTEP_OBJ_DIR)
 
 include ../commandbundle.make

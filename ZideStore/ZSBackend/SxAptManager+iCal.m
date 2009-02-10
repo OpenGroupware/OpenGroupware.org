@@ -187,7 +187,7 @@ static BOOL catchExceptions = YES;
   result = [NSMutableArray arrayWithCapacity:count];
   for (i = 0; i < count; i++) {
     NSDictionary *values;
-    id apt, pkey;
+    id apt, pkey, version;
     id icaldata;
     NSString *keys[4];
     id       vals[4];
@@ -198,6 +198,10 @@ static BOOL catchExceptions = YES;
     /* first get key */
     
     pkey = [apt valueForKey:@"dateId"];
+
+    version = [apt valueForKey:@"objectVersion"];
+    if (version == nil)
+      version = intObj(0);
     
     /* render iCalendar MIME message */
     // fetch owner of apt
@@ -209,6 +213,7 @@ static BOOL catchExceptions = YES;
     p = 0;
     keys[p] = @"pkey";     vals[p] = pkey;     p++;
     keys[p] = @"iCalData"; vals[p] = icaldata; p++;
+    keys[p] = @"version";  vals[p] = version;  p++;
     // TODO: last-modified
     
     values = [[NSDictionary alloc] initWithObjects:vals forKeys:keys count:p];

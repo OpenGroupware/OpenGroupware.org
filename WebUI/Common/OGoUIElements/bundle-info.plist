@@ -39,6 +39,7 @@
         { name = OGoEmbedExternalLink;         },
         { name = OGoFieldSet;                  },
         { name = OGoField;                     },
+        { name = OGoAddressMapLinks;           },
     );
     WODynamicElements = (
         { name = SkySimpleTabItem;             },
@@ -60,6 +61,7 @@
         { name = OGoEmbedExternalLink;         },
         { name = OGoFieldSet;                  },
         { name = OGoField;                     },
+        { name = OGoAddressMapLinks;           },
     );
     WOComponents = (
         { name = SkyFileManagerTreeView;       },

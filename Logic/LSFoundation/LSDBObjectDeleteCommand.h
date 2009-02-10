@@ -30,10 +30,15 @@
 {
 @protected
   BOOL reallyDelete;
+  BOOL tombstoneOn;
+  BOOL disableLogDelete;
 }
 
 - (void)setReallyDelete:(BOOL)_reallyDelete;
 - (BOOL)reallyDelete;
+
+- (BOOL)isDeleteLogsEnabled;
+- (BOOL)isTombstoneEnabled;
 
 - (void)_prepareForExecutionInContext:(id)_context;
 - (void)_executeInContext:(id)_context;

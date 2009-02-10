@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006 Helge Hess
+  Copyright (C) 2006-2008 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -44,6 +44,7 @@
 #include <NGObjWeb/WORequest.h>
 #include <NGObjWeb/WOResourceManager.h>
 #include <LSFoundation/LSFoundation.h>
+#include <NGExtensions/NSString+Ext.h>
 #include "common.h"
 
 @implementation OGoAptFormLetter
@@ -100,6 +101,13 @@ static NSArray *aptKeys    = nil;
 }
 - (NSString *)quoteFields {
   return [[self formLetterDefinition] valueForKey:@"quoteFields"];
+}
+- (NSString *)quoteQuotes {
+  return [[self formLetterDefinition] valueForKey:@"quoteQuotes"];
+}
+- (BOOL)doubleQuoteQuote {
+  return [[[self formLetterDefinition] valueForKey:@"doubleQuoteQuote"]
+	   boolValue];
 }
 
 - (id)preamble {
@@ -199,12 +207,33 @@ static NSArray *aptKeys    = nil;
   }
 }
 
+- (void)applyBindingsOfTelephone:(id)_tel
+  onDictionary:(NSMutableDictionary *)_md
+{
+  static NSString *keys[] = {
+    @"number", @"info", @"url", @"dbStatus", nil
+  };
+  NSString *p;
+  unsigned i;
+  
+  p = [[_tel valueForKey:@"type"] stringByAppendingString:@"_"];
+  for (i = 0; keys[i] != nil; i++) {
+    NSString *pk;
+    
+    pk = [p stringByAppendingString:keys[i]];
+    [_md setObject:[self stringValueForObject:[_tel valueForKey:keys[i]] 
+			 ofKey:pk]
+	 forKey:pk];
+  }
+}
+
 - (WOResourceManager *)resourceManager {
   return [[[self context] application] resourceManager];
 }
 
 - (void)applyBindingsForCompany:(NSDictionary *)_company
   addresses:(NSArray *)_addresses
+  telephones:(NSArray *)_tels
   ofAppointment:(id)_aptEO
   withProperties:(NSDictionary *)_aptProps
   onDictionary:(NSMutableDictionary *)_md
@@ -213,7 +242,7 @@ static NSArray *aptKeys    = nil;
   NSDictionary *d;
   NSEnumerator *e;
   NSString     *key;
-  id address;
+  id address, tel;
   
   rm = [self resourceManager];
   
@@ -266,6 +295,12 @@ static NSArray *aptKeys    = nil;
   while ((address = [e nextObject]) != nil)
     [self applyBindingsOfAddress:address onDictionary:_md];
   
+  /* telephones */
+
+  e = [_tels objectEnumerator];
+  while ((tel = [e nextObject]) != nil)
+    [self applyBindingsOfTelephone:tel onDictionary:_md];
+  
   /* appointment properties */
   
   e = [_aptProps keyEnumerator];
@@ -292,8 +327,9 @@ static NSArray *aptKeys    = nil;
     
     kw = [key componentsSeparatedByString:@", "];
     for (i = 0, count = [kw count]; i < count; i++) {
-      [_md setObject:[kw objectAtIndex:i] 
-	   forKey:[NSString stringWithFormat:@"keyword%i", i + 1]];
+      NSString *s = [[NSString alloc] initWithFormat:@"keyword%i", i + 1];
+      [_md setObject:[kw objectAtIndex:i] forKey:s];
+      [s release]; s = nil;
     }
   }
 }
@@ -302,7 +338,8 @@ static NSArray *aptKeys    = nil;
 /* content generation */
 
 - (NSString *)formLetterContentType {
-  return @"text/plain";
+  NSString *s = [[self formLetterDefinition] objectForKey:@"contenttype"];
+  return [s isNotEmpty] ? s : @"text/plain";
 }
 
 - (void)appendLine:(id)_line withBindings:(NSDictionary *)_bindings
@@ -313,15 +350,23 @@ static NSArray *aptKeys    = nil;
 
   if (![_line isNotNull])
     return;
-  
+
   if ([_line isKindOfClass:[NSArray class]]) {
-    /* special support for CSV */
+    /* Line is an array, special support for CSV. Each line item is treated
+     * as a column.
+     */
     unsigned i, count;
     NSString *fs, *ls, *quote;
+    NSString *quoteQuote = nil;
     
-    fs    = [self fieldSeparator];
-    ls    = [self lineSeparator];
-    quote = [self quoteFields];
+    fs    = [self fieldSeparator]; // eg '\t'
+    ls    = [self lineSeparator];  // eg '\n'
+    quote = [self quoteFields];    // eg '"'
+    if ([self doubleQuoteQuote])
+      quoteQuote = quote;
+    if (quoteQuote == nil)
+      quoteQuote = @"\\";
+    
 
     if (debugOn) {
       [self debugWithFormat:@"  field separator: %@", 
@@ -330,6 +375,7 @@ static NSArray *aptKeys    = nil;
 	      [ls stringByApplyingCEscaping]];
     }
     
+    /* for each column */
     for (i = 0, count = [_line count]; i < count; i++) {
       NSString *pat;
       
@@ -342,34 +388,54 @@ static NSArray *aptKeys    = nil;
 	pat = [pat stringByReplacingVariablesWithBindings:_bindings
 		   stringForUnknownBindings:@""];
       }
-      
+
+      /* add opening quote char */
+
       if ([quote isNotEmpty]) { /* open quote */
+	/* check whether the column value contains the quote */
+      
 	if ([pat rangeOfString:quote].length > 0) {
 	  /* we quote the quote with a backslash "a\"bc" */
 	  // TODO: we might want to have this configurable?
 	  pat = [pat stringByReplacingString:quote
-		     withString:[@"\\" stringByAppendingString:quote]];
+		     withString:[quoteQuote stringByAppendingString:quote]];
 	}
 	
 	[_r appendContentString:quote];
       }
+
+      /* add column value */
       
       if (pat != nil) {
 	/* Note: if the content contains the field separator, use quotes! */
 	// TODO: we might want to add some escaping in addition?
-	if (![quote isNotEmpty]) {
-	  if ([pat rangeOfString:fs].length > 0) {
+	NSString *autoQuotes = nil;
+	
+	if (![quote isNotEmpty]) { /* quote is empty */
+	  if ([fs length] > 0 && [pat rangeOfString:fs].length > 0) {
 	    [self warnWithFormat:
 		    @"found field separator in content, use quotes!"];
+	    autoQuotes = @"\"";
 	  }
-	  if ([pat rangeOfString:ls].length > 0) {
+	  if ([ls length] > 0 && [pat rangeOfString:ls].length > 0) {
 	    [self warnWithFormat:
 		    @"found line separator in content, use quotes!"];
+	    autoQuotes = @"\"";
+	  }
+	  
+	  if ([autoQuotes isNotEmpty] &&
+	      [pat rangeOfString:autoQuotes].length > 0) {
+	    pat = [pat stringByReplacingString:quote
+		       withString:[quoteQuote stringByAppendingString:quote]];
 	  }
 	}
 	
+	if ([autoQuotes isNotEmpty]) [_r appendContentString:autoQuotes];
 	[_r appendContentString:pat];
+	if ([autoQuotes isNotEmpty]) [_r appendContentString:autoQuotes];
       }
+      
+      /* add closing quote char */
       
       if ([quote isNotEmpty]) /* close quote */
 	[_r appendContentString:quote];
@@ -427,12 +493,17 @@ static int sortContact(id eo1, id eo2, void *ctx) {
   for (i = 0, count = [_contacts count]; i < count; i++) {
     NSDictionary *companyAttrs;
     NSArray      *addresses;
-
+    NSArray      *tels;
+    
     companyAttrs = [_contacts objectAtIndex:i];
     
     /* fetch addresses of company */
     
     addresses = [self->cmdctx runCommand:@"address::get",
+		     @"companyId",  [companyAttrs valueForKey:@"companyId"],
+		     @"returnType", intObj(LSDBReturnType_ManyObjects),
+		     nil];
+    tels      = [self->cmdctx runCommand:@"telephone::get",
 		     @"companyId",  [companyAttrs valueForKey:@"companyId"],
 		     @"returnType", intObj(LSDBReturnType_ManyObjects),
 		     nil];
@@ -456,7 +527,8 @@ static int sortContact(id eo1, id eo2, void *ctx) {
     
     [bindings removeAllObjects];
     
-    [self applyBindingsForCompany:companyAttrs addresses:addresses
+    [self applyBindingsForCompany:companyAttrs
+	  addresses:addresses telephones:tels
 	  ofAppointment:_aptEO withProperties:_aptProps
 	  onDictionary:bindings];
     
@@ -527,6 +599,10 @@ static int sortContact(id eo1, id eo2, void *ctx) {
   
   r = [[self context] response];
   [r setHeader:[self formLetterContentType] forKey:@"content-type"];
+  
+  s = [[self formLetterDefinition] objectForKey:@"contentdisposition"];
+  if ([s isNotEmpty])
+    [r setHeader:s forKey:@"content-disposition"];
   
   [self appendLine:[self preamble] withBindings:nil toResponse:r];
   

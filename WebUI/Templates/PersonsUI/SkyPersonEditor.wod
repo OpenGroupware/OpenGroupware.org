@@ -28,23 +28,7 @@ PersonEditor: LSWObjectEditor {
     key         = "salutation";
     label       = "salutation";
     isLocalized = YES;
-    valueKeys   = (
-                    "01_dear_ms", 
-                    "02_dear_mrs",
-                    "03_dear_mr", 
-                    "04_dear_prof",
-                    "05_dear_dr", 
-                    "06_geehrt_herr",
-                    "07_geehrt_frau", 
-                    "08_geehrt_herr_prof",
-                    "09_geehrt_herr_dr", 
-                    "10_geehrt_frau_prof",
-                    "11_geehrt_frau_dr", 
-                    "12_monsieur",
-                    "13_madame", 
-                    "14_signora", 
-                    "15_signore"
-    );
+    valueKeys   = session.userDefaults.person_editor_salutation_popup;
   },
   { 
     key         = "sex";

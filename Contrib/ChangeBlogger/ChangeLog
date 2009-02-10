@@ -1,3 +1,11 @@
+2008-09-03  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* find-changelogs.sh: fixed and improved
+
+	* clhtml_month.py: minor improvements
+
+	* clrdf.py: minor improvements
+
 2004-09-09  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* changelogparser.py: bugfix

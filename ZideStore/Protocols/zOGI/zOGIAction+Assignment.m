@@ -189,8 +189,13 @@
             isFound = 1;
         } /* End of clientRecord loop */
         /* A match was NOT found so we need to delete a record */
-        if (isFound == 0)
-          [deletes addObject:serverRecord];
+        if (isFound == 0) {
+          NSString *entityName;
+
+          entityName = [self _getEntityNameForPKey:[serverRecord objectForKey:@"companyId"]];
+          if (![entityName isEqualTo:@"Team"])
+            [deletes addObject:serverRecord];
+        }
       } /* End of scan-for-deletes (serverRecord) loop */
 
       /* Scan for records on the client that are not on the server */

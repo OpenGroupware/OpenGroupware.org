@@ -100,6 +100,8 @@
 -(id)_getLoginAccount:(NSNumber *)_detail {
   NSMutableDictionary     *account;
   NSMutableDictionary     *defaults;
+  NSUserDefaults          *ud;
+  id                       tmp;
 
   if ([_detail intValue] & zOGI_INCLUDE_CONTACTS)
   {
@@ -115,6 +117,8 @@
      [account setObject:[self _getDefaults] forKey:@"_DEFAULTS"];
      This fails because SOPE cannot encode the LSUserDefaults
      class;  perhaps we can add an encoding category? */
+
+  ud = [self _getDefaults];
  
   defaults = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                 [self _getCompanyId], @"accountObjectId",
@@ -142,10 +146,18 @@
   [defaults setObject:[self _getSchedularPanel]
                forKey:@"calendarPanelObjectIds"];
 
-  if ([[self _getDefault:@"scheduler_ccForNotificationMails"] isNotNull])
-    [defaults setObject:[self _getDefault:@"scheduler_ccForNotificationMails"]
-                 forKey:@"notificationCC"];
+  if ((tmp = [self _getDefault:@"scheduler_ccForNotificationMails"]) != nil)
+    [defaults setObject:tmp forKey:@"notificationCC"];
   else [defaults setObject:@"" forKey:@"notificationCC"];
+
+  /* default read access */
+  tmp = intObj([ud integerForKey:@"scheduler_default_readaccessteam"]);
+  [defaults setObject:intObj([tmp intValue]) 
+               forKey:@"appointmentReadAccessTeam"];
+
+  /* default write access */
+  [defaults setObject:[self _getDefaultWriteAccessFromDefaults:ud]
+               forKey:@"appointmentWriteAccess"];
 
   [account setObject:defaults forKey:@"_DEFAULTS"];
   return account;

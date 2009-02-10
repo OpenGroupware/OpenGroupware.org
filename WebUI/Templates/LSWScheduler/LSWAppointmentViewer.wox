@@ -32,7 +32,8 @@
       <attribute label="formletter" enabled="formLetterTypes.isNotEmpty">
         <var:foreach list="formLetterTypes" item="formLetterType"
                      const:separator=", "
-          ><html:a actionClass="OGoAptFormLetter" directActionName="default"
+          ><html:a actionClass="OGoAptFormLetter"
+             var:directActionName="formLetterActionName"
              var:_oid="appointment.dateId"
              var:_type="formLetterType"
              var:_v="appointment.objectVersion"

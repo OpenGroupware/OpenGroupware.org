@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2007 SKYRIX Software AG
-  Copyright (C) 2007      Helge Hess
+  Copyright (C) 2000-2008 SKYRIX Software AG
+  Copyright (C) 2007-2008 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -322,7 +322,7 @@ static NSNumber *noNum = nil;
   if ((pkeys = [self->defaults arrayForKey:_key]) == nil)
     return nil;
   
-  return [self _getGIDSforIds:pkeys entityName:@"Person"];
+  return [self _getGIDSforIds:pkeys entityName:_e /* Person or Team */];
 }
 
 /* default setup */

@@ -1,3 +1,8 @@
+2008-03-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWObjectEditor.m: treat NSString 'valueKeys' as KVC pathes, fixes
+	  an issue with the salutation popup (v5.3.131)
+
 2007-05-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyObjectField.m: removed a superflous log (v5.3.130)

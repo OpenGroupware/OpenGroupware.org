@@ -1,3 +1,13 @@
+2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyPersonViewer.m: code cleanups (v5.3.78)
+	
+2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* Defaults.plist: added 'person_editor_salutation_popup' array
+	  default (makes the salutation field in the OGoPersonQCreatePanel a
+	  popup) (v5.3.77)
+
 2007-11-14  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
 
 	* LSWPersonAdvancedSearch.m: Preserve the match-one / match-all in

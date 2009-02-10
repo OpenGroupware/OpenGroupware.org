@@ -32,6 +32,7 @@
 @implementation zOGIAction
 
 static int zOGIDebugOn = -1;
+static int zOGIProfileOn = -1;
 
 -(id)init
 {
@@ -61,6 +62,14 @@ static int zOGIDebugOn = -1;
     zOGIDebugOn = [[NSUserDefaults standardUserDefaults]
                       boolForKey:@"zOGIDebugEnabled"];
   return zOGIDebugOn;
+}
+
+- (BOOL)isProfile
+{
+  if (zOGIProfileOn == -1)
+    zOGIProfileOn = [[NSUserDefaults standardUserDefaults]
+                      boolForKey:@"zOGIProfileEnabled"];
+  return zOGIProfileOn;
 }
 
 - (void)setArg1:(id)_arg 

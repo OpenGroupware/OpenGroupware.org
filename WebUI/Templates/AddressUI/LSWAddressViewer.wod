@@ -31,3 +31,6 @@ Copy: JSClipboard {
   value    = addressString;
   toolTip  = labels.copyIntoClipboard;
 }
+AddressMapLinks: OGoAddressMapLinks {
+  address      = address;
+}

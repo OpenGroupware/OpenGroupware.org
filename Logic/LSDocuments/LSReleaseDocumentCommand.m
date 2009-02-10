@@ -226,7 +226,16 @@
       LSRunCommandV(_context, @"doc", @"get-attachment-name",
                     @"object", vers, nil);
       dest = [vers valueForKey:@"attachmentName"];
+      
+#if LIB_FOUNDATION_LIBRARY
+#if OLD_LIBFD // before 1.1.7, TBD: how to check???
       isOk = [manager createSymbolicLinkAtPath:source pathContent:dest];
+#else
+      isOk = [manager createSymbolicLinkAtPath:dest pathContent:source];
+#endif
+#else
+      isOk = [manager createSymbolicLinkAtPath:dest pathContent:source];
+#endif
     }
     else {
       [editing takeValue:[EONull null] forKey:@"attachmentName"];
