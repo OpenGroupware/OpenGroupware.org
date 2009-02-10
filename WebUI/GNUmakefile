@@ -19,6 +19,8 @@ SUBPROJECTS += \
 	SoOGo			\
 	Resources		\
 	Templates		\
+	CTI/AsteriskDialer	\
+	CTI/STLIDialer		\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make

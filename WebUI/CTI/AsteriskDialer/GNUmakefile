@@ -4,7 +4,7 @@ include ../common.make
 
 BUNDLE_NAME        = AsteriskDialer
 BUNDLE_EXTENSION   = .cti
-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/Bundles
+BUNDLE_INSTALL_DIR = $(GNUSTEP_BUNDLES)
 
 AsteriskDialer_OBJC_FILES = \
 	AsteriskDialer.m	\
@@ -26,3 +26,7 @@ endif
 include $(GNUSTEP_MAKEFILES)/bundle.make
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
+
+after-all ::
+	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
+	  cp ../bundle-info.plist .)
