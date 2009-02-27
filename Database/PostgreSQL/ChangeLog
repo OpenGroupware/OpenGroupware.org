@@ -1,3 +1,8 @@
+2009-02-27  Adam Tauno Williams <awilliam@whitemice.org>
+
+	* pg-build-schema.psql: updated object_acl table. object_id and
+	  auth_id are not integers.  Required for PGSQL 8.3 and greater.
+
 2005-12-01  Helge Hess  <helge.hess@skyrix.com>
 
 	* pg-build-schema.psql: bumped length of date_x 'type' field to 255
