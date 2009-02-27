@@ -90,14 +90,7 @@
         actionClass = "zOGIRPCAction";
         actionName = "getAuditEntries";
         arguments = { positionalKeys = ( arg1 ); };
-       }
-      };
-      "zogi.getAuditEntries" = {
-        protectedBy = "View";
-        actionClass = "zOGIRPCAction";
-        actionName = "getAuditEntries";
-        arguments = { positionalKeys = ( arg1 ); };
-       }
+       };
       };
     };
   };
