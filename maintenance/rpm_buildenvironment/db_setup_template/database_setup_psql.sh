@@ -15,7 +15,7 @@ ROLLIN_SCHEME="YES"                 # will roll'in the current base DB scheme of
 FORCE_OVERRIDE_PRESENT_SCHEME="YES" # might harm thy current scheme (or not?)
 UPDATE_SCHEMA="YES"                 # will attempt to update the database scheme - if needed
 OGO_USER="ogo"                      # default username (unix) of your OGo install - might vary
-PGCLIENTENCODING="LATIN1"           # client encoding to use
+PGENCODING="UTF8"           # client encoding to use
 
 # pull in sysconfig settings - if present
 # and thus override predefined vars upon request
@@ -41,8 +41,8 @@ NOW=`date +%Y%m%d-%H%M%S`
 RUNS_ON="`uname`"
 
 # where are the schemes we need?
-COMMON_OGO_CORE_SCHEME_LOCATION="/usr/local/share/OGO_SHAREDIR/dbsetup/PostgreSQL/pg-build-schema.psql"
-COMMON_OGO_UPDATE_SCHEME_LOCATION="/usr/local/share/OGO_SHAREDIR/dbsetup/PostgreSQL/pg-update-schema.psql"
+COMMON_OGO_CORE_SCHEME_LOCATION="/usr/share/OGO_SHAREDIR/dbsetup/PostgreSQL/pg-build-schema.psql"
+COMMON_OGO_UPDATE_SCHEME_LOCATION="/usr//share/OGO_SHAREDIR/dbsetup/PostgreSQL/pg-update-schema.psql"
 
 # be more verbose on certain errors!
 OGO_BUGZILLA_INDEX="http://bugzilla.opengroupware.org"
@@ -236,7 +236,7 @@ initial()
     if [ "x${REAL_PG_VERSION}" = "x8.1" ]; then
       RC_CREATE_USER="`su - ${COMMON_PG_USER} -c \"createuser -D -R -S ${OGO_DB_USER}\" 2>&1>/dev/null`"
     else
-      RC_CREATE_USER="`su - ${COMMON_PG_USER} -c \"createuser -A -D ${OGO_DB_USER}\" 2>&1>/dev/null`"
+      RC_CREATE_USER="`su - ${COMMON_PG_USER} -c \"createuser --no-superuser --no-createdb --no-createrole ${OGO_DB_USER}\" 2>&1>/dev/null`"
     fi
     if [ -n "${RC_CREATE_USER}" ]; then
       echo -e "  Whoups! We've encountered an error during 'createuser':"
@@ -263,7 +263,7 @@ initial()
   # create database...
   if [ "x${CREATE_DB_ITSELF}" = "xYES" ]; then
     echo -e "creating the database itself: ${OGO_DB_ITSELF}"
-    RC_CREATE_DB="`su - ${COMMON_PG_USER} -c \"createdb -E ${PGCLIENTENCODING} -O ${OGO_DB_USER} ${OGO_DB_ITSELF}\" 2>&1>/dev/null`"
+    RC_CREATE_DB="`su - ${COMMON_PG_USER} -c \"createdb -E ${PGENCODING} -O ${OGO_DB_USER} ${OGO_DB_ITSELF}\" 2>&1>/dev/null`"
     if [ -n "${RC_CREATE_DB}" ]; then
       echo -e "  Whoups! We've encountered an error during 'createdb':"
       echo -e "  The errormessage was => ${RC_CREATE_DB}"
