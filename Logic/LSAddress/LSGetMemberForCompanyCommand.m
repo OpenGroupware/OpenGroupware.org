@@ -197,7 +197,7 @@ static BOOL debugCache      = NO;
   if ([self fetchGlobalIDs]) {
     NSArray *result;
     result = [channel globalIDsForSQLQualifier:q];
-    [self assert:(result != nil) reason:[sybaseMessages description]];
+    [self assert:(result != nil) reason:[dbMessages description]];
     return result;
   }
   
@@ -211,7 +211,7 @@ static BOOL debugCache      = NO;
     isOk = [channel selectObjectsDescribedByQualifier:q
                     fetchOrder:nil];
     
-    [self assert:isOk reason:[sybaseMessages description]];
+    [self assert:isOk reason:[dbMessages description]];
     
     while ((obj = [channel fetchWithZone:NULL])) {
       [myMembers addObject:obj];
@@ -333,7 +333,7 @@ static BOOL debugCache      = NO;
                         describedByQualifier:q
                         fetchOrder:nil
                         lock:NO];
-      [self assert:isOk reason:[sybaseMessages description]];
+      [self assert:isOk reason:[dbMessages description]];
   
       while ((row = [adChannel fetchAttributes:attrs withZone:NULL])) {
         NSNumber       *sourceId,  *targetId;
@@ -397,7 +397,7 @@ static BOOL debugCache      = NO;
                         describedByQualifier:q
                         fetchOrder:nil
                         lock:NO];
-      [self assert:isOk reason:[sybaseMessages description]];
+      [self assert:isOk reason:[dbMessages description]];
 
       while ((obj = [adChannel fetchAttributes:attrs withZone:NULL]))
         [myAssignments addObject:obj];
@@ -433,7 +433,7 @@ static BOOL debugCache      = NO;
       isOk = [channel selectObjectsDescribedByQualifier:q
                       fetchOrder:nil];
       
-      [self assert:isOk reason:[sybaseMessages description]];
+      [self assert:isOk reason:[dbMessages description]];
   
       while ((obj = [channel fetchWithZone:NULL])) {
         [myMembers addObject:obj];

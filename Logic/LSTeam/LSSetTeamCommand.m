@@ -58,7 +58,7 @@
   isOk = [[self databaseChannel] updateObject:staff];
 
   [LSDBObjectCommandException raiseOnFail:isOk object:self
-                              reason:[sybaseMessages description]];
+                              reason:[dbMessages description]];
 }
 
 - (void)_setMemberAssignmentsInContext:(id)_context {

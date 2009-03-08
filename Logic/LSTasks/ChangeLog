@@ -1,3 +1,11 @@
+2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSNewJobHistoryCommand.m: renamed sybaseMessages to dbMessages
+	  (v5.3.25)
+
+	* LSDeleteJobHistoryCommand.m: renamed sybaseMessages to dbMessages
+	  (v5.3.25)
+
 2008-10-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSGetProjectTaskActionsAsRSSCommand.m: tweak global uuid of entry.

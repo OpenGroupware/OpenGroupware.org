@@ -204,12 +204,12 @@ static int compareGroups(id group1, id group2, void *context) {
 
   if ([self fetchGlobalIDs]) {
     checkedGroups = [channel globalIDsForSQLQualifier:q];
-    [self assert:(checkedGroups != nil) reason:[sybaseMessages description]];
+    [self assert:(checkedGroups != nil) reason:[dbMessages description]];
     return checkedGroups;
   }
 
   isOk = [channel selectObjectsDescribedByQualifier:q fetchOrder:nil];
-  [self assert:isOk reason:[sybaseMessages description]];
+  [self assert:isOk reason:[dbMessages description]];
   
   while ((obj = [channel fetchWithZone:NULL]) != nil) {
       [myGroups addObject:obj];
@@ -321,7 +321,7 @@ static int compareGroups(id group1, id group2, void *context) {
                         describedByQualifier:q
                         fetchOrder:nil
                         lock:NO];
-      [self assert:isOk reason:[sybaseMessages description]];
+      [self assert:isOk reason:[dbMessages description]];
       
       while ((row = [adChannel fetchAttributes:attrs withZone:NULL]) != nil) {
         NSNumber       *sourceId,  *targetId;
@@ -393,7 +393,7 @@ static int compareGroups(id group1, id group2, void *context) {
                           describedByQualifier:qualifier
                           fetchOrder:nil
                           lock:NO];
-        [self assert:isOk reason:[sybaseMessages description]];
+        [self assert:isOk reason:[dbMessages description]];
         
         while ((obj = [adChannel fetchAttributes:attributes withZone:NULL]))
           [myAssignments addObject:obj];
@@ -414,7 +414,7 @@ static int compareGroups(id group1, id group2, void *context) {
     
       [self assert:[channel selectObjectsDescribedByQualifier:qmm
                             fetchOrder:nil]
-            reason:[sybaseMessages description]];
+            reason:[dbMessages description]];
     
       while ((obj = [channel fetchWithZone:NULL]))
         [myGroups addObject:obj];

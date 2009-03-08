@@ -93,7 +93,7 @@
   ok = [channel selectAttributes:attributes
                 describedByQualifier:qual
                 fetchOrder:nil lock:NO];
-  [self assert:ok reason:[sybaseMessages description]];
+  [self assert:ok reason:[dbMessages description]];
   one = [channel fetchAttributes:attributes withZone:NULL];
   if (one != nil)
     [channel cancelFetch]; 

@@ -126,7 +126,7 @@
 				   [self _qualifierForOneArticle]
                                  fetchOrder:nil];
 
-  [self assert:isOk reason:[sybaseMessages description]];
+  [self assert:isOk reason:[dbMessages description]];
   
   while ((obj = [[self databaseChannel] fetchWithZone:NULL])) {
     [relArticles addObject:obj];
@@ -205,7 +205,7 @@
                                  [self _qualifierForNewsArticleLink]
                                  fetchOrder:nil];
 
-  [self assert:isOk reason:[sybaseMessages description]];
+  [self assert:isOk reason:[dbMessages description]];
   
   while ((obj = [[self databaseChannel] fetchWithZone:NULL])) {
     [myAssignments addObject:obj];
@@ -216,7 +216,7 @@
                                  [self _qualifierForMoreArticles]
                                  fetchOrder:nil];
 
-  [self assert:isOk reason:[sybaseMessages description]];
+  [self assert:isOk reason:[dbMessages description]];
   
   while ((obj = [[self databaseChannel] fetchWithZone:NULL])) {
     [relArticles addObject:obj];

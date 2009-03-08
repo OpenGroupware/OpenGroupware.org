@@ -187,7 +187,7 @@
   isOk = [[self databaseChannel] insertObject:[self object]];
   
   if (!isOk) {
-    if ([self->sybaseMessages isNotEmpty])
+    if ([self->dbMessages isNotEmpty])
       [self assert:NO];
     else
       [self assert:NO reason:@"Insert failed!"];

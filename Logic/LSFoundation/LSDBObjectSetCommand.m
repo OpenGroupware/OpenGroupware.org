@@ -145,9 +145,9 @@
   
   isOk = [[self databaseChannel] updateObject:obj];
   
-  if (!isOk && [self->sybaseMessages isNotEmpty])
+  if (!isOk && [self->dbMessages isNotEmpty])
     [self assert:NO];
-  else if (!isOk && ![self->sybaseMessages isNotEmpty])
+  else if (!isOk && ![self->dbMessages isNotEmpty])
     [self assert:NO reason:@"Save failed! Record was edited by another user!"];
 
   [self setReturnValue:obj];

@@ -642,7 +642,7 @@ static NSArray *startDateSortOrderings = nil;
                        sortOrderings:nil];
 
     if (gidsTmp == nil)
-      [self assert:NO reason:[sybaseMessages description]];
+      [self assert:NO reason:[dbMessages description]];
 
     [gids addObjectsFromArray:gidsTmp];
   }

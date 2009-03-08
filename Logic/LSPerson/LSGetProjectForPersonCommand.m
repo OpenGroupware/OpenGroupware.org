@@ -128,7 +128,7 @@
                     [self _qualifierForTeams:_teams]
                   fetchOrder:nil];
   
-  [self assert:isOk reason:[sybaseMessages description]];
+  [self assert:isOk reason:[dbMessages description]];
   
   while ((obj = [channel fetchWithZone:NULL])) {
     [myProjects addObject:obj];
@@ -209,7 +209,7 @@
                   [self _qualifierForAssignedProjectsInContext:_context]
                   fetchOrder:nil];
 
-  [self assert:isOk reason:[sybaseMessages description]];
+  [self assert:isOk reason:[dbMessages description]];
   
   while ((obj = [channel fetchWithZone:NULL])) {
     [myProjects addObject:obj];
@@ -238,7 +238,7 @@
 
   isOk = [channel selectObjectsDescribedByQualifier:qualifier fetchOrder:nil];
 
-  [self assert:isOk reason:[sybaseMessages description]];
+  [self assert:isOk reason:[dbMessages description]];
   
   while ((obj = [channel fetchWithZone:NULL])) {
     [myProjects addObject:obj];

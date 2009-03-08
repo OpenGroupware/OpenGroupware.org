@@ -83,7 +83,7 @@
       isOk = [[self databaseChannel] updateObject:dateInfo];
     }
   }
-  [self assert:isOk reason:[sybaseMessages description]];
+  [self assert:isOk reason:[dbMessages description]];
 }
 
 - (void)_separateNotesInContext:(id)_context {

@@ -57,7 +57,7 @@
 	       fetchOrder:nil];
 
   [LSDBObjectCommandException raiseOnFail:isOk object:self
-                              reason:[sybaseMessages description]];
+                              reason:[dbMessages description]];
   
   persons = [[NSMutableArray alloc] init];
   while ((obj = [dbch fetchWithZone:NULL])) {

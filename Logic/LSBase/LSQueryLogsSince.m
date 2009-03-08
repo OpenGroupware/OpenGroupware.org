@@ -80,7 +80,7 @@ static int compareLogs(id part1, id part2, void* context) {
                describedByQualifier:q
                          fetchOrder:ordering
                                lock:NO]
-        reason:[sybaseMessages description]];
+        reason:[dbMessages description]];
   
   while (((obj = [ac fetchAttributes:[logEntity attributes] 
                            withZone:NULL]) != nil) &&

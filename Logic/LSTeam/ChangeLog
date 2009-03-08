@@ -1,3 +1,11 @@
+2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSNewTeamCommand.m: renamed sybaseMessgaes to dbMessages
+	  (v5.3.21)
+
+	* LSSetTeamCommand.m: renamed sybaseMessgaes to dbMessages
+	  (v5.3.21)
+
 2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble: explicitly link libNGiCal to make OSX happy

@@ -50,7 +50,7 @@
     }
   }
   [LSDBObjectCommandException raiseOnFail:isOk object:self
-                              reason:[sybaseMessages description]];
+                              reason:[dbMessages description]];
 }
 
 - (void)_executeInContext:(id)_context {

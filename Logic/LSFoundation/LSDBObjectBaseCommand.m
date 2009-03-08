@@ -39,7 +39,7 @@
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
   if ((self = [super initForOperation:_operation inDomain:_domain]) != nil) {
     self->recordDict     = [[NSMutableDictionary alloc] init];
-    self->sybaseMessages = [[NSMutableArray alloc] init];
+    self->dbMessages = [[NSMutableArray alloc] init];
     self->returnType     = LSDBReturnType_OneObject;
     
     [self assert:(self->recordDict != nil)
@@ -61,7 +61,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self->entityName     release];
   [self->recordDict     release];
-  [self->sybaseMessages release]; // TODO: rename to dbMessages
+  [self->dbMessages     release];
   [super dealloc];
 }
 
@@ -194,7 +194,7 @@
   NSException *msg;
   
   msg = [[_notification userInfo] objectForKey:@"message"];
-  [self->sybaseMessages addObject:[msg reason]]; 
+  [self->dbMessages addObject:[msg reason]]; 
 }
 
 /* accessors */
@@ -448,11 +448,11 @@
 /* assertions */
 
 - (void)assert:(BOOL)_condition {
-  // raises with sybaseMessages
+  // raises with dbMessages
   NSString *s;
   
-  s = [self->sybaseMessages isNotEmpty]
-    ? [self->sybaseMessages description]
+  s = [self->dbMessages isNotEmpty]
+    ? [self->dbMessages description]
     : (NSString *)@"unknown reason (no database messages found)";
   [self assert:_condition reason:s];
 }

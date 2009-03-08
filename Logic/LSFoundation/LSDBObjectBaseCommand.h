@@ -52,7 +52,7 @@
   unsigned            returnType;
   NSString            *entityName;
 @protected
-  NSMutableArray      *sybaseMessages;
+  NSMutableArray      *dbMessages;
   NSMutableDictionary *recordDict;
 }
 
@@ -109,7 +109,7 @@
 
 /* assertions */
 
-- (void)assert:(BOOL)_condition; // raises with sybaseMessages
+- (void)assert:(BOOL)_condition; // raises with dbMessages
 
 @end
 

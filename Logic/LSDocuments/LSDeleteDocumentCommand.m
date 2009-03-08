@@ -120,7 +120,7 @@
     isOk = [[self databaseChannel] updateObject:editing];
   }
   
-  [self assert:isOk reason:[sybaseMessages description]];  
+  [self assert:isOk reason:[dbMessages description]];  
 }
 
 - (BOOL)isRootAccountId:(NSNumber *)_accId {

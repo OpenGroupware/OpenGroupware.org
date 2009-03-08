@@ -60,7 +60,7 @@
   isOk = [self _newJobHistoryInfoInContext:_context];
 
   [LSDBObjectCommandException raiseOnFail:isOk object:self
-                              reason:[sybaseMessages description]];    
+                              reason:[dbMessages description]];    
 }
 
 - (void)setComment:(NSString *)_comment {

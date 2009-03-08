@@ -1,3 +1,11 @@
+2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* v5.4.32
+
+	* LSGetLogsCommand.m: renamed sybaseMessages to dbMessages
+
+	* LSQueryLogsSince.m: renamed sybaseMessages to dbMessages
+
 2008-03-05  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSQueryLogsSince.m:  allows retrieval of log entries by id,  clients 

@@ -1,3 +1,11 @@
+2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+	
+	* v5.3.35
+
+	* LSGetProjectForPersonCommand.m: renamed sybaseMessages to dbMessages
+
+	* LSSetPersonCommand.m: renamed sybaseMessages to dbMessages
+
 2006-11-22  Helge Hess  <helge.hess@opengroupware.org>
 
 	* bundle-info.plist: properly register person::qsearch command

@@ -140,7 +140,7 @@
 
   isOk = [[self databaseChannel] insertObject:editing];
 
-  [self assert:isOk reason:[sybaseMessages description]];
+  [self assert:isOk reason:[dbMessages description]];
   {
     NSString      *fileName, *editingFileName;
     NSFileManager *manager;
@@ -229,7 +229,7 @@
     [editing takeValue:accountId                    forKey:@"currentOwnerId"];
 
     [self assert:[[self databaseChannel] updateObject:editing]
-	  reason:[sybaseMessages description]];
+	  reason:[dbMessages description]];
     
     /* copy attachment */
 

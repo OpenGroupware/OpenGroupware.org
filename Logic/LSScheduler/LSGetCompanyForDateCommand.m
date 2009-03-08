@@ -468,7 +468,7 @@ static NSNumber *yesNum = nil;
                       describedByQualifier:q
                       fetchOrder:nil
                       lock:NO];
-    [self assert:isOk reason:[sybaseMessages description]];
+    [self assert:isOk reason:[dbMessages description]];
 
     while ((row = [adChannel fetchAttributes:attrs withZone:NULL])) {
       NSNumber       *sourceId,  *targetId;

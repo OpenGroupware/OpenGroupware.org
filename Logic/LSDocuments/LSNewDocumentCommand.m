@@ -85,7 +85,7 @@
   
   isOk = [[self databaseChannel] insertObject:editing];
 
-  [self assert:isOk reason:[sybaseMessages description]];
+  [self assert:isOk reason:[dbMessages description]];
 
   {
     NSString *fileName, *editingFileName;

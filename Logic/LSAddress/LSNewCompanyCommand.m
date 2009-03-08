@@ -249,7 +249,7 @@ static NSString *autoNumberPrefix = @"OGo";
     [info takeValue:self->comment forKey:@"comment"];
 
   [self assert:[[self databaseChannel] insertObject:info]
-        reason:[sybaseMessages description]];
+        reason:[dbMessages description]];
 }
 
 - (id)_newCompanyValue:(NSString *)_key value:(id)_value

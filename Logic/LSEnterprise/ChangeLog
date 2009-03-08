@@ -1,3 +1,10 @@
+2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetFakeProjectForEnterpriseCommand.m: renamed sybaseMessages to
+	  dbMessages. (v5.3.19)
+	* LSGetProjectForEnterpriseCommand.m: renamed sybaseMessages to
+	  dbMessages. (v5.3.19)
+
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* added enterprise::qsearch command (v5.3.18)
