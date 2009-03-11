@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2000-2008 SKYRIX Software AG
+  Copyright (C) 2006-2008 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -35,6 +35,9 @@
   
   Special key for 'attributes' fetches:
     participants. => used when fetching the persons
+      .comment
+      .extendedAttributes
+      .telephones
     comment       => fetch the comment (additionalKeys)
     globalID
     permissions
