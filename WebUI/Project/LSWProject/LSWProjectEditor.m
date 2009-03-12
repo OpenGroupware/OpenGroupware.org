@@ -110,6 +110,7 @@ static NSArray  *projectBases  = nil;
 static NSArray  *personAttrs   = nil;
 static NSArray  *teamAttrs     = nil;
 static int      OldProjectCompatiblity = -1;
+static NSString *defaultStorageBackend = nil;
 
 + (void)initialize {
   // TODO: should check superclass version!
@@ -121,6 +122,9 @@ static int      OldProjectCompatiblity = -1;
   // TODO: explain, what does that do?
   OldProjectCompatiblity =
     [ud boolForKey:@"SkyOldCommonProjectCompatibility"]?1:0;
+
+  defaultStorageBackend =
+    [ud stringForKey:@"OGoDefaultProjectStorageBackend"];
 
   fmFactory = [[OGoFileManagerFactory sharedFileManagerFactory] retain];
   projectBases = [[fmFactory availableProjectBases] copy];
@@ -141,6 +145,7 @@ static int      OldProjectCompatiblity = -1;
 - (id)init {
   if ((self = [super init])) {
     /* hh: do we really always need all those arrays? */
+    self->projectBase      = defaultStorageBackend;
     self->resultList       = [[NSMutableArray alloc] initWithCapacity:4];
     self->removedAccounts  = [[NSMutableArray alloc] initWithCapacity:4];
     self->addedAccounts    = [[NSMutableArray alloc] initWithCapacity:4];
