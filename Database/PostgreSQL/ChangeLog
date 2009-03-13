@@ -1,3 +1,7 @@
+2009-03-13  Adam Tauno Williams <awilliam@whitemice.org>
+
+	* pg-build-schema.psql: fixed a typo, a duplicate comma.
+
 2009-02-27  Adam Tauno Williams <awilliam@whitemice.org>
 
 	* pg-build-schema.psql: updated object_acl table. object_id and
