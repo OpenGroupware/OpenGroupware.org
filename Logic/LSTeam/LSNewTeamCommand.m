@@ -77,7 +77,7 @@ static NSString *OGoTeamCreatorRoleName = nil;
   isOk = [[self databaseChannel] insertObject:staff];
 
   [LSDBObjectCommandException raiseOnFail:isOk object:self
-                              reason:[sybaseMessages description]];
+                              reason:[dbMessages description]];
 }
 
 - (void)_newMemberAssignmentsInContext:(id)_context {

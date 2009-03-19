@@ -118,7 +118,7 @@ static NSTimeZone *gmt = nil;
                           describedByQualifier:q
                           fetchOrder:nil
                           lock:NO]
-        reason:[sybaseMessages description]];
+        reason:[dbMessages description]];
   
   while ((obj = [adChannel fetchAttributes:logAttrs withZone:NULL]) != nil) {
     NSCalendarDate *d;

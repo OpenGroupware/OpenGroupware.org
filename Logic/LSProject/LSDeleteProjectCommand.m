@@ -62,7 +62,7 @@
     }
   }
   [LSDBObjectCommandException raiseOnFail:isOk object:self
-                              reason:[sybaseMessages description]];
+                              reason:[dbMessages description]];
   return YES;
 }
 

@@ -57,7 +57,7 @@
                                  fetchOrder:nil];
 
   [LSDBObjectCommandException raiseOnFail:isOk object:self
-                              reason:[sybaseMessages description]];
+                              reason:[dbMessages description]];
   
   enterprises = [[NSMutableArray alloc] init];
   while ((obj = [[self databaseChannel] fetchWithZone:NULL])) {

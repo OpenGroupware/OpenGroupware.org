@@ -1,3 +1,15 @@
+2009-03-09  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* v5.3.113
+
+	* LSGetCompanyForDateCommand.m: renamed sybaseMessages to dbMessages
+
+	* LSGetDateWithConflictCommand.m: renamed sybaseMessages to dbMessages
+
+	* LSListParticipantsCommand.m: renamed sybaseMessages to dbMessages
+
+	* LSDeleteAppointmentCommand.m: renamed sybaseMessages to dbMessages
+
 2009-01-17  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSDeleteAppointmentCommand.m: add support for tombstoning

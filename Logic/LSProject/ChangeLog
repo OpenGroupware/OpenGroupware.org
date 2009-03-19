@@ -1,3 +1,24 @@
+2009-03-09  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* v5.3.46
+
+	* LSFetchEnterpriseRelationCommand.m: renamed sybaseMssages to 
+	  dbMessages
+
+	* LSFetchTeamRelationCommand.m: renamed sybaseMssages to dbMessages
+
+	* LSFetchAccountRelationCommand.m: renamed sybaseMssages to dbMessages
+
+	* LSDeleteProjectCommand.m: renamed sybaseMssages to dbMessages
+
+	* LSSetPersonsForProjectCommand.m: renamed sybaseMssages to dbMessages
+
+	* LSFetchPersonRelationCommand.m: renamed sybaseMssages to dbMessages
+
+	* LSNewProjectCommand.m: renamed sybaseMssages to dbMessages
+
+	* LSSetProjectCommand.m: renamed sybaseMssages to dbMessages
+
 2008-07-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSDeleteProjectCommand.m: Unlink or delete notes.  Relates to

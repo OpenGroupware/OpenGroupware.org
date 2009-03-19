@@ -1,3 +1,10 @@
+2009-02-27  Adam Tauno Williams  <awilliam@whitemiceconsulting.com>
+
+	* database_setup_psql.sh: fixed prompting in OGo user creation, also
+	  fixed bug where database was created in LATIN-1 and could not
+	  be created at all where the client was specified as UTF-8 in
+	  profile.
+
 2005-06-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* ogo-environment.spec, opengroupware.spec, ogofull-singleprm.spec,

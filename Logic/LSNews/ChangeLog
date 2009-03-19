@@ -1,3 +1,8 @@
+2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetRelatedArticlesCommand.m: renamed sybaseMessages to dbMessages
+	  (v5.3.6)
+
 2007-05-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSNewNewsArticleCommand.m: code cleanups, improved error logs

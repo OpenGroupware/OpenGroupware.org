@@ -231,8 +231,8 @@ CREATE TABLE object_acl (
   object_acl_id int not null,
   sort_key      int not null,
   action        varchar(10) not null,
-  object_id     varchar(255) not null,
-  auth_id       varchar(255),
+  object_id     int not null,
+  auth_id       int not null,
   permissions   varchar(50));
 
 CREATE TABLE project_company_assignment (

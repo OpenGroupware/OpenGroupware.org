@@ -52,7 +52,7 @@
   [doc takeValue:@"edited" forKey:@"status"];
 
   [self assert:[[self databaseChannel] updateObject:doc]
-        reason:[sybaseMessages description]];
+        reason:[dbMessages description]];
 
   {
     id editing = [doc valueForKey:@"toDocumentEditing"];
@@ -69,7 +69,7 @@
     [editing takeValue:accountId                     forKey:@"currentOwnerId"];
 
     [self assert:[[self databaseChannel] updateObject:editing]
-          reason:[sybaseMessages description]];
+          reason:[dbMessages description]];
 
     // copy attachment
     {

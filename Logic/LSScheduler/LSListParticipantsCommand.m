@@ -294,7 +294,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
     ok = [channel selectAttributes:_attributes 
                   describedByQualifier:qual
                   fetchOrder:nil lock:NO];
-    [self assert:ok reason:[sybaseMessages description]];
+    [self assert:ok reason:[dbMessages description]];
 
     while ((one = [channel fetchAttributes:_attributes withZone:NULL]) != nil)
       [ma addObject:one];
@@ -359,7 +359,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   ok = [channel selectAttributes:_attributes 
                 describedByQualifier:qual
                 fetchOrder:nil lock:NO];
-  [self assert:ok reason:[sybaseMessages description]];
+  [self assert:ok reason:[dbMessages description]];
 
   ma = [NSMutableArray arrayWithCapacity:16];
   while ((one = [channel fetchAttributes:_attributes withZone:NULL]) != nil)
@@ -398,7 +398,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
                 describedByQualifier:qual
                 fetchOrder:nil lock:NO];
   [qual release]; qual = nil;
-  [self assert:ok reason:[sybaseMessages description]];
+  [self assert:ok reason:[dbMessages description]];
   
   ma = [NSMutableArray arrayWithCapacity:16];
   while ((one = [channel fetchAttributes:attrs withZone:NULL])) {

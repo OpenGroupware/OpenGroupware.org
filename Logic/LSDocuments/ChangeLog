@@ -1,3 +1,16 @@
+2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+	
+	* v5.3.10
+
+	* LSNewDocumentCommand.m: renamed sybaseMessages to dbMessages
+
+	* LSDeleteDocumentCommand.m: renamed sybaseMessages to dbMessages
+
+	* LSCheckoutDocumentCommand.m: renamed sybaseMessages to dbMessages
+
+	* LSCheckoutDocumentVersionCommand.m: renamed sybaseMessages to 
+	  dbMessages
+
 2008-11-02  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSReleaseDocumentCommand.m: fixed usage of NSFileManager symbolic

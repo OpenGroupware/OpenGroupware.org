@@ -1,3 +1,8 @@
+2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSFullSearchCommand.m: renamed sybaseMessages to dbMessages
+	  (v5.3.37)
+
 2007-09-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSExtendedSearch.m, LSExtendedSearchCommand.m: added debuglogs

@@ -1,3 +1,12 @@
+2009-03-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSWProjectEditor.m: Add support for OGoDefaultProjectStorageBackend
+	  to determine default storage backend for new projects.  This closes
+	  OGo Bug#394.  Values for the default are (case sensitive) either
+	  FileSystem or Database.  If the default is not set the behaviour
+	  is identical to the previous where the application silently
+	  defaults to FileSystem.  (v5.3.51)
+
 2007-12-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWDocumentDownloadAction.m: replaced a cString method (v5.3.50)

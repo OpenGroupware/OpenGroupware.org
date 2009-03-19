@@ -98,7 +98,7 @@
     [info takeValue:self->comment forKey:@"comment"];
 
   [self assert:[[self databaseChannel] insertObject:info]
-        reason:[sybaseMessages description]];
+        reason:[dbMessages description]];
 
   return YES;
 }
@@ -223,7 +223,7 @@
     [self assert:[self _setProjectInfoInContext:_context]];
 
   [self assert:[self _updateRootDocumentInContext:_context]
-        reason:[sybaseMessages description]];
+        reason:[dbMessages description]];
   
   LSRunCommandV(_context, @"project",  @"assign-accounts",
                 @"project",         [self object],

@@ -227,7 +227,7 @@ static BOOL debugOn;
   // TODO: use adaptor, only fetch IDs
   isOk = [dbChannel selectObjectsDescribedByQualifier:qualifier
                     fetchOrder:nil];
-  if (!isOk) return sybaseMessages;
+  if (!isOk) return dbMessages;
   qualifier = nil;
   
   cnt = 0;
@@ -303,7 +303,7 @@ static BOOL debugOn;
     // TODO: use adaptor, only fetch IDs
     isOk = [dbChannel selectObjectsDescribedByQualifier:qualifier
                       fetchOrder:nil];
-    if (!isOk) return sybaseMessages;
+    if (!isOk) return dbMessages;
     
     while ((cnt < maxSearch) && (result = [dbChannel fetchWithZone:NULL])) {
       addObj(results, @selector(addObject:), result);

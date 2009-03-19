@@ -65,7 +65,7 @@
                                  fetchOrder:nil];
 
   [LSDBObjectCommandException raiseOnFail:isOk object:self
-                              reason:[sybaseMessages description]];
+                              reason:[dbMessages description]];
   
   while ((obj = [[self databaseChannel] fetchWithZone:NULL]) != nil) {
     [persons addObject:obj];

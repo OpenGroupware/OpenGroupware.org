@@ -55,7 +55,7 @@
                                    [self _qualifierForProjects]
                                  fetchOrder:nil];
   
-  [self assert:isOk reason:[sybaseMessages description]];
+  [self assert:isOk reason:[dbMessages description]];
   
   while ((obj = [[self databaseChannel] fetchWithZone:NULL]) != nil)
     [myProjects addObject:obj];
