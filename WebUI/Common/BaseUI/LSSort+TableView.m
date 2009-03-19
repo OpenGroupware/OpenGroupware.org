@@ -30,6 +30,7 @@
   key:(NSString *)_key
   isDescending:(BOOL)_flag
 {
+  static Class IntClass           = Nil;
   static Class StrClass           = Nil;
   static Class EnterpriseClass    = Nil;
   static Class PersonClass        = Nil;
@@ -48,6 +49,8 @@
     InvoiceClass = NSClassFromString(@"LSInvoice");
   if (StrClass == Nil)
     StrClass = [NSString class];
+  if (IntClass == Nil)
+    IntClass = [NSNumber class];
   
   singleObject = [[_array lastObject] valueForKey:_key];
   if (singleObject != nil) {
@@ -71,7 +74,8 @@
       skey = @"login";
       found = YES;
     }
-    else if (![singleObject isKindOfClass:StrClass]) {
+    else if (!([singleObject isKindOfClass:StrClass] 
+	       || [singleObject isKindOfClass:IntClass])) {
       EOKeyGlobalID *gid;
       
       gid = [singleObject valueForKey:@"globalID"];
