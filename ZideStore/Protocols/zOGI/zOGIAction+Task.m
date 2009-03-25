@@ -50,9 +50,7 @@
             [self ZERO:[_task valueForKey:@"sensitivity"]], @"sensitivity",
             [self ZERO:[_task valueForKey:@"totalWork"]], @"totalWork",
             [self NIL:[_task valueForKey:@"timerDate"]], @"timerDate",
-            /* 
-              [self NIL:[_task valueForKey:@"parentJobId"]], @"parentJobId", 
-             */
+            [self NIL:[_task valueForKey:@"parentJobId"]], @"parentTaskObjectId", 
             [self ZERO:[_task valueForKey:@"percentComplete"]], 
                @"percentComplete",
             [self ZERO:[_task valueForKey:@"notify"]], @"notify",
@@ -396,11 +394,8 @@
         else [task setObject:[NSNumber numberWithInt:projectId]
                       forKey:@"projectId"];
     } else if ([key isEqualToString:@"parentTaskObjectId"]) {
-      // We are currently droping this attribute as the guts of
-      // OGo seem to do something odd when they see it and 
-      // produce an error
-      //[task setObject:[_task objectForKey:@"parentTaskObjectId"] 
-      //      forKey:@"parentJobId"];
+      [task setObject:[_task objectForKey:@"parentTaskObjectId"] 
+            forKey:@"parentJobId"];
     } else if ([key isEqualToString:@"kind"]) {
       if (![[_task objectForKey:@"kind"] isEqualToString:@""])
         [task setObject:[_task objectForKey:@"kind"]
