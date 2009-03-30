@@ -1,14 +1,15 @@
 2009-03-30  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
-	* v5.3.26
+	* LSFetchJobIdTreeCommand.m: fixed crasher and added loop detection.
+	  (v5.3.27)
 
 	* LSFetchJobIdTreeCommand.m: command to create a graph of hierarchical
-	  tasks.
+	  tasks. (v5.3.26)
 
 	* commands.plist: Register the LSFetchJobIdTreeCommand command as
-	  job::get-jobid-tree
+	  job::get-jobid-tree (v5.3.26)
 
-	* bundle-info.plist: Register the job::get-jobid-tree command.
+	* bundle-info.plist: Register the job::get-jobid-tree command. (v5.3.26)
 
 2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 

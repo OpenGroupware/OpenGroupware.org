@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2008 Whitemice Consulting (Adam Tauno Williams)
+  Copyright (C) 2009 Whitemice Consulting (Adam Tauno Williams)
 
   This file is part of OpenGroupware.org.
 
@@ -82,19 +82,22 @@
       }
     }
   }
-  if ([result isKindOfClass:[EONull class]])
-    return nil;
-  return result;
+  if ([result isKindOfClass:[NSNumber class]])
+    return ([_jobId isEqualTo:result]) ? nil : result;
+  return nil;
 }
 
 -(NSNumber *)_getRootJobId
 {
   NSNumber *currentJobId, *tmp;
+  int       counter = 0;
 
   currentJobId = self->jobId;
   while((tmp = [self _getParentJobIdOfJobId:currentJobId]) != nil)
   {
     currentJobId = tmp;
+    if ((counter++) > 128)
+      break;
   }  
   return currentJobId;
 }
@@ -109,6 +112,7 @@
   NSString            *query;
   NSEnumerator        *enumerator;
   id                   tmp;
+  int                  counter = 0;
 
   eoChannel = [[self databaseChannel] adaptorChannel];
 
@@ -125,12 +129,19 @@
       while ((record = [eoChannel fetchAttributes:attributes 
                                          withZone:NULL]) != nil) {
         [children addObject:[record valueForKey:@"jobId"]];
+        if ((counter++) > 128)
+          break;
       }
     }
   }
   enumerator = [children objectEnumerator];
   while ((tmp = [enumerator nextObject]) != nil)
-    [result setObject:[self _getChildrenOfJob:tmp] forKey:tmp];
+  {
+    [result setObject:[self _getChildrenOfJob:tmp] 
+               forKey:[tmp stringValue]];
+    if ((counter--) < 0)
+      break;
+  }
   return result;
 }
 
@@ -142,7 +153,7 @@
   /* Descend from the top building a graph of the jobs */
   self->jobTree = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [self _getChildrenOfJob:rootId], 
-                                  rootId, 
+                                  [rootId stringValue], 
                                   nil];
   [self setReturnValue:self->jobTree];
   [super _executeInContext:_context];
