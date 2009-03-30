@@ -52,6 +52,7 @@
         { name = "job::get-delegated-rss";                },
         { name = "job::get-todo-rss";                     },
         { name = "job::get-project-task-rss";             },
+        { name = "job::get-jobid-tree";                   },
         { name = "jobassignment::delete";                 },
         { name = "jobassignment::get";                    },
         { name = "jobassignment::new";                    },

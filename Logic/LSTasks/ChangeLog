@@ -1,3 +1,15 @@
+2009-03-30  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* v5.3.26
+
+	* LSFetchJobIdTreeCommand.m: command to create a graph of hierarchical
+	  tasks.
+
+	* commands.plist: Register the LSFetchJobIdTreeCommand command as
+	  job::get-jobid-tree
+
+	* bundle-info.plist: Register the job::get-jobid-tree command.
+
 2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSNewJobHistoryCommand.m: renamed sybaseMessages to dbMessages

@@ -37,6 +37,7 @@ LSTasks_OBJC_FILES = \
 	LSSetJobCommand.m			\
 	OGoJobAccessHandler.m			\
 	LSQualifierSearchTaskCommand.m		\
+	LSFetchJobIdTreeCommand.m		\
 	LSGetDelegatedActionsAsRSSCommand.m	\
 	LSGetToDoActionsAsRSSCommand.m		\
 	LSGetProjectTaskActionsAsRSSCommand.m
