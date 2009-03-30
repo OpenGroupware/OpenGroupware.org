@@ -73,13 +73,25 @@
 -(NSMutableDictionary *)_renderTask:(EOGenericRecord *)_task 
                          withDetail:(NSNumber *)_detail {
   NSMutableDictionary   *task;
+  id                    graph;
   
   task = [self _renderTaskFromEO:_task];
   if([_detail intValue] > 0) {
+    /* Draw graph since detail level is greater than zero */
+    if([_detail intValue] & zOGI_INCLUDE_MEMBERSHIP)
+    {
+      graph = [[self getCTX] runCommand:@"job::get-jobid-tree",
+                                      @"jobId", [_task valueForKey:@"jobId"],
+                                      nil];
+      [task setObject:graph forKey:@"graph"];
+    }
+    /* add eoObject to task for use by add notes & details */
     [task setObject:_task forKey:@"*eoObject"];
     if([_detail intValue] & zOGI_INCLUDE_NOTATIONS)
       [self _addNotesToTask:task];
     [self _addObjectDetails:task withDetail:_detail];
+    /* when add details is complete it removes the eoObject reference
+       from the data automatically */
    }
   return task;
 } /* end _renderTask */

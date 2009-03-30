@@ -1,3 +1,8 @@
+2009-03-30 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Task.m: added support for returning the task graph
+	  on membership (128) detail level. (v1.5.52)
+
 2009-03-25 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Task.m: added support for rendering and setting
