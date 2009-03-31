@@ -1,3 +1,8 @@
+2009-03-31  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSNewJobCommand.m: removed ancient bit of "divided" logic when
+	  creating new tasks with a parent task. (v5.3.28)
+
 2009-03-30  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSFetchJobIdTreeCommand.m: fixed crasher and added loop detection.

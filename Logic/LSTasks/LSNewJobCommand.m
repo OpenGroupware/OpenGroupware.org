@@ -150,15 +150,6 @@
   
   job = [self object];
 
-  // TODO: can this happen with current setups?
-  if ([[job valueForKey:@"parentJobId"] isNotNull]) {
-    LSRunCommandV(_context,
-                  @"job",           @"jobaction",
-                  @"action",        @"divided",
-                  @"object",        job,
-                  @"comment",       self->comment,
-                  @"divideComment", self->divideComment, nil);
-  }
   if (![self isRootAccountEO:[_context valueForKey:LSAccountKey]]) {
     if ([[job valueForKey:@"executantId"]
               isEqual:[job valueForKey:@"creatorId"]]) {
