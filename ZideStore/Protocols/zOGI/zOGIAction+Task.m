@@ -406,8 +406,10 @@
         else [task setObject:[NSNumber numberWithInt:projectId]
                       forKey:@"projectId"];
     } else if ([key isEqualToString:@"parentTaskObjectId"]) {
-      [task setObject:[_task objectForKey:@"parentTaskObjectId"] 
-            forKey:@"parentJobId"];
+      if ([[_task objectForKey:@"parentTaskObjectId"] intValue] == 0)
+        [task setObject:[EONull null] forKey:@"parentJobId"];
+      else [task setObject:[_task objectForKey:@"parentTaskObjectId"]
+                    forKey:@"parentJobId"];
     } else if ([key isEqualToString:@"kind"]) {
       if (![[_task objectForKey:@"kind"] isEqualToString:@""])
         [task setObject:[_task objectForKey:@"kind"]

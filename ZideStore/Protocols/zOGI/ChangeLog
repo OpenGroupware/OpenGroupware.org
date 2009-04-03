@@ -1,3 +1,10 @@
+2009-04-03 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Task.m: If the parentTaskObjectId during a putObject
+	  has a value of 0 map it to an EONull,  this allows the value to
+	  be cleared from crappy languages like PHP that don't have a real
+	  NULL value. (v1.5.53)
+
 2009-03-30 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Task.m: added support for returning the task graph
