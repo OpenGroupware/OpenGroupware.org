@@ -358,7 +358,7 @@
 - (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
   id obj;
 
-  [self logWithFormat:@"root folder got key %@", _key];
+  [self debugWithFormat:@"root folder got key %@", _key];
   
   if ([_key isEqualToString:@"check_id.wcap"])
     return [self wcapCheckIDInContext:_ctx];
