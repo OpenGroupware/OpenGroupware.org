@@ -1,3 +1,7 @@
+2009-04-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* return text/calendar, not text/vcalendar as the MIME type (v1.5.121)
+
 2008-09-06  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxAppointment+Participants.m: removed pKeyForPKeyEmail method, this

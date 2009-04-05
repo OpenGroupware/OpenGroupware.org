@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2002-2008 SKYRIX Software AG
-  Copyright (C) 2007-2008 Helge Hess
+  Copyright (C) 2002-2009 SKYRIX Software AG
+  Copyright (C) 2007-2009 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -574,7 +574,7 @@ static BOOL addGroupToWriteACL = YES;
   /*
     <key name="{DAV:}href"    >$baseURL$/$pkey$.vcf?sn=$sn$</key>
     <key name="davDisplayName">$sn$, $givenname$</key>
-    TODO: <key name="davContentType">text/vcalendar</key> 
+    TODO: <key name="davContentType">text/calendar</key> 
   */
   NSMutableDictionary *record;
   NSString *url, *pkey;
@@ -589,7 +589,7 @@ static BOOL addGroupToWriteACL = YES;
   [record setObject:url  forKey:@"{DAV:}href"];
   [url release]; url = nil;
   
-  [record setObject:@"text/vcalendar" forKey:@"davContentType"];
+  [record setObject:@"text/calendar" forKey:@"davContentType"];
   [record setObject:pkey forKey:@"davDisplayName"]; // small hack, use title
   
 #if 0 // might be necessary for some
