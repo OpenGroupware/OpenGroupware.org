@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2009 SKYRIX Software AG
+  Copyright (C) 2009      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -119,15 +120,15 @@ static NSDictionary *addressMapping = nil;
   entry = [[NSMutableDictionary alloc] initWithCapacity:4];
   [entry setObject:_vCard forKey:@"vCardData"];
   if ([self->attributes containsObject:@"companyId"]) {
-    if ((tmp = [_result valueForKey:@"companyId"]))
+    if ((tmp = [_record valueForKey:@"companyId"]))
       [entry setObject:tmp forKey:@"companyId"];
   }
   if ([self->attributes containsObject:@"globalID"]) {
-    if ((tmp = [_result valueForKey:@"globalID"]))
+    if ((tmp = [_record valueForKey:@"globalID"]))
       [entry setObject:tmp forKey:@"globalID"];
   }
   if ([self->attributes containsObject:@"objectVersion"]) {
-    if ((tmp = [_result valueForKey:@"objectVersion"]))
+    if ((tmp = [_record valueForKey:@"objectVersion"]))
       [entry setObject:tmp forKey:@"objectVersion"];
   }
   
@@ -294,7 +295,7 @@ static NSDictionary *addressMapping = nil;
 /* execution */
 
 - (void)_buildAndCacheVCardsForContacts:(NSArray *)_uncachedContacts
-  type:(NSString *)_type // person, enterprise
+  type:(NSString *)_type // person, enterprise, team
   result:(id)_result
   inContext:(id)_context
 {
@@ -410,18 +411,20 @@ static NSDictionary *addressMapping = nil;
       }
       else {
         EOKeyGlobalID *gid;
+        NSString      *en;
 	
         gid = [record valueForKey:@"globalID"];
-        if ([[gid entityName] isEqualToString:@"Person"])
+        en  = [gid entityName];
+        if ([en isEqualToString:@"Person"])
           [uncachedPersons addObject:record];
-        else if ([[gid entityName] isEqualToString:@"Enterprise"])
+        else if ([en isEqualToString:@"Enterprise"])
           [uncachedEnterprises addObject:record];
-        else if ([[gid entityName] isEqualToString:@"Team"])
+        else if ([en isEqualToString:@"Team"])
           [uncachedTeams addObject:record];
         else {
-	  NSString *error;
+      	  NSString *error;
 	  
-	  error = [NSString stringWithFormat:
+      	  error = [NSString stringWithFormat:
                                  @"invalid entityName '%@' "
                                  @"(Person, Enterprise and Team accepted)",
 			    [gid entityName]];
@@ -462,8 +465,8 @@ static NSDictionary *addressMapping = nil;
 
   // TODO: the build response should not be used
   [self setReturnValue:(self->buildResponse)
-	? [self _buildResponseForVCards:result inContext:_context]
-	: result];
+    ? [self _buildResponseForVCards:result inContext:_context]
+    : result];
   [result release];
 }
 
