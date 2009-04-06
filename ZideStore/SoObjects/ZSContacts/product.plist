@@ -10,6 +10,10 @@
       defaultAccess = "allow";
       
       methods = {
+        "{urn:ietf:params:xml:ns:carddav}addressbook-multiget" = {
+          protectedBy = "View";
+          actionClass = SxDavAddrbookMultiget;
+        };
       };
       
       defaultRoles = {
@@ -19,7 +23,7 @@
         "Change Images and Files"     = "Authenticated";
         "Delete Objects"              = "Authenticated";
         "View"                        = "Authenticated";
-	"Add Documents, Images and Files" = "Authenticated";
+        "Add Documents, Images and Files" = "Authenticated";
       };
     };
     SxAddress = {

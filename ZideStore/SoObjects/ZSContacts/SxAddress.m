@@ -822,6 +822,8 @@ static BOOL debugEO = NO;
 		 [NSArray arrayWithObject:gid]];
   
   if ((result = [e nextObject]) == nil) {
+    // TBD: careful, check whether this is a 403 (Forbidden) or a 404
+    // TBD: also: ensure consistency with PROPFIND!!!
     return [NSException exceptionWithHTTPStatus:404 /* not found */
 			reason:@"did not find vcard for given object id"];
   }

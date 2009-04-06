@@ -264,9 +264,10 @@ static BOOL debugOn = NO;
     key = [[key componentsSeparatedByString:@"."] objectAtIndex:0];
     if ([key intValue] > 0)
       [self->ids addObject:intObj([key intValue])];
-  } else {
-      [self warnWithFormat:@"href in multiget lacks .ics suffix"];
-     }
+  }
+  else {
+    [self warnWithFormat:@"href in multiget lacks .ics suffix"];
+  }
 }
 
 /* debugging */

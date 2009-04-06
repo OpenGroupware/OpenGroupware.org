@@ -1,9 +1,9 @@
 2009-04-06  Helge Hess  <helge.hess@opengroupware.org>
 
+	* activated CardDAV multiget REPORT (v1.5.100)
+
 	* prepared SxDavAddrbookMultiget.m (derived from the cal-multiget)
 	  (v1.5.99)
-
-2009-04-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAddressFolder.m: send davContentType text/x-vcard in
 	  -renderListEntry: (v1.5.98)

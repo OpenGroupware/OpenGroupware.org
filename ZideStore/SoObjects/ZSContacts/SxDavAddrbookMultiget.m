@@ -78,7 +78,7 @@
 
 #include "SxAddressFolder.h"
 #include <SaxObjC/XMLNamespaces.h>
-#include <ZSBackend/SxAptManager.h>
+#include <ZSBackend/SxContactManager.h>
 #include "common.h"
 
 @implementation SxDavAddrbookMultiget
@@ -143,7 +143,7 @@ static BOOL debugOn = NO;
     if ([self isDebuggingEnabled])
       [self debugWithFormat:@"got %d contacts ...", [contactIDs count]];
     
-    return [manager pkeysAndModDatesAndICalsForGlobalIDs:contactIDs];
+    return [manager idsAndVersionsAndVCardsForGlobalIDs:contactIDs];
   }
 
   [self logWithFormat:@"got no dates for request"];
@@ -152,11 +152,11 @@ static BOOL debugOn = NO;
 
 /* generate response */
 
-- (NSString *)hrefForContact:(id)_event inContext:(WOContext *)_ctx {
+- (NSString *)hrefForContact:(id)_contact inContext:(WOContext *)_ctx {
   NSString *u;
   id pkey;
 
-  if (![(pkey = [_event valueForKey:@"pkey"]) isNotEmpty])
+  if (![(pkey = [_contact valueForKey:@"companyId"]) isNotEmpty])
     return nil;
   
   u = [[self clientObject] baseURLInContext:_ctx];
@@ -179,11 +179,13 @@ static BOOL debugOn = NO;
   
   /* generate events */
   while ((contact = [self->results nextObject]) != nil) {
-    id vCard, href;
+    NSString *href;
+    id vCard;
+    
+    [self logWithFormat:@"CONTACT: %@", contact];
 
     href  = [self hrefForContact:contact inContext:_ctx];
-    vCard = [contact valueForKey:@"iCalData"];
-#warning FIXME
+    vCard = [contact valueForKey:@"vCardData"];
 
     [_r appendContentString:@"  <D:response>\n"];
     [_r appendContentString:@"    <D:href>"];
@@ -199,9 +201,9 @@ static BOOL debugOn = NO;
     [_r appendContentString:@"<D:getetag>"];
     // int's can't contain XML special chars ... (no appendContentXMLString)
     // TBD: might need quotes, not sure (eg <getetag>"233:23"</getetag>)
-    [_r appendContentString:[[contact valueForKey:@"pkey"] stringValue]];
+    [_r appendContentString:[[contact valueForKey:@"companyId"] stringValue]];
     [_r appendContentString:@":"];
-    [_r appendContentString:[[contact valueForKey:@"version"] stringValue]];
+    [_r appendContentString:[[contact valueForKey:@"objectVersion"] stringValue]];
     [_r appendContentString:@"</D:getetag>\n"];
     
     /* content-type */
@@ -210,10 +212,7 @@ static BOOL debugOn = NO;
     /* vCard */
     if ([vCard isNotEmpty]) {
       [_r appendContentString:@"<C:address-data>"];
-      [_r appendContentString:@"BEGIN:VCARD\r\n"];
-#warning FIXME
       [_r appendContentXMLString:[vCard stringValue]];
-      [_r appendContentString:@"END:VCARD\r\n"];
       [_r appendContentString:@"</C:address-data>\n"];
     }
     else {
