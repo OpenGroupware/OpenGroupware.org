@@ -376,6 +376,19 @@ static NSString *cachePath  = nil;
   return @"";
 }
 
+- (NSArray *)getIDsAndVersionsArrayInContext:(id)_ctx {
+  // a hack ...
+  NSString *csv;
+
+  if ((csv = [self getIDsAndVersionsInContext:_ctx]) == nil)
+    return nil;
+  
+  if ([csv length] == 0)
+    return [NSArray array];
+
+  return [csv componentsSeparatedByString:@"\n"];
+}
+
 - (id)getIDsAndVersionsAction:(id)_ctx {
   WOResponse *response;
   NSString *s;
@@ -391,30 +404,35 @@ static NSString *cachePath  = nil;
   return response;
 }
 
+- (NSString *)folderItemMimeType {
+  return nil;
+}
+
 - (id)performETagsQuery:(EOFetchSpecification *)_fspec inContext:(id)_ctx {
   // TODO: rewrite getIDsAndVersionsInContext: to return some array/dict
   NSMutableArray *entries;
-  NSString *csv;
   NSArray  *lines;
+  NSString *fldType = nil;
   unsigned i, count;
   
-  if ((csv = [self getIDsAndVersionsInContext:_ctx]) == nil)
+  if ((lines = [self getIDsAndVersionsArrayInContext:_ctx]) == nil)
     return nil;
   
-  if ([csv length] == 0)
+  if ((count = [lines count]) == 0)
     return [NSArray array];
   
-  lines   = [csv componentsSeparatedByString:@"\n"];
-  count   = [lines count];
   entries = [NSMutableArray arrayWithCapacity:count];
   
   // [self logWithFormat:@"process lines: %@", lines];
   
+  fldType = [self folderItemMimeType];
+  
   for (i = 0; i < count; i++) {
     NSDictionary *record;
     NSString *line, *pkey, *etag, *url;
-    id       keys[3], values[3];
+    id       keys[4], values[4];
     NSRange  r;
+    int      kcount = 0;
     
     line = [lines objectAtIndex:i];
     r    = [line rangeOfString:@":"];
@@ -429,12 +447,24 @@ static NSString *cachePath  = nil;
     
     url  = [[NSString alloc] initWithFormat:@"%@%@.ics", [self baseURL], pkey];
     
-    keys[0] = @"{DAV:}href";      values[0] = url;
-    keys[1] = @"davEntityTag";    values[1] = etag;
-    keys[2] = @"davResourceType"; values[2] = @"";
+    keys[kcount] = @"{DAV:}href"; values[kcount] = url;
+    kcount++;
+    
+    if ([etag isNotEmpty]) {
+      keys[kcount] = @"davEntityTag"; values[kcount] = etag;
+      kcount++;
+    }
+    
+    keys[kcount] = @"davResourceType"; values[kcount] = @"";
+    kcount++;
+    
+    if (fldType != nil) {
+      keys[kcount] = @"davContentType"; values[kcount] = fldType;
+      kcount++;
+    }
     
     record = [[NSDictionary alloc] initWithObjects:values forKeys:keys
-				   count:3];
+                                   count:kcount];
     [entries addObject:record];
     [record release]; record = nil;
     [url    release]; url    = nil;

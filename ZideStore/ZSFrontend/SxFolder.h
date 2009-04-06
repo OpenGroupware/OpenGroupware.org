@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2002-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2002-2009 SKYRIX Software AG
+  Copyright (C) 2006-2009 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -104,6 +104,8 @@
 - (id)DELETEAction:(id)_ctx;
 
 - (id)getIDsAndVersionsAction:(id)_ctx;
+- (NSString *)getIDsAndVersionsInContext:(id)_ctx;
+- (NSArray *)getIDsAndVersionsArrayInContext:(id)_ctx;
 
 @end
 

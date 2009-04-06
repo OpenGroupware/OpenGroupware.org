@@ -36,5 +36,28 @@
     isOOoVolume,
   );
   
+  SmallCadaverListSet = ( /* Cadaver 0.23.2 */
+    davResourceType,
+    davLastModified,
+    davContentLength,
+    davCheckedIn,
+    davCheckedOut,
+    davIsExecutable
+  );
+  
+  GroupDAVv2Set = (
+    davCurrentUserPrivilegeSet,
+    davEntityTag,
+    davCollectionTag,
+    davResourceType,
+    davCalendarComponentSet,
+    gdavComponentSet,
+    davDisplayName,
+    davSupportedAddressDataTypes,
+    davDescription,
+    davSupportedCalendarDataTypes,
+    davContentType
+  );
+  
   QueryETagsSet = ( davEntityTag, davResourceType );
 }
