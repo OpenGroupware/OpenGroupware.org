@@ -1,3 +1,8 @@
+2009-04-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* detect GroupDAVv2 queries and return etag/url/ctype, previous
+	  version did not return etags (baaad) (v1.5.122)
+
 2009-04-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* return text/calendar, not text/vcalendar as the MIME type (v1.5.121)

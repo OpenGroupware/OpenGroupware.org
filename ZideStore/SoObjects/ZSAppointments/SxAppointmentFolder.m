@@ -568,9 +568,14 @@ static BOOL addGroupToWriteACL = YES;
   return [[_entry keyValues][0] stringValue];
 }
 
+- (NSString *)folderItemMimeType {
+  return @"text/calendar"; // picked up by performETagsQuery:inContext:
+}
+
 - (id)renderListGIDEntry:(EOKeyGlobalID *)_entry {
   // contentlength,lastmodified,displayname,executable,resourcetype
   // checked-in,checked-out
+  // ^^^ Wrong, check the DAVPropSets.plist
   /*
     <key name="{DAV:}href"    >$baseURL$/$pkey$.vcf?sn=$sn$</key>
     <key name="davDisplayName">$sn$, $givenname$</key>
@@ -581,6 +586,9 @@ static BOOL addGroupToWriteACL = YES;
   
   if (_entry == nil)
     return nil;
+    
+  // TBD: CAREFUL this does NOT return an etag!!!
+  // TBD: quite an expensive method
   
   record = [NSMutableDictionary dictionaryWithCapacity:4];
   
@@ -619,6 +627,35 @@ static BOOL addGroupToWriteACL = YES;
 			  object:self selector:@selector(renderListGIDEntry:)];
 }
 
+- (id)performGroupDAVv2Query:(EOFetchSpecification *)_fs inContext:(id)_ctx {
+  /*
+    Important:
+      {DAV:}href
+      davEntityTag,
+      davContentType
+    TBD, nice to have:
+      davCurrentUserPrivilegeSet - permissions of login account on item
+      davDisplayName,
+      davDescription,
+    Empty:
+      davCollectionTag           - ctag, not on items
+      davResourceType,
+      davCalendarComponentSet,
+      gdavComponentSet,
+      davSupportedAddressDataTypes,
+      davSupportedCalendarDataTypes,
+   */
+  EOQualifier *q = nil;
+  
+  if ([self doExplainQueries]) {
+    [self logWithFormat:@"EXPLAIN: doing GroupDAVv2 query ..."];
+    if ((q = [_fs qualifier]))
+      [self logWithFormat:@"  ignoring qualifier: %@", q];
+  }
+  
+  return [self performETagsQuery:_fs inContext:_ctx];
+}
+
 - (NSString *)getIDsAndVersionsInContext:(id)_ctx {
   SxAptManager *am;
   NSString     *csv;
@@ -636,16 +673,21 @@ static BOOL addGroupToWriteACL = YES;
   inContext:(id)_ctx
 {
   static NSSet *cadaverSet = nil;
+  static NSSet *gd2Set     = nil;
   SEL handler = NULL;
   
   if (cadaverSet == nil)
     cadaverSet = [[self propertySetNamed:@"CadaverListSet"] copy];
+  if (gd2Set == nil)
+    gd2Set = [[self propertySetNamed:@"GroupDAVv2Set"] copy];
   
   if ([propNames count] == 1) {
     NSString *propName;
     
     propName = [propNames anyObject];
-    if ([propName isEqualToString:@"davURL"])
+    if ([propName isEqualToString:@"davURL"]) // {DAV:}href
+      return @selector(performDavURLQuery:inContext:);
+    if ([propName isEqualToString:@"{DAV:}href"]) // {DAV:}href
       return @selector(performDavURLQuery:inContext:);
     if ([propName isEqualToString:@"davEntityTag"])
       return @selector(performETagsQuery:inContext:);
@@ -662,8 +704,13 @@ static BOOL addGroupToWriteACL = YES;
     }
   }
   
-  if ([propNames isSubsetOfSet:cadaverSet])
+  if ([propNames isSubsetOfSet:gd2Set])
+    return @selector(performGroupDAVv2Query:inContext:);
+  
+  if ([propNames isSubsetOfSet:cadaverSet]) {
+    // careful: this method only fetches IDs
     return @selector(performListQuery:inContext:);
+  }
   
   handler = [super fetchSelectorForQuery:_fs onAttributeSet:propNames
                    inContext:_ctx];
