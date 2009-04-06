@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2006 Helge Hess
+  Copyright (C) 2006-2009 Helge Hess
+  Copyright (C) 2006-2009 Adam Williams
 
   This file is part of OpenGroupware.org.
 
@@ -28,6 +29,7 @@
   <calendar-multiget xmlns:D="DAV:" xmlns="urn:ietf:params:xml:ns:caldav">
     <D:prop>
       <D:getetag/>
+      <D:getcontenttype/>
       <calendar-data/>
     </D:prop>
     <D:href>/zidestore/dav/adam/Overview/10931.ics</D:href>
@@ -138,6 +140,7 @@ static BOOL debugOn = NO;
     // make an array of gids for each key (id) that represents
     // a valid date.  If you pass a non-date gid to the 
     // SxAptManager it will die with a signal 6.
+    // TBD(hh): why, how? backtrace?
     while ((tmp = [enumerator nextObject]) != nil) {
       tmp = [tm globalIDForPrimaryKey:tmp];
       if (tmp != nil) {
@@ -184,10 +187,9 @@ static BOOL debugOn = NO;
   
   /* generate events */
   while ((event = [self->results nextObject]) != nil) {
-    id ical, href, etag;
+    id ical, href;
 
     href = [self hrefForEvent:event inContext:_ctx];
-    etag = [event valueForKey:@"pkey"];
     ical = [event valueForKey:@"iCalData"];
 
     [_r appendContentString:@"  <D:response>\n"];
@@ -201,17 +203,19 @@ static BOOL debugOn = NO;
     [_r appendContentString:@"      <D:prop>\n"];
     /* etag */
     [_r appendContentString:@"<D:getetag>"];
-    [_r appendContentXMLString:[[event valueForKey:@"pkey"] stringValue]];
-    [_r appendContentXMLString:@":"];
-    [_r appendContentXMLString:[[event valueForKey:@"version"] stringValue]];
+    // int's can't contain XML special chars ... (no appendContentXMLString)
+    // TBD: might need quotes, not sure (eg <getetag>"233:23"</getetag>)
+    [_r appendContentString:[[event valueForKey:@"pkey"] stringValue]];
+    [_r appendContentString:@":"];
+    [_r appendContentString:[[event valueForKey:@"version"] stringValue]];
     [_r appendContentString:@"</D:getetag>\n"];
     /* ical */
     if ([ical isNotEmpty]) {
       [_r appendContentString:@"<C:calendar-data>"];
-      [_r appendContentXMLString:@"BEGIN:VCALENDAR\r\n"];
-      [_r appendContentXMLString:@"VERSION:2.0\r\n"];
+      [_r appendContentString:@"BEGIN:VCALENDAR\r\n"];
+      [_r appendContentString:@"VERSION:2.0\r\n"];
       [_r appendContentXMLString:[ical stringValue]];
-      [_r appendContentXMLString:@"END:VCALENDAR\r\n"];
+      [_r appendContentString:@"END:VCALENDAR\r\n"];
       [_r appendContentString:@"</C:calendar-data>\n"];
     } else {
         [self errorWithFormat:@"got no iCalendar data for event: %@", event];

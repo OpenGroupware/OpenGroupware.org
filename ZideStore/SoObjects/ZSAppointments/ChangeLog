@@ -1,5 +1,9 @@
 2009-04-06  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SxDavCalendarMultiget.m: minor code cleanups (v1.5.123)
+
+2009-04-06  Helge Hess  <helge.hess@opengroupware.org>
+
 	* detect GroupDAVv2 queries and return etag/url/ctype, previous
 	  version did not return etags (baaad) (v1.5.122)
 
