@@ -1,3 +1,8 @@
+2009-04-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAddressFolder.m: send davContentType text/x-vcard in
+	  -renderListEntry: (v1.5.98)
+
 2008-03-11  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAddressFolder.m: added gdavComponentSet (v1.5.97)
