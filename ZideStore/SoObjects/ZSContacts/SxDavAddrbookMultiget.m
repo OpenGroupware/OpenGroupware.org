@@ -146,7 +146,7 @@ static BOOL debugOn = NO;
     return [manager idsAndVersionsAndVCardsForGlobalIDs:contactIDs];
   }
 
-  [self logWithFormat:@"got no dates for request"];
+  [self debugWithFormat:@"got no contacts for request"];
   return nil;
 }
 
@@ -182,7 +182,8 @@ static BOOL debugOn = NO;
     NSString *href;
     id vCard;
     
-    [self logWithFormat:@"CONTACT: %@", contact];
+    if ([self isDebuggingEnabled])
+      [self debugWithFormat:@"CONTACT: %@", contact];
 
     href  = [self hrefForContact:contact inContext:_ctx];
     vCard = [contact valueForKey:@"vCardData"];
