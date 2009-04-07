@@ -894,7 +894,7 @@ static BOOL HasSkyProject4Desktop    = NO;
     
     comment = [l valueForKey:@"Add job link to %@ [team:%@]."];
     comment = [NSString stringWithFormat:comment, label, teamLabel];
-    [self _addLogForGlobalID:gid action:@"created" comment:comment];
+    [self _addLogForGlobalID:gid action:@"05_changed" comment:comment];
   }
 }
 
