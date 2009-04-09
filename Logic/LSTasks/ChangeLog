@@ -1,3 +1,10 @@
+2009-04-09  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSFetchToDoJobsCommand.m: modified command to lookup a users team
+	  membership via Logic rather than relying on the get-relation stuff
+	  which fails to enumerate teams after a user changes their password.
+	  (v5.3.29)
+
 2009-03-31  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSNewJobCommand.m: removed ancient bit of "divided" logic when

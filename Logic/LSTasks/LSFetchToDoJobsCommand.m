@@ -28,6 +28,7 @@
   NSCalendarDate *startDate;
   NSCalendarDate *endDate;
   NSString       *accountId;
+  NSString       *idString;
 }
 
 @end
@@ -40,6 +41,7 @@
   [self->startDate release];
   [self->endDate   release];
   [self->accountId release];
+  [self->idString  release];
   [super dealloc];
 }
 
@@ -70,49 +72,42 @@
   return @"executantId";
 }
 
+- (void)setIdString:(NSString *)_idString {
+  ASSIGNCOPY(self->idString, _idString);
+}
+- (NSString *)idString {
+  return self->idString;
+}
+
 /* operation */
 
-- (NSString *)_idString {
-  NSMutableSet *idSet;
-  NSEnumerator *listEnum;
-  id           item;
-  
-  // Note: the 'object' is an array, this is done in LSDBFetchRelationCommand
-  idSet    = [NSMutableSet setWithCapacity:16];
-  listEnum = [[self object] objectEnumerator];
-  
-  while ((item = [listEnum nextObject]) != nil) {
-    NSNumber *pKey;
-    NSArray  *gr;
+- (NSString *)_buildIdString:(id)_context {
+  NSArray         *teams;
+  NSEnumerator    *enumerator;
+  NSMutableArray  *idSet;
+  id              tmp;
 
-    pKey = [item valueForKey:[self sourceKey]];
-    [self assert:(pKey != nil) reason:@"found foreign key which is nil !"];
-    
-    if (![pKey isNotNull])
-      continue;
-    
-    [idSet addObject:pKey];
-
-    // getGroups
-    gr = [[item valueForKey:@"groups"]
-	        map:@selector(valueForKey:)
-                with:@"companyId"];
-    [idSet addObjectsFromArray:gr];
+  idSet = [NSMutableArray arrayWithCapacity:64];
+  [idSet addObject:[self accountId]];
+  teams = [_context runCommand:@"companyassignment::get",
+                               @"subCompanyId", [self accountId],
+                               @"returnType", intObj(LSDBReturnType_ManyObjects),
+                               nil];
+  enumerator = [teams objectEnumerator];
+  while ((tmp = [enumerator nextObject]) != nil) {
+    [idSet addObject:[tmp valueForKey:@"companyId"]];
   }
-  return [[idSet allObjects] componentsJoinedByString:@","];
-  
+  return [idSet componentsJoinedByString:@","];
 }
 
 - (void)_prepareForExecutionInContext:(id)_context {
   [self setAccountId:[[_context valueForKey:LSAccountKey] valueForKey:@"companyId"]];
+  [self setIdString:[self _buildIdString:_context]];
   [super _prepareForExecutionInContext:_context];
 }
 
 - (EOSQLQualifier *)_qualifier {
   EOSQLQualifier *qualifier;
-  NSString *s;
-  
-  s = [self _idString];
   
   qualifier = [EOSQLQualifier alloc];
   if ([self->startDate isNotNull] && [self->endDate isNotNull]) {
@@ -138,7 +133,7 @@
                                  @"jobStatus", LSJobArchived,
                                  @"jobStatus", LSJobDone,
                                  @"creatorId", [self accountId],
-                                 @"executantId", s,
+                                 @"executantId", [self idString],
                                  @"endDate",   formattedBegin,
                                  @"jobStatus", LSJobCreated,
                                  @"endDate",   formattedEnd, nil];
@@ -151,7 +146,7 @@
                               @"jobStatus", LSJobArchived,
                               @"jobStatus", LSJobDone,
                               @"creatorId", [self accountId],
-                              @"executantId", s,
+                              @"executantId", [self idString],
                               nil];
      }
   return [qualifier autorelease];
