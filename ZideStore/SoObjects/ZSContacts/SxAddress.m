@@ -802,6 +802,7 @@ static BOOL debugEO = NO;
 
 - (id)GETAction:(WOContext *)_ctx {
   SxContactManager *manager;
+  NSException  *error;
   NSEnumerator *e;
   WOResponse   *response;
   NSString     *vCard;
@@ -809,6 +810,11 @@ static BOOL debugEO = NO;
   NSDictionary *result;
   NSString     *etag;
   EOGlobalID   *gid;
+  
+  /* check HTTP preconditions */
+  
+  if ((error = [self matchesRequestConditionInContext:_ctx]) != nil)
+    return error;
 
   if ((gid = [self globalID]) == nil) {
     return [NSException exceptionWithHTTPStatus:404 /* not found */

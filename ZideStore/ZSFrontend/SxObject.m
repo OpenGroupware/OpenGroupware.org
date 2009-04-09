@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2009 SKYRIX Software AG
+  Copyright (C) 2009      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -427,20 +428,20 @@ static BOOL kontactGroupDAV = YES;
     cc = [(WORequest *)[_ctx request] clientCapabilities];
     if ([[cc userAgentType] isEqualToString:@"Konqueror"]) {
       if ([cc majorVersion] == 3 && [cc minorVersion] == 4) {
-	[self logWithFormat:
-		@"WARNING: applying Kontact 3.4 GroupDAV hack"
-		@" - etag check is disabled!"
-		@" (can be enabled using 'ZSDisableKontact34GroupDAVHack')"];
-	return nil;
+        [self logWithFormat:
+          @"WARNING: applying Kontact 3.4 GroupDAV hack"
+          @" - etag check is disabled!"
+          @" (can be enabled using 'ZSDisableKontact34GroupDAVHack')"];
+        return nil;
       }
     }
   }
   
   // TODO: we might want to return the davEntityTag in the response
   [self debugWithFormat:@"etag '%@' does not match: %@", etag, 
-	[etags componentsJoinedByString:@","]];
+          [etags componentsJoinedByString:@","]];
   return [NSException exceptionWithHTTPStatus:412 /* Precondition Failed */
-		      reason:@"Precondition Failed"];
+                      reason:@"Precondition Failed"];
 }
 
 - (NSException *)checkIfNoneMatchCondition:(NSString *)_c inContext:(id)_ctx {
@@ -449,16 +450,52 @@ static BOOL kontactGroupDAV = YES;
     
     Can be used for PUT to ensure that the object does not exist in the store
     and for GET to retrieve the content only if if the etag changed.
+    
+    GET /123.ics
+    If-None-Match: 123
+    => 304 if davEntityTag is still 123
+    
+    PUT /new.ics
+    If-None-Match: *
+    => 412 if 'new.ics' already exists
   */
-#if 0
-  if ([_c isEqualToString:@"*"])
+  /* only run the request if one of the etags matches the resource etag */
+  NSArray  *etags;
+  NSString *etag;
+  
+  if ([_c isEqualToString:@"*"]) {
+    /* to ensure that the resource does NOT exist! */
+    if ([self isNew])
+      return nil;
+    if ([self objectInContext:_ctx] == nil)
+      return nil;
+
+    return [NSException exceptionWithHTTPStatus:412 /* Precondition Failed */
+                        reason:@"Precondition Failed"];
+  }
+  
+  if ((etags = [self parseETagList:_c]) == nil)
+    return nil;
+  if ([etags count] == 0) /* no etags to check for? */
     return nil;
   
-  if ((a = [self parseETagList:_c]) == nil)
+  etag = [self davEntityTag];
+  if ([etag length] == 0) /* has no etag, ignore */
     return nil;
-#else
-  [self logWithFormat:@"TODO: implement if-none-match for etag: '%@'", _c];
-#endif
+  
+  if ([etags containsObject:etag]) {
+    // TODO: we might want to return the davEntityTag in the response
+
+    [self debugWithFormat:@"etag '%@' matches: %@", etag, 
+            [etags componentsJoinedByString:@","]];
+            
+    // TBD: 304 might not be correct for all situations!
+    return [NSException exceptionWithHTTPStatus:304 /* Not Modified */
+                        reason:@"Not Modified"];
+  }
+  
+  [self debugWithFormat:@"etag '%@' does not match: %@", etag, 
+          [etags componentsJoinedByString:@","]];
   return nil;
 }
 

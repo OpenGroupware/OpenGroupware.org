@@ -1,3 +1,7 @@
+2009-04-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAddress.m: check for If-None-Match preconditions in GET (v1.5.101)
+
 2009-04-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* activated CardDAV multiget REPORT (v1.5.100)
