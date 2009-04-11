@@ -291,7 +291,7 @@
         forEntity:(NSString *)_entity {
   NSArray              *keys;
   NSString             *key;
-  NSString             *command, *attribute;
+  NSString             *command, *attribute, *logText;
   id                   value, tmp , company, eo;
   int                   count;
   NSException          *exception;
@@ -374,6 +374,7 @@
 
   /* Add & test snapshot if event is an update */
   if ([_command isEqualToString:@"set"]) {
+    logText = @"Company object updated via zOGI API client.";
     if ([self isDebug])
       [self logWithFormat:@"Performing update of %@", 
          [company objectForKey:@"companyId"]];
@@ -413,9 +414,11 @@
   } else {
       /* Creating a new company, remove companyId */
       [company removeObjectForKey:@"companyId"];
+      logText = @"Company object created via zOGI API client.";
     }
 
   /* Execute Logic Command */
+  [company setObject:logText forKey:@"logText"];
   company = [[self getCTX] runCommand:command arguments:company];
   /* Create exception on failure */
   if ([company objectForKey:@"companyId"] == nil) {

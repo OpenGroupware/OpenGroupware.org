@@ -1,5 +1,8 @@
 2009-04-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* zOGIAction+Company.m: Added more specific logging for Contact and
+	  Enterprise creation and update. (v1.5.56)
+
 	* zOGIAction+Appointment.m|h: Added logging on appointment updates.
 	  (v1.5.55)
 
