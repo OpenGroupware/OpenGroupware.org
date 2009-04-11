@@ -496,7 +496,8 @@
               withFlags:(NSArray *)_flags {
   return [self _writeAppointment:_appointment
                      withCommand:@"appointment::new"
-                       withFlags:_flags];
+                       withFlags:_flags
+                     withLogText:@"Appointment created via a zOGI API client."];
 } /* end _createAppointment */
 
 /*
@@ -507,7 +508,8 @@
               withFlags:(NSArray *)_flags {
   return [self _writeAppointment:_appointment
                      withCommand:@"appointment::set"
-                       withFlags:_flags];
+                       withFlags:_flags
+                     withLogText:@"Appointment updated via a zOGI API client."];
 } /* end _updateAppointment */
 
 /* 
@@ -538,7 +540,8 @@
    TODO: Check for version conflicts */
 -(id)_writeAppointment:(NSDictionary *)_appointment
            withCommand:(NSString *)_command
-             withFlags:(NSArray *)_flags {
+             withFlags:(NSArray *)_flags
+           withLogText:(NSString *)_logText {
   id                     appointment, exception, tmp;
   NSDictionary          *resource, *eoResource;
   NSEnumerator	        *enumerator;
@@ -600,12 +603,12 @@
   } /* end if-no-participants */
 
   /* perform logic command */
+  [appointment setObject:_logText forKey:@"logText"];
   if ([self isDebug])
     [self logWithFormat:@"performing %@ on appointment %@",
        _command,
        [appointment valueForKey:@"dateId"]];
-  appointment = [[self getCTX] runCommand:_command
-                                arguments:appointment];
+  appointment = [[self getCTX] runCommand:_command arguments:appointment];
   if ([appointment valueForKey:@"dateId"] == nil) {
     exception = [NSException exceptionWithHTTPStatus:500
                              reason:@"Failure to write appointment"];
