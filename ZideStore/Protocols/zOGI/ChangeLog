@@ -1,3 +1,8 @@
+2009-04-10 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Appointment.m: Added logging for participant status
+	  updates. (v1.5.54)
+
 2009-04-03 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Task.m: If the parentTaskObjectId during a putObject
