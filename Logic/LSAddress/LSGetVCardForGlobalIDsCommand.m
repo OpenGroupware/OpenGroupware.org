@@ -62,6 +62,7 @@
 @implementation LSGetVCardForGlobalIDsCommand
 
 static NSString     *LSAttachmentPath = nil;
+static BOOL          LSHashCache = NO;
 static NSString     *skyrixId = nil;
 static NSDictionary *telephoneMapping = nil;
 static NSDictionary *addressMapping = nil;
@@ -75,8 +76,14 @@ static NSDictionary *addressMapping = nil;
   
   addressMapping   = [[ud dictionaryForKey:@"LSVCard_AddressMapping"]   copy];
   telephoneMapping = [[ud dictionaryForKey:@"LSVCard_TelephoneMapping"] copy];
-  
-  LSAttachmentPath = [[ud stringForKey:@"LSAttachmentPath"] copy];
+
+  LSHashCache = [ud boolForKey:@"LSHashVCFCache"];
+  if (LSHashCache)
+    NSLog(@"Hashing of cached vCard data enabled.");
+
+  LSAttachmentPath = [[ud stringForKey:@"LSVCFCachePath"] copy];
+  if (![LSAttachmentPath isNotEmpty])
+    LSAttachmentPath = [[ud stringForKey:@"LSAttachmentPath"] copy];
   if ([LSAttachmentPath isNotEmpty])
     NSLog(@"Note: storing cached vCards files in: '%@'", LSAttachmentPath);
   else
@@ -248,6 +255,16 @@ static NSDictionary *addressMapping = nil;
   path = LSAttachmentPath;
   
   file = [[NSString alloc] initWithFormat:@"%@.%@.vcf", cId, oV];
+  if (LSHashCache)
+  {
+    int        offset;
+    NSString  *hash;
+
+    offset = [[cId stringValue] length] - 2;
+    hash = [[cId stringValue] substringFromIndex:offset];
+    hash = [NSString stringWithFormat:@"vcfdir%@", hash];
+    path = [path stringByAppendingPathComponent:hash];
+  }
   path = [path stringByAppendingPathComponent:file];
   [file release]; file = nil;
   
@@ -279,12 +296,24 @@ static NSDictionary *addressMapping = nil;
     return;
   }
 
+  manager = [NSFileManager defaultManager];
+
   path = LSAttachmentPath;
+  if (LSHashCache)
+  {
+    int        offset;
+    NSString  *hash;
+
+    offset = [[cId stringValue] length] - 2;
+    hash = [[cId stringValue] substringFromIndex:offset];
+    hash = [NSString stringWithFormat:@"vcfdir%@", hash];
+    path = [path stringByAppendingPathComponent:hash];
+    if (![manager fileExistsAtPath:path])
+      [manager createDirectoryAtPath:path attributes:nil];
+  }
   file = [NSString stringWithFormat:@"%@.%@.vcf", cId, oV];
   path = [path stringByAppendingPathComponent:file];
 
-  manager = [NSFileManager defaultManager];
-  
   if ([manager fileExistsAtPath:path])
     [manager removeFileAtPath:path handler:nil];
   

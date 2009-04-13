@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=106
+SUBMINOR_VERSION:=107
 
 # v5.3.95 requires libLSFoundation v5.3.129
 # v5.3.80 requires OGoModel        v5.3.17

@@ -1,3 +1,12 @@
+2009-04-13  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetVCardForGlobalIDsCommand.m: Added support for relocating and
+	  hashing the cache of vCard data in the filesystem.  Previously
+	  cache vCards was flat in the LSAttachementPath.  It is now possible
+	  to specify an alternate location via the LSVCFCachePath default and
+	  to enable hashing of the files into subdirectories by enableing the
+	  LSHashVCFCache default. (v5.4.107)
+
 2009-04-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetVCardForGlobalIDsCommand.m: fixed a major bug in key retrieval
