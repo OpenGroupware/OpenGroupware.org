@@ -103,11 +103,11 @@ static BOOL debugOn = NO;
   }
 
   // retrieve the contacts for the requested ids
-  self->results = [self fetchContactsInContext:[self context]];
+  self->results = [[self fetchContactsInContext:[self context]] retain];
 
   // if there are no valid requested contacts make an empty enumerator
   if (self->results == nil) {
-    self->results = [[NSArray array] objectEnumerator];
+    self->results = [[[NSArray array] objectEnumerator] retain];
   }
   else if ([self->results isKindOfClass:[NSException class]]) {
     [self errorWithFormat:@"failed to fetch: %@", self->results];
@@ -237,9 +237,10 @@ static BOOL debugOn = NO;
   id<DOMNodeList> children;
   unsigned        i, count;
 
-  self->ids = [NSMutableArray arrayWithCapacity:128];
+  self->ids    = [[NSMutableArray alloc] initWithCapacity:128];
   queryElement = [[_rq contentAsDOMDocument] documentElement];
-  children = [queryElement childNodes];
+  children     = [queryElement childNodes];
+  
   for (i = 0, count = [children length]; i < count; i++) {
     id<DOMElement>  node;
 

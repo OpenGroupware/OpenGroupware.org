@@ -1,3 +1,7 @@
+2009-04-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxDavAddrbookMultiget.m: fixed dbl-release bugs (v1.5.102)
+
 2009-04-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAddress.m: check for If-None-Match preconditions in GET (v1.5.101)

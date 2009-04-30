@@ -101,15 +101,16 @@ static BOOL debugOn = NO;
   }
 
   // retrieve the dates for the requested ids
-  self->results = [self fetchDatesInContext:[self context]];
+  self->results = [[self fetchDatesInContext:[self context]] retain];
 
   // if there are no valid requested dates make an empty enumerator
   if (self->results == nil) {
-    self->results = [[NSArray array] objectEnumerator];
-  } else if ([self->results isKindOfClass:[NSException class]]) {
-      [self errorWithFormat:@"failed to fetch: %@", self->results];
-      return self->results;
-    }
+    self->results = [[[NSArray array] objectEnumerator] retain];
+  }
+  else if ([self->results isKindOfClass:[NSException class]]) {
+    [self errorWithFormat:@"failed to fetch: %@", self->results];
+    return self->results;
+  }
 
   // buld the response  
   [self appendToResponse:[[self context] response] inContext:[self context]];
@@ -133,10 +134,11 @@ static BOOL debugOn = NO;
   if (_ctx != nil) {
     manager = [self aptManagerInContext:_ctx];
     // get an OGo commandContext so we can have a typeManager
-    ctx = [[self clientObject] commandContextInContext:[self context]];
-    tm = [ctx typeManager];
-    dates = [NSMutableArray arrayWithCapacity:[self->ids count]];
+    ctx        = [[self clientObject] commandContextInContext:[self context]];
+    tm         = [ctx typeManager];
+    dates      = [NSMutableArray arrayWithCapacity:[self->ids count]];
     enumerator = [self->ids objectEnumerator];
+    
     // make an array of gids for each key (id) that represents
     // a valid date.  If you pass a non-date gid to the 
     // SxAptManager it will die with a signal 6.
@@ -153,7 +155,9 @@ static BOOL debugOn = NO;
       if ([self isDebuggingEnabled])
         [self debugWithFormat:@"got %d events ...", [dates count]];
       return [manager pkeysAndModDatesAndICalsForGlobalIDs:dates];
-    } else [self logWithFormat:@"got no dates for request"];
+    }
+    else
+      [self logWithFormat:@"got no dates for request"];
   }
   return nil;
 }
@@ -237,11 +241,12 @@ static BOOL debugOn = NO;
   id<DOMNodeList> children;
   unsigned        i, count;
 
-  self->ids = [NSMutableArray arrayWithCapacity:128];
+  self->ids    = [[NSMutableArray alloc] initWithCapacity:128];
   queryElement = [[_rq contentAsDOMDocument] documentElement];
-  children = [queryElement childNodes];
+  children     = [queryElement childNodes];
+  
   for (i = 0, count = [children length]; i < count; i++) {
-    id<DOMElement>  node;
+    id<DOMElement> node;
 
     node = [children objectAtIndex:i];
     if ([node nodeType] != DOM_ELEMENT_NODE)
