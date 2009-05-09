@@ -33,6 +33,19 @@
 
 static int zOGIDebugOn = -1;
 static int zOGIProfileOn = -1;
+static int zOGITaskDeleteEnabled = -1;
+
++ (void)initialize {
+  NSUserDefaults *ud;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  zOGIDebugOn = [ud boolForKey:@"zOGIDebugEnabled"];
+  if (zOGIDebugOn) NSLog(@"Note: zOGI debugging enabled.");
+  zOGIProfileOn = [ud boolForKey:@"zOGIProfileEnabled"];
+  if (zOGIProfileOn) NSLog(@"Note: zOGI profiling enabled.");
+  zOGITaskDeleteEnabled = [ud boolForKey:@"zOGITaskDeleteEnabled"];
+  if (zOGITaskDeleteEnabled) NSLog(@"Note: Task deletion via zOGI enabled.");
+}
 
 -(id)init
 {
@@ -56,21 +69,9 @@ static int zOGIProfileOn = -1;
 
 /* accessors */
 
-- (BOOL)isDebug 
-{
-  if (zOGIDebugOn == -1)
-    zOGIDebugOn = [[NSUserDefaults standardUserDefaults]
-                      boolForKey:@"zOGIDebugEnabled"];
-  return zOGIDebugOn;
-}
-
-- (BOOL)isProfile
-{
-  if (zOGIProfileOn == -1)
-    zOGIProfileOn = [[NSUserDefaults standardUserDefaults]
-                      boolForKey:@"zOGIProfileEnabled"];
-  return zOGIProfileOn;
-}
+- (BOOL)isDebug { return zOGIDebugOn; }
+- (BOOL)isProfile { return zOGIProfileOn; }
+- (BOOL)allowTaskDelete { return zOGITaskDeleteEnabled; }
 
 - (void)setArg1:(id)_arg 
 {

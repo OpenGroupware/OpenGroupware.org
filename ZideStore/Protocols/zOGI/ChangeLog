@@ -6,6 +6,9 @@
 
 	* zOGIAction.m: Added some error checking & logging. (v1.5.57)
 
+	* zOGIAction.m: Moved static defaults loading into initialize, added
+	  the zOGITaskDeleteEnabled default. (v1.5.58)
+
 2009-04-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Company.m: Added more specific logging for Contact and
