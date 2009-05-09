@@ -30,10 +30,13 @@
 -(NSMutableDictionary *)_renderTaskFromEO:(EOGenericRecord *)_task {
   NSMutableDictionary   *task;
 
+  if ([self isDebug])
+    [self logWithFormat:@"zOGI rendering task#%@", 
+                        [_task objectForKey:@"jobId"]];
   task = [NSMutableDictionary dictionaryWithObjectsAndKeys:
             [self ZERO:[_task valueForKey:@"objectVersion"]], @"version",
             @"Task", @"entityName",
-            [_task valueForKey:@"creatorId"], @"creatorObjectId",
+            [self ZERO:[_task valueForKey:@"creatorId"]], @"creatorObjectId",
             [_task valueForKey:@"jobId"], @"objectId",
             [self ZERO:[_task valueForKey:@"isTeamJob"]], @"isTeamJob",
             [self NIL:[_task valueForKey:@"jobStatus"]], @"status",
@@ -92,7 +95,7 @@
     [self _addObjectDetails:task withDetail:_detail];
     /* when add details is complete it removes the eoObject reference
        from the data automatically */
-   }
+  }
   return task;
 } /* end _renderTask */
 
@@ -284,6 +287,10 @@
     return [NSException exceptionWithHTTPStatus:500
                         reason:@"Failure to create task"];
   }
+  if ([self isDebug]) {
+    [self logWithFormat:@"zOGI creation of task#%@", 
+                         [taskObject objectForKey:@"jobId"]];
+  }
   [self _saveObjectLinks:[_task objectForKey:@"_OBJECTLINKS"] 
                forObject:[taskObject valueForKey:@"jobId"]];
   [self _saveProperties:[_task objectForKey:@"_PROPERTIES"]
@@ -376,6 +383,33 @@
 {
 }
 
+/* Rewrite zOGI key to something the OGo Logic layer wants to see */
+-(NSString *)_translateTaskKey:(NSString *)key {
+  if ([key isEqualToString:@"executantObjectId"])
+    return @"executantId";
+  if ([key isEqualToString:@"creatorObjectId"])
+    return @"creatorId";
+  if ([key isEqualToString:@"status"])
+    return @"jobStatus";
+  if ([key isEqualToString:@"objectProjectId"])
+    return @"projectId";
+  if ([key isEqualToString:@"parentTaskObjectId"])
+    return @"parentJobId";
+  if ([key isEqualToString:@"kind"])
+    return @"kind";
+  if ([key isEqualToString:@"objectId"])
+    return @"jobId";
+  if ([key isEqualToString:@"start"])
+    return @"startDate";
+  if ([key isEqualToString:@"end"])
+    return @"endDate";
+  if ([key isEqualToString:@"entityName"] ||
+      [key isEqualToString:@"isTeamJob"] ||
+      [[key substringToIndex:1] isEqualToString:@"_"])
+    return nil;
+  return key;
+} /* end _translateTaskKey */
+
 /* Rewrite zOGI dictionary to something the OGo Logic layer wants to see */
 -(NSMutableDictionary *)_translateTask:(NSDictionary *)_task {
   NSMutableDictionary   *task;
@@ -420,6 +454,9 @@
       } else { 
           [task setObject:[_task objectForKey:@"objectId"] forKey:@"jobId"];
          }
+    } else if ([key isEqualToString:@"creatorObjectId"]) {
+        [task setObject:[_task objectForKey:@"creatorObjectId"]
+                 forKey:@"creatorId"];
     } else if ([key isEqualToString:@"entityName"] ||
                [key isEqualToString:@"isTeamJob"]) {
       // These atttributes are deliberately dropped
@@ -437,6 +474,52 @@
   return task;
 } /* end _translateTask */
 
+-(NSArray *)_translateTaskQuery:(id)_query {
+  NSArray        *input;
+  NSEnumerator   *enumerator;
+  NSMutableArray *query;
+  id              tmp;
+  NSString       *key;
+  
+  [self logWithFormat:@"_translateTaskQuery"];
+  /* Clients written in PHP are crap */
+  if ([_query isKindOfClass:[NSDictionary class]])
+    input = [_query allValues];
+    else input = _query;
+
+  [self logWithFormat:@"_translateTaskQuery/"];
+  query = [NSMutableArray arrayWithCapacity:[input count]];
+  enumerator = [input objectEnumerator];
+  while ((tmp = [enumerator nextObject]) != nil)
+  {
+    [self logWithFormat:@"_translateTaskQuery++"];
+    NSMutableDictionary *entry;
+    entry = [NSMutableDictionary dictionaryWithCapacity:4];
+    if ([[tmp objectForKey:@"conjunction"] isNotNull])
+      [entry setObject:[tmp objectForKey:@"conjunction"]
+                forKey:@"conjunction"];
+    if ([[tmp objectForKey:@"expression"] isNotNull])
+      [entry setObject:[tmp objectForKey:@"expression"]
+                forKey:@"expression"];
+    if ([[tmp objectForKey:@"clause"] isNotNull])
+    {
+      [entry setObject:[self _translateTaskQuery:[tmp objectForKey:@"clause"]]
+                forKey:@"clause"];
+      [query addObject:entry];
+    } else
+      {
+        key = [self _translateTaskKey:[tmp objectForKey:@"key"]];
+        if ([key isNotNull])
+        {
+          [entry setObject:key                         forKey:@"key"];
+          [entry setObject:[tmp objectForKey:@"value"] forKey:@"value"];
+          [query addObject:entry];
+        }
+      }
+  } // end while
+  return query;
+} /* end translateTaskQuery */
+
 -(NSArray *)_searchForTasks:(id)_query 
                  withDetail:(NSNumber *)_detail
                   withFlags:(NSDictionary *)_flags {
@@ -444,7 +527,15 @@
      specifying a task list. */
  if ([_query isKindOfClass:[NSString class]]) {
    return [self _getTaskList:_query withDetail:_detail];
-  }
+  } else {
+      NSArray *query, *tasks;
+      query = [self _translateTaskQuery:_query];
+      tasks = [[self getCTX] runCommand:@"job::criteria-search", 
+                                        @"criteria", query, 
+                                        @"maxSearchCount", [_flags objectForKey:@"limit"],
+                                        nil];
+      return [self _renderTasks:tasks withDetail:_detail];
+     }
  return [[NSArray alloc] init];
 } /* end _searchForTasks */
 

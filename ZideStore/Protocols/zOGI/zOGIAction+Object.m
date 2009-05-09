@@ -177,6 +177,10 @@
   id                  link;
 
   eo = [self _getEOForPKey:[_object valueForKey:@"objectId"]];
+  if (eo == nil) {
+    [self warnWithFormat:@"Unable to marshal EO for link retrieval."];
+    return;
+  }
   linkList = [NSMutableArray arrayWithCapacity:16];
   links = [[[self getCTX] linkManager] allLinksTo:(id)eo];
   if (links != nil) {

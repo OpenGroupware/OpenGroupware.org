@@ -170,7 +170,7 @@ static int zOGIProfileOn = -1;
   tmp = [NSNumber numberWithInt:[_arg intValue]];
   if ([tmp intValue] == 0)
   {
-    [self warnWithFormat:@"Arguement not understood by getEOForPKey"];
+    [self warnWithFormat:@"Arguement '%@' not understood by getEOForPKey", _arg];
     /* TODO: THROW AN EXCEPTION */
     tmp = nil;
   }

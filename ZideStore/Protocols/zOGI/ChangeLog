@@ -1,3 +1,11 @@
+2009-05-09 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Object.m: Added some error checking & logging. (v1.5.57)
+
+	* zOGIAction+Task.m: RPC side support for criteria searching. (v1.5.57)
+
+	* zOGIAction.m: Added some error checking & logging. (v1.5.57)
+
 2009-04-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Company.m: Added more specific logging for Contact and
