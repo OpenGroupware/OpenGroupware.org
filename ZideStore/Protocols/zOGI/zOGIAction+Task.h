@@ -50,6 +50,8 @@
 -(NSArray *)_searchForTasks:(id)_query 
                  withDetail:(NSNumber *)_detail
                   withFlags:(NSDictionary *)_flags;
+-(id)_deleteTask:(NSString *)_objectId withFlags:(NSArray *)_flags;
+
 @end
 
 #endif /* __zOGIAction_Task_H__ */

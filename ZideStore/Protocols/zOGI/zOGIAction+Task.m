@@ -539,4 +539,23 @@
  return [[NSArray alloc] init];
 } /* end _searchForTasks */
 
+-(id)_deleteTask:(NSString *)_objectId
+       withFlags:(NSArray *)_flags {
+
+  if ([self allowTaskDelete]) {
+    id job;
+    
+    job = [self _getUnrenderedTasksForKeys:_objectId];
+    if ([job count] == 1) {
+      [[self getCTX] runCommand:@"job::delete", @"object", [job objectAtIndex:0], nil];
+      [[self getCTX] commit];
+      return [self _makeUnknownObject:_objectId];
+    }
+    return [NSException exceptionWithHTTPStatus:500
+                        reason:@"Unable to marshal EO for task."];
+  } else return [NSException exceptionWithHTTPStatus:500
+                              reason:@"Deletion of tasks is not supported"];
+}
+
+
 @end /* End zOGIAction(Task) */

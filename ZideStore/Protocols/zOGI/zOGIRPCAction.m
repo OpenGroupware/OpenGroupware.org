@@ -387,9 +387,11 @@
                         reason:@"Deletion of invalid key requested"];
 
   /* select the correct deletion method based on entityName */
-  if ([entityName isEqualToString:@"Task"])
-    return [NSException exceptionWithHTTPStatus:500
-                        reason:@"Deletion of tasks is not supported"];
+  if ([self isDebug])
+    [self logWithFormat:@"request to delete %@#%@", entityName, objectId];
+  if ([entityName isEqualToString:@"Task"] || 
+      [entityName isEqualToString:@"Job"])
+    return [self _deleteTask:objectId withFlags:flags];
   else if ([entityName isEqualToString:@"Appointment"] ||
             [entityName isEqualToString:@"Date"])
     return [self _deleteAppointment:objectId withFlags:flags];

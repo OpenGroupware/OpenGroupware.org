@@ -1,3 +1,12 @@
+2009-05-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction.h: Added accessor for can-delete-tasks default/setting.
+	  (v1.5.59)
+
+	* zOGIAction+Task.h|m: Added task deletion support. (v1.5.59)
+
+	* zOGIRPCAction.m: Added support for task deletion. (v1.5.59)
+
 2009-05-09 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Object.m: Added some error checking & logging. (v1.5.57)
