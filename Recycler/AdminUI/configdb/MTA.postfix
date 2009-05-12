@@ -1,7 +1,0 @@
-{
-  // raw needs to be file specific! (really?)
-  soft_bounce       = NO;
-  queue_directory   = /var/spool/postfix;
-  command_directory = /usr/sbin;
-  daemon_directory  = /usr/lib/postfix;
-}

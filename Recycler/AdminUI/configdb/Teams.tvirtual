@@ -1,9 +1,0 @@
-{
-  ignoreExportFlag          = 0;
-  ignoreVirtualAddresses    = 0;
-  generateTeamEMail         = 0;
-  doNotGenerateAccountMails = 0;
-  rawPrefix                 = "# OGo Generated Virtual File
-";
-  rawSuffix                 = "";
-}

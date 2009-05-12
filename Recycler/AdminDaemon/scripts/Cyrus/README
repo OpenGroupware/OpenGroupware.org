@@ -1,9 +1,0 @@
-# $Id$
-
-Scripts to Write Cyrus Configurations
-=====================================
-
-... document ...
-
-TODO: I have no idea why we need shell scripts here. The stuff is written in
-      Python anyway ...

@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<!-- $Id$ -->
-
-<interface name="com.skyrix.soapproxy"
-           xmlns="http://www.skyrix.com/skyrix-idl"
-           xmlns:xrt="http://www.skyrix.com/od/xmlrpc-types"
-           xmlns:xsd="urn://example-namespace">
-</interface>

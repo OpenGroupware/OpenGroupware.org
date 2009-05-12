@@ -1,7 +1,0 @@
-# $Id$
-
-after-install ::
-	$(MKDIRS) $(TEMPLATE_INSTALL_DIR)/ $(INSTANCE_INSTALL_DIR)
-	cp skysystemd.xml $(TEMPLATE_INSTALL_DIR)/
-	if ! test -f $(INSTANCE_INSTALL_DIR)/iSystem.xml; then\
-	  cp iSystem.xml    $(INSTANCE_INSTALL_DIR)/; fi

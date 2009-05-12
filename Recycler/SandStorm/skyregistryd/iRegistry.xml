@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<instance uid="registryd" templateclass="skyregistryd"
-          xmlns="http://www.skyrix.com/od/skymasterd-config">
-  <priority>10</priority>
-  <parameter name="WOPort">
-    <value>*:14042</value>
-  </parameter>
-</instance>

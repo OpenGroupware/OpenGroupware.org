@@ -1,5 +1,0 @@
-EntryList: WOComponentReference {
-  component  = listComponent;
-  dataSource = ^dataSource;
-}
-Content: WOComponentContent {}
