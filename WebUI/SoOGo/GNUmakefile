@@ -4,7 +4,7 @@ include ../common.make
 
 WOBUNDLE_NAME        = SoOGo
 WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/WebUI/
+WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.2/WebUI/
 
 SoOGo_PRINCIPAL_CLASS = SoOGoModule
 

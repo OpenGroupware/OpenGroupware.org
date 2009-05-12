@@ -37,7 +37,7 @@ static NSNull        *null = nil;
 
 static NSString *shareSubPath     = @"share/opengroupware.org-1.1/";
 static NSString *templatesSubPath = 
-  @"Library/OpenGroupware.org-1.1/Templates/";
+  @"Library/OpenGroupware.org-1.2/Templates/";
 static NSString *themesDirName    = @"Themes";
 
 /* locate resource directories */
