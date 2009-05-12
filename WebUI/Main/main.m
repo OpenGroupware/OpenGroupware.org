@@ -26,8 +26,8 @@ int main(int argc, const char **argv, char **env) {
   // not supported yet anyway (moved to OGo 1.2)
   return WOWatchDogApplicationMainWithServerDefaults
     (@"OpenGroupware", argc, argv,
-     @"opengroupware.org-1.1/global.plist",
-     @"opengroupware.org-1.1/webui.plist");
+     @"opengroupware.org-1.3/global.plist",
+     @"opengroupware.org-1.3/webui.plist");
 #else
   return WOWatchDogApplicationMain(@"OpenGroupware", argc, argv);
 #endif

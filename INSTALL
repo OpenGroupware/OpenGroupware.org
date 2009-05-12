@@ -72,16 +72,16 @@ links
 *****
 
 ln -s ~/myogosrctree/WebUI/Resources \
-            $FHS_INSTALL_ROOT/share/opengroupware.org-1.1/translations
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.3/translations
 ln -s ~/myogosrctree/WebUI/Templates \
-            $FHS_INSTALL_ROOT/share/opengroupware.org-1.1/templates
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.3/templates
 ln -s ~/myogosrctree/Themes/WebServerResources \
-            $FHS_INSTALL_ROOT/share/opengroupware.org-1.1/www
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.3/www
 
 If you use the GNUstep environment (you probably don't), the links are different:
   - pushd $GNUSTEP_USER_ROOT
     - ln -s ~/myogosrctree/WebUI/Resources .
-    - ln -s ~/myogosrctree/WebUI/Templates Library/OpenGroupware.org-1.1/
+    - ln -s ~/myogosrctree/WebUI/Templates Library/OpenGroupware.org-1.3/
     - ln -s ~/myogosrctree/Themes/WebServerResources .
 
 database
@@ -116,7 +116,7 @@ defaults
   NGBundlePath
     => IMPORTANT: not required for standard locations!
     Defaults write NSGlobalDomain NGBundlePath \
-      '"$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.1/Commands:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.1/DataSources:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.1/WebUI:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.1/"'
+      '"$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.3/Commands:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.3/DataSources:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.3/WebUI:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.3/"'
 
 init-scripts
 ************
@@ -158,11 +158,11 @@ c) the Alias for the WebServerResources now starts with
      /OpenGroupware.woa/
 
 d) the webserver resources now live in
-     /usr[/local]/share/opengroupware.org-1.1/www
+     /usr[/local]/share/opengroupware.org-1.3/www
 
 e) translations (formerly the "Resources" link in $GNUSTEP_USER_ROOT) now live
    in:
-     /usr[/local]/share/opengroupware.org-1.1/translations/
+     /usr[/local]/share/opengroupware.org-1.3/translations/
 
 f) you might need to remove your NGBundlePath, its not required anymore (for
    FHS installs):

@@ -9,7 +9,7 @@ include ./Version
 WOBUNDLE_NAME        = ChatUI
 WOBUNDLE_EXTENSION   = .lso
 WOBUNDLE_INSTALL_DIR = \
-  $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/WebUI/
+  $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.3/WebUI/
 
 ChatUI_PRINCIPAL_CLASS = ChatUIModule
 

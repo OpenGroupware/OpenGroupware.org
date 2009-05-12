@@ -68,8 +68,8 @@ static NSDictionary *holidaysConfig = nil;
   /* check FHS pathes */
   
   pathes = [NSArray arrayWithObjects:
-		      @"/usr/local/share/opengroupware.org-1.1/",
-		      @"/usr/share/opengroupware.org-1.1/",
+		      @"/usr/local/share/opengroupware.org-1.3/",
+		      @"/usr/share/opengroupware.org-1.3/",
 		    nil];
   e = [pathes objectEnumerator];
   while ((path = [e nextObject])) {
