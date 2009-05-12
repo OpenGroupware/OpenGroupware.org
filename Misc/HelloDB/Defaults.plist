@@ -1,6 +1,0 @@
-{
-  HelloDBTables = (
-    table_version
-  );
-  HelloDBListSize = 20;
-}

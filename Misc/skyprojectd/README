@@ -1,7 +1,0 @@
-# $Id$
-
-Small WebDAV daemon for providing WebDAV Access to OGo Projects
-
-Defaults:
-  LogDAVRequest  - bool
-  LogDAVResponse - bool
