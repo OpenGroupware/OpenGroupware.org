@@ -1,5 +1,0 @@
-\c skyrix
-drop database skyrix1;
-create database skyrix1;
-\c skyrix1
-\i /home/jan41/bdev/Skyrix41/Logic/database/pg-build-schema.psql
