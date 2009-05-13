@@ -1,3 +1,16 @@
+2009-05-13 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Task.m: On translated use either objectProjectId /
+	  projectObjectId to specify a task's project and either
+	  parentTaskObjectId / parentObjectId to specify a task's parent.
+	  (v1.7.60)
+
+	* zOGIAction+Defaults.m: Supress "empty panel" log messages unless
+	  debugging is enabled. (v1.7.60)
+
+	* zOGIRPCAction.m: Removed superfluous log messages when profiling
+	  is enabled. (v1.7.60)
+
 2009-05-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction.h: Added accessor for can-delete-tasks default/setting.

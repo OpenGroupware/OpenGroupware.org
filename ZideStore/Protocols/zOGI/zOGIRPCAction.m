@@ -259,7 +259,6 @@
             [results count]];
     [self logWithFormat:@"getObjectsByObjectId consumed %.3f seconds", 
             (end - start)];
-    [self logWithFormat:@"end getObjectsByObjectId"];
   }
 
   return results;
@@ -621,7 +620,6 @@
             [result count]];
     [self logWithFormat:@"searchForObjects consumed %.3f seconds",
             (end - start)];
-    [self logWithFormat:@"end searchForObjects"];
   } 
  
  ///[flags release];

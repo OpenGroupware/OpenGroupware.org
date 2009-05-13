@@ -221,7 +221,8 @@
       } /* end array-has-contents */
     } /* end there-are-resources-in-the-panel */
   } else {
-      [self logWithFormat:@"sending empty calendar panel - no defaults"];
+      if ([self isDebug])
+        [self logWithFormat:@"sending empty calendar panel - no defaults"];
       calendarPanel = [NSArray arrayWithObjects:nil];
     }
   return calendarPanel;

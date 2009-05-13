@@ -391,9 +391,11 @@
     return @"creatorId";
   if ([key isEqualToString:@"status"])
     return @"jobStatus";
-  if ([key isEqualToString:@"objectProjectId"])
+  if ([key isEqualToString:@"objectProjectId"] ||
+      [key isEqualToString:@"projectObjectId"])
     return @"projectId";
-  if ([key isEqualToString:@"parentTaskObjectId"])
+  if ([key isEqualToString:@"parentTaskObjectId"] ||
+      [key isEqualToString:@"parentObjectId"])
     return @"parentJobId";
   if ([key isEqualToString:@"kind"])
     return @"kind";
