@@ -1,3 +1,8 @@
+2009-05-13  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* GNUmakefile: corrected to build ogo-webui with correct version.
+	  (v5.4.86)
+
 2007-12-07  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
 
 	* OpenGroupware+CTI.m: removed short-circuit in createCTIDialer.
