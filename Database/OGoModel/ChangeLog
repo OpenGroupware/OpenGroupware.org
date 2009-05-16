@@ -1,3 +1,8 @@
+2009-05-15  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* OGoModel.py (Note): added companyId attribute to note
+	  entity;  new attribute in schema. (v5.5.24)
+
 2008-07-23  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* OGoModel.py (Telephone & Address): added objectVersion

@@ -1,3 +1,8 @@
+2009-05-15  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSDeleteProjectCommand.m: check Notes companyId to see if note
+	  should be dettached or deleted. (v5.5.47)
+
 2009-03-09  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* v5.3.46

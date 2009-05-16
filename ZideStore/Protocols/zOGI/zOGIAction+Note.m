@@ -71,6 +71,7 @@
     [_note valueForKey:@"creationDate"], @"createdTime",
     [self ZERO:[_note valueForKey:@"projectId"]], @"projectObjectId",
     [self ZERO:[_note valueForKey:@"dateId"]], @"appointmentObjectId",
+    [self ZERO:[_note valueForKey:@"companyId"]], @"companyObjectId",
     [self NIL:[NSString stringWithContentsOfFile:[_note valueForKey:@"attachmentName"]]],
       @"content",
     nil];
@@ -183,7 +184,7 @@
 } /* end _deleteAllNotesFromObject */
 
 /* Insert a note attached to the specified object,  that object must be
-  an appointment or a project. */
+  an appointment, a project, or a company. */
 -(id)_insertNote:(id)_objectId
        withTitle:(id)_title
      withContent:(id)_content {
@@ -203,6 +204,14 @@
                     forProject:_objectId
                 forAppointment:nil
                     forCompany:nil
+                    withCommit:0];
+  } else if (([entityName isEqualToString:@"Person"]) || 
+             ([entityName isEqualToString:@"Enterprise"])) {
+      return [self _insertNote:_content
+                     withTitle:_title
+                    forProject:nil
+                forAppointment:nil
+                    forCompany:_objectId
                     withCommit:0];
   }
   return [NSException exceptionWithHTTPStatus:500
@@ -227,6 +236,7 @@
   note = [NSDictionary dictionaryWithObjectsAndKeys:
             dateId, @"dateId",
             projectId, @"projectId",
+            companyId, @"companyId",
             accountId, @"firstOwnerId",
             accountId, @"currentOwnerId", 
             _title, @"title",

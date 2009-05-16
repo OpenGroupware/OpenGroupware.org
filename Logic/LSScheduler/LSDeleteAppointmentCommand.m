@@ -94,21 +94,22 @@
 
   for (i = 0, cnt = [notes count]; i < cnt; i++) {
     /*
-      detach if project is assigned
+      detach if project or company is assigned
       delete if nothing assigned
       access to delete notes should be granted since the notes are assigend
       to the appointment
     */
     id note = [notes objectAtIndex:i];
     
-    if ([[note valueForKey:@"projectId"] isNotNull]) {
-      // project still assigned
+    if (([[note valueForKey:@"projectId"] isNotNull]) ||
+        ([[note valueForKey:@"companyId"] isNotNull])) {
+      // project or company still assigned
       LSRunCommandV(_context, @"note", @"set",
-                    @"object", note, @"dateId", [EONull null],
-                    @"dontCheckAccess", [NSNumber numberWithBool:YES],
-                    nil);
-    }
-    else {
+                              @"object", note,
+                              @"dateId", [EONull null],
+                              @"dontCheckAccess", [NSNumber numberWithBool:YES],
+                              nil);
+    } else {
       LSRunCommandV(_context, @"note", @"delete",
                     @"object", note, nil);
     }

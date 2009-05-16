@@ -207,11 +207,11 @@
       attributesUsedForLocking = ( dbStatus, name, appointmentResourceId );
       classProperties = (
         category,
+        notificationTime,
         dbStatus,
         name,
-        appointmentResourceId,
-        notificationTime,
         emailSubject,
+        appointmentResourceId,
         email,
       );
 
@@ -560,23 +560,23 @@
       attributesUsedForLocking = (
         function,
         companyAssignmentId,
+        isChief,
         isHeadquarter,
         dbStatus,
         companyId,
         subCompanyId,
-        isChief,
       );
       classProperties = (
         function,
         companyAssignmentId,
+        isChief,
         isHeadquarter,
         dbStatus,
         companyId,
         subCompanyId,
-        isChief,
         toEnterprise,
-        toPerson,
         toTeam,
+        toPerson,
       );
 
       attributes = (
@@ -716,17 +716,17 @@
       attributesUsedForLocking = (
         comment,
         dbStatus,
-        companyId,
         companyInfoId,
+        companyId,
       );
       classProperties = (
         comment,
         dbStatus,
-        companyId,
         companyInfoId,
+        companyId,
+        toTeam,
         toEnterprise,
         toPerson,
-        toTeam,
       );
 
       attributes = (
@@ -803,27 +803,27 @@
       primaryKeyAttributes = ( "companyValueId" );
       
       attributesUsedForLocking = (
+        attribute,
+        companyValueId,
         dbStatus,
         companyId,
-        attribute,
         value,
         isEnum,
-        companyValueId,
       );
       classProperties = (
-        dbStatus,
         uid,
-        companyId,
         attribute,
+        isLabelLocalized,
+        companyValueId,
+        dbStatus,
+        companyId,
         value,
         label,
         isEnum,
-        isLabelLocalized,
-        companyValueId,
         type,
         toEnterprise,
-        toTeam,
         toPerson,
+        toTeam,
       );
 
       attributes = (
@@ -948,45 +948,45 @@
       primaryKeyAttributes = ( "dateId" );
       
       attributesUsedForLocking = (
-        dateId,
-        objectVersion,
         accessTeamId,
         ownerId,
+        dateId,
+        objectVersion,
       );
       classProperties = (
         startDate,
         endDate,
         resourceNames,
-        sensitivity,
-        olReminder,
-        associatedContacts,
         evoReminder,
         keywords,
         notificationTime,
         parentDateId,
         title,
-        cycleEndDate,
-        writeAccessList,
         absence,
         isConflictDisabled,
         location,
         type,
-        dateId,
         sourceUrl,
-        importance,
         calendarName,
-        objectVersion,
-        onlineMeeting,
-        travelDurationAfter,
         aptType,
-        isAbsence,
-        busyType,
         dbStatus,
         accessTeamId,
-        lastModified,
-        fbtype,
         travelDurationBefore,
+        lastModified,
         ownerId,
+        onlineMeeting,
+        sensitivity,
+        olReminder,
+        cycleEndDate,
+        writeAccessList,
+        dateId,
+        associatedContacts,
+        importance,
+        objectVersion,
+        travelDurationAfter,
+        isAbsence,
+        busyType,
+        fbtype,
         isAttendance,
         toOwner,
         toAccessTeam,
@@ -1356,26 +1356,26 @@
       attributesUsedForLocking = (
         comment,
         dateCompanyAssignmentId,
+        outlookKey,
+        isStaff,
         dbStatus,
         companyId,
-        outlookKey,
         role,
-        isStaff,
-        rsvp,
-        partStatus,
         dateId,
+        partStatus,
+        rsvp,
       );
       classProperties = (
         comment,
         dateCompanyAssignmentId,
+        outlookKey,
+        isStaff,
         dbStatus,
         companyId,
-        outlookKey,
         role,
-        isStaff,
-        rsvp,
-        partStatus,
         dateId,
+        partStatus,
+        rsvp,
         toDate,
         toTeam,
         toPerson,
@@ -1560,60 +1560,60 @@
       primaryKeyAttributes = ( "documentId" );
       
       attributesUsedForLocking = (
+        status,
         isIndexDoc,
         abstract,
         isFolder,
+        objectVersion,
+        firstOwnerId,
+        fileSize,
+        dbStatus,
+        creationDate,
+        isObjectLink,
+        objectLink,
         parentDocumentId,
         title,
         projectId,
         fileType,
         versionCount,
-        dateId,
-        currentOwnerId,
-        status,
-        objectVersion,
-        firstOwnerId,
-        fileSize,
-        creationDate,
-        isObjectLink,
-        documentId,
-        objectLink,
-        dbStatus,
-        lastmodifiedDate,
         contact,
+        documentId,
+        lastmodifiedDate,
         isNote,
+        currentOwnerId,
+        dateId,
       );
       classProperties = (
+        status,
         isIndexDoc,
         abstract,
         isFolder,
+        objectVersion,
+        firstOwnerId,
+        fileSize,
+        dbStatus,
+        creationDate,
+        isObjectLink,
+        objectLink,
         parentDocumentId,
         title,
         projectId,
         fileType,
         versionCount,
-        dateId,
-        currentOwnerId,
-        status,
-        objectVersion,
-        firstOwnerId,
-        fileSize,
-        creationDate,
-        isObjectLink,
-        documentId,
-        objectLink,
-        dbStatus,
-        lastmodifiedDate,
         contact,
+        documentId,
+        lastmodifiedDate,
         isNote,
-        toDoc,
-        toParentDocument,
-        toDate,
-        toDocumentVersion,
+        currentOwnerId,
+        dateId,
         toDocumentEditing,
-        toFirstOwner,
+        toDate,
         toCurrentOwner,
+        toDoc,
+        toFirstOwner,
+        toParentDocument,
         toNote,
+        toDocumentVersion,
         toProject,
       );
 
@@ -1907,11 +1907,11 @@
         contact,
         version,
         isAttachChanged,
-        fileSize,
+        documentId,
         dbStatus,
         documentEditingId,
         currentOwnerId,
-        documentId,
+        fileSize,
       );
       classProperties = (
         status,
@@ -1922,11 +1922,11 @@
         contact,
         version,
         isAttachChanged,
-        fileSize,
+        documentId,
         dbStatus,
         documentEditingId,
         currentOwnerId,
-        documentId,
+        fileSize,
         toCurrentOwner,
         toDoc,
       );
@@ -2076,10 +2076,10 @@
         documentVersionId,
         contact,
         version,
+        documentId,
         isPacked,
         creationDate,
         archiveDate,
-        documentId,
         lastOwnerId,
       );
       classProperties = (
@@ -2091,10 +2091,10 @@
         documentVersionId,
         contact,
         version,
+        documentId,
         isPacked,
         creationDate,
         archiveDate,
-        documentId,
         lastOwnerId,
         toLastOwner,
         toDoc,
@@ -2236,63 +2236,64 @@
       className            = "LSEnterprise";
       primaryKeyAttributes = ( "companyId" );
       
-      attributesUsedForLocking = ( companyId, objectVersion, ownerId );
+      attributesUsedForLocking = ( ownerId, companyId, objectVersion );
       classProperties = (
-        emailAlias,
+        bossName,
         office,
-        isReadonly,
-        isEnterprise,
-        sensitivity,
         assistantName,
         number,
-        showEmail3As,
-        contactId,
-        associatedContacts,
         keywords,
         occupation,
-        nameAffix,
-        fileas,
-        showEmailAs,
-        companyId,
-        anniversary,
         priority,
-        isPrivate,
-        email,
         partnerName,
         sourceUrl,
-        description,
-        firstname,
         associatedCategories,
-        objectVersion,
-        freebusyUrl,
-        department,
-        birthday,
-        bossName,
-        bankCode,
-        login,
+        isPrivate,
+        showEmail3As,
         bank,
-        showEmail2As,
         account,
         dbStatus,
-        url,
         associatedCompany,
         imAddress,
         ownerId,
-        isCustomer,
-        nameTitle,
         dirServer,
+        showEmailAs,
+        isReadonly,
+        isEnterprise,
+        sensitivity,
+        contactId,
+        nameAffix,
+        companyId,
+        anniversary,
+        fileas,
+        department,
+        email,
+        associatedContacts,
+        description,
+        firstname,
+        objectVersion,
+        freebusyUrl,
+        birthday,
+        emailAlias,
+        bankCode,
+        isCustomer,
+        showEmail2As,
+        url,
+        login,
+        nameTitle,
         toCompanyAssignment,
-        toStaff,
         toCompanyInfo,
+        toDateCompanyAssignment,
+        toNote,
+        toStaff,
         toProjectCompanyAssignment,
+        toOwner,
+        toCompanyAssignment1,
         toTelephone,
         toAddress,
-        toOwner,
-        toDateCompanyAssignment,
-        toCompanyAssignment1,
-        toInvoice,
         toCompanyValue,
         toContact,
+        toInvoice,
       );
 
       attributes = (
@@ -2730,6 +2731,17 @@
           isToMany       = Y;
         },
         {
+          name        = "toNote";
+          destination = "Note";
+          joins       = ( {
+            sourceAttribute      = "companyId";
+            destinationAttribute = "companyId";
+            joinSemantic         = EOInnerJoin;
+            joinOperator         = EOJoinEqualTo;
+          });
+          isToMany       = Y;
+        },
+        {
           name        = "toOwner";
           destination = "Staff";
           joins       = ( {
@@ -2929,16 +2941,16 @@
       primaryKeyAttributes = ( "invoiceAccountId" );
       
       attributesUsedForLocking = (
+        objectVersion,
         companyId,
         invoiceAccountId,
-        objectVersion,
       );
       classProperties = (
         dbStatus,
-        companyId,
-        invoiceAccountId,
         objectVersion,
+        companyId,
         accountNr,
+        invoiceAccountId,
         balance,
         toEnterprise,
       );
@@ -3022,9 +3034,9 @@
         objectVersion,
         dbStatus,
         invoiceAccountingId,
-        actionId,
         debit,
         balance,
+        actionId,
         toInvoiceAction,
       );
 
@@ -3101,23 +3113,23 @@
       attributesUsedForLocking = (
         invoiceId,
         objectVersion,
-        invoiceActionId,
-        dbStatus,
         documentId,
         accountId,
+        dbStatus,
+        invoiceActionId,
       );
       classProperties = (
         actionDate,
-        kind,
         invoiceId,
         logText,
         objectVersion,
-        invoiceActionId,
-        dbStatus,
         documentId,
         accountId,
-        toDocument,
+        kind,
+        dbStatus,
+        invoiceActionId,
         toInvoiceAccount,
+        toDocument,
         toInvoice,
       );
 
@@ -3235,19 +3247,19 @@
       primaryKeyAttributes = ( "invoiceArticleAssignmentId" );
       
       attributesUsedForLocking = (
-        invoiceArticleAssignmentId,
         objectVersion,
+        invoiceArticleAssignmentId,
       );
       classProperties = (
         comment,
         invoiceId,
-        dbStatus,
-        invoiceArticleAssignmentId,
         objectVersion,
         articleId,
-        vat,
         articleCount,
         netAmount,
+        dbStatus,
+        invoiceArticleAssignmentId,
+        vat,
         toArticle,
         toInvoice,
       );
@@ -3351,47 +3363,47 @@
       className            = "LSJob";
       primaryKeyAttributes = ( "jobId" );
       
-      attributesUsedForLocking = ( jobId, objectVersion );
+      attributesUsedForLocking = ( objectVersion, jobId );
       classProperties = (
         comment,
         startDate,
-        endDate,
-        sensitivity,
-        jobId,
-        associatedContacts,
-        notify,
-        keywords,
-        category,
-        projectId,
-        jobStatus,
-        priority,
-        accountingInfo,
-        completionDate,
         sourceUrl,
+        endDate,
         isTeamJob,
+        sensitivity,
         associatedCompanies,
         objectVersion,
+        jobId,
         isControlJob,
+        associatedContacts,
+        notify,
         timerDate,
         kilometers,
+        keywords,
         totalWork,
+        category,
         parentJobId,
         kind,
         dbStatus,
         name,
-        lastModified,
+        projectId,
+        jobStatus,
+        priority,
         percentComplete,
         actualWork,
+        completionDate,
         creatorId,
+        lastModified,
+        accountingInfo,
         executantId,
         toParentJobAssignment,
+        toChildJobAssignment,
         toExecutant,
+        toParentJob,
         toJob,
         toResourceAssignment,
-        toJobHistory,
-        toChildJobAssignment,
-        toParentJob,
         toCreator,
+        toJobHistory,
         toProject,
       );
 
@@ -3748,19 +3760,19 @@
       
       attributesUsedForLocking = (
         parentJobId,
-        dbStatus,
         jobAssignmentId,
+        dbStatus,
         childJobId,
       );
       classProperties = (
         parentJobId,
+        jobAssignmentId,
         assignmentKind,
         dbStatus,
-        jobAssignmentId,
-        position,
         childJobId,
-        toChildJob,
+        position,
         toParentJob,
+        toChildJob,
       );
 
       attributes = (
@@ -3843,23 +3855,23 @@
       attributesUsedForLocking = (
         actionDate,
         jobHistoryId,
-        jobStatus,
         jobId,
-        action,
         dbStatus,
+        jobStatus,
+        action,
         actorId,
       );
       classProperties = (
         actionDate,
         jobHistoryId,
-        jobStatus,
         jobId,
-        action,
         dbStatus,
+        jobStatus,
+        action,
         actorId,
         toJob,
-        toJobHistoryInfo,
         toActor,
+        toJobHistoryInfo,
       );
 
       attributes = (
@@ -4031,18 +4043,18 @@
       attributesUsedForLocking = (
         operativePart,
         dbStatus,
-        resourceId,
         jobResourceAssignmentId,
+        resourceId,
         jobId,
       );
       classProperties = (
         operativePart,
         dbStatus,
-        resourceId,
         jobResourceAssignmentId,
+        resourceId,
         jobId,
-        toJob,
         toResource,
+        toJob,
       );
 
       attributes = (
@@ -4116,9 +4128,9 @@
       
       attributesUsedForLocking = ( logId );
       classProperties = (
+        logId,
         logText,
         objectId,
-        logId,
         action,
         creationDate,
         accountId,
@@ -4181,17 +4193,17 @@
       primaryKeyAttributes = ( "newsArticleId" );
       
       attributesUsedForLocking = (
-        isIndexArticle,
-        name,
         caption,
         newsArticleId,
+        isIndexArticle,
+        name,
         dbStatus,
       );
       classProperties = (
-        isIndexArticle,
-        name,
         caption,
         newsArticleId,
+        isIndexArticle,
+        name,
         dbStatus,
         toNewsArticleLink,
         toNewsArticleLink1,
@@ -4344,7 +4356,7 @@
         abstract,
         isFolder,
         parentDocumentId,
-        title,
+        companyId,
         projectId,
         fileType,
         versionCount,
@@ -4357,13 +4369,14 @@
         documentId,
         dbStatus,
         lastmodifiedDate,
+        title,
         isNote,
       );
       classProperties = (
         abstract,
         isFolder,
         parentDocumentId,
-        title,
+        companyId,
         projectId,
         fileType,
         versionCount,
@@ -4376,12 +4389,15 @@
         documentId,
         dbStatus,
         lastmodifiedDate,
+        title,
         isNote,
+        toEnterprise,
         toParentDocument,
         toDate,
         toDocument,
         toDocumentVersion,
         toFirstOwner,
+        toPerson,
         toCurrentOwner,
         toProject,
       );
@@ -4394,6 +4410,14 @@
           valueClassName = "NSString";
           allowsNull     = Y;
           width          = 255;
+        },
+        {
+          name           = "companyId";
+          columnName     = "company_id";
+          externalType   = "INT";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
         },
         {
           name           = "creationDate";
@@ -4569,6 +4593,16 @@
           isToMany       = Y;
         },
         {
+          name        = "toEnterprise";
+          destination = "Enterprise";
+          joins       = ( {
+            sourceAttribute      = "companyId";
+            destinationAttribute = "companyId";
+            joinSemantic         = EOInnerJoin;
+            joinOperator         = EOJoinEqualTo;
+          });
+        },
+        {
           name        = "toFirstOwner";
           destination = "Staff";
           joins       = ( {
@@ -4584,6 +4618,16 @@
           joins       = ( {
             sourceAttribute      = "parentDocumentId";
             destinationAttribute = "documentId";
+            joinSemantic         = EOInnerJoin;
+            joinOperator         = EOJoinEqualTo;
+          });
+        },
+        {
+          name        = "toPerson";
+          destination = "Person";
+          joins       = ( {
+            sourceAttribute      = "companyId";
+            destinationAttribute = "companyId";
             joinSemantic         = EOInnerJoin;
             joinOperator         = EOJoinEqualTo;
           });
@@ -4608,10 +4652,10 @@
       
       attributesUsedForLocking = ( objectAclId );
       classProperties = (
+        objectAclId,
+        sortKey,
         objectId,
         authId,
-        sortKey,
-        objectAclId,
         action,
         permissions,
       );
@@ -4694,16 +4738,16 @@
       className            = "LSObjectLink";
       primaryKeyAttributes = ( "objectLinkId" );
       
-      attributesUsedForLocking = ( sourceId, targetId, objectLinkId, target );
+      attributesUsedForLocking = ( objectLinkId, target, sourceId, targetId );
       classProperties = (
         linkType,
         targetType,
-        sourceType,
-        sourceId,
-        targetId,
-        label,
         objectLinkId,
         target,
+        sourceId,
+        label,
+        targetId,
+        sourceType,
       );
 
       attributes = (
@@ -4926,16 +4970,16 @@
         assistantName,
         number,
         sex,
-        keywords,
+        salutation,
         contactId,
         associatedContacts,
-        salutation,
+        keywords,
         isTemplateUser,
         isIntraAccount,
         imapPasswd,
         nameAffix,
         fileas,
-        firstname,
+        degree,
         templateUserId,
         companyId,
         anniversary,
@@ -4949,7 +4993,7 @@
         partnerName,
         sourceUrl,
         description,
-        degree,
+        firstname,
         middlename,
         objectVersion,
         freebusyUrl,
@@ -4975,6 +5019,7 @@
         toStaff,
         toCompanyInfo,
         toProjectCompanyAssignment,
+        toNote,
         toDateCompanyAssignment,
         toTelephone,
         toAddress,
@@ -5480,6 +5525,17 @@
           isToMany       = Y;
         },
         {
+          name        = "toNote";
+          destination = "Note";
+          joins       = ( {
+            sourceAttribute      = "companyId";
+            destinationAttribute = "companyId";
+            joinSemantic         = EOInnerJoin;
+            joinOperator         = EOJoinEqualTo;
+          });
+          isToMany       = Y;
+        },
+        {
           name        = "toOwner";
           destination = "Staff";
           joins       = ( {
@@ -5763,12 +5819,12 @@
         projectCompanyAssignmentId,
       );
       classProperties = (
+        accessRight,
         info,
         dbStatus,
         companyId,
         projectId,
         hasAccess,
-        accessRight,
         projectCompanyAssignmentId,
         toPerson,
         toProject,
@@ -5927,13 +5983,13 @@
       attributesUsedForLocking = ( standardCosts, resourceId, objectVersion );
       classProperties = (
         comment,
-        dbStatus,
         standardCosts,
-        objectId,
         resourceId,
         objectVersion,
-        token,
         resourceName,
+        dbStatus,
+        objectId,
+        token,
         type,
         quantity,
         toSubResourceAssignment,
@@ -6039,17 +6095,17 @@
       
       attributesUsedForLocking = (
         subResourceId,
+        superResourceId,
         dbStatus,
         resourceAssignmentId,
-        superResourceId,
       );
       classProperties = (
         subResourceId,
+        superResourceId,
         dbStatus,
         resourceAssignmentId,
-        superResourceId,
-        toSubResource,
         toSuperResource,
+        toSubResource,
       );
 
       attributes = (
@@ -6374,54 +6430,54 @@
       primaryKeyAttributes = ( "companyId" );
       
       attributesUsedForLocking = (
+        isPrivate,
+        ownerId,
         isReadonly,
         companyId,
-        isPrivate,
         objectVersion,
-        ownerId,
       );
       classProperties = (
         isLocationTeam,
-        emailAlias,
+        bossName,
         office,
-        isReadonly,
-        sensitivity,
         assistantName,
         number,
-        contactId,
         occupation,
-        nameAffix,
-        companyId,
-        anniversary,
         fileas,
-        isPrivate,
-        email,
         partnerName,
-        associatedContacts,
-        description,
-        objectVersion,
-        isTeam,
-        department,
-        bossName,
-        freebusyUrl,
+        isPrivate,
         associatedCategories,
         dbStatus,
         associatedCompany,
         imAddress,
         ownerId,
+        dirServer,
+        isReadonly,
+        sensitivity,
+        isTeam,
+        contactId,
+        nameAffix,
+        companyId,
+        anniversary,
+        department,
+        email,
+        associatedContacts,
+        description,
+        objectVersion,
+        freebusyUrl,
+        emailAlias,
         login,
         nameTitle,
-        dirServer,
         toCompanyAssignment,
+        toCompanyInfo,
         toStaff,
         toDate,
         toProjectCompanyAssignment,
         toDateCompanyAssignment,
+        toOwner,
+        toCompanyAssignment1,
         toTelephone,
         toAddress,
-        toOwner,
-        toCompanyInfo,
-        toCompanyAssignment1,
         toCompanyValue,
         toContact,
       );
@@ -6816,25 +6872,25 @@
       primaryKeyAttributes = ( "telephoneId" );
       
       attributesUsedForLocking = (
-        telephoneId,
         info,
+        number,
+        objectVersion,
+        telephoneId,
         dbStatus,
         realNumber,
         companyId,
         url,
-        number,
-        objectVersion,
         type,
       );
       classProperties = (
-        telephoneId,
         info,
+        number,
+        objectVersion,
+        telephoneId,
         dbStatus,
         realNumber,
         companyId,
         url,
-        number,
-        objectVersion,
         type,
         toEnterprise,
         toPerson,
@@ -6956,33 +7012,33 @@
       primaryKeyAttributes = ( "companyId" );
       
       attributesUsedForLocking = (
-        isReadonly,
-        dbStatus,
         description,
-        companyId,
-        url,
+        isReadonly,
         number,
-        priority,
-        isTrust,
         contactId,
         keywords,
-        ownerId,
+        dbStatus,
+        companyId,
+        url,
+        priority,
+        isTrust,
         isPrivate,
+        ownerId,
         email,
       );
       classProperties = (
-        isReadonly,
-        dbStatus,
         description,
-        companyId,
-        url,
+        isReadonly,
         number,
-        priority,
-        isTrust,
         contactId,
         keywords,
-        ownerId,
+        dbStatus,
+        companyId,
+        url,
+        priority,
+        isTrust,
         isPrivate,
+        ownerId,
         email,
       );
 
@@ -7100,14 +7156,7 @@
       primaryKeyAttributes = ( "palm_address_id" );
       
       attributesUsedForLocking = (
-        custom1,
-        custom4,
-        is_archived,
-        is_new,
-        custom2,
-        zipcode,
         skyrix_type,
-        display_phone,
         phone_label_id0,
         phone_label_id1,
         phone_label_id2,
@@ -7117,41 +7166,41 @@
         title,
         company_id,
         skyrix_version,
-        note,
-        state,
-        phone3,
-        phone0,
         skyrix_palm_version,
         object_version,
-        phone1,
+        lastname,
+        company,
+        is_modified,
+        is_new,
+        skyrix_id,
+        is_private,
+        is_deleted,
+        skyrix_sync,
+        custom4,
+        is_archived,
+        custom1,
+        custom2,
+        custom3,
+        display_phone,
+        zipcode,
+        note,
+        state,
+        palm_address_id,
+        md5hash,
         firstname,
         category_index,
         phone2,
-        lastname,
-        company,
-        md5hash,
-        is_modified,
+        phone3,
+        phone0,
+        phone1,
         phone4,
         palm_id,
         address,
-        custom3,
-        skyrix_id,
-        is_private,
         device_id,
-        is_deleted,
         country,
-        palm_address_id,
-        skyrix_sync,
       );
       classProperties = (
-        custom1,
-        custom4,
-        is_archived,
-        is_new,
-        custom2,
-        zipcode,
         skyrix_type,
-        display_phone,
         phone_label_id0,
         phone_label_id1,
         phone_label_id2,
@@ -7161,31 +7210,38 @@
         title,
         company_id,
         skyrix_version,
-        note,
-        state,
-        phone3,
-        phone0,
         skyrix_palm_version,
         object_version,
-        phone1,
+        lastname,
+        company,
+        is_modified,
+        is_new,
+        skyrix_id,
+        is_private,
+        is_deleted,
+        skyrix_sync,
+        custom4,
+        is_archived,
+        custom1,
+        custom2,
+        custom3,
+        display_phone,
+        zipcode,
+        note,
+        state,
+        palm_address_id,
+        md5hash,
         firstname,
         category_index,
         phone2,
-        lastname,
-        company,
-        md5hash,
-        is_modified,
+        phone3,
+        phone0,
+        phone1,
         phone4,
         palm_id,
         address,
-        custom3,
-        skyrix_id,
-        is_private,
         device_id,
-        is_deleted,
         country,
-        palm_address_id,
-        skyrix_sync,
       );
 
       attributes = (
@@ -7499,24 +7555,24 @@
       attributesUsedForLocking = (
         palm_category_id,
         category_index,
-        palm_table,
         md5hash,
-        company_id,
-        palm_id,
         is_modified,
-        category_name,
+        palm_id,
         device_id,
+        palm_table,
+        company_id,
+        category_name,
       );
       classProperties = (
         palm_category_id,
         category_index,
-        palm_table,
         md5hash,
-        company_id,
-        palm_id,
         is_modified,
-        category_name,
+        palm_id,
         device_id,
+        palm_table,
+        company_id,
+        category_name,
       );
 
       attributes = (
@@ -7590,67 +7646,67 @@
       primaryKeyAttributes = ( "palm_date_id" );
       
       attributesUsedForLocking = (
-        repeat_start_week,
-        is_archived,
-        is_new,
-        palm_date_id,
-        repeat_frequency,
-        is_untimed,
-        startdate,
-        company_id,
-        skyrix_version,
-        note,
-        alarm_advance_unit,
-        repeat_enddate,
         skyrix_palm_version,
-        object_version,
+        repeat_start_week,
         is_alarmed,
+        object_version,
         description,
         category_index,
+        is_new,
+        is_archived,
         md5hash,
         is_modified,
         palm_id,
+        palm_date_id,
+        is_untimed,
         enddate,
-        skyrix_id,
-        is_private,
+        skyrix_version,
+        repeat_frequency,
         device_id,
+        startdate,
         repeat_type,
         is_deleted,
+        company_id,
+        skyrix_id,
+        note,
+        is_private,
         exceptions,
         skyrix_sync,
         repeat_on,
+        alarm_advance_unit,
+        repeat_enddate,
         alarm_advance_time,
       );
       classProperties = (
-        repeat_start_week,
-        is_archived,
-        is_new,
-        palm_date_id,
-        repeat_frequency,
-        is_untimed,
-        startdate,
-        company_id,
-        skyrix_version,
-        note,
-        alarm_advance_unit,
-        repeat_enddate,
         skyrix_palm_version,
-        object_version,
+        repeat_start_week,
         is_alarmed,
+        object_version,
         description,
         category_index,
+        is_new,
+        is_archived,
         md5hash,
         is_modified,
         palm_id,
+        palm_date_id,
+        is_untimed,
         enddate,
-        skyrix_id,
-        is_private,
+        skyrix_version,
+        repeat_frequency,
         device_id,
+        startdate,
         repeat_type,
         is_deleted,
+        company_id,
+        skyrix_id,
+        note,
+        is_private,
         exceptions,
         skyrix_sync,
         repeat_on,
+        alarm_advance_unit,
+        repeat_enddate,
         alarm_advance_time,
       );
 

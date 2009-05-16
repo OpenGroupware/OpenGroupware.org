@@ -1,3 +1,8 @@
+2009-05-15 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Note.m: Provide companyObjectId in notes and
+	  saving the companyId to a note. (v1.7.61)
+
 2009-05-13 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Task.m: On translated use either objectProjectId /

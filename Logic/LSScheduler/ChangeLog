@@ -1,3 +1,8 @@
+2009-05-15  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSDeleteAppointmentCommand.m: check companyId to see if note
+	  should be deleted or detached. (v5.5.114)
+
 2009-03-09  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* v5.3.113

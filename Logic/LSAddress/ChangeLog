@@ -1,3 +1,8 @@
+2009-05-15  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSDeleteCompanyCommand.m: Added note disattach or
+	  delete (v5.5.108)
+
 2009-04-13  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSGetVCardForGlobalIDsCommand.m: Added support for relocating and

@@ -1140,6 +1140,11 @@ Person = {
       source:      "DateCompanyAssignment.companyId",
       destination: "companyId",
     },
+    "toNote": {
+      flags:       [ property, isToMany, ],
+      source:      "Note.companyId",
+      destination: "companyId",
+    },
     "toProjectCompanyAssignment": {
       flags:       [ property, isToMany, ],
       source:      "ProjectCompanyAssignment.companyId",
@@ -1656,6 +1661,11 @@ Enterprise = {
       source:      "ProjectCompanyAssignment.companyId",
       destination: "companyId",
     },
+    "toNote": {
+      flags:       [ property, isToMany, ],
+      source:      "Note.companyId",
+      destination: "companyId",
+    },
     "toAddress": {
       flags:       [ property, isToMany, ],
       source:      "Address.companyId",
@@ -2151,6 +2161,13 @@ Note = {
       valueType:  'i',
       flags:      [ lock, property, allowsNull, ],
     },
+    "companyId": {
+      column:     "company_id",
+      coltype:    't_id',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ lock, property, allowsNull, ],
+    },
     "firstOwnerId": {
       column:     "first_owner_id",
       coltype:    't_id',
@@ -2257,6 +2274,16 @@ Note = {
       flags:       [ property, ],
       source:      "dateId",
       destination: "Date.dateId",
+    },
+    "toPerson": {
+      flags:       [ property, ],
+      source:      "companyId",
+      destination: "Person.companyId",
+    },
+    "toEnterprise": {
+      flags:       [ property, ],
+      source:      "companyId",
+      destination: "Enterprise.companyId",
     },
     "toFirstOwner": {
       flags:       [ property, ],
