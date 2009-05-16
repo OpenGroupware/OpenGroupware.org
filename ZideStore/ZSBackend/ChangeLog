@@ -1,3 +1,8 @@
+2009-05-16  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxContactSQLQuery.m: exclude archived objects from person and 
+	  enterprise queries. (v1.6.93)
+
 2008-09-05  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxFreeBusyManager.m|h: added freeBusyDataForLogin method to support 
