@@ -1,3 +1,12 @@
+2009-05-17  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* OGoModel.py: Removed Trust from database model.
+
+	* Classes/GNUmakefile: Removed the LSTrust class, removing this 
+	  entity from them schema. (v5.5.25)
+
+	* bundle-info.plist: Removes the LSTrust class. (v5.5.25)
+
 2009-05-15  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* OGoModel.py (Note): added companyId attribute to note

@@ -34,7 +34,6 @@ ModelClasses_OBJC_FILES = \
 	LSStaff.m			\
 	LSTeam.m			\
 	LSTelephone.m			\
-	LSTrust.m			\
 	LSUrl.m				\
 	LSUrlCriterion.m	  	\
 	LSUrlRating.m			\

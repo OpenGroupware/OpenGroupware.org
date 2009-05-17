@@ -4,6 +4,8 @@ LSAddress
 LSAddress contains the base classes for the various "company" objects, like
 LSEnterprise, LSPerson, LSTeam and LSTrust.
 
+NOTE: LSTrust removed on 2009-05-17
+
 Class Hierachy
 ==============
   <NSObject>
