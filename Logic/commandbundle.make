@@ -4,7 +4,7 @@ $(COMMAND_BUNDLE)_OBJC_FILES += $(COMMAND_BUNDLE)Commands.m
 
 BUNDLE_NAME        = $(COMMAND_BUNDLE)
 BUNDLE_EXTENSION   = .cmd
-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.3/Commands/
+BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-5.5/Commands/
 
 $(COMMAND_BUNDLE)_RESOURCE_FILES  += commands.plist
 $(COMMAND_BUNDLE)_PRINCIPAL_CLASS = $(COMMAND_BUNDLE)Commands
@@ -67,7 +67,7 @@ endif
 ifneq ($(FHS_INSTALL_ROOT),)
 
 FHS_LIB_DIR=$(CONFIGURE_FHS_INSTALL_LIBDIR)
-FHS_CMD_DIR=$(FHS_LIB_DIR)opengroupware.org-1.3/commands/
+FHS_CMD_DIR=$(FHS_LIB_DIR)opengroupware.org-5.5/commands/
 
 fhs-command-dirs ::
 	$(MKDIRS) $(FHS_CMD_DIR)

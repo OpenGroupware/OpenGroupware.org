@@ -6,7 +6,7 @@
 #               /usr/share/opengroupware-XY/translations
 # <reference> - A reference translation which is "complete". Might be the German
 #             - one for OGo
-# Example: check-translations.rb /usr/share/opengroupware.org-1.3/translations English.lproj
+# Example: check-translations.rb /usr/share/opengroupware.org-5.5/translations English.lproj
 #
 # Outputs: LANGUAGE.lproj files with missing translations for each language in <path>
 #

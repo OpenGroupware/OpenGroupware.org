@@ -516,8 +516,8 @@ int main(int argc, char **argv, char **env) {
   
   rc = WOWatchDogApplicationMainWithServerDefaults
     (@"ZideStore", argc, (void*)argv,
-     @"opengroupware.org-1.3/global.plist",
-     @"opengroupware.org-1.3/zidestore.plist");
+     @"opengroupware.org-5.5/global.plist",
+     @"opengroupware.org-5.5/zidestore.plist");
   
   [pool release];
   return rc;

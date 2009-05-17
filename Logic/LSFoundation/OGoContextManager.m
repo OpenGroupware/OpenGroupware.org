@@ -373,7 +373,7 @@ static NSString *FHSOGoBundleDir               = nil;
     
     p = OGoBundlePathSpecifier;
     r = [p rangeOfString:@"-"];
-    if (r.length > 0) /* strip off version, like in "OpenGroupware.org-1.3" */
+    if (r.length > 0) /* strip off version, like in "OpenGroupware.org-5.5" */
       p = [p substringToIndex:r.location];
     *(&modelName) = [p stringByAppendingString:@"_PostgreSQL"];
   }

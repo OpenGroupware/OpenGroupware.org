@@ -5,7 +5,7 @@ include ../common.make
 WOBUNDLE_NAME        = GroupsUI
 WOBUNDLE_EXTENSION   = .lso
 WOBUNDLE_INSTALL_DIR = \
-  $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.3/WebUI/
+  $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-5.5/WebUI/
 
 GroupsUI_PRINCIPAL_CLASS = GroupsUIModule
 

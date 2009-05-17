@@ -29,9 +29,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** install ******************************
 %install
-DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.3/dbsetup"
+DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-5.5/dbsetup"
 OGO_WEBUI_SYSCONFIG_NAME="ogo-webui-1.1"
-OGO_SHAREDIR="opengroupware.org-1.3"
+OGO_SHAREDIR="opengroupware.org-5.5"
 mkdir -p ${DBSETUP_DEST}
 
 cp -Rp Database/SQLite ${DBSETUP_DEST}/
@@ -46,8 +46,8 @@ chmod 750 ${DBSETUP_DEST}/database_setup_psql.sh
 # ****************************** post ********************************
 %post
 if [ $1 = 1 ]; then
-  if [ -f "%{prefix}/share/opengroupware.org-1.3/dbsetup/database_setup_psql.sh" ]; then
-    %{prefix}/share/opengroupware.org-1.3/dbsetup/database_setup_psql.sh initial
+  if [ -f "%{prefix}/share/opengroupware.org-5.5/dbsetup/database_setup_psql.sh" ]; then
+    %{prefix}/share/opengroupware.org-5.5/dbsetup/database_setup_psql.sh initial
   fi
 fi
 
@@ -60,7 +60,7 @@ rm -fr ${RPM_BUILD_ROOT}
 # ****************************** files ********************************
 %files
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.3/dbsetup
+%{prefix}/share/opengroupware.org-5.5/dbsetup
 
 # ********************************* changelog *************************
 %changelog
