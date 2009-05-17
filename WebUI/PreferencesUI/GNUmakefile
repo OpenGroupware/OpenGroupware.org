@@ -6,7 +6,7 @@ MODULE_NAME = LSWPreferences
 
 WOBUNDLE_NAME        = PreferencesUI
 WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.2/WebUI/
+WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-5.4/WebUI/
 
 PreferencesUI_PRINCIPAL_CLASS = LSWPreferencesModule
 

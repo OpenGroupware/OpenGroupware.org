@@ -145,7 +145,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   fm = [NSFileManager defaultManager];
   locator = [NGResourceLocator resourceLocatorForGNUstepPath:
                                  @"WebServerResources"
-                               fhsPath:@"share/opengroupware.org-1.1/www"];
+                               fhsPath:@"share/opengroupware.org-5.4/www"];
   p = [locator lookupFileWithName:@"epoz_script_main.js"];
   hasEpoz = [fm fileExistsAtPath:p];
   if (!hasEpoz) 

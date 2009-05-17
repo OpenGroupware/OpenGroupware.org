@@ -4,7 +4,7 @@ include ../common.make
 
 WOBUNDLE_NAME        = OGoSoProject
 WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.2/WebUI/
+WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-5.4/WebUI/
 
 OGoSoProject_PRINCIPAL_CLASS = OGoSoProjectModule
 
