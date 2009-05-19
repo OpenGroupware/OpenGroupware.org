@@ -1,3 +1,9 @@
+2009-05-18 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Appointment.m: Added WRITE, READONLY, and DELETE flags
+	  to appointment entity. Removes responsibility of access calculation
+	  from the client. (v1.7.62)
+
 2009-05-15 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Note.m: Provide companyObjectId in notes and

@@ -58,6 +58,11 @@
   if ([permissions rangeOfString:@"v"].length > 0) {
     /* render appointment in visible mode */
     [flags addObject:@"VISIBLE"];
+    if ([permissions rangeOfString:@"e"].length > 0)
+      [flags addObject:@"WRITE"];
+      else [flags addObject:@"READONLY"];
+    if ([permissions rangeOfString:@"d"].length > 0)
+      [flags addObject:@"DELETE"];
     appointment = [NSMutableDictionary dictionaryWithObjectsAndKeys:
       [_eoAppointment valueForKey:@"dateId"], @"objectId",
       @"Appointment", @"entityName",
