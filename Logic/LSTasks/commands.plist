@@ -85,8 +85,10 @@
         "get-private-jobs"     = { class = "LSFetchPrivateJobsCommand";   };
         "get-archived-jobs"    = { class = "LSFetchArchivedJobsCommand";  };
         "get-delegated-rss"    = { class = "LSGetDelegatedActionsAsRSSCommand";  };
+        "get-delegated-tasks-rss"  = { class = "LSGetDelegatedTasksAsRSSCommand";  };
         "get-todo-rss"         = { class = "LSGetToDoActionsAsRSSCommand";  };
-        "get-project-task-rss" = { class = "LSGetProjectTaskActionsAsRSSCommand";  };
+        "get-todo-tasks-rss"   = { class = "LSGetToDoTasksAsRSSCommand";  };
+        "get-project-rss" = { class = "LSGetProjectTaskActionsAsRSSCommand";  };
         "get-jobid-tree"       = { class = "LSFetchJobIdTreeCommand";  };
         "get-delegated-jobs"   = { class = "LSFetchDelegatedJobsCommand"; };
         "get-executant-jobs"   = { class = "LSFetchJobsForExecutantCommand";};

@@ -1,3 +1,18 @@
+2009-05-20  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetToDoTasksAsRSSCommand.m: added command that returns an RSS feed
+	  of the user's to-do tasks. (v5.5.30)
+
+	* LSGetDelegatedTasksAsRSSCommand.m: added command that returns an RSS
+	  feed of the user's currently delegated jobs. (v5.5.30)
+
+	* commands.plist: registered the new RSS commands.  Renamed the
+	  get-project-task-rss to get-project-rss since it is a feed of
+	  actions and not of tasks. (v5.5.30)
+
+	* bundle-info.plist: registered the new classes and commands.
+	  (v5.5.30)
+
 2009-04-09  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSFetchToDoJobsCommand.m: modified command to lookup a users team

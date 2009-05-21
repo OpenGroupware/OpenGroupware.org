@@ -27,9 +27,17 @@
           protectedBy = "View";
           selector    = "rssDelegatedActionsFeed:";
         };
+        "delegated-tasks-rss" = {
+          protectedBy = "View";
+          selector    = "rssDelegatedTasksFeed:";
+        };
         "todo-actions-rss" = {
           protectedBy = "View";
           selector    = "rssToDoActionsFeed:";
+        };
+        "todo-tasks-rss" = {
+          protectedBy = "View";
+          selector    = "rssToDoTasksFeed:";
         };
         "project-actions-rss" = {
           protectedBy = "View";
