@@ -37,10 +37,17 @@
 
 static NSNumber *yesNum = nil;
 static NSNumber *noNum  = nil;
+static BOOL      LSDisableProjectCreate = NO;
 
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+
   yesNum = [[NSNumber numberWithBool:YES] retain];
   noNum  = [[NSNumber numberWithBool:NO]  retain];
+ 
+  LSDisableProjectCreate = [ud boolForKey:@"LSDisableEnterpriseProjectCreate"];
+  if (LSDisableProjectCreate)
+    NSLog(@"Note: Creation of enterprise projectes disabled.");
 }
 
 - (void)dealloc {
@@ -117,16 +124,20 @@ static NSNumber *noNum  = nil;
   id proj = nil;
 
   [super _executeInContext:_context];
+
+  /* create a "fake" enterprise project unless that feature has
+     been disabled via the LSDisableEnterpriseProjectCreate default. */
+  if (!(LSDisableProjectCreate)) { 
+    proj = [self _newProjectInContext:_context];
   
-  proj = [self _newProjectInContext:_context];
-  
-  if (proj != nil) {
-    LSRunCommandV(_context, @"enterprise", @"assign-projects",
-                  @"object",   [self object],
-                  @"projects", [NSArray arrayWithObject:proj], nil);
-  }
-  
-  
+    if (proj != nil) {
+      LSRunCommandV(_context, @"enterprise", @"assign-projects",
+                    @"object",   [self object],
+                    @"projects", [NSArray arrayWithObject:proj], nil);
+    }
+
+  } 
+
   if ([self->persons isNotNull]) { 
     LSRunCommandV(_context, @"enterprise", @"set-persons",
                   @"group",   [self object],
