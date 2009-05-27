@@ -1,3 +1,15 @@
+2009-05-27  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSCriteriaSearchTaskCommand.m: Added command, used by zOGI to allow
+	  searching for tasks based on specified criteria. (v5.5.31)
+
+	* GNUmakefile: Added LSCriteriaSearchTaskCommand.m. (v5.5.31)
+
+	* commands.plist: Registered LSCriteriaSearchTaskCommand command
+	  object as job::criteria-search. (v5.5.31)
+
+	* bundle-info.plist: Registered new command object. (v5.5.31)
+
 2009-05-20  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSGetToDoTasksAsRSSCommand.m: added command that returns an RSS feed

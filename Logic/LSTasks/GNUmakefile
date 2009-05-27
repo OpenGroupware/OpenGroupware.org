@@ -41,7 +41,8 @@ LSTasks_OBJC_FILES = \
 	LSGetToDoActionsAsRSSCommand.m		\
 	LSGetProjectTaskActionsAsRSSCommand.m	\
 	LSGetToDoTasksAsRSSCommand.m		\
-	LSGetDelegatedTasksAsRSSCommand.m
+	LSGetDelegatedTasksAsRSSCommand.m	\
+	LSCriteriaSearchTaskCommand.m
 
 LSTasks_BUNDLE_LIBS += \
 	-lLSSearch

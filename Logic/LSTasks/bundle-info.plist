@@ -67,6 +67,7 @@
         { name = "jobresourceassignment::get";            },
         { name = "jobresourceassignment::new";            },
         { name = "jobresourceassignment::set";            },
+	{ name = "job::criteria-search";                  }
     );
 
     classes = (
@@ -106,6 +107,7 @@
       { name = LSTasksCommands;                },
       { name = OGoJobAccessHandler;            },
       { name = LSQualifierSearchTaskCommand;   },
+      { name = LSCriteriaSearchTaskCommand;    }
     );
 
     SkyAccessHandlers = (
