@@ -1,3 +1,8 @@
+2009-05-27  Adam Tauno Wiliams <awilliam@whitemiceconsulting.com>
+
+	* OGoResourceManager.m: Fix hardcoded OpenGroupware11 application name
+	  used for loading resources.  Changed to OpenGroupware55. (v5.5.110)
+
 2007-09-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoListComponent.m: fixed a bug with adding favorites (adding favs
