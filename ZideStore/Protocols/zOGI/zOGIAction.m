@@ -34,6 +34,7 @@
 static int zOGIDebugOn = -1;
 static int zOGIProfileOn = -1;
 static int zOGITaskDeleteEnabled = -1;
+static int zOGIMailNotificationEnabled = -1;
 
 + (void)initialize {
   NSUserDefaults *ud;
@@ -45,6 +46,9 @@ static int zOGITaskDeleteEnabled = -1;
   if (zOGIProfileOn) NSLog(@"Note: zOGI profiling enabled.");
   zOGITaskDeleteEnabled = [ud boolForKey:@"zOGITaskDeleteEnabled"];
   if (zOGITaskDeleteEnabled) NSLog(@"Note: Task deletion via zOGI enabled.");
+  zOGIMailNotificationEnabled = [ud boolForKey:@"zOGIMailNotificationEnabled"];
+  if (zOGIMailNotificationEnabled)
+    NSLog(@"Note: Mail notifications via zOGI enabled.");
 }
 
 -(id)init
@@ -72,6 +76,7 @@ static int zOGITaskDeleteEnabled = -1;
 - (BOOL)isDebug { return zOGIDebugOn; }
 - (BOOL)isProfile { return zOGIProfileOn; }
 - (BOOL)allowTaskDelete { return zOGITaskDeleteEnabled; }
+- (BOOL)sendMailNotifications { return zOGIMailNotificationEnabled; }
 
 - (void)setArg1:(id)_arg 
 {

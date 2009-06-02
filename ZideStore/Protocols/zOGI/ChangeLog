@@ -1,3 +1,29 @@
+2009-06-02 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* v5.5.63
+
+	* zOGIAction+Mail.h|m: Clean-up the API.
+
+	* zOGITaskActionNotification.h|m: Notifier object for task actions.
+
+	* zOGITaskCreateNotification.h|m: Notifier object for task create.
+
+	* zOGITaskUpdateNotification.h|m: Notifier object for task modification.
+
+	* zOGITaskNotification.h|m: Base clase for task event notification
+	  objects.  Implements lookup of project, creator, and executor names.
+
+	* zOGIAction+Task.m: Implemented task event notifications via 
+	  notifier objects.
+
+	* zOGINotification.h|m: Base class for all notifier objects.
+
+	* zOGIAction.h|m: Implement support for the zOGIMailNotificationEnabled
+	  default (default is NO) to enable zOGI generated notification
+	  messages.
+
+	* GNUmakefile: Include notification objects in the build.
+
 2009-05-18 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Appointment.m: Added WRITE, READONLY, and DELETE flags

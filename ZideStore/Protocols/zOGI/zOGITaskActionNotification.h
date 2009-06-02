@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2009 Whitemice Consulting
+  Copyright (C) 2009 Whitemice Consulting
 
   This file is part of OpenGroupware.org.
 
@@ -19,17 +19,18 @@
   02111-1307, USA.
 */
 
-#ifndef __zOGIAction_Mail_H__
-#define __zOGIAction_Mail_H__
+#ifndef __zOGITaskActionNotification_H__
+#define __zOGITaskActionNotification_H__
 
-#include "zOGIAction.h"
+#include "zOGITaskNotification.h"
 
-@interface zOGIAction(Mail)
+@interface zOGITaskActionNotification: zOGITaskNotification
+{
+  NSString    *comment;
+}
 
--(void)_send:(NSString *)_body withSubject:(NSString *)_body
-                                        to:(NSArray *)_recipients
-                                 regarding:(id)_regarding;
+- (void)send:(id)_task forAction:(id)_action withComment:(id)_comment;
 
-@end
+@end /* zOGITaskActionNotification */
 
-#endif /* __zOGIAction_Mail_H__ */
+#endif /* __zOGITaskActionNotification_H__ */

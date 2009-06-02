@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2009 Whitemice Consulting
+  Copyright (C) 2009 Whitemice Consulting
 
   This file is part of OpenGroupware.org.
 
@@ -19,17 +19,32 @@
   02111-1307, USA.
 */
 
-#ifndef __zOGIAction_Mail_H__
-#define __zOGIAction_Mail_H__
+#ifndef __zOGINotification_H__
+#define __zOGINotification_H__
 
-#include "zOGIAction.h"
+#include "common.h"
 
-@interface zOGIAction(Mail)
+#define TIMEFORMAT  @"%Y-%m-%d %H:%M (%Z)"
+#define DATEFORMAT  @"%Y-%m-%d (%Z)"
 
--(void)_send:(NSString *)_body withSubject:(NSString *)_body
-                                        to:(NSArray *)_recipients
-                                 regarding:(id)_regarding;
+@interface zOGINotification : NSObject
+{
+  LSCommandContext    *ctx;
+}
 
-@end
+-(id)initWithContext:(LSCommandContext *)_context;
 
-#endif /* __zOGIAction_Mail_H__ */
+/* accessors */
+
+- (LSCommandContext *)ctx;
+
+- (NSString *)dateFormat;
+- (NSString *)timeFormat;
+- (NSString *)actorName;
+- (void)send:(NSString *)_body to:(NSArray *)_recipients 
+                          subject:(NSString *)_subject 
+                        regarding:(id)_regarding;
+
+@end /* zOGINotification */
+
+#endif /* __zOGINotification_H__ */

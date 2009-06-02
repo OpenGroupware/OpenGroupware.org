@@ -41,6 +41,7 @@
 - (BOOL)isDebug;
 - (BOOL)isProfile;
 - (BOOL)allowTaskDelete;
+- (BOOL)sendMailNotifications;
 - (void)setArg1:(id)_arg;
 - (void)setArg2:(id)_arg;
 - (void)setArg3:(id)_arg;

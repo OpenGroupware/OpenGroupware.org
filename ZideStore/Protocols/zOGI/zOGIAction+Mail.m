@@ -27,72 +27,37 @@
 
 @implementation zOGIAction(Mail)
 
--(NSArray *)_recipientsFromId:(id)_recipientId;
-{
-  id              gid, tmp;
-  NSString       *eN;
-  NSMutableArray *r;
 
-  gid = [self _getEOForPKey:_recipientId];
-  if (gid == nil)
-    return nil;
-  eN = [gid entityName];
-  r = [NSMutableArray arrayWithCapacity:16];
-  if ([eN isEqualToString:@"Person"])
-  {
-    tmp = [self _getUnrenderedContactForKey:gid];
-    tmp = [tmp valueForKey:@"email1"];
-    if (tmp != nil)
-      [r addObject:tmp];
-  } else if ([eN isEqualToString:@"Team"])
-    {
-      id team, members, enumerator, member;
-
-      team = [[[self getCTX] runCommand:@"team::get-by-globalid",
-                                        @"gids", [NSArray arrayWithObject:gid],
-                                        nil] lastObject];
-      if ([team isNotNull]) {
-        members = [[self getCTX] runCommand:@"team::members",
-                                            @"team", team,
-                                            nil];
-        /* loop members */
-        enumerator = [members objectEnumerator];
-        while ((member = [enumerator nextObject]) != nil) 
-        {
-          if ([[member valueForKey:@"email1"] isNotNull])
-            [r addObject:[member valueForKey:@"email1"]];
-        }
-      }
-    }
-  return r;
-} /* end _recipientsFromId */
-
--(void)_sendNotification:(NSString *)_subject
-                withBody:(NSString *)_body
-                      to:(id)_recipientId
+-(void)_send:(NSString *)_body withSubject:(NSString *)_subject
+                                        to:(NSArray *)_recipients
+                                 regarding:(id)_regarding
 {
   NGMimeMessage       *message;
   NGMutableHashMap    *header;
   NSArray             *recipients;
 
-  recipients = [self _recipientsFromId:_recipientId];
   if (recipients == nil)
     return;
+  [self logWithFormat:@"_sendNotification has %d recipients", [recipients count]];
   if ([recipients count] > 0)
   {
     header = [[[NGMutableHashMap alloc] initWithCapacity:16] autorelease];
-    [header addObject:@""                   forKey:@"subject"];
-    [header addObject:[NSCalendarDate date] forKey:@"date"];
-    [header addObject:@"1.0"                forKey:@"MIME-Version"];
-    [header addObject:@"zOGI"               forKey:@"X-Mailer"];
+    [header addObject:_subject                  forKey:@"subject"];
+    [header addObject:[NSCalendarDate date]     forKey:@"date"];
+    [header addObject:@"1.0"                    forKey:@"MIME-Version"];
+    [header addObject:@"OpenGroupware.org/zOGI" forKey:@"X-Mailer"];
+    if ([_regarding isNotNull])
+      [header addObject:_regarding forKey:@"X-OpenGroupware-Regarding"];
 
     message = [NGMimeMessage messageWithHeader:header];
-    [message setBody:@"Yo!"];
+    [message setBody:_body];
     [[self getCTX] runCommand:@"email::deliver",
-                             @"copyToSentFolder", [NSNumber numberWithBool:NO],
-                             @"addresses", recipients,
+                             @"copyToSentFolder", [NSNumber numberWithBool:YES],
+                             @"addresses", _recipients,
                              @"mimePart", message, nil];
   }
-} /* end _sendNotification */
+} /* end _send */
+
+
 
 @end /* End zOGIAction(Mail) */

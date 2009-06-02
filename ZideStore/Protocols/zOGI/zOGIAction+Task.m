@@ -21,7 +21,11 @@
 #include "zOGIAction.h"
 #include "zOGIAction+Object.h"
 #include "zOGIAction+Project.h"
+#include "zOGIAction+Mail.h"
 #include "zOGIAction+Task.h"
+#include "zOGITaskCreateNotification.h"
+#include "zOGITaskUpdateNotification.h"
+#include "zOGITaskActionNotification.h"
 
 @implementation zOGIAction(Task)
 
@@ -229,6 +233,14 @@
                            reason:@"Task action resulting in unkown class"];
       }
   [[self getCTX] commit];
+  if ([self sendMailNotifications])
+  {
+    zOGITaskActionNotification *alert;
+
+    alert = [[zOGITaskActionNotification alloc] initWithContext:(id)[self getCTX]];
+    [alert send:task forAction:_action withComment:_comment];
+    [alert release];
+  }
   return [self _renderTask:[[self _getUnrenderedTasksForKeys:_pk] lastObject] 
                 withDetail:[NSNumber numberWithInt:65535]];
 } /* end doTaskAction */
@@ -270,7 +282,7 @@
 -(id)_createTask:(NSDictionary *)_task {
   NSMutableDictionary   *taskDictionary;
   NSString              *executantEntityName;
-  id	                 taskObject;
+  id	                 task;
 
   taskDictionary = [self _translateTask:[self _fillTask:_task]];
   [self _validateTask:taskDictionary];
@@ -280,24 +292,31 @@
     [taskDictionary setObject:[NSNumber numberWithInt:1] forKey:@"isTeamJob"];
    else
      [taskDictionary setObject:[NSNumber numberWithInt:0] forKey:@"isTeamJob"];
-  taskObject = [[self getCTX] runCommand:@"job::new" 
+  task = [[self getCTX] runCommand:@"job::new" 
                               arguments:taskDictionary];
-  if(taskObject == nil) {
+  if(task == nil) {
     // \todo Throw exception when task is not created
     return [NSException exceptionWithHTTPStatus:500
                         reason:@"Failure to create task"];
   }
   if ([self isDebug]) {
     [self logWithFormat:@"zOGI creation of task#%@", 
-                         [taskObject objectForKey:@"jobId"]];
+                         [task objectForKey:@"jobId"]];
   }
   [self _saveObjectLinks:[_task objectForKey:@"_OBJECTLINKS"] 
-               forObject:[taskObject valueForKey:@"jobId"]];
+               forObject:[task valueForKey:@"jobId"]];
   [self _saveProperties:[_task objectForKey:@"_PROPERTIES"]
-              forObject:[taskObject valueForKey:@"jobId"]];
+              forObject:[task valueForKey:@"jobId"]];
   [[self getCTX] commit];
-  return [self _renderTask:taskObject 
-                 withDetail:[NSNumber numberWithInt:65535]];
+  if ([self sendMailNotifications])
+  {
+    zOGITaskCreateNotification *alert;
+
+    alert = [[zOGITaskCreateNotification alloc] initWithContext:(id)[self getCTX]];
+    [alert send:task];
+    [alert release];
+  }
+  return [self _renderTask:task withDetail:[NSNumber numberWithInt:65535]];
 } /* end _createTask */
 
 /* Update the task object */
@@ -330,6 +349,14 @@
     [self _saveProperties:[_task objectForKey:@"_PROPERTIES"] 
                 forObject:objectId];
   [[self getCTX] commit];
+  if ([self sendMailNotifications])
+  {
+    zOGITaskUpdateNotification *alert;
+
+    alert = [[zOGITaskUpdateNotification alloc] initWithContext:(id)[self getCTX]];
+    [alert send:task];
+    [alert release];
+  }
   return [self _renderTask:task 
                  withDetail:[NSNumber numberWithInt:65535]];
 } /* end _updateTask */
@@ -558,6 +585,5 @@
   } else return [NSException exceptionWithHTTPStatus:500
                               reason:@"Deletion of tasks is not supported"];
 }
-
 
 @end /* End zOGIAction(Task) */

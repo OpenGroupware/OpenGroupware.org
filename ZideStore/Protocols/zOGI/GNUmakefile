@@ -35,7 +35,12 @@ zOGI_OBJC_FILES = \
         zOGIAction+News.m \
         zOGIAction+Mail.m \
         zOGIAction+Defaults.m \
-        zOGIRPCAction.m 
+        zOGIRPCAction.m  \
+	zOGINotification.m \
+        zOGITaskNotification.m \
+        zOGITaskCreateNotification.m \
+        zOGITaskUpdateNotification.m \
+        zOGITaskActionNotification.m 
 
 zOGI_RESOURCE_FILES += \
 	bundle-info.plist	\
