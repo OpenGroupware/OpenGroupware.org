@@ -40,35 +40,6 @@
   [super dealloc];
 }
 
-- (void)_newStaffInContext:(id)_context {
-  BOOL         isOk         = NO;
-  id           account;
-  id           pkey;
-  EOEntity     *staffEntity;
-  id           staff;
-  NSDictionary *pk;
-  
-  account     = [self object];
-  pkey        = [account valueForKey:[self primaryKeyName]];
-  staffEntity = [[self databaseModel] entityNamed:@"Staff"];
-
-  pk    = [self newPrimaryKeyDictForContext:_context keyName:@"staffId"];
-  staff = [self produceEmptyEOWithPrimaryKey:pk entity:staffEntity];
-  
-  [staff takeValue:[pk valueForKey:@"staffId"]          forKey:@"staffId"];
-  [staff takeValue:pkey                                 forKey:@"companyId"];
-  [staff takeValue:[account valueForKey:@"login"]       forKey:@"login"];
-  [staff takeValue:[NSNumber numberWithBool:YES]        forKey:@"isAccount"];
-  [staff takeValue:[NSNumber numberWithBool:NO]         forKey:@"isTeam"];
-  [staff takeValue:@"inserted"                          forKey:@"dbStatus"];
-  [staff takeValue:[account valueForKey:@"description"] forKey:@"description"];
-  
-  isOk = [[self databaseChannel] insertObject:staff];
-
-  [LSDBObjectCommandException raiseOnFail:isOk object:self
-                              reason:[dbMessages description]];
-}
-
 - (void)_takeCryptedPasswdInContext:(id)_context {
   NSString *passwd;
   
@@ -162,7 +133,6 @@
     }
   }
   [super _executeInContext:_context];
-  [self _newStaffInContext:_context];
 
   if (self->teams != nil && [self->teams count] > 0) {
     LSRunCommandV(_context, @"account", @"setgroups",
