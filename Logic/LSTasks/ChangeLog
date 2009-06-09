@@ -1,3 +1,11 @@
+2009-06-09  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetToDoActionsAsRSSCommand.m: Removed dependency on staff table.
+	  (v5.5.32)
+
+	* LSGetDelegatedActionsAsRSSCommand.m: Removed dependency on staff
+	  table. (v5.5.32)
+
 2009-05-27  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSCriteriaSearchTaskCommand.m: Added command, used by zOGI to allow

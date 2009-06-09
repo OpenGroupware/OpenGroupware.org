@@ -67,7 +67,7 @@
                       @"       p.name AS projectname, "
                       @"       jh.action_date AS actionDate, "
                       @"       jh.action AS action, "
-                      @"       s.login AS actor, "
+                      @"       s.login AS login, "
                       @"       jhi.comment AS comment, "
                       @"        cv.value_string AS email1 "
                       @"FROM "];
@@ -75,7 +75,7 @@
   [self addInnerJoin:@"JobHistory" as:@"jh" on:@"jh.job_id = j.job_id"];
   [self addInnerJoin:@"JobHistoryInfo" as:@"jhi" on:@"jhi.job_history_id = jh.Job_history_id"];
   [self addOuterJoin:@"Project" as:@"p" on:@"p.project_id = j.project_id"];
-  [self addOuterJoin:@"Staff" as:@"s" on:@"s.company_id = jh.actor_id"];
+  [self addOuterJoin:@"Person" as:@"s" on:@"s.company_id = jh.actor_id"];
   [self addOuterJoin:@"CompanyValue" as:@"cv" 
                   on:@"cv.company_id = s.company_id AND cv.attribute = 'email1'"];
   [[self query] appendFormat:@" WHERE j.creator_id = %@", [self accountId]];
@@ -104,7 +104,7 @@
   [title appendString:[tmp stringByEscapingHTMLString]];
   tmp = [_record valueForKey:@"action"];
   tmp = [tmp substringWithRange:NSMakeRange(3,[tmp length]-3)];
-  [title appendFormat:@" (%@ by %@)", tmp, [_record valueForKey:@"actor"]];
+  [title appendFormat:@" (%@ by %@)", tmp, [_record valueForKey:@"login"]];
 
   /* Create a description */
   description = [NSMutableString stringWithCapacity:512];
@@ -119,7 +119,7 @@
   /* Create an Author */
   author = [NSMutableString stringWithCapacity:128];
   [author appendString:[_record valueForKey:@"email1"]];
-  [author appendFormat:@" (%@)", [_record valueForKey:@"actor"]];
+  [author appendFormat:@" (%@)", [_record valueForKey:@"login"]];
 
   /* Create a GUID */
   tmp = [_record valueForKey:@"jobHistoryId"];
