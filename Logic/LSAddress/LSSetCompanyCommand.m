@@ -348,6 +348,11 @@ static NSString *autoNumberPrefix = @"OGo";
                 @"action"     , [self valueForKey:@"logAction"],
                 @"objectToLog", [self object],
                 nil);
+
+  [self logWithFormat:@"asking for ctag bump"];
+  LSRunCommandV(_context, @"object", @"increment-ctag",
+                @"object",      [self object],
+                nil);
 }
 
 /* accessors */

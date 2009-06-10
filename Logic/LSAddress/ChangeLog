@@ -1,3 +1,8 @@
+2009-06-10  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSSetCompanyCommand.m: Added support for incrementing the ctag
+	  entry in the ctags table. (v5.5.109)
+
 2009-05-15  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSDeleteCompanyCommand.m: Added note disattach or
