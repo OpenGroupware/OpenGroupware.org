@@ -40,6 +40,7 @@
         { name = "log::since"                  },
         { name = "object::get-current-log"     },
         { name = "object::get-by-globalid"     },
+        { name = "object::increment-ctag"      },
     );
     classes = (
         { name = LSBaseCommands;               },
@@ -53,6 +54,7 @@
         { name = LSGetObjectByGlobalID;        },
         { name = LSSuperUserCommand;           },
         { name = LSQueryLogsSince;             },
+        { name = LSIncrementCTagCommand;       },
     );
   };
 }

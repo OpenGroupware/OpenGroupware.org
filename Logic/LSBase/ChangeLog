@@ -1,5 +1,16 @@
 2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
+	* v5.5.33
+
+	* LSIncrementCTagCommand.h|m: New command to increment entries in the
+	  ctags table.
+
+	* commands.plist: register the object::increment-ctag command.
+
+	* bundle-info.plist: register the LSIncrementCTagCommand class.
+
+2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
 	* v5.4.32
 
 	* LSGetLogsCommand.m: renamed sybaseMessages to dbMessages
