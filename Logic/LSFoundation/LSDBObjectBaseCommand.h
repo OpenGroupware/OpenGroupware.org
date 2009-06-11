@@ -107,6 +107,8 @@
   attributePath:(NSString *)_attrName
   primaryKeys:(NSArray *)_keys;
 
+- (void)calculateCTagInContext:(id)_context;
+
 /* assertions */
 
 - (void)assert:(BOOL)_condition; // raises with dbMessages
