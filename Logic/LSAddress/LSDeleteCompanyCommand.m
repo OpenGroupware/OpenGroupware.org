@@ -156,7 +156,7 @@
                             @"action"     , @"99_delete",
                             @"objectToLog", [self object],
                             nil);
-  
+  [self calculateCTagInContext:_context]; 
   [super _executeInContext:_context];
 }
 

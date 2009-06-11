@@ -455,6 +455,7 @@ static NSString *autoNumberPrefix = @"OGo";
   
   [self _saveAttachmentInContext:_context];
   [self _addCreationLogInContext:_context];
+  [self calculateCTagInContext:_context];
 }
 
 /* initialize records */
