@@ -1,3 +1,11 @@
+2009-06-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSNewAppointmentCommand.m: updates ctags table. (v5.5.115)
+
+	* LSSetAppointmentCommand.m: updates ctags table. (v5.5.115)
+
+	* LSDeleteAppointmentCommand.m: updates ctags table. (v5.5.115)
+
 2009-05-15  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSDeleteAppointmentCommand.m: check companyId to see if note

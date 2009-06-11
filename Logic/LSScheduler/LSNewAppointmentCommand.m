@@ -434,7 +434,7 @@ static NSArray  *startDateOrderings = nil;
   
   tzsD = [[[sD timeZoneDetail] retain] autorelease];
   tzeD = [[[eD timeZoneDetail] retain] autorelease];
-  
+
   [super _executeInContext:_context];
   obj = [self object];
   
@@ -461,6 +461,7 @@ static NSArray  *startDateOrderings = nil;
     [self _newCyclicDatesInContext:_context];
   
   [self _addLogInContext:_context];
+  [self calculateCTagInContext:_context];
 }
 
 /* initialize records */

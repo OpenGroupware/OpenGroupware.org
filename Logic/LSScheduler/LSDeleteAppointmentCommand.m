@@ -351,7 +351,9 @@
                                    type:nil];
   [[_context linkManager] deleteLinksFrom:(id)[[self object] globalID] 
                                      type:nil];
-  
+ 
+  [self calculateCTagInContext:_context];
+ 
   /* TODO: document the following section */
 
   if (self->deleteAllCyclic) {
