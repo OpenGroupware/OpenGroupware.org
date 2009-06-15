@@ -1,3 +1,7 @@
+2009-06-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAddress.m: accept text/vcard as PUT MIME type (v1.5.103)
+
 2009-04-30  Helge Hess  <helge.hess@skyrix.com>
 
 	* SxDavAddrbookMultiget.m: fixed dbl-release bugs (v1.5.102)

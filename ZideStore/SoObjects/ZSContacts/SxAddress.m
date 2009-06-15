@@ -660,7 +660,9 @@ static BOOL debugEO = NO;
   /* check MIME-type */
   
   mtype = [[_ctx request] headerForKey:@"content-type"];
-  if (![mtype hasPrefix:@"text/x-vcard"]) {
+  if (![mtype hasPrefix:@"text/x-vcard"] &&
+      ![mtype hasPrefix:@"text/vcard"])
+  {
     if ([mtype length] > 0) {
       [self logWithFormat:@"ERROR: tried to PUT unsupported MIME type: %@",
             mtype];
