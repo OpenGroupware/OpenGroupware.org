@@ -1,3 +1,8 @@
+2009-06-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetVCardForGlobalIDsCommand.m: do not raise exception if writing of the
+	  cache file fails, just log an error (v5.5.111)
+
 2009-06-10  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSDeleteCompanyCommand.m: update ctags via calculateCTagInContext.

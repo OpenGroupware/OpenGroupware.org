@@ -299,8 +299,7 @@ static NSDictionary *addressMapping = nil;
   manager = [NSFileManager defaultManager];
 
   path = LSAttachmentPath;
-  if (LSHashCache)
-  {
+  if (LSHashCache) {
     int        offset;
     NSString  *hash;
 
@@ -318,7 +317,12 @@ static NSDictionary *addressMapping = nil;
     [manager removeFileAtPath:path handler:nil];
   
   ok = [_vCard writeToFile:path atomically:YES];
+  if (!ok) 
+    [self errorWithFormat:@"could not write cache file: %@", path];
+  
+#if 0 // no reason to crash on that?!
   [self assert:ok reason:@"error during save of vCard cache file"];
+#endif
 }
 
 /* execution */
