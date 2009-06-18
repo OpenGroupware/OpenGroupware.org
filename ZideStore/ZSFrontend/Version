@@ -1,7 +1,7 @@
 # Version file
 
 include ../Version
-SUBMINOR_VERSION:=119
+SUBMINOR_VERSION:=120
 
 # v1.5.117 requires libSaxObjC v4.5.62
 # v1.3.89  requires libNGExtensions v4.3.116

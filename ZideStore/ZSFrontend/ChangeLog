@@ -1,3 +1,7 @@
+2009-06-18  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxFolder+DAV.m: Implement davCollectionTag. (v5.5.120)
+
 2009-04-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxObject.[hm]: implemented a preliminary If-None-Match precondition

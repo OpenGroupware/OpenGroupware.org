@@ -48,6 +48,22 @@
   return NO;
 }
 
+- (NSString *)davCollectionTag {
+  NSString           *entityName, *ctag;
+  LSCommandContext   *ctx;
+
+  entityName = [[self class] entityName];
+  ctx = [self commandContextInContext:[[WOApplication application] context]];
+  ctag = nil;
+  if ([entityName isNotNull])
+  {
+    ctag = [ctx runCommand:@"system::get-entity-ctag", 
+                           @"entity", entityName, 
+                           nil];
+  }
+  return ctag;
+}
+
 - (NSString *)davContentClass {
   NSString *fc = [self outlookFolderClass];
   
