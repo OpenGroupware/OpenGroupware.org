@@ -1,3 +1,8 @@
+2009-06-18  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* pg-update-1.x-to-5.5.psql: script to update DB from a 1.x schema to 
+	  the v5.5 schema.	
+
 2009-03-13  Adam Tauno Williams <awilliam@whitemice.org>
 
 	* pg-build-schema.psql: fixed a typo, a duplicate comma.
