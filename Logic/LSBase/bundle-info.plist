@@ -29,6 +29,7 @@
         { name = "system::ctx2cmd"             },
         { name = "system::ctxlog"              },
         { name = "system::su"                  },
+        { name = "system::get-entity-ctag"     },
         { name = "sessionlog::add"             },
         { name = "sessionlog::query"           },
         { name = "sessionlog::get-by-globalid" },
@@ -55,6 +56,7 @@
         { name = LSSuperUserCommand;           },
         { name = LSQueryLogsSince;             },
         { name = LSIncrementCTagCommand;       },
+        { name = LSGetCTagForEntityCommand;    },
     );
   };
 }

@@ -48,7 +48,8 @@
     };
     "system" = {
       operations = {
-        "get-object-type" = { class = "LSGetObjectTypeCommand"; };
+        "get-object-type" = { class = "LSGetObjectTypeCommand";       };
+        "get-entity-ctag" = { class = "LSGetCTagForEntityCommand";    };
         "transaction"     = { class = "LSDBObjectTransactionCommand"; };
         "sort"            = { class = "LSSortCommand";                };
         "login"           = { class = "LSLoginCommand";               };

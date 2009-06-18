@@ -1,3 +1,16 @@
+2009-06-18  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetCTagForEntityCommand.h|m: New command to retrieve ctag for
+	  the specified entity (Enterprise/Person/Date/etc...).
+	  (v5.5.34)
+
+	* GNUmakefile: Added new command. (v5.5.34)
+
+	* commands.plist: Added new command, "system::get-entity-ctag". 
+	  (v5.5.34)
+
+	* bundle-info.plist: Added new command and class (v5.5.34)
+
 2009-06-10  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* v5.5.33
