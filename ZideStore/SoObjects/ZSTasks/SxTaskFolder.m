@@ -41,6 +41,10 @@
   [super dealloc];
 }
 
++ (NSString *)entityName {
+  return @"Job";
+}
+
 /* accessors */
 
 - (void)setType:(NSString *)_type {

@@ -1,3 +1,7 @@
+2009-06-18  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxTaskFolder.m: added entityName property to class (v5.5.83)
+
 2008-03-11  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxTaskFolder.m: added gdavComponentSet (v1.5.82)

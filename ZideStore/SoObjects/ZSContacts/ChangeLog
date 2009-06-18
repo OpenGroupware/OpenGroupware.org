@@ -1,3 +1,9 @@
+2009-06-18  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+        * SxPersonFolder.m: added entityName property to class (v5.5.104)
+
+        * SxEnterpriseFolder.m: added entityName property to class (v5.5.104)
+
 2009-06-15  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAddress.m: accept text/vcard as PUT MIME type (v1.5.103)
