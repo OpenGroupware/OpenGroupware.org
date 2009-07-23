@@ -111,7 +111,7 @@
 "extendedAttributes" = "Uitgebreid"
 "fileUpload" = "Taak importdata"
 "footerRowLabel1" = "SKYRiX"
-"footerRowLabel2" = "2000-2003 SKYRIX Software AG"
+"footerRowLabel2         = "2000-2009 SKYRIX Software AG";
 "future" = "Toekomstige taken"
 "gotoMailUrlLabel" = "Mail weblokatie"
 "hideErrors" = "Fouten verbergen"

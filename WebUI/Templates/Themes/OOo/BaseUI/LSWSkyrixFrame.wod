@@ -194,7 +194,7 @@ Logout: WOHyperlink {
 */
 FooterRowLabel2a : WOHyperlink {
   string = labels.footer_skyrix;
-  href   = "http://www.skyrix.com/knoppix/skyrix/";
+  href   = "http://www.skyrix.com";
   TARGET = "SKYRIX";
 }
 

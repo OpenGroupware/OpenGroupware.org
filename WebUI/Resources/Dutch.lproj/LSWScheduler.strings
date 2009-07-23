@@ -213,7 +213,7 @@
 "filteredForLabel" = "Gefilterd voor:"
 "firstMay" = "Eerste mei"
 "footerRowLabel1" = "SKYRIX"
-"footerRowLabel2" = "2000-2003 SKYRIX Software AG"
+"footerRowLabel2         = "2000-2009 SKYRIX Software AG";
 "forSeveralDays" = "Met meerdagige afspraken"
 "forward" = "Stuur door"
 "fromLabel" = "Van"

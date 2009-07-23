@@ -47,7 +47,7 @@
 "folder_title" = "Foldernaam"
 "folders" = "Folder"
 "footerRowLabel1" = "SKYRIX"
-"footerRowLabel2" = "2000-2003 SKYRIX Software AG"
+"footerRowLabel2         = "2000-2009 SKYRIX Software AG";
 "forward" = "Mail doorsturen"
 "from" = "van"
 "ignore" = "-----------------------------------Negeren -----------------------------------"

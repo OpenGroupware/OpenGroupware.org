@@ -30,7 +30,7 @@ LineRight: WOImage { filename = "line_right.gif";   }
 
 FooterRowLabel2a: WOHyperlink {
   string = "SKYRIX Software AG";
-  href   = "http://www.skyrix.com/knoppix/skyrix/";
+  href   = "http://www.skyrix.com";
   TARGET = "SKYRIX";
 }
 
