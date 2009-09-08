@@ -22,10 +22,8 @@ libZSBackend_HEADER_FILES = \
 	SxBackendMaster.h		\
 	SxContactManager.h		\
 	SxFreeBusyManager.h		\
-	SxRecordCacheManager.h		\
 	SxSQLQuery.h			\
 	SxSQLQueryResultEnumerator.h	\
-	SxSetCacheManager.h		\
 	SxTaskManager.h			\
 	SxUpdateContact.h		\
 	SxUpdateEnterprise.h		\
@@ -35,8 +33,6 @@ libZSBackend_HEADER_FILES = \
 libZSBackend_OBJC_FILES = \
 	SxBackendMaster.m		\
 	SxBackendManager.m		\
-	SxSetCacheManager.m		\
-	SxRecordCacheManager.m		\
 	SxTaskManager.m			\
 	\
 	NSString+rtf.m			\

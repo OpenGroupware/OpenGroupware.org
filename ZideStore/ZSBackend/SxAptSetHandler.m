@@ -21,9 +21,7 @@
 
 #include "SxAptSetHandler.h"
 #include "SxAptManager.h"
-#include "SxSetCacheManager.h"
 #include "NGResourceLocator+ZSB.h"
-#include <ZSBackend/SxRecordCacheManager.h>
 #include "common.h"
 #include <time.h>
 
@@ -37,9 +35,7 @@
 static NSArray *pkeyAndVersionGetAttrs = nil;
 static NSArray *coreInfoGetAttrs       = nil;
 static NSArray *eoExtractAttrs         = nil;
-static NSArray *cacheDateAttrs         = nil;
 static NSArray *permissionsAttrs       = nil;
-static BOOL disableCoreCache = YES;
 static BOOL debugOn = NO;
 
 + (void)initialize {
@@ -64,15 +60,9 @@ static BOOL debugOn = NO;
   pkeyAndVersionGetAttrs = [[plist objectForKey:@"KeyAndVersionAttrs"] copy];
   coreInfoGetAttrs       = [[plist objectForKey:@"CoreInfoAttrs"]      copy];
   eoExtractAttrs         = [[plist objectForKey:@"EOExtractAttrs"]     copy];
-  cacheDateAttrs         = [[plist objectForKey:@"CacheDateAttrs"]     copy];
   permissionsAttrs       = [[NSArray arrayWithObjects:@"permissions",
                                      @"accessTeamId", nil] copy];
   didInit = YES;
-  
-  disableCoreCache = ![[NSUserDefaults standardUserDefaults] 
-                                   boolForKey:@"SxEnableAptCoreCache"];
-  if (disableCoreCache)
-    NSLog(@"appointment cache is disabled");
   
   debugOn = [ud boolForKey:@"SxDebugAptHandler"];
 }
@@ -81,50 +71,18 @@ static BOOL debugOn = NO;
   manager:(SxAptManager *)_manager
 {
   if ((self = [super init])) {
-    NSString *p;
-    
     self->setId   = [_setId retain];
     self->manager = _manager;
-    
-    if (!disableCoreCache) {
-      if ((p = [_setId cachePrefixInContext:[_manager commandContext]])) {
-        self->recordCache = 
-          [[SxRecordCacheManager recordCacheForType:p 
-                                 dateAttributes:cacheDateAttrs] retain];
-      
-        /* separate cache for core infos */
-        p = [p stringByAppendingString:@"-core"];
-        self->coreInfoCache = 
-          [[SxRecordCacheManager recordCacheForType:p 
-                                 dateAttributes:cacheDateAttrs] retain];
-      }
-      else
-        [self logWithFormat:@"WARNING: got no record cache prefix ..."];
-    }
   }
   return self;
 }
 
 - (void)dealloc {
-  [self->recordCache   release];
-  [self->coreInfoCache release];
-  [self->cacheManager  release];
   [self->setId release];
   [super dealloc];
 }
 
 /* accessors */
-
-- (SxSetCacheManager *)cacheManager {
-  // TODO: implement, create on demand
-  return self->cacheManager;
-}
-- (SxRecordCacheManager *)recordCache {
-  return self->recordCache;
-}
-- (SxRecordCacheManager *)coreInfoCache {
-  return self->coreInfoCache;
-}
 
 - (NSCalendarDate *)defaultStartDate {
   return [self->manager defaultStartDate];
@@ -365,12 +323,6 @@ static BOOL debugOn = NO;
     pkey    = [pkeyNum intValue];
     version = [[info objectForKey:@"objectVersion"] intValue];
     
-    info = [self->coreInfoCache cacheEntryForKey:pkey inVersion:version];
-    if (info) {
-      /* cache hit */
-      [result addObject:info];
-    }
-    else {
       EOKeyGlobalID *gid;
       
       if (gidMiss == nil)
@@ -379,7 +331,6 @@ static BOOL debugOn = NO;
                            keys:&pkeyNum keyCount:1
                            zone:NULL];
       [gidMiss addObject:gid];
-    }
   }
   
   if (gidMiss == nil) {
@@ -409,11 +360,6 @@ static BOOL debugOn = NO;
     if ((!checkPermissions) ||
         ([self checkViewPermissionForApt:info])) {
       [result addObject:info];
-    
-      [self->coreInfoCache 
-           storeCacheEntry:info 
-           forKey:[[info objectForKey:@"dateId"] intValue]
-           inVersion:[[info objectForKey:@"objectVersion"] intValue]];
     }
   }
   

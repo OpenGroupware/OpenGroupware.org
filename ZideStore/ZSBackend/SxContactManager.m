@@ -28,7 +28,6 @@
 #include "SxFetchPerson.h"
 #include "SxFetchEnterprise.h"
 #include "SxFetchGroup.h"
-#include "SxRecordCacheManager.h"
 #include "NSString+DBName.h"
 
 #include <time.h>
@@ -230,52 +229,16 @@
   return res;
 }
 
-- (SxRecordCacheManager *)cacheForIdentifier:(SxContactSetIdentifier *)_iden {
-  static int     SxCachePrivContactsCnt = -2;
-  static NSArray *dateAttrs = nil;
-  NSString *p;
-  SxRecordCacheManager *rm;
-
-
-  if (SxCachePrivContactsCnt == -2) {
-    SxCachePrivContactsCnt =
-      [[NSUserDefaults standardUserDefaults]
-                       integerForKey:@"SxMemoryCachePrivContactsCnt"];
-  }
-  if (dateAttrs == nil)
-    dateAttrs = [[NSArray alloc] initWithObjects:@"bday", @"anniversary",
-                                 nil];
-  
-  p = [_iden cachePrefixInContext:[self commandContext]];
-
-  if (![p length])
-    [self logWithFormat:@"WARNING[%s]: missing cachePrefixInContext for %@",
-          __PRETTY_FUNCTION__, _iden];
-  
-  rm = [SxRecordCacheManager recordCacheForType:p dateAttributes:dateAttrs];
-
-  if (SxCachePrivContactsCnt != 0) {
-    if (![_iden isPublicSet]) {
-      [rm setDoMemCache:YES];
-      [rm setObjCacheCnt:SxCachePrivContactsCnt];
-    }
-  }
-  return rm;
-}
-
 /* ZideLook section */
 
 - (NSArray *)fullObjectInfosForPrimaryKeys:(NSArray *)_pkeys
   withSetIdentifier:(SxContactSetIdentifier *)_ident
 {
-  SxRecordCacheManager *cache;
   NSString             *entityName;
   NSDictionary         *versions;
   NSMutableArray       *result, *toBeFetched;
   NSEnumerator         *enumerator;
   NSDictionary         *obj;
-  
-  cache = [self cacheForIdentifier:_ident];
   
   entityName  = [_ident isEnterpriseSet] ? @"Enterprise" : @"Person";
   versions    = [self versionsForIds:_pkeys entityName:entityName];
@@ -283,18 +246,9 @@
   result      = [NSMutableArray arrayWithCapacity:[_pkeys count]];
   enumerator  = [versions keyEnumerator];
 
+  //TODO: Can this be done more efficiently?
   while ((obj = [enumerator nextObject])) {
-    NSDictionary *dict;
-
-    dict = [cache cacheEntryForKey:[obj intValue]
-                  inVersion:[[versions objectForKey:obj] intValue]];
-
-    if (dict) {
-      [result addObject:dict];
-    }
-    else {
       [toBeFetched addObject:obj];
-    }
   }
 
   if ([toBeFetched count]) {
@@ -304,11 +258,6 @@
       ? [self fullEnterpriseInfosForPrimaryKeys:toBeFetched]
       : [self fullPersonInfosForPrimaryKeys:toBeFetched];
     
-    enumerator = [fetchRes objectEnumerator];
-    while ((obj = [enumerator nextObject])) {
-      [cache storeCacheEntry:obj forKey:[[obj objectForKey:@"pkey"] intValue]
-             inVersion:[[obj objectForKey:@"version"] intValue]];
-    }
     [result addObjectsFromArray:fetchRes];
   }
   return result;
