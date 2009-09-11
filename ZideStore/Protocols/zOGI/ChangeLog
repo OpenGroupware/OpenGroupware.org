@@ -3,6 +3,22 @@
 	* zOGIAction+Company.m: Update to use fault-codes other than 500.
 	  (v5.5.64)
 
+	* zOGITaskActionNotification.m: Notify the owner not the creator.
+	  (v5.5.65)
+
+	* zOGITaskCreateNotification.m: Display the owner and the creator in
+	  the notification e-mail;  and notify the owner not the creator.
+	  (v5.5.65)
+
+	* zOGITaskNotification.h|m: Added ownerName accessor. (v5.5.65)
+
+	* zOGIAction+Task.m: Support the ownerObjectId attribute of Task
+	  entity.  Use more meaningul fault-codes for failed operations.
+	  (v5.5.65)
+
+	* zOGITaskUpdateNotification.m: Notify the owner not the creator.
+	  (v5.5.65)
+
 2009-06-02 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* v5.5.63

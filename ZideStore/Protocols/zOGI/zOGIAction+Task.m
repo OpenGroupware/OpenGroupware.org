@@ -41,6 +41,7 @@
             [self ZERO:[_task valueForKey:@"objectVersion"]], @"version",
             @"Task", @"entityName",
             [self ZERO:[_task valueForKey:@"creatorId"]], @"creatorObjectId",
+            [self ZERO:[_task valueForKey:@"ownerId"]], @"ownerObjectId",
             [_task valueForKey:@"jobId"], @"objectId",
             [self ZERO:[_task valueForKey:@"isTeamJob"]], @"isTeamJob",
             [self NIL:[_task valueForKey:@"jobStatus"]], @"status",
@@ -212,7 +213,7 @@
                                            nil];
      }
   if (notation == nil) {
-    return [NSException exceptionWithHTTPStatus:500
+    return [NSException exceptionWithHTTPStatus:304
                         reason:@"Recording of task action failed."];
    }
   if ([notation isKindOfClass:[EOGenericRecord class]]) {
@@ -223,13 +224,13 @@
                        nil];
       result = [[self getCTX] runCommand:@"job::set" arguments:args];
       if (result == nil) {
-        return [NSException exceptionWithHTTPStatus:500
+        return [NSException exceptionWithHTTPStatus:304
                             reason:@"Accepting of task failed."];
        }
      } // End if _action == accpet
    } else {
        [[self getCTX] rollback];
-       return [NSException exceptionWithHTTPStatus:500
+       return [NSException exceptionWithHTTPStatus:304
                            reason:@"Task action resulting in unkown class"];
       }
   [[self getCTX] commit];
@@ -296,7 +297,7 @@
                               arguments:taskDictionary];
   if(task == nil) {
     // \todo Throw exception when task is not created
-    return [NSException exceptionWithHTTPStatus:500
+    return [NSException exceptionWithHTTPStatus:304
                         reason:@"Failure to create task"];
   }
   if ([self isDebug]) {
@@ -330,7 +331,7 @@
     /* Throw exception if object is not a Task
        TODO: Can this happen? */
     return [NSException 
-              exceptionWithHTTPStatus:500
+              exceptionWithHTTPStatus:304
               reason:@"Update of task requested for non-task object"];
   }
 
@@ -338,7 +339,7 @@
   task = [[self getCTX] runCommand:@"job::set" 
                         arguments:[self _translateTask:_task]];
   if (task == nil) {
-    return [NSException exceptionWithHTTPStatus:500
+    return [NSException exceptionWithHTTPStatus:304
                         reason:@"Update of task failed"];
   }
   /* TODO: Detail with failure */
@@ -416,7 +417,11 @@
     return @"executantId";
   if ([key isEqualToString:@"creatorObjectId"])
     return @"creatorId";
+  if ([key isEqualToString:@"ownerObjectId"])
+    return @"ownerId";
   if ([key isEqualToString:@"status"])
+  if ([key isEqualToString:@"creatorObjectId"])
+    return @"creatorId";
     return @"jobStatus";
   if ([key isEqualToString:@"objectProjectId"] ||
       [key isEqualToString:@"projectObjectId"])
@@ -486,6 +491,9 @@
     } else if ([key isEqualToString:@"creatorObjectId"]) {
         [task setObject:[_task objectForKey:@"creatorObjectId"]
                  forKey:@"creatorId"];
+    } else if ([key isEqualToString:@"ownerObjectId"]) {
+        [task setObject:[_task objectForKey:@"ownerObjectId"]
+                 forKey:@"ownerId"];
     } else if ([key isEqualToString:@"entityName"] ||
                [key isEqualToString:@"isTeamJob"]) {
       // These atttributes are deliberately dropped
@@ -582,7 +590,7 @@
     }
     return [NSException exceptionWithHTTPStatus:500
                         reason:@"Unable to marshal EO for task."];
-  } else return [NSException exceptionWithHTTPStatus:500
+  } else return [NSException exceptionWithHTTPStatus:403
                               reason:@"Deletion of tasks is not supported"];
 }
 

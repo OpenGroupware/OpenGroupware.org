@@ -44,8 +44,8 @@
       recipients = [[NSMutableArray alloc] initWithCapacity:2];
       account = [[self ctx] valueForKey:LSAccountKey];
       if (![[account valueForKey:@"companyId"] 
-              isEqualTo:[_task valueForKey:@"creatorId"]])
-        [recipients addObject:[_task valueForKey:@"creatorId"]];
+              isEqualTo:[_task valueForKey:@"ownerId"]])
+        [recipients addObject:[_task valueForKey:@"ownerId"]];
       [recipients addObject:[_task valueForKey:@"executantId"]];
       subject = [[NSString alloc] initWithFormat:
                     @"Task: %@ (%@)", [_task valueForKey:@"name"],

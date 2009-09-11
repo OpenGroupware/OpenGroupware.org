@@ -28,6 +28,7 @@
 
 - (NSString *)projectName:(id)_task;
 - (NSString *)creatorName:(id)_task;
+- (NSString *)ownerName:(id)_task;
 - (NSString *)executorName:(id)_task;
 
 @end /* zOGITaskNotification */

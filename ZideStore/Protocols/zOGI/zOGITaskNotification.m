@@ -80,6 +80,33 @@
   return label;
 }
 
+- (NSString *)ownerName:(id)_task;
+{
+  NSString   *label;
+  id          pkey;
+  id          account;
+  EOGlobalID *gid;
+
+  label = @"N/A";
+  pkey = [_task valueForKey:@"ownerId"];
+  gid = [[[self ctx] typeManager] globalIDForPrimaryKey:pkey];
+  account = [[[self ctx] runCommand:@"person::get-by-globalid",
+                                    @"gid", gid,
+                                    @"returnType", intObj(LSDBReturnType_OneObject),
+                                    nil] lastObject];
+  if ([account isNotNull])
+  {
+    if ([[account valueForKey:@"email1"] isNotNull])
+    {
+      label = [NSString stringWithFormat:@"%@, %@ <%@>",
+                          [account valueForKey:@"name"],
+                          [account valueForKey:@"firstname"],
+                          [account valueForKey:@"email1"]];
+    } else label = [account valueForKey:@"login"];
+  }
+  return label;
+}
+
 - (NSString *)executorName:(id)_task;
 {
   id           pkey;

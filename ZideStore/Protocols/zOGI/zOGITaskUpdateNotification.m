@@ -41,8 +41,8 @@
   recipients = [[NSMutableArray alloc] initWithCapacity:2];
   account = [[self ctx] valueForKey:LSAccountKey];
   if (![[account valueForKey:@"companyId"]
-           isEqualTo:[_task valueForKey:@"creatorId"]])
-    [recipients addObject:[_task valueForKey:@"creatorId"]];
+           isEqualTo:[_task valueForKey:@"ownerId"]])
+    [recipients addObject:[_task valueForKey:@"ownerId"]];
   [recipients addObject:[_task valueForKey:@"executantId"]];
   subject = [[NSString alloc] initWithFormat:@"Task Modified: %@", [_task valueForKey:@"name"]];
   if ([[_task valueForKey:@"kind"] isNotNull])
@@ -52,7 +52,7 @@
              @"Name:     %@\n"
              @"Start:    %@\n"
              @"Due:      %@\n"
-             @"Creator:  %@\n"
+             @"Owner:    %@\n"
              @"Executor: %@\n"
              @"Project:  %@\n"
              @"Kind:     %@\n"
@@ -63,7 +63,7 @@
                [_task valueForKey:@"name"],
                [[_task valueForKey:@"startDate"] descriptionWithCalendarFormat:DATEFORMAT],
                [[_task valueForKey:@"endDate"] descriptionWithCalendarFormat:DATEFORMAT],
-               [self creatorName:_task],
+               [self ownerName:_task],
                [self executorName:_task],
                [self projectName:_task],
                kind,

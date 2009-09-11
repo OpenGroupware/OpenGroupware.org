@@ -45,6 +45,7 @@
              @"Start:    %@\n"
              @"Due:      %@\n"
              @"Creator:  %@\n"
+             @"Owner:    %@\n"
              @"Executor: %@\n"
              @"Project:  %@\n"
              @"Kind:     %@\n"
@@ -56,6 +57,7 @@
                [[_task valueForKey:@"startDate"] descriptionWithCalendarFormat:DATEFORMAT],
                [[_task valueForKey:@"endDate"] descriptionWithCalendarFormat:DATEFORMAT],
                [self creatorName:_task],
+               [self ownerName:_task],
                [self executorName:_task],
                [self projectName:_task],
                kind,
