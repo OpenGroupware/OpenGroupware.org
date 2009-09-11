@@ -1,3 +1,9 @@
+2009-09-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* pg-update-1.x-to-5.5.psql: Added schema changes for Bug#2027.
+
+	* pg-build-schema.psql: Added owner_id to job table. Bug#2027.
+
 2009-06-18  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* pg-update-1.x-to-5.5.psql: script to update DB from a 1.x schema to 

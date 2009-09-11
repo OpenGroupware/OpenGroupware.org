@@ -374,12 +374,17 @@ Staff = {
     "toJob": {
       flags:       [ property, isToMany, ],
       source:      "Job.companyId",
-      destination: "creatorId",
+      destination: "ownerId",
     },
     "toJob1": {
       flags:       [ property, isToMany, ],
       source:      "Job.companyId",
       destination: "executantId",
+    },
+    "toJob2": {
+      flags:       [ property, isToMany, ],
+      source:      "Job.companyId",
+      destination: "creatorId",
     },
     "toJobHistory": {
       flags:       [ property, isToMany, ],
@@ -2833,6 +2838,13 @@ Job = {
       valueType:  'i',
       flags:      [ property, allowsNull, ],
     },
+    "ownerId": {
+      column:     "owner_id",
+      coltype:    't_id',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ property, ],
+    },
     "name": {
       column:        "fname",
       pgsql+column:  "name",      
@@ -3031,6 +3043,11 @@ Job = {
     "toExecutant": {
       flags:       [ property, ],
       source:      "executantId",
+      destination: "Staff.companyId",
+    },
+    "toOwner": {
+      flags:       [ property, ],
+      source:      "ownerId",
       destination: "Staff.companyId",
     },
     "toParentJob": {

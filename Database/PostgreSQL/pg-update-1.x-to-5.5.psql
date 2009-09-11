@@ -41,3 +41,6 @@ CREATE TABLE login_token (
   timeout         INT DEFAULT 3600 NOT NULL,
   expiration_date TIMESTAMP WITH TIME ZONE NULL
 );
+
+ALTER TABLE job  ADD COLUMN owner_id INT;
+UPDATE job SET owner_id = creator_id;

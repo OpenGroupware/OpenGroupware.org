@@ -3363,47 +3363,49 @@
       className            = "LSJob";
       primaryKeyAttributes = ( "jobId" );
       
-      attributesUsedForLocking = ( objectVersion, jobId );
+      attributesUsedForLocking = ( jobId, objectVersion );
       classProperties = (
         comment,
         startDate,
-        sourceUrl,
         endDate,
-        isTeamJob,
-        sensitivity,
-        associatedCompanies,
-        objectVersion,
-        jobId,
-        isControlJob,
-        associatedContacts,
-        notify,
-        timerDate,
         kilometers,
+        jobId,
         keywords,
-        totalWork,
-        category,
-        parentJobId,
-        kind,
-        dbStatus,
-        name,
+        completionDate,
         projectId,
         jobStatus,
         priority,
-        percentComplete,
-        actualWork,
-        completionDate,
-        creatorId,
-        lastModified,
         accountingInfo,
+        sourceUrl,
+        parentJobId,
+        associatedCompanies,
+        isControlJob,
+        timerDate,
+        totalWork,
+        isTeamJob,
+        kind,
+        dbStatus,
+        name,
+        lastModified,
+        actualWork,
+        ownerId,
+        notify,
+        sensitivity,
         executantId,
+        percentComplete,
+        category,
+        associatedContacts,
+        objectVersion,
+        creatorId,
         toParentJobAssignment,
-        toChildJobAssignment,
         toExecutant,
-        toParentJob,
         toJob,
         toResourceAssignment,
-        toCreator,
         toJobHistory,
+        toChildJobAssignment,
+        toCreator,
+        toOwner,
+        toParentJob,
         toProject,
       );
 
@@ -3582,6 +3584,13 @@
           allowsNull     = Y;
         },
         {
+          name           = "ownerId";
+          columnName     = "owner_id";
+          externalType   = "INT";
+          valueClassName = "NSNumber";
+          valueType      = i;
+        },
+        {
           name           = "parentJobId";
           columnName     = "parent_job_id";
           externalType   = "INT";
@@ -3707,6 +3716,16 @@
             joinOperator         = EOJoinEqualTo;
           });
           isToMany       = Y;
+        },
+        {
+          name        = "toOwner";
+          destination = "Staff";
+          joins       = ( {
+            sourceAttribute      = "ownerId";
+            destinationAttribute = "companyId";
+            joinSemantic         = EOInnerJoin;
+            joinOperator         = EOJoinEqualTo;
+          });
         },
         {
           name        = "toParentJob";
@@ -6238,6 +6257,7 @@
         toTeam,
         toJob1,
         toJobHistory,
+        toJob2,
         toProject,
         toDocument,
       );
@@ -6351,7 +6371,7 @@
           destination = "Job";
           joins       = ( {
             sourceAttribute      = "companyId";
-            destinationAttribute = "creatorId";
+            destinationAttribute = "ownerId";
             joinSemantic         = EOInnerJoin;
             joinOperator         = EOJoinEqualTo;
           });
@@ -6363,6 +6383,17 @@
           joins       = ( {
             sourceAttribute      = "companyId";
             destinationAttribute = "executantId";
+            joinSemantic         = EOInnerJoin;
+            joinOperator         = EOJoinEqualTo;
+          });
+          isToMany       = Y;
+        },
+        {
+          name        = "toJob2";
+          destination = "Job";
+          joins       = ( {
+            sourceAttribute      = "companyId";
+            destinationAttribute = "creatorId";
             joinSemantic         = EOInnerJoin;
             joinOperator         = EOJoinEqualTo;
           });

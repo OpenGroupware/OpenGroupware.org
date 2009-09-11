@@ -1,3 +1,7 @@
+2009-09-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* OGoModel.py: Added ownerId/owner_id to job table. (v5.5.26)
+
 2009-05-17  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* OGoModel.py: Removed Trust from database model.
