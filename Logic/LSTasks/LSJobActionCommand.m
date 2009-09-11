@@ -205,8 +205,10 @@ extern NSString *LSWJobHasChanged;
     return YES;
   if ([[[self object] valueForKey:@"creatorId"] isEqual:userId])
     return YES;
+  if ([[[self object] valueForKey:@"ownerId"] isEqual:userId])
+    return YES;
   
-  [self assert:NO reason:@"only root or creator may delete task"];
+  [self assert:NO reason:@"only root, creator, or owner may delete task"];
   return NO;
 }
 
@@ -233,6 +235,10 @@ extern NSString *LSWJobHasChanged;
   
   tmp = [[self object] valueForKey:@"creatorId"];
   if ([tmp isEqual:userId]) /* the login is the creator */
+    return YES;
+
+  tmp = [[self object] valueForKey:@"ownerId"];
+  if ([tmp isEqual:userId]) /* the login is the owner */
     return YES;
   
   tmp = [self groupIdsForLoginInContext:_context];

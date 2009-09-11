@@ -72,10 +72,10 @@
                       @"FROM "];
   [self addTable:@"Job" as:@"j"];
   [self addOuterJoin:@"Project" as:@"p" on:@"p.project_id = j.project_id"];
-  [self addOuterJoin:@"Person" as:@"s" on:@"s.company_id = j.creator_id"];
+  [self addOuterJoin:@"Person" as:@"s" on:@"s.company_id = j.owner_id"];
   [self addOuterJoin:@"CompanyValue" as:@"cv" 
                   on:@"cv.company_id = s.company_id AND cv.attribute = 'email1'"];
-  [[self query] appendFormat:@" WHERE j.creator_id = %@", [self accountId]];
+  [[self query] appendFormat:@" WHERE j.owner_id = %@", [self accountId]];
   [[self query] appendString:@" ORDER BY j.end_date DESC"];
   [[self query] appendFormat:@" LIMIT %@", [self limit]];
 }

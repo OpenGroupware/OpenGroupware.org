@@ -28,6 +28,7 @@
 {
   NSArray  *jobList;
   NSNumber *creatorId;
+  NSNumber *ownerId;
   NSNumber *executantId;
 }
 

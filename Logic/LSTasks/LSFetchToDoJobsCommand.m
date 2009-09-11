@@ -132,7 +132,7 @@
                                  @"(%A < %@)))",
                                  @"jobStatus", LSJobArchived,
                                  @"jobStatus", LSJobDone,
-                                 @"creatorId", [self accountId],
+                                 @"ownerId", [self accountId],
                                  @"executantId", [self idString],
                                  @"endDate",   formattedBegin,
                                  @"jobStatus", LSJobCreated,
@@ -145,7 +145,7 @@
                               @" (%A IN (%@)))",
                               @"jobStatus", LSJobArchived,
                               @"jobStatus", LSJobDone,
-                              @"creatorId", [self accountId],
+                              @"ownerId", [self accountId],
                               @"executantId", [self idString],
                               nil];
      }

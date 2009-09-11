@@ -1,3 +1,28 @@
+2009-09-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSFilterJobCommand.h: Changes for Bug#2027. (v5.5.34)
+
+	* LSFetchArchivedJobsCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSFilterJobCommand.m: Changes for Bug#2027.(v5.5.34)
+
+	* LSGetToDoTasksAsRSSCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSFetchToDoJobsCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSFetchProjectJobsCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSGetDelegatedTasksAsRSSCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSFetchDelegatedJobsCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSJobActionCommand.m: Changes for Bug#2027. Members of the team named
+	  by the OGoHelpDeskRoleName default are permitted to create tasks
+	  whose owner is another user.  Creator remains as the user who created
+	  the task but the delegated and archived tasks lists, as well as RSS
+	  feeds, use owner rather than creator to correspond to the user.
+	  (v5.5.34)
+
 2009-06-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSSetJobCommand.m: update ctags table (v5.5.33)
