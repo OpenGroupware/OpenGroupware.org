@@ -1,3 +1,8 @@
+2009-09-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Company.m: Update to use fault-codes other than 500.
+	  (v5.5.64)
+
 2009-06-02 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* v5.5.63

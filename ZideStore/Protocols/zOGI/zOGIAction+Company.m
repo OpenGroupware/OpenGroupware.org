@@ -387,7 +387,7 @@
     if (eo == nil) {
       if ([self isDebug])
         [self logWithFormat:@"Null snapshot when attempting company update"];
-      return [NSException exceptionWithHTTPStatus:500
+      return [NSException exceptionWithHTTPStatus:304
                 reason:@"Snapshot object for update could not be retrieved"];
     }
     /* Object version check is not performed if ignoreVersion flag 
@@ -396,7 +396,7 @@
        overwrite option. */
     if (!([_flags containsObject:@"ignoreVersion"])) {
       if ([_company objectForKey:@"version"] == nil)
-        return [NSException exceptionWithHTTPStatus:500
+        return [NSException exceptionWithHTTPStatus:304
                   reason:@"No version supplied on company update"];
       if ([[_company objectForKey:@"version"] intValue] !=
           [[eo objectForKey:@"objectVersion"] intValue]) {
@@ -406,7 +406,7 @@
           [self warnWithFormat:@"Server object version: %@", 
              [eo objectForKey:@"objectVersion"]];
         }
-        return [NSException exceptionWithHTTPStatus:500
+        return [NSException exceptionWithHTTPStatus:409
                   reason:@"Client object is out of date"];
       }
     } /* If ignoreVersion-not-specified */
@@ -424,7 +424,7 @@
   if ([company objectForKey:@"companyId"] == nil) {
     if ([self isDebug])
       [self logWithFormat:@"exception occured writing company data"];
-    exception = [NSException exceptionWithHTTPStatus:500
+    exception = [NSException exceptionWithHTTPStatus:304
                              reason:@"Failure to write company data"];
     return exception;
    }
