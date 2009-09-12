@@ -1,3 +1,8 @@
+2009-09-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxUserFolder.m: Remove old hack that prevented Evolution from
+	  accessing the public subfolders. Bug#2018 (v5.5.121)
+
 2009-06-18  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxFolder+DAV.m: Implement davCollectionTag. (v5.5.120)
