@@ -1,3 +1,13 @@
+2009-09-14 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Company.m: Added support for district attribute in 
+	  address.  Writing a Contact entity will process the date of
+	  death attribute. (v5.5.66)
+
+	* zOGIAction+Contact.m: Support new date of death, birth place,
+	  birth name, family status, and citizenship attributes.
+	  (v5.5.66)
+
 2009-09-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Company.m: Update to use fault-codes other than 500.

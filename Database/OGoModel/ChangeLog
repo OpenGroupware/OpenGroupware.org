@@ -1,3 +1,9 @@
+2009-09-14  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* OGoModel.py: Added district to address. Added death date,
+	  family status, citizenship, birth place, and birth name
+	  to model. (v5.5.27)
+
 2009-09-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* OGoModel.py: Added ownerId/owner_id to job table. (v5.5.26)

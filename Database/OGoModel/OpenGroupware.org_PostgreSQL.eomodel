@@ -23,7 +23,7 @@
         companyId,
         country,
         objectVersion,
-        state,
+        district,
         street,
         name2,
         name3,
@@ -39,7 +39,7 @@
         companyId,
         country,
         objectVersion,
-        state,
+        district,
         street,
         name2,
         name3,
@@ -92,6 +92,14 @@
           width          = 50;
         },
         {
+          name           = "district";
+          columnName     = "district";
+          externalType   = "VARCHAR(255)";
+          valueClassName = "NSString";
+          allowsNull     = Y;
+          width          = 255;
+        },
+        {
           name           = "name1";
           columnName     = "name1";
           externalType   = "VARCHAR(255)";
@@ -130,14 +138,6 @@
           valueClassName = "NSString";
           allowsNull     = Y;
           width          = 255;
-        },
-        {
-          name           = "state";
-          columnName     = "state";
-          externalType   = "VARCHAR(100)";
-          valueClassName = "NSString";
-          allowsNull     = Y;
-          width          = 100;
         },
         {
           name           = "street";
@@ -4988,6 +4988,7 @@
         sensitivity,
         assistantName,
         number,
+        birthName,
         sex,
         salutation,
         contactId,
@@ -5001,6 +5002,7 @@
         degree,
         templateUserId,
         companyId,
+        familyStatus,
         anniversary,
         priority,
         isLocked,
@@ -5009,7 +5011,10 @@
         isPerson,
         isPrivate,
         occupation,
+        citizenship,
+        dayOfDeath,
         partnerName,
+        birthPlace,
         sourceUrl,
         description,
         firstname,
@@ -5090,6 +5095,22 @@
           width          = 255;
         },
         {
+          name           = "birthName";
+          columnName     = "birthname";
+          externalType   = "VARCHAR(255)";
+          valueClassName = "NSString";
+          allowsNull     = Y;
+          width          = 255;
+        },
+        {
+          name           = "birthPlace";
+          columnName     = "birthplace";
+          externalType   = "VARCHAR(255)";
+          valueClassName = "NSString";
+          allowsNull     = Y;
+          width          = 255;
+        },
+        {
           name           = "birthday";
           columnName     = "birthday";
           externalType   = "DATE";
@@ -5100,6 +5121,14 @@
         {
           name           = "bossName";
           columnName     = "boss_name";
+          externalType   = "VARCHAR(255)";
+          valueClassName = "NSString";
+          allowsNull     = Y;
+          width          = 255;
+        },
+        {
+          name           = "citizenship";
+          columnName     = "citizenship";
           externalType   = "VARCHAR(255)";
           valueClassName = "NSString";
           allowsNull     = Y;
@@ -5120,6 +5149,14 @@
           valueClassName = "NSNumber";
           valueType      = i;
           allowsNull     = Y;
+        },
+        {
+          name           = "dayOfDeath";
+          columnName     = "dayofdeath";
+          externalType   = "DATE";
+          valueClassName = "NSCalendarDate";
+          allowsNull     = Y;
+          calendarFormat = "%Y-%m-%d %H:%M:%S";
         },
         {
           name           = "dbStatus";
@@ -5164,6 +5201,14 @@
         {
           name           = "emailAlias";
           columnName     = "email_alias";
+          externalType   = "VARCHAR(255)";
+          valueClassName = "NSString";
+          allowsNull     = Y;
+          width          = 255;
+        },
+        {
+          name           = "familyStatus";
+          columnName     = "family_status";
           externalType   = "VARCHAR(255)";
           valueClassName = "NSString";
           allowsNull     = Y;

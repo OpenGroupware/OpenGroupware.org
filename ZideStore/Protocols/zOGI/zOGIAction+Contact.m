@@ -53,6 +53,7 @@
          [eoContact valueForKey:@"login"], @"login",
         nil]];
     } else {
+        // TODO: Citizenship should be an array? (from CSV value)
         [result addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys: 
            eoContact, @"*eoObject",
            [eoContact valueForKey:@"companyId"], @"objectId",
@@ -68,6 +69,7 @@
            [self NIL:[eoContact valueForKey:@"associatedContacts"]], 
              @"associatedContacts",
            [self NIL:[eoContact valueForKey:@"birthday"]], @"birthDate",
+           [self NIL:[eoContact valueForKey:@"dayOfDeath"]], @"deathDate",
            [self NIL:[eoContact valueForKey:@"nickname"]], @"displayName",
            [self NIL:[eoContact valueForKey:@"bossname"]], @"managersName",
            [self NIL:[eoContact valueForKey:@"degree"]], @"degree",
@@ -87,6 +89,10 @@
            [self NIL:[eoContact valueForKey:@"office"]], @"office",
            [self NIL:[eoContact valueForKey:@"salutation"]], @"salutation",
            [self NIL:[eoContact valueForKey:@"sensitivity"]], @"sensitivity",
+           [self NIL:[eoContact valueForKey:@"birthPlace"]], @"birthPlace",
+           [self NIL:[eoContact valueForKey:@"birthName"]], @"birthName",
+           [self NIL:[eoContact valueForKey:@"familyStatus"]], @"familyStatus",
+           [self NIL:[eoContact valueForKey:@"citizenship"]], @"citizenship",
            [self NIL:[eoContact valueForKey:@"sex"]], @"gender",
            [self NIL:[eoContact valueForKey:@"url"]], @"url",
            [self NIL:[eoContact valueForKey:@"login"]], @"login",
@@ -406,6 +412,8 @@
     return [NSString stringWithString:@"nickname"];
   else if ([_key isEqualToString:@"birthDate"])
     return [NSString stringWithString:@"birthday"];
+  else if ([_key isEqualToString:@"deathDate"])
+    return [NSString stringWithString:@"dayOfDeath"];
   else if ([_key isEqualToString:@"managersName"])
     return [NSString stringWithString:@"bossname"];
   else if ([_key isEqualToString:@"fileAs"])

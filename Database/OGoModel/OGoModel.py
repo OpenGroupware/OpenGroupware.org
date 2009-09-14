@@ -777,6 +777,12 @@ Person = {
       width:      50,
       flags:      [ property, allowsNull, ],
     },
+    "dayOfDeath": {
+      column:     "dayofdeath",
+      coltype:    't_datetime',
+      valueClass: 'NSCalendarDate',
+      flags:      [ property, allowsNull, ],
+    },
     "birthday": {
       column:     "birthday",
       coltype:    't_datetime',
@@ -1006,6 +1012,34 @@ Person = {
       width:      255,
       flags:      [ property, allowsNull, ],
     },        
+    "birthPlace": {
+      column:     "birthplace",
+      coltype:    't_string',
+      valueClass: 'NSString',
+      width:      255,
+      flags:      [ property, allowsNull, ],
+    },
+    "birthName": {
+      column:     "birthname",
+      coltype:    't_string',
+      valueClass: 'NSString',
+      width:      255,
+      flags:      [ property, allowsNull, ],
+    },
+    "familyStatus": {
+      column:     "family_status",
+      coltype:    't_string',
+      valueClass: 'NSString',
+      width:      255,
+      flags:      [ property, allowsNull, ],
+    },
+    "citizenship": {
+      column:     "citizenship",
+      coltype:    't_string',
+      valueClass: 'NSString',
+      width:      255,
+      flags:      [ property, allowsNull, ],
+    },
 
     # relationships
     
@@ -1707,11 +1741,18 @@ Address = {
       width:      100,
       flags:      [ lock, property, allowsNull, ],
     },
-    "state": {
-      column:     "state",
+    "country": {
+      column:     "country",
       coltype:    't_smallstring',
       valueClass: 'NSString',
       width:      100,
+      flags:      [ lock, property, allowsNull, ],
+    },
+    "district": {
+      column:     "district",
+      coltype:    't_string',
+      valueClass: 'NSString',
+      width:      255,
       flags:      [ lock, property, allowsNull, ],
     },
     "type": {

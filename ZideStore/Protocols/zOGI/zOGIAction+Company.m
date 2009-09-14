@@ -100,6 +100,7 @@
        [self NIL:[address valueForKey:@"street"]], @"street",
        [self NIL:[address valueForKey:@"zip"]], @"zip",
        [self NIL:[address valueForKey:@"country"]], @"country",
+       [self NIL:[address valueForKey:@"district"]], @"district",
        [address valueForKey:@"type"], @"type",
        nil]];
    }
@@ -188,6 +189,7 @@
                 [self NIL:[_address objectForKey:@"zip"]], @"zip",
                 [self NIL:[_address objectForKey:@"state"]], @"state",
                 [self NIL:[_address objectForKey:@"country"]], @"country",
+                [self NIL:[_address objectForKey:@"district"]], @"district",
                 _objectId, @"companyId",
                 [_address objectForKey:@"type"], @"type",
                 nil];
@@ -308,9 +310,22 @@
     if ([_entity isEqualToString:@"person"]) {
       key = [self _translateContactKey:[keys objectAtIndex:count]];
       if (key != nil) {
+        // TODO: citizenship should support an array of values
         if ([key isEqualToString:@"birthday"]) {
+          /* Deal with birthday (DATE or STRING) value */
           if ([value isKindOfClass:[NSCalendarDate class]]) {
             /* TODO: Set timezone on birthdate to GMT? */
+          } else {
+              /* value is not a date; convert from string */
+              if ([value isEqualToString:@""])
+                value = [EONull null];
+              else
+                value = [self _makeCalendarDate:value];
+            }
+        } else if ([key isEqualToString:@"dayOfDeath"]) {
+          /* Deal with death-day (DATE or STRING) value */
+          if ([value isKindOfClass:[NSCalendarDate class]]) {
+            /* TODO: Set timezone on death date to GMT? */
           } else {
               /* value is not a date; convert from string */
               if ([value isEqualToString:@""])
