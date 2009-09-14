@@ -1,12 +1,16 @@
 2009-09-14 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Company.m: Added support for district attribute in 
-	  address.  Writing a Contact entity will process the date of
-	  death attribute. (v5.5.66)
+	  address.  Writing a Contact entity will process the date of death
+	  attribute. (v5.5.66)
 
 	* zOGIAction+Contact.m: Support new date of death, birth place,
-	  birth name, family status, and citizenship attributes.
-	  (v5.5.66)
+	  birth name, family status, and citizenship attributes. (v5.5.66)
+
+	* zOGIAction+Team.m: Include e-mail address in Team entity. (v5.5.67)
+
+	* zOGIRPCAction.m: Perform bulk retrieval of requested projects rather
+	  than doing one-by-one. (v5.5.67)
 
 2009-09-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 

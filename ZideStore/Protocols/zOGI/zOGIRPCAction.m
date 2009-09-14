@@ -150,6 +150,7 @@
 
   NSMutableArray  *contacts = nil;
   NSMutableArray  *enterprises = nil;
+  NSMutableArray  *projects = nil;
 
   /* remainder accumulates all the objects that are not setup
      to perform bulk get from Logic. */
@@ -185,6 +186,10 @@
       if (enterprises == nil)
         enterprises = [NSMutableArray arrayWithCapacity:128];
       [enterprises addObject:gid];
+    } else if ([[gid entityName] isEqualToString:@"Project"]) {
+      if (projects == nil)
+        projects  = [NSMutableArray arrayWithCapacity:128];
+      [projects addObject:gid];
     } else {
         if (remainder == nil)
           remainder = [NSMutableArray arrayWithCapacity:128];
@@ -199,6 +204,9 @@
      if ([enterprises isNotNull])
        [self logWithFormat:@"prepared to request %d enterprise entities", 
                [enterprises count]];
+     if ([projects isNotNull])
+       [self logWithFormat:@"prepared to request %d project entities", 
+               [projects count]];
      if ([remainder isNotNull])
        [self logWithFormat:@"prepared to request %d other entities", 
                [remainder count]];
@@ -223,6 +231,15 @@
       [self logWithFormat:@"bulked %d enterprises", [tmp count]];
     [results addObjectsFromArray:tmp];
   } /* end get-enterprises */
+  if ([projects isNotNull]) {
+    /* get requested projects as a bulk operation */
+    if ([self isDebug])
+      [self logWithFormat:@"performing project bulk request"];
+    tmp = [self _getProjectsForKeys:projects withDetail:arg2];
+    if ([self isDebug])
+      [self logWithFormat:@"bulked %d projects", [tmp count]];
+    [results addObjectsFromArray:tmp];
+  }
   if ([remainder isNotNull]) {
     /* Get the non-bulk operation entities */
     if ([self isDebug])
