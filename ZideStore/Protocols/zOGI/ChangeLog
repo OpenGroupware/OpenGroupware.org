@@ -1,3 +1,9 @@
+2009-09-15 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction.m: Applied Tobias' patch for zOGI Issue#33.  This corrects
+	  issues for events and repeating events that span a timezone, such as
+	  daylight savings.  (v5.5.68)
+
 2009-09-14 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* zOGIAction+Company.m: Added support for district attribute in 

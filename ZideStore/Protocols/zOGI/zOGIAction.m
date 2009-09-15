@@ -415,7 +415,6 @@ static int zOGIMailNotificationEnabled = -1;
 - (NSCalendarDate *)_makeCalendarDate:(id)_date withZone:(id)_zone {
   NSCalendarDate *dateValue;
   NSTimeZone     *timeZone;
-  int             zoneDiff;
 
   if ([self isDebug])
     [self logWithFormat:@"makeCalendarDate received %@", _date];
@@ -444,22 +443,17 @@ static int zOGIMailNotificationEnabled = -1;
   /* if we successfuly aquired a date then make an adjustment to
      GMT if a timezone was provided;  GMT values are not changed. */
   if ([dateValue isNotNull]) {
-    zoneDiff = [timeZone secondsFromGMTForDate:dateValue];
-    if (zoneDiff != 0)
-      dateValue = [dateValue dateByAddingYears:0
-                                        months:0
-                                          days:0
-                                         hours:0
-                                       minutes:0
-                                       seconds:(zoneDiff * -1)];
+    dateValue = [NSCalendarDate dateWithYear:[dateValue yearOfCommonEra]
+				month:[dateValue monthOfYear] 
+				day:[dateValue dayOfMonth]
+				hour:[dateValue hourOfDay] 
+				minute:[dateValue minuteOfHour]
+				second:[dateValue secondOfMinute]
+				timeZone:timeZone];
   } else return nil;
 
   if ([self isDebug])
     [self logWithFormat:@"makeCalendarDate returned %@", dateValue];
-
-  /* Stamp the time we retun as GMT so that it gets written into 
-     the database correctly */
-  [dateValue setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
 
   return dateValue;
 } /* End _makeCalendarDate */
