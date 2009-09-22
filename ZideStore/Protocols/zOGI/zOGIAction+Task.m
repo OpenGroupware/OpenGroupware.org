@@ -420,9 +420,9 @@
   if ([key isEqualToString:@"ownerObjectId"])
     return @"ownerId";
   if ([key isEqualToString:@"status"])
+    return @"jobStatus";
   if ([key isEqualToString:@"creatorObjectId"])
     return @"creatorId";
-    return @"jobStatus";
   if ([key isEqualToString:@"objectProjectId"] ||
       [key isEqualToString:@"projectObjectId"])
     return @"projectId";
