@@ -24,6 +24,7 @@
         country,
         objectVersion,
         district,
+        state,
         street,
         name2,
         name3,
@@ -40,6 +41,7 @@
         country,
         objectVersion,
         district,
+        state,
         street,
         name2,
         name3,
@@ -138,6 +140,14 @@
           valueClassName = "NSString";
           allowsNull     = Y;
           width          = 255;
+        },
+        {
+          name           = "state";
+          columnName     = "state";
+          externalType   = "VARCHAR(100)";
+          valueClassName = "NSString";
+          allowsNull     = Y;
+          width          = 100;
         },
         {
           name           = "street";

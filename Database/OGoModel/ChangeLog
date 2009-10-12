@@ -1,3 +1,9 @@
+2009-10-12  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* OGoModel.py: fixed typo in the state field of LSAddress
+	  that got introduced when the district attribute was
+	  added. (v5.5.28)
+
 2009-09-14  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* OGoModel.py: Added district to address. Added death date,

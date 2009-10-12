@@ -1741,8 +1741,8 @@ Address = {
       width:      100,
       flags:      [ lock, property, allowsNull, ],
     },
-    "country": {
-      column:     "country",
+    "state": {
+      column:     "state",
       coltype:    't_smallstring',
       valueClass: 'NSString',
       width:      100,
