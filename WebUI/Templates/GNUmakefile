@@ -1,6 +1,7 @@
 # GNUstep makefile
 
 include ../../config.make
+include ../Version
 
 WOX_FILES = $(shell find . -name "*.wox")
 TEMPLATE_DIRS = \
@@ -38,7 +39,7 @@ TEMPLATE_DIRS = \
 	RegUI			\
 	RelatedLinksUI		\
 	Themes			\
-	ogo-webui-1.1		\
+	ogo-webui-$(MAJORVERSION).$(MINORVERSION)		\
 
 
 validate-wox ::
