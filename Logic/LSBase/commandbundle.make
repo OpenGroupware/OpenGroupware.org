@@ -52,4 +52,3 @@ after-all ::
 	  ln -sf ../bundle-info.plist .)
 endif
 endif # mingw32
-

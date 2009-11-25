@@ -51,8 +51,8 @@ LSAddress_OBJC_FILES = \
 	LSMemberToGroupAssignmentCommand.m 	\
 	LSQueryCompanyValues.m              	\
 	NSString+VCard.m			\
-	NSString+Phone.m			\
-	LSGetGeoCoordinatesForAddressCommand.m 
+	NSString+Phone.m			
+#	LSGetGeoCoordinatesForAddressCommand.m 
 
 LSAddress_RESOURCE_FILES += Defaults.plist Version
 

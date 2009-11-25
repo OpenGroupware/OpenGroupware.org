@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2009 Whitemice Consulting
 
   This file is part of OpenGroupware.org.
 
@@ -19,12 +19,15 @@
   02111-1307, USA.
 */
 
-#ifndef __LSModel_LSLSTrust_H__
-#define __LSModel_LSLSTrust_H__
+#ifndef __zOGITaskUpdateNotification_H__
+#define __zOGITaskUpdateNotification_H__
 
-#include "LSDatabaseObject.h"
+#include "zOGITaskNotification.h"
 
-@interface LSTrust : LSDatabaseObject
-@end
+@interface zOGITaskUpdateNotification: zOGITaskNotification
 
-#endif /* __LSModel_LSLSTrust_H__ */
+- (void)send:(id)_task;
+
+@end /* zOGITaskUpdateNotification */
+
+#endif /* __zOGITaskUpdateNotification_H__ */

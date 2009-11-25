@@ -1,5 +1,5 @@
 # version file
 
-SUBMINOR_VERSION:=58
+SUBMINOR_VERSION:=59
 
 # v5.0.44 requires libNGObjWeb v4.2.402

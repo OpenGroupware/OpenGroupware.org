@@ -1,8 +1,8 @@
 # version file
 
 MAJOR_VERSION=5
-MINOR_VERSION=3
-SUBMINOR_VERSION:=85
+MINOR_VERSION=5
+SUBMINOR_VERSION:=86
 
 # v5.1.46 requires libNGObjWeb     v4.3.41
 # v5.0.16 requires libEOControl    v4.2.39

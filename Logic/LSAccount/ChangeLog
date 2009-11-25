@@ -1,3 +1,11 @@
+2009-06-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSNewAccountCommand.m: Removed creation of Staff entries.
+	  (v5.5.28)
+
+	* LSSetAccountCommand.m: Removed creation of Staff entries.
+	  (v5.5.28)
+
 2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSNewAccountCommand.m: renamed sybaseMessages to dbMessages

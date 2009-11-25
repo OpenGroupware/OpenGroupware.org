@@ -35,9 +35,9 @@ static NSString      *prefix   = nil;
 static NSFileManager *fm   = nil;
 static NSNull        *null = nil;
 
-static NSString *shareSubPath     = @"share/opengroupware.org-1.1/";
+static NSString *shareSubPath     = @"share/opengroupware.org-5.5/";
 static NSString *templatesSubPath = 
-  @"Library/OpenGroupware.org-1.1/Templates/";
+  @"Library/OpenGroupware.org-5.5/Templates/";
 static NSString *themesDirName    = @"Themes";
 
 /* locate resource directories */
@@ -546,7 +546,7 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   
   // TODO: some kind of hack ... - need to decide how we want to deal with
   //       the bundle less main component
-  _appName = @"OpenGroupware11";
+  _appName = @"OpenGroupware55";
   
   if (debugOn) {
     [self logWithFormat:@"lookup URL of resource: '%@'/%@/%@", 

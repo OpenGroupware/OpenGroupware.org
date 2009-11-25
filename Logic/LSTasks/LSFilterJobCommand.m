@@ -27,6 +27,7 @@
 - (void)dealloc {
   [self->jobList     release];
   [self->creatorId   release];
+  [self->ownerId     release];
   [self->executantId release];
   [super dealloc];
 }
@@ -66,6 +67,13 @@
   return self->creatorId;
 }
 
+- (void)setOwnerId:(NSNumber *)_ownerId {
+  ASSIGNCOPY(self->ownerId, _ownerId);
+}
+- (NSNumber *)ownerId {
+  return self->ownerId;
+}
+
 /* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
@@ -79,6 +87,10 @@
   }
   if ([_key isEqualToString:@"creatorId"]) {
     [self setCreatorId:_value];
+    return;
+  }
+  if ([_key isEqualToString:@"ownerId"]) {
+    [self setOwnerId:_value];
     return;
   }
 
@@ -96,6 +108,8 @@
     return [self jobList];
   if ([_key isEqualToString:@"creatorId"])
     return [self creatorId];
+  if ([_key isEqualToString:@"ownerId"])
+    return [self ownerId];
   if ([_key isEqualToString:@"executantId"])
     return [self executantId];
   return nil; // TODO: intentional?

@@ -1,3 +1,11 @@
+2009-06-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* Themes/kde/ogo-webui-5.5: renamed components directory.
+
+	* Themes/blue/ogo-webui-5.5: renamed components directory.
+
+	* Themes/orange/ogo-webui-5.5: renamed components directory.
+
 2007-10-01  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
 
 	* OGoProject/SkyProject4VersionList.wod: Use numeric version

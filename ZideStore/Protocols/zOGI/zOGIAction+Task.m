@@ -21,7 +21,11 @@
 #include "zOGIAction.h"
 #include "zOGIAction+Object.h"
 #include "zOGIAction+Project.h"
+#include "zOGIAction+Mail.h"
 #include "zOGIAction+Task.h"
+#include "zOGITaskCreateNotification.h"
+#include "zOGITaskUpdateNotification.h"
+#include "zOGITaskActionNotification.h"
 
 @implementation zOGIAction(Task)
 
@@ -30,10 +34,14 @@
 -(NSMutableDictionary *)_renderTaskFromEO:(EOGenericRecord *)_task {
   NSMutableDictionary   *task;
 
+  if ([self isDebug])
+    [self logWithFormat:@"zOGI rendering task#%@", 
+                        [_task objectForKey:@"jobId"]];
   task = [NSMutableDictionary dictionaryWithObjectsAndKeys:
             [self ZERO:[_task valueForKey:@"objectVersion"]], @"version",
             @"Task", @"entityName",
-            [_task valueForKey:@"creatorId"], @"creatorObjectId",
+            [self ZERO:[_task valueForKey:@"creatorId"]], @"creatorObjectId",
+            [self ZERO:[_task valueForKey:@"ownerId"]], @"ownerObjectId",
             [_task valueForKey:@"jobId"], @"objectId",
             [self ZERO:[_task valueForKey:@"isTeamJob"]], @"isTeamJob",
             [self NIL:[_task valueForKey:@"jobStatus"]], @"status",
@@ -50,9 +58,7 @@
             [self ZERO:[_task valueForKey:@"sensitivity"]], @"sensitivity",
             [self ZERO:[_task valueForKey:@"totalWork"]], @"totalWork",
             [self NIL:[_task valueForKey:@"timerDate"]], @"timerDate",
-            /* 
-              [self NIL:[_task valueForKey:@"parentJobId"]], @"parentJobId", 
-             */
+            [self NIL:[_task valueForKey:@"parentJobId"]], @"parentTaskObjectId", 
             [self ZERO:[_task valueForKey:@"percentComplete"]], 
                @"percentComplete",
             [self ZERO:[_task valueForKey:@"notify"]], @"notify",
@@ -75,14 +81,26 @@
 -(NSMutableDictionary *)_renderTask:(EOGenericRecord *)_task 
                          withDetail:(NSNumber *)_detail {
   NSMutableDictionary   *task;
+  id                    graph;
   
   task = [self _renderTaskFromEO:_task];
   if([_detail intValue] > 0) {
+    /* Draw graph since detail level is greater than zero */
+    if([_detail intValue] & zOGI_INCLUDE_MEMBERSHIP)
+    {
+      graph = [[self getCTX] runCommand:@"job::get-jobid-tree",
+                                      @"jobId", [_task valueForKey:@"jobId"],
+                                      nil];
+      [task setObject:graph forKey:@"graph"];
+    }
+    /* add eoObject to task for use by add notes & details */
     [task setObject:_task forKey:@"*eoObject"];
     if([_detail intValue] & zOGI_INCLUDE_NOTATIONS)
       [self _addNotesToTask:task];
     [self _addObjectDetails:task withDetail:_detail];
-   }
+    /* when add details is complete it removes the eoObject reference
+       from the data automatically */
+  }
   return task;
 } /* end _renderTask */
 
@@ -195,7 +213,7 @@
                                            nil];
      }
   if (notation == nil) {
-    return [NSException exceptionWithHTTPStatus:500
+    return [NSException exceptionWithHTTPStatus:304
                         reason:@"Recording of task action failed."];
    }
   if ([notation isKindOfClass:[EOGenericRecord class]]) {
@@ -206,16 +224,24 @@
                        nil];
       result = [[self getCTX] runCommand:@"job::set" arguments:args];
       if (result == nil) {
-        return [NSException exceptionWithHTTPStatus:500
+        return [NSException exceptionWithHTTPStatus:304
                             reason:@"Accepting of task failed."];
        }
      } // End if _action == accpet
    } else {
        [[self getCTX] rollback];
-       return [NSException exceptionWithHTTPStatus:500
+       return [NSException exceptionWithHTTPStatus:304
                            reason:@"Task action resulting in unkown class"];
       }
   [[self getCTX] commit];
+  if ([self sendMailNotifications])
+  {
+    zOGITaskActionNotification *alert;
+
+    alert = [[zOGITaskActionNotification alloc] initWithContext:(id)[self getCTX]];
+    [alert send:task forAction:_action withComment:_comment];
+    [alert release];
+  }
   return [self _renderTask:[[self _getUnrenderedTasksForKeys:_pk] lastObject] 
                 withDetail:[NSNumber numberWithInt:65535]];
 } /* end doTaskAction */
@@ -257,7 +283,7 @@
 -(id)_createTask:(NSDictionary *)_task {
   NSMutableDictionary   *taskDictionary;
   NSString              *executantEntityName;
-  id	                 taskObject;
+  id	                 task;
 
   taskDictionary = [self _translateTask:[self _fillTask:_task]];
   [self _validateTask:taskDictionary];
@@ -267,20 +293,31 @@
     [taskDictionary setObject:[NSNumber numberWithInt:1] forKey:@"isTeamJob"];
    else
      [taskDictionary setObject:[NSNumber numberWithInt:0] forKey:@"isTeamJob"];
-  taskObject = [[self getCTX] runCommand:@"job::new" 
+  task = [[self getCTX] runCommand:@"job::new" 
                               arguments:taskDictionary];
-  if(taskObject == nil) {
+  if(task == nil) {
     // \todo Throw exception when task is not created
-    return [NSException exceptionWithHTTPStatus:500
+    return [NSException exceptionWithHTTPStatus:304
                         reason:@"Failure to create task"];
   }
+  if ([self isDebug]) {
+    [self logWithFormat:@"zOGI creation of task#%@", 
+                         [task objectForKey:@"jobId"]];
+  }
   [self _saveObjectLinks:[_task objectForKey:@"_OBJECTLINKS"] 
-               forObject:[taskObject valueForKey:@"jobId"]];
+               forObject:[task valueForKey:@"jobId"]];
   [self _saveProperties:[_task objectForKey:@"_PROPERTIES"]
-              forObject:[taskObject valueForKey:@"jobId"]];
+              forObject:[task valueForKey:@"jobId"]];
   [[self getCTX] commit];
-  return [self _renderTask:taskObject 
-                 withDetail:[NSNumber numberWithInt:65535]];
+  if ([self sendMailNotifications])
+  {
+    zOGITaskCreateNotification *alert;
+
+    alert = [[zOGITaskCreateNotification alloc] initWithContext:(id)[self getCTX]];
+    [alert send:task];
+    [alert release];
+  }
+  return [self _renderTask:task withDetail:[NSNumber numberWithInt:65535]];
 } /* end _createTask */
 
 /* Update the task object */
@@ -294,7 +331,7 @@
     /* Throw exception if object is not a Task
        TODO: Can this happen? */
     return [NSException 
-              exceptionWithHTTPStatus:500
+              exceptionWithHTTPStatus:304
               reason:@"Update of task requested for non-task object"];
   }
 
@@ -302,7 +339,7 @@
   task = [[self getCTX] runCommand:@"job::set" 
                         arguments:[self _translateTask:_task]];
   if (task == nil) {
-    return [NSException exceptionWithHTTPStatus:500
+    return [NSException exceptionWithHTTPStatus:304
                         reason:@"Update of task failed"];
   }
   /* TODO: Detail with failure */
@@ -313,6 +350,14 @@
     [self _saveProperties:[_task objectForKey:@"_PROPERTIES"] 
                 forObject:objectId];
   [[self getCTX] commit];
+  if ([self sendMailNotifications])
+  {
+    zOGITaskUpdateNotification *alert;
+
+    alert = [[zOGITaskUpdateNotification alloc] initWithContext:(id)[self getCTX]];
+    [alert send:task];
+    [alert release];
+  }
   return [self _renderTask:task 
                  withDetail:[NSNumber numberWithInt:65535]];
 } /* end _updateTask */
@@ -366,6 +411,39 @@
 {
 }
 
+/* Rewrite zOGI key to something the OGo Logic layer wants to see */
+-(NSString *)_translateTaskKey:(NSString *)key {
+  if ([key isEqualToString:@"executantObjectId"])
+    return @"executantId";
+  if ([key isEqualToString:@"creatorObjectId"])
+    return @"creatorId";
+  if ([key isEqualToString:@"ownerObjectId"])
+    return @"ownerId";
+  if ([key isEqualToString:@"status"])
+    return @"jobStatus";
+  if ([key isEqualToString:@"creatorObjectId"])
+    return @"creatorId";
+  if ([key isEqualToString:@"objectProjectId"] ||
+      [key isEqualToString:@"projectObjectId"])
+    return @"projectId";
+  if ([key isEqualToString:@"parentTaskObjectId"] ||
+      [key isEqualToString:@"parentObjectId"])
+    return @"parentJobId";
+  if ([key isEqualToString:@"kind"])
+    return @"kind";
+  if ([key isEqualToString:@"objectId"])
+    return @"jobId";
+  if ([key isEqualToString:@"start"])
+    return @"startDate";
+  if ([key isEqualToString:@"end"])
+    return @"endDate";
+  if ([key isEqualToString:@"entityName"] ||
+      [key isEqualToString:@"isTeamJob"] ||
+      [[key substringToIndex:1] isEqualToString:@"_"])
+    return nil;
+  return key;
+} /* end _translateTaskKey */
+
 /* Rewrite zOGI dictionary to something the OGo Logic layer wants to see */
 -(NSMutableDictionary *)_translateTask:(NSDictionary *)_task {
   NSMutableDictionary   *task;
@@ -396,11 +474,10 @@
         else [task setObject:[NSNumber numberWithInt:projectId]
                       forKey:@"projectId"];
     } else if ([key isEqualToString:@"parentTaskObjectId"]) {
-      // We are currently droping this attribute as the guts of
-      // OGo seem to do something odd when they see it and 
-      // produce an error
-      //[task setObject:[_task objectForKey:@"parentTaskObjectId"] 
-      //      forKey:@"parentJobId"];
+      if ([[_task objectForKey:@"parentTaskObjectId"] intValue] == 0)
+        [task setObject:[EONull null] forKey:@"parentJobId"];
+      else [task setObject:[_task objectForKey:@"parentTaskObjectId"]
+                    forKey:@"parentJobId"];
     } else if ([key isEqualToString:@"kind"]) {
       if (![[_task objectForKey:@"kind"] isEqualToString:@""])
         [task setObject:[_task objectForKey:@"kind"]
@@ -411,6 +488,12 @@
       } else { 
           [task setObject:[_task objectForKey:@"objectId"] forKey:@"jobId"];
          }
+    } else if ([key isEqualToString:@"creatorObjectId"]) {
+        [task setObject:[_task objectForKey:@"creatorObjectId"]
+                 forKey:@"creatorId"];
+    } else if ([key isEqualToString:@"ownerObjectId"]) {
+        [task setObject:[_task objectForKey:@"ownerObjectId"]
+                 forKey:@"ownerId"];
     } else if ([key isEqualToString:@"entityName"] ||
                [key isEqualToString:@"isTeamJob"]) {
       // These atttributes are deliberately dropped
@@ -428,6 +511,52 @@
   return task;
 } /* end _translateTask */
 
+-(NSArray *)_translateTaskQuery:(id)_query {
+  NSArray        *input;
+  NSEnumerator   *enumerator;
+  NSMutableArray *query;
+  id              tmp;
+  NSString       *key;
+  
+  [self logWithFormat:@"_translateTaskQuery"];
+  /* Clients written in PHP are crap */
+  if ([_query isKindOfClass:[NSDictionary class]])
+    input = [_query allValues];
+    else input = _query;
+
+  [self logWithFormat:@"_translateTaskQuery/"];
+  query = [NSMutableArray arrayWithCapacity:[input count]];
+  enumerator = [input objectEnumerator];
+  while ((tmp = [enumerator nextObject]) != nil)
+  {
+    [self logWithFormat:@"_translateTaskQuery++"];
+    NSMutableDictionary *entry;
+    entry = [NSMutableDictionary dictionaryWithCapacity:4];
+    if ([[tmp objectForKey:@"conjunction"] isNotNull])
+      [entry setObject:[tmp objectForKey:@"conjunction"]
+                forKey:@"conjunction"];
+    if ([[tmp objectForKey:@"expression"] isNotNull])
+      [entry setObject:[tmp objectForKey:@"expression"]
+                forKey:@"expression"];
+    if ([[tmp objectForKey:@"clause"] isNotNull])
+    {
+      [entry setObject:[self _translateTaskQuery:[tmp objectForKey:@"clause"]]
+                forKey:@"clause"];
+      [query addObject:entry];
+    } else
+      {
+        key = [self _translateTaskKey:[tmp objectForKey:@"key"]];
+        if ([key isNotNull])
+        {
+          [entry setObject:key                         forKey:@"key"];
+          [entry setObject:[tmp objectForKey:@"value"] forKey:@"value"];
+          [query addObject:entry];
+        }
+      }
+  } // end while
+  return query;
+} /* end translateTaskQuery */
+
 -(NSArray *)_searchForTasks:(id)_query 
                  withDetail:(NSNumber *)_detail
                   withFlags:(NSDictionary *)_flags {
@@ -435,8 +564,34 @@
      specifying a task list. */
  if ([_query isKindOfClass:[NSString class]]) {
    return [self _getTaskList:_query withDetail:_detail];
-  }
+  } else {
+      NSArray *query, *tasks;
+      query = [self _translateTaskQuery:_query];
+      tasks = [[self getCTX] runCommand:@"job::criteria-search", 
+                                        @"criteria", query, 
+                                        @"maxSearchCount", [_flags objectForKey:@"limit"],
+                                        nil];
+      return [self _renderTasks:tasks withDetail:_detail];
+     }
  return [[NSArray alloc] init];
 } /* end _searchForTasks */
+
+-(id)_deleteTask:(NSString *)_objectId
+       withFlags:(NSArray *)_flags {
+
+  if ([self allowTaskDelete]) {
+    id job;
+    
+    job = [self _getUnrenderedTasksForKeys:_objectId];
+    if ([job count] == 1) {
+      [[self getCTX] runCommand:@"job::delete", @"object", [job objectAtIndex:0], nil];
+      [[self getCTX] commit];
+      return [self _makeUnknownObject:_objectId];
+    }
+    return [NSException exceptionWithHTTPStatus:500
+                        reason:@"Unable to marshal EO for task."];
+  } else return [NSException exceptionWithHTTPStatus:403
+                              reason:@"Deletion of tasks is not supported"];
+}
 
 @end /* End zOGIAction(Task) */

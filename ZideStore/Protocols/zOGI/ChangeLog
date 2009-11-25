@@ -1,3 +1,153 @@
+2009-09-22 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Task.m: fixed typo introduced in v5.5.65 that broke
+	  criteria based task search. (v5.5.69)
+
+2009-09-15 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction.m: Applied Tobias' patch for zOGI Issue#33.  This corrects
+	  issues for events and repeating events that span a timezone, such as
+	  daylight savings.  (v5.5.68)
+
+2009-09-14 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Company.m: Added support for district attribute in 
+	  address.  Writing a Contact entity will process the date of death
+	  attribute. (v5.5.66)
+
+	* zOGIAction+Contact.m: Support new date of death, birth place,
+	  birth name, family status, and citizenship attributes. (v5.5.66)
+
+	* zOGIAction+Team.m: Include e-mail address in Team entity. (v5.5.67)
+
+	* zOGIRPCAction.m: Perform bulk retrieval of requested projects rather
+	  than doing one-by-one. (v5.5.67)
+
+2009-09-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Company.m: Update to use fault-codes other than 500.
+	  (v5.5.64)
+
+	* zOGITaskActionNotification.m: Notify the owner not the creator.
+	  (v5.5.65)
+
+	* zOGITaskCreateNotification.m: Display the owner and the creator in
+	  the notification e-mail;  and notify the owner not the creator.
+	  (v5.5.65)
+
+	* zOGITaskNotification.h|m: Added ownerName accessor. (v5.5.65)
+
+	* zOGIAction+Task.m: Support the ownerObjectId attribute of Task
+	  entity.  Use more meaningul fault-codes for failed operations.
+	  (v5.5.65)
+
+	* zOGITaskUpdateNotification.m: Notify the owner not the creator.
+	  (v5.5.65)
+
+2009-06-02 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* v5.5.63
+
+	* zOGIAction+Mail.h|m: Clean-up the API.
+
+	* zOGITaskActionNotification.h|m: Notifier object for task actions.
+
+	* zOGITaskCreateNotification.h|m: Notifier object for task create.
+
+	* zOGITaskUpdateNotification.h|m: Notifier object for task modification.
+
+	* zOGITaskNotification.h|m: Base clase for task event notification
+	  objects.  Implements lookup of project, creator, and executor names.
+
+	* zOGIAction+Task.m: Implemented task event notifications via 
+	  notifier objects.
+
+	* zOGINotification.h|m: Base class for all notifier objects.
+
+	* zOGIAction.h|m: Implement support for the zOGIMailNotificationEnabled
+	  default (default is NO) to enable zOGI generated notification
+	  messages.
+
+	* GNUmakefile: Include notification objects in the build.
+
+2009-05-18 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Appointment.m: Added WRITE, READONLY, and DELETE flags
+	  to appointment entity. Removes responsibility of access calculation
+	  from the client. (v1.7.62)
+
+2009-05-15 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Note.m: Provide companyObjectId in notes and
+	  saving the companyId to a note. (v1.7.61)
+
+2009-05-13 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Task.m: On translated use either objectProjectId /
+	  projectObjectId to specify a task's project and either
+	  parentTaskObjectId / parentObjectId to specify a task's parent.
+	  (v1.7.60)
+
+	* zOGIAction+Defaults.m: Supress "empty panel" log messages unless
+	  debugging is enabled. (v1.7.60)
+
+	* zOGIRPCAction.m: Removed superfluous log messages when profiling
+	  is enabled. (v1.7.60)
+
+2009-05-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction.h: Added accessor for can-delete-tasks default/setting.
+	  (v1.5.59)
+
+	* zOGIAction+Task.h|m: Added task deletion support. (v1.5.59)
+
+	* zOGIRPCAction.m: Added support for task deletion. (v1.5.59)
+
+2009-05-09 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Object.m: Added some error checking & logging. (v1.5.57)
+
+	* zOGIAction+Task.m: RPC side support for criteria searching. (v1.5.57)
+
+	* zOGIAction.m: Added some error checking & logging. (v1.5.57)
+
+	* zOGIAction.m: Moved static defaults loading into initialize, added
+	  the zOGITaskDeleteEnabled default. (v1.5.58)
+
+2009-04-11 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Company.m: Added more specific logging for Contact and
+	  Enterprise creation and update. (v1.5.56)
+
+	* zOGIAction+Appointment.m|h: Added logging on appointment updates.
+	  (v1.5.55)
+
+	* GNUmakefile: Added email support files. (v1.5.55)
+
+	* zOGIAction+Mail.h|m: Preliminary e-mail support. (v1.5.55)
+
+2009-04-10 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Appointment.m: Added logging for participant status
+	  updates. (v1.5.54)
+
+2009-04-03 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Task.m: If the parentTaskObjectId during a putObject
+	  has a value of 0 map it to an EONull,  this allows the value to
+	  be cleared from crappy languages like PHP that don't have a real
+	  NULL value. (v1.5.53)
+
+2009-03-30 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Task.m: added support for returning the task graph
+	  on membership (128) detail level. (v1.5.52)
+
+2009-03-25 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* zOGIAction+Task.m: added support for rendering and setting
+	  parentJobId value for hierarchical tasks. (v1.5.51)
+
 2009-02-27 Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* product.plist: removed duplicate entry for getAuditEntries.

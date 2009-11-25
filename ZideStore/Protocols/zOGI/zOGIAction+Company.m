@@ -100,6 +100,7 @@
        [self NIL:[address valueForKey:@"street"]], @"street",
        [self NIL:[address valueForKey:@"zip"]], @"zip",
        [self NIL:[address valueForKey:@"country"]], @"country",
+       [self NIL:[address valueForKey:@"district"]], @"district",
        [address valueForKey:@"type"], @"type",
        nil]];
    }
@@ -188,6 +189,7 @@
                 [self NIL:[_address objectForKey:@"zip"]], @"zip",
                 [self NIL:[_address objectForKey:@"state"]], @"state",
                 [self NIL:[_address objectForKey:@"country"]], @"country",
+                [self NIL:[_address objectForKey:@"district"]], @"district",
                 _objectId, @"companyId",
                 [_address objectForKey:@"type"], @"type",
                 nil];
@@ -291,7 +293,7 @@
         forEntity:(NSString *)_entity {
   NSArray              *keys;
   NSString             *key;
-  NSString             *command, *attribute;
+  NSString             *command, *attribute, *logText;
   id                   value, tmp , company, eo;
   int                   count;
   NSException          *exception;
@@ -308,9 +310,22 @@
     if ([_entity isEqualToString:@"person"]) {
       key = [self _translateContactKey:[keys objectAtIndex:count]];
       if (key != nil) {
+        // TODO: citizenship should support an array of values
         if ([key isEqualToString:@"birthday"]) {
+          /* Deal with birthday (DATE or STRING) value */
           if ([value isKindOfClass:[NSCalendarDate class]]) {
             /* TODO: Set timezone on birthdate to GMT? */
+          } else {
+              /* value is not a date; convert from string */
+              if ([value isEqualToString:@""])
+                value = [EONull null];
+              else
+                value = [self _makeCalendarDate:value];
+            }
+        } else if ([key isEqualToString:@"dayOfDeath"]) {
+          /* Deal with death-day (DATE or STRING) value */
+          if ([value isKindOfClass:[NSCalendarDate class]]) {
+            /* TODO: Set timezone on death date to GMT? */
           } else {
               /* value is not a date; convert from string */
               if ([value isEqualToString:@""])
@@ -374,6 +389,7 @@
 
   /* Add & test snapshot if event is an update */
   if ([_command isEqualToString:@"set"]) {
+    logText = @"Company object updated via zOGI API client.";
     if ([self isDebug])
       [self logWithFormat:@"Performing update of %@", 
          [company objectForKey:@"companyId"]];
@@ -386,7 +402,7 @@
     if (eo == nil) {
       if ([self isDebug])
         [self logWithFormat:@"Null snapshot when attempting company update"];
-      return [NSException exceptionWithHTTPStatus:500
+      return [NSException exceptionWithHTTPStatus:304
                 reason:@"Snapshot object for update could not be retrieved"];
     }
     /* Object version check is not performed if ignoreVersion flag 
@@ -395,7 +411,7 @@
        overwrite option. */
     if (!([_flags containsObject:@"ignoreVersion"])) {
       if ([_company objectForKey:@"version"] == nil)
-        return [NSException exceptionWithHTTPStatus:500
+        return [NSException exceptionWithHTTPStatus:304
                   reason:@"No version supplied on company update"];
       if ([[_company objectForKey:@"version"] intValue] !=
           [[eo objectForKey:@"objectVersion"] intValue]) {
@@ -405,7 +421,7 @@
           [self warnWithFormat:@"Server object version: %@", 
              [eo objectForKey:@"objectVersion"]];
         }
-        return [NSException exceptionWithHTTPStatus:500
+        return [NSException exceptionWithHTTPStatus:409
                   reason:@"Client object is out of date"];
       }
     } /* If ignoreVersion-not-specified */
@@ -413,15 +429,17 @@
   } else {
       /* Creating a new company, remove companyId */
       [company removeObjectForKey:@"companyId"];
+      logText = @"Company object created via zOGI API client.";
     }
 
   /* Execute Logic Command */
+  [company setObject:logText forKey:@"logText"];
   company = [[self getCTX] runCommand:command arguments:company];
   /* Create exception on failure */
   if ([company objectForKey:@"companyId"] == nil) {
     if ([self isDebug])
       [self logWithFormat:@"exception occured writing company data"];
-    exception = [NSException exceptionWithHTTPStatus:500
+    exception = [NSException exceptionWithHTTPStatus:304
                              reason:@"Failure to write company data"];
     return exception;
    }

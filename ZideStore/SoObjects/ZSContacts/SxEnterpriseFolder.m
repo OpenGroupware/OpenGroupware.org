@@ -30,6 +30,10 @@
 
 /* factory */
 
++ (NSString *)entityName {
+  return @"Enterprise";
+}
+
 - (NSString *)entity {
   return @"Enterprise";
 }

@@ -37,25 +37,17 @@
 
 @class NSDate, NSString, NSArray;
 @class SxAptSetIdentifier, SxAptManager;
-@class SxRecordCacheManager, SxSetCacheManager;
 
 @interface SxAptSetHandler : NSObject
 {
   SxAptSetIdentifier   *setId;
   SxAptManager         *manager; /* non-retained */
-  SxSetCacheManager    *cacheManager;
-  SxRecordCacheManager *recordCache;
-  SxRecordCacheManager *coreInfoCache;
 }
 
 - (id)initWithSetId:(SxAptSetIdentifier *)_setId
   manager:(SxAptManager *)_manager;
 
 /* accessors */
-
-- (SxSetCacheManager *)cacheManager;
-- (SxRecordCacheManager *)recordCache;
-- (SxRecordCacheManager *)coreInfoCache;
 
 /* operations */
 

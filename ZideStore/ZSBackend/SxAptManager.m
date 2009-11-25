@@ -22,7 +22,6 @@
 
 #include "SxAptManager.h"
 #include "SxAptSetHandler.h"
-#include "SxSetCacheManager.h"
 #include "NGResourceLocator+ZSB.h"
 #include "common.h"
 #include <NGObjWeb/NSException+HTTP.h>
@@ -103,9 +102,6 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
   }
   [self->setIdToHandler setObject:cm forKey:_set];
   return [cm autorelease];
-}
-- (SxSetCacheManager *)cacheManagerForSet:(SxAptSetIdentifier *)_set {
-  return [[self handlerForSet:_set] cacheManager];
 }
 
 /* common */

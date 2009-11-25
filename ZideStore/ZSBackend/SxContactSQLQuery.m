@@ -112,9 +112,11 @@
     else
       [_sql appendString:@"0 OR c1.is_account IS NULL"];
     [_sql appendString:@")"];
+    [_sql appendString:@" AND c1.db_status <> 'archived'"];
   }
   else if ([self isEnterpriseQuery]) {
     [_sql appendString:@"c1.is_enterprise=1"];
+    [_sql appendString:@" AND c1.db_status <> 'archived'"];
   }
   else if ([self isGroupQuery]) {
     [_sql appendString:@"c1.is_team=1"];

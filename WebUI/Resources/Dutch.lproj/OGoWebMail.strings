@@ -117,7 +117,7 @@
 "folder_title" = "Foldernaam"
 "folders" = "Folder"
 "footerRowLabel1" = "SKYRiX"
-"footerRowLabel2" = "2000, 2001 SKYRIX Software AG"
+"footerRowLabel2         = "2000-2009 SKYRIX Software AG";
 "forward" = "Stuur door"
 "forwardAddress" = "Doorstuuradres"
 "forwardedStatus" = "Doorgestuurd"

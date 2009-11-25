@@ -53,33 +53,6 @@ static NSString *OGoTeamCreatorRoleName = nil;
 
 /* operation */
 
-- (void)_newStaffInContext:(id)_context {
-  BOOL         isOk         = NO;
-  id           staff;
-  NSNumber     *pkey;
-  NSDictionary *pk;
-  EOEntity     *staffEntity;
-
-  pkey        = [[self object] valueForKey:[self primaryKeyName]];
-  pk          = [self newPrimaryKeyDictForContext:_context keyName:@"staffId"];
-  staffEntity = [[self databaseModel] entityNamed:@"Staff"];
-  staff       = [self produceEmptyEOWithPrimaryKey:pk entity:staffEntity];
-  
-  [staff takeValue:[pk valueForKey:@"staffId"] forKey:@"staffId"];
-  [staff takeValue:pkey forKey:@"companyId"];
-  [staff takeValue:[[self object] valueForKey:@"login"] forKey:@"login"];
-  [staff takeValue:[[self object] valueForKey:@"description"]
-         forKey:@"description"];
-  [staff takeValue:[NSNumber numberWithBool:NO] forKey:@"isAccount"];
-  [staff takeValue:[NSNumber numberWithBool:YES] forKey:@"isTeam"];
-  [staff takeValue:@"inserted" forKey:@"dbStatus"];
-
-  isOk = [[self databaseChannel] insertObject:staff];
-
-  [LSDBObjectCommandException raiseOnFail:isOk object:self
-                              reason:[dbMessages description]];
-}
-
 - (void)_newMemberAssignmentsInContext:(id)_context {
   LSRunCommandV(_context, @"team", @"setmembers",
                 @"group",   [self object],
@@ -117,7 +90,6 @@ static NSString *OGoTeamCreatorRoleName = nil;
   }
   
   [super _executeInContext:_context];
-  [self _newStaffInContext:_context];
   
   if (self->accounts != nil) 
     [self _newMemberAssignmentsInContext:_context];

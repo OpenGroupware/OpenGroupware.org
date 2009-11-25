@@ -16,6 +16,7 @@
         "increase-version" = { class = "LSIncreaseVersionCommand";  };
         "get-current-log"  = { class = "LSGetCurrentLogCommand";    };
         "get-by-globalid"  = { class = "LSGetObjectByGlobalID";     };
+        "increment-ctag"   = { class = "LSIncrementCTagCommand";    };
       };
     };
     "sessionlog" = {
@@ -47,7 +48,8 @@
     };
     "system" = {
       operations = {
-        "get-object-type" = { class = "LSGetObjectTypeCommand"; };
+        "get-object-type" = { class = "LSGetObjectTypeCommand";       };
+        "get-entity-ctag" = { class = "LSGetCTagForEntityCommand";    };
         "transaction"     = { class = "LSDBObjectTransactionCommand"; };
         "sort"            = { class = "LSSortCommand";                };
         "login"           = { class = "LSLoginCommand";               };

@@ -31,6 +31,10 @@
 
 /* factory */
 
++ (NSString *)entityName {
+  return @"Person";
+}
+
 - (NSString *)entity {
   return @"Person";
 }

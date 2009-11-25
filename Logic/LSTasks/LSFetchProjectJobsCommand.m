@@ -70,7 +70,7 @@
                               @"jobStatus", LSJobArchived,
                               @"jobStatus", LSJobDone,
                               @"jobStatus", LSJobDone,
-                              @"creatorId", @"executantId",
+                              @"ownerId", @"executantId",
                               nil] autorelease];
 
   return [self _checkConjoinWithQualifier:qualifier];

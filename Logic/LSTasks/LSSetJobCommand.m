@@ -35,6 +35,7 @@
 - (void)_prepareForExecutionInContext:(id)_context {
   [super _prepareForExecutionInContext:_context];
   [self bumpChangeTrackingFields];
+  [self calculateCTagInContext:_context];
 }
 
 - (NSString *)entityName {

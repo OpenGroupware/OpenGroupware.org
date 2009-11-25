@@ -834,12 +834,16 @@ static BOOL embedViewURL             = NO;
 }
 
 - (id)GETAction:(WOContext *)_ctx {
-  WOResponse *r;
-  WORequest  *rq;
-  id obj;
-  NSTimeZone *tz;
-  id        cmdctx; 
-  NSString *tzName, *etag;
+  NSException *error;
+  WOResponse  *r;
+  WORequest   *rq;
+  id          obj;
+  NSTimeZone  *tz;
+  id          cmdctx; 
+  NSString    *tzName, *etag;
+
+  if ((error = [self matchesRequestConditionInContext:_ctx]) != nil)
+    return error;
 
   cmdctx = [self commandContextInContext:_ctx];
   tzName = [[cmdctx userDefaults] stringForKey:@"timezone"];

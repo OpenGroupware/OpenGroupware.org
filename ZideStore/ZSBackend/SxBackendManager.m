@@ -20,7 +20,6 @@
 */
 
 #include "SxBackendManager.h"
-#include "SxSetCacheManager.h"
 #include "common.h"
 #include <EOControl/EOControl.h>
 

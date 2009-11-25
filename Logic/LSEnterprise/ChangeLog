@@ -1,3 +1,9 @@
+2009-05-22  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSNewEnterpriseCommand.m: Added support for the supression of the creation
+	  of "fake" projects when a new enterprise is created.  Name of the default
+	  is LSDisableEnterpriseProjectCreate. (v5.5.20)
+
 2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSGetFakeProjectForEnterpriseCommand.m: renamed sybaseMessages to

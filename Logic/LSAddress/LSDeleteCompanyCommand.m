@@ -74,6 +74,41 @@
   return YES;
 }
 
+- (void)_separateNotesInContext:(id)_context {
+  id  notes;
+  int i, cnt;
+
+  notes  = [[self object] valueForKey:@"toNote"];
+
+  for (i = 0, cnt = [notes count]; i < cnt; i++) {
+    /*
+      detach if date or project is assigned
+      delete if nothing assigned
+      access to delete notes should be granted since the notes are assigend
+      to the appointment
+    */
+    id note = [notes objectAtIndex:i];
+
+    if (([[note valueForKey:@"dateId"] isNotNull]) ||
+        ([[note valueForKey:@"projectId"] isNotNull])) {
+      // project or date still assigned
+      LSRunCommandV(_context, @"note", @"set",
+                              @"object", note,
+                              @"companyId", [EONull null],
+                              @"dontCheckAccess",
+                                 [NSNumber numberWithBool:YES],
+                              nil);
+    } else {
+        LSRunCommandV(_context, @"note", @"delete",
+                                @"object", note,
+                                nil);
+      }
+  }
+
+  if ([notes respondsToSelector:@selector(clear)])
+    [notes clear];
+}
+
 - (BOOL)isRootID:(NSNumber *)_pkey {
   return [_pkey intValue] == 10000 ? YES : NO;
 }
@@ -98,7 +133,12 @@
   }
   
   [self _deleteCompanyInfo];
+
+  /* detach or delete notes */
+  [self _separateNotesInContext:_context];
+
   [self _deleteRelations:[self relations] inContext:_context];
+
   /* delete properties */
   [[_context propertyManager] removeAllPropertiesForGlobalID:
                   [[self object] globalID]];
@@ -116,7 +156,7 @@
                             @"action"     , @"99_delete",
                             @"objectToLog", [self object],
                             nil);
-  
+  [self calculateCTagInContext:_context]; 
   [super _executeInContext:_context];
 }
 

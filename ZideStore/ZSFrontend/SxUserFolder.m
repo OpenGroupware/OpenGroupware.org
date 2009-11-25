@@ -311,15 +311,8 @@ static NSDictionary *personalFolderMap = nil;
   if ([_key isEqualToString:@"NON_IPM_SUBTREE"])
     return [self storeInfoFolder:_key inContext:_ctx];
   
-#if 1
-  if ([_key isEqualToString:@"Public"] || [_key isEqualToString:@"public"]) {
-    if (![ua hasPrefix:@"Evolution"])
-      /* with Evolution we use a separate root-url for public folders */
-      return [[WOApplication application] publicFolder:_key container:self];
-    else
-      return nil;
-  }
-#endif /* SAME_AS_ROOT */
+  if ([_key isEqualToString:@"Public"] || [_key isEqualToString:@"public"])
+    return [[WOApplication application] publicFolder:_key container:self];
   
   if ([_key isEqualToString:@"calendar.ics"] || [_key isEqualToString:@"ics"])
     return [self iCalendarForName:_key inContext:_ctx];

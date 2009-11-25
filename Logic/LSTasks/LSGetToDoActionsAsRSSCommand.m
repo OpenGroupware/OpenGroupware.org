@@ -77,7 +77,7 @@
   [self addInnerJoin:@"JobHistory" as:@"jh" on:@"jh.job_id = j.job_id"];
   [self addInnerJoin:@"JobHistoryInfo" as:@"jhi" on:@"jhi.job_history_id = jh.Job_history_id"];
   [self addOuterJoin:@"Project" as:@"p" on:@"p.project_id = j.project_id"];
-  [self addOuterJoin:@"Staff" as:@"s" on:@"s.company_id = jh.actor_id"];
+  [self addOuterJoin:@"Person" as:@"s" on:@"s.company_id = jh.actor_id"];
   [self addOuterJoin:@"CompanyValue" as:@"cv" 
                   on:@"cv.company_id = s.company_id AND cv.attribute = 'email1'"];
   [[self query] appendFormat:@" WHERE j.executant_id = %@", [self accountId]];

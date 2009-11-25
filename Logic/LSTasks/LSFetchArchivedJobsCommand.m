@@ -28,7 +28,7 @@
 @implementation LSFetchArchivedJobsCommand
 
 - (NSString *)destinationKey {
-  return @"creatorId";
+  return @"ownerId";
 }
 
 - (EOSQLQualifier *)_qualifier {

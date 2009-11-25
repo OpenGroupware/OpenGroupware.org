@@ -41,26 +41,6 @@
 
 /* command methods */
 
-- (void)_setStaffInContext:(id)_context {
-  BOOL isOk  = NO;
-  id   staff;
-  id   team;
-
-  team  = [self object]; 
-  staff = [[team valueForKey:@"toStaff"] lastObject];
-    
-  [staff takeValue:[team valueForKey:@"description"]
-         forKey:@"description"];
-  [staff takeValue:[NSNumber numberWithBool:NO]  forKey:@"isAccount"];
-  [staff takeValue:[NSNumber numberWithBool:YES] forKey:@"isTeam"];
-  [staff takeValue:@"updated" forKey:@"dbStatus"];
-
-  isOk = [[self databaseChannel] updateObject:staff];
-
-  [LSDBObjectCommandException raiseOnFail:isOk object:self
-                              reason:[dbMessages description]];
-}
-
 - (void)_setMemberAssignmentsInContext:(id)_context {
   LSRunCommandV(_context, @"team", @"setmembers",
                 @"group", [self object],
@@ -81,7 +61,6 @@
         reason:@"permission denied"];
   
   [super _executeInContext:_context];
-  [self _setStaffInContext:_context];
   
   if (self->accounts != nil) 
     [self _setMemberAssignmentsInContext:_context];

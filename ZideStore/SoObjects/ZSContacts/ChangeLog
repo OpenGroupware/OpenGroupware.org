@@ -1,3 +1,31 @@
+2009-06-18  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+        * SxPersonFolder.m: added entityName property to class (v5.5.104)
+
+        * SxEnterpriseFolder.m: added entityName property to class (v5.5.104)
+
+2009-06-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAddress.m: accept text/vcard as PUT MIME type (v1.5.103)
+
+2009-04-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxDavAddrbookMultiget.m: fixed dbl-release bugs (v1.5.102)
+
+2009-04-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAddress.m: check for If-None-Match preconditions in GET (v1.5.101)
+
+2009-04-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* activated CardDAV multiget REPORT (v1.5.100)
+
+	* prepared SxDavAddrbookMultiget.m (derived from the cal-multiget)
+	  (v1.5.99)
+
+	* SxAddressFolder.m: send davContentType text/x-vcard in
+	  -renderListEntry: (v1.5.98)
+
 2008-03-11  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAddressFolder.m: added gdavComponentSet (v1.5.97)

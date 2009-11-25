@@ -1,3 +1,10 @@
+2009-04-07  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSWJobEditor.m: log creation of a job link as a "05_created"
+	  action, not as a "created" action.  The log records the object
+	  id of the job, not the link, and the job was not created.
+	  (v5.3.59)
+
 2008-06-03  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSWJobs.m: Add "overdue" time filter to previously available

@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2002-2008 SKYRIX Software AG
-  Copyright (C) 2007-2008 Helge Hess
+  Copyright (C) 2002-2009 SKYRIX Software AG
+  Copyright (C) 2007-2009 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -176,7 +176,7 @@
   // checked-in,checked-out
   /*
     <key name="{DAV:}href"    >$baseURL$/$pkey$.vcf?sn=$sn$</key>
-    <key name="davContentType">text/vcard</key>
+    <key name="davContentType">text/x-vcard</key>
     <key name="davDisplayName">$sn$, $givenname$</key>
   */
   NSMutableDictionary *record;
@@ -188,8 +188,9 @@
   
   pkey = [[record objectForKey:@"pkey"] stringValue];
   url  = [NSString stringWithFormat:@"%@%@.vcf", [self baseURL], pkey];
-  [record setObject:url  forKey:@"{DAV:}href"];
-  [record setObject:pkey forKey:@"davDisplayName"];
+  [record setObject:url             forKey:@"{DAV:}href"];
+  [record setObject:pkey            forKey:@"davDisplayName"];
+  [record setObject:@"text/x-vcard; charset='utf-8'" forKey:@"davContentType"];
   
   /* render etag */
   

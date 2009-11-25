@@ -1,3 +1,26 @@
+2009-09-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxUserFolder.m: Remove old hack that prevented Evolution from
+	  accessing the public subfolders. Bug#2018 (v5.5.121)
+
+2009-06-18  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* SxFolder+DAV.m: Implement davCollectionTag. (v5.5.120)
+
+2009-04-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxObject.[hm]: implemented a preliminary If-None-Match precondition
+	  check (used for GETs) (v1.5.119)
+
+2009-04-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.5.118
+
+	* SxFolder.m: -performETagsQuery: method now supports a folder default
+	  MIME type which will get embedded into the response.
+	
+	* DAVPropSets.plist: added GroupDAVv2 query set and the real Cadaver set
+
 2007-02-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.5.117

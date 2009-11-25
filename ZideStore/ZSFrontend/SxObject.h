@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2009 SKYRIX Software AG
+  Copyright (C) 2009      Helge Hess
 
   This file is part of OpenGroupware.org.
 

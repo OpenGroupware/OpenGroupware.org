@@ -33,6 +33,23 @@
 
 static int zOGIDebugOn = -1;
 static int zOGIProfileOn = -1;
+static int zOGITaskDeleteEnabled = -1;
+static int zOGIMailNotificationEnabled = -1;
+
++ (void)initialize {
+  NSUserDefaults *ud;
+
+  ud = [NSUserDefaults standardUserDefaults];
+  zOGIDebugOn = [ud boolForKey:@"zOGIDebugEnabled"];
+  if (zOGIDebugOn) NSLog(@"Note: zOGI debugging enabled.");
+  zOGIProfileOn = [ud boolForKey:@"zOGIProfileEnabled"];
+  if (zOGIProfileOn) NSLog(@"Note: zOGI profiling enabled.");
+  zOGITaskDeleteEnabled = [ud boolForKey:@"zOGITaskDeleteEnabled"];
+  if (zOGITaskDeleteEnabled) NSLog(@"Note: Task deletion via zOGI enabled.");
+  zOGIMailNotificationEnabled = [ud boolForKey:@"zOGIMailNotificationEnabled"];
+  if (zOGIMailNotificationEnabled)
+    NSLog(@"Note: Mail notifications via zOGI enabled.");
+}
 
 -(id)init
 {
@@ -56,21 +73,10 @@ static int zOGIProfileOn = -1;
 
 /* accessors */
 
-- (BOOL)isDebug 
-{
-  if (zOGIDebugOn == -1)
-    zOGIDebugOn = [[NSUserDefaults standardUserDefaults]
-                      boolForKey:@"zOGIDebugEnabled"];
-  return zOGIDebugOn;
-}
-
-- (BOOL)isProfile
-{
-  if (zOGIProfileOn == -1)
-    zOGIProfileOn = [[NSUserDefaults standardUserDefaults]
-                      boolForKey:@"zOGIProfileEnabled"];
-  return zOGIProfileOn;
-}
+- (BOOL)isDebug { return zOGIDebugOn; }
+- (BOOL)isProfile { return zOGIProfileOn; }
+- (BOOL)allowTaskDelete { return zOGITaskDeleteEnabled; }
+- (BOOL)sendMailNotifications { return zOGIMailNotificationEnabled; }
 
 - (void)setArg1:(id)_arg 
 {
@@ -170,7 +176,7 @@ static int zOGIProfileOn = -1;
   tmp = [NSNumber numberWithInt:[_arg intValue]];
   if ([tmp intValue] == 0)
   {
-    [self warnWithFormat:@"Arguement not understood by getEOForPKey"];
+    [self warnWithFormat:@"Arguement '%@' not understood by getEOForPKey", _arg];
     /* TODO: THROW AN EXCEPTION */
     tmp = nil;
   }
@@ -409,7 +415,6 @@ static int zOGIProfileOn = -1;
 - (NSCalendarDate *)_makeCalendarDate:(id)_date withZone:(id)_zone {
   NSCalendarDate *dateValue;
   NSTimeZone     *timeZone;
-  int             zoneDiff;
 
   if ([self isDebug])
     [self logWithFormat:@"makeCalendarDate received %@", _date];
@@ -438,22 +443,17 @@ static int zOGIProfileOn = -1;
   /* if we successfuly aquired a date then make an adjustment to
      GMT if a timezone was provided;  GMT values are not changed. */
   if ([dateValue isNotNull]) {
-    zoneDiff = [timeZone secondsFromGMTForDate:dateValue];
-    if (zoneDiff != 0)
-      dateValue = [dateValue dateByAddingYears:0
-                                        months:0
-                                          days:0
-                                         hours:0
-                                       minutes:0
-                                       seconds:(zoneDiff * -1)];
+    dateValue = [NSCalendarDate dateWithYear:[dateValue yearOfCommonEra]
+				month:[dateValue monthOfYear] 
+				day:[dateValue dayOfMonth]
+				hour:[dateValue hourOfDay] 
+				minute:[dateValue minuteOfHour]
+				second:[dateValue secondOfMinute]
+				timeZone:timeZone];
   } else return nil;
 
   if ([self isDebug])
     [self logWithFormat:@"makeCalendarDate returned %@", dateValue];
-
-  /* Stamp the time we retun as GMT so that it gets written into 
-     the database correctly */
-  [dateValue setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
 
   return dateValue;
 } /* End _makeCalendarDate */

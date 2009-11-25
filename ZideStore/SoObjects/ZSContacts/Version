@@ -1,8 +1,9 @@
 # Version file
 
-SUBMINOR_VERSION:=97
+SUBMINOR_VERSION:=104
 
-# v1.5.95 requires libSaxObjC    v4.5.65
-# v1.3.91 requires libZSFrontend v1.3.111
-# v1.3.89 requires libZSFrontend v1.3.108
-# v1.3.76 requires libNGObjWeb   v4.3.80
+# v1.5.102 requires libNGObjWeb   v4.7.35
+# v1.5.95  requires libSaxObjC    v4.5.65
+# v1.3.91  requires libZSFrontend v1.3.111
+# v1.3.89  requires libZSFrontend v1.3.108
+# v1.3.76  requires libNGObjWeb   v4.3.80

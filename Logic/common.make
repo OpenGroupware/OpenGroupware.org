@@ -6,7 +6,6 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include $(OGoROOT)/Version
 include ./Version
 
-# TODO: fix me when we know how to make 5.3 to 1.1 => 5-4 = 1
 BUNDLE_INSTALL_DIR = $(OGO_COMMANDS)
 
 ADDITIONAL_CPPFLAGS     += -pipe -Wall -Wno-protocol

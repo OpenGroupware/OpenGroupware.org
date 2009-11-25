@@ -1,3 +1,12 @@
+2009-05-20  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* v5.5.15
+
+	* SxTaskFolder+RSS.m: added methods for getting todo and
+	  delegated tasks using the corresponding RSS feed commands.
+
+	* product.plist: mapped todo-tasks-rss and delegated-tasks-rss.
+
 2008-08-29  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxRssFeed.m: Deleted.  Now mapping RSS feeds to folders within the

@@ -41,6 +41,19 @@
 
 @implementation LSNewJobCommand
 
+static NSString *OGoHelpDeskRoleName = nil;
+
++ (void)initialize {
+  NSLog(@"LSNewJobCommand initialized");
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+
+  OGoHelpDeskRoleName = [[ud stringForKey:@"OGoHelpDeskRoleName"] copy];
+  if ([OGoHelpDeskRoleName isNotEmpty]) {
+    NSLog(@"Note: Team '%@' assigned Help Desk role.",
+          OGoHelpDeskRoleName);
+  } else NSLog(@"Note: No team assigned Help Desk role.");
+}
+
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
   if ((self = [super initForOperation:_operation inDomain:_domain])) {
     [self takeValue:@"00_created"  forKey:@"logAction"];
@@ -59,6 +72,33 @@
 }
 
 /* operation */
+
+- (BOOL)isRootAccountEO:(id)_eo {
+  return [[_eo valueForKey:@"companyId"] intValue] == 10000 ? YES : NO;
+}
+
+- (BOOL)isHelpDeskUser:(id)_context {
+  id   user;
+
+  user = [_context valueForKey:LSAccountKey];
+  /* Root user is always considered Help Desk */
+  if ([self isRootAccountEO:user])
+    return YES;
+  if ([OGoHelpDeskRoleName isNotEmpty]) {
+    NSArray *teams;
+
+    teams = [_context runCommand:@"account::teams",
+                           @"account", user,
+                           @"returnType", intObj(LSDBReturnType_ManyObjects),
+                           nil];
+    teams = [teams valueForKey:@"description"];
+    if ([teams containsObject:OGoHelpDeskRoleName])
+      return YES;
+  }
+  return NO;
+}
+
+
 
 - (void)_checkStartDateIsBeforeEndDate {
   NSCalendarDate *startDate;
@@ -92,10 +132,6 @@
   [nCmd runInContext:_context];
 }
 
-- (BOOL)isRootAccountEO:(id)_eo {
-  return [[_eo valueForKey:@"companyId"] intValue] == 10000 ? YES : NO;
-}
-
 - (void)_prepareForExecutionInContext:(id)_context {
   id user, tmp;
   
@@ -124,6 +160,18 @@
     [self takeValue:[user valueForKey:@"companyId"] forKey:@"creatorId"];    
   }
 
+  // Allow owner to be set to other than creator by users who are members of
+  // the team defined in the OGoHelpDeskRoleName default. (Bug#2027)
+  if ([[self valueForKey:@"ownerId"] isNotNull]) {
+    if (!([self isHelpDeskUser:_context])) {
+      // current user is not on help desk, owner will be set to creator
+      [self takeValue:[user valueForKey:@"companyId"] forKey:@"ownerId"];
+    }
+  } else {
+      // No owner specified, owner is the creator
+      [self takeValue:[user valueForKey:@"companyId"] forKey:@"ownerId"];
+    }
+
   /* check executant */
   
   if (self->executant) {
@@ -150,15 +198,6 @@
   
   job = [self object];
 
-  // TODO: can this happen with current setups?
-  if ([[job valueForKey:@"parentJobId"] isNotNull]) {
-    LSRunCommandV(_context,
-                  @"job",           @"jobaction",
-                  @"action",        @"divided",
-                  @"object",        job,
-                  @"comment",       self->comment,
-                  @"divideComment", self->divideComment, nil);
-  }
   if (![self isRootAccountEO:[_context valueForKey:LSAccountKey]]) {
     if ([[job valueForKey:@"executantId"]
               isEqual:[job valueForKey:@"creatorId"]]) {
@@ -181,6 +220,8 @@
                 @"action"     , [self valueForKey:@"logAction"],
                 @"objectToLog", [self object],
                 nil);
+
+  [self calculateCTagInContext:_context];
 }
 
 /* accessors */

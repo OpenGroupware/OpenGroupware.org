@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2009 SKYRIX Software AG
+  Copyright (C) 2009      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -61,6 +62,7 @@
 @implementation LSGetVCardForGlobalIDsCommand
 
 static NSString     *LSAttachmentPath = nil;
+static BOOL          LSHashCache = NO;
 static NSString     *skyrixId = nil;
 static NSDictionary *telephoneMapping = nil;
 static NSDictionary *addressMapping = nil;
@@ -74,8 +76,14 @@ static NSDictionary *addressMapping = nil;
   
   addressMapping   = [[ud dictionaryForKey:@"LSVCard_AddressMapping"]   copy];
   telephoneMapping = [[ud dictionaryForKey:@"LSVCard_TelephoneMapping"] copy];
-  
-  LSAttachmentPath = [[ud stringForKey:@"LSAttachmentPath"] copy];
+
+  LSHashCache = [ud boolForKey:@"LSHashVCFCache"];
+  if (LSHashCache)
+    NSLog(@"Hashing of cached vCard data enabled.");
+
+  LSAttachmentPath = [[ud stringForKey:@"LSVCFCachePath"] copy];
+  if (![LSAttachmentPath isNotEmpty])
+    LSAttachmentPath = [[ud stringForKey:@"LSAttachmentPath"] copy];
   if ([LSAttachmentPath isNotEmpty])
     NSLog(@"Note: storing cached vCards files in: '%@'", LSAttachmentPath);
   else
@@ -119,15 +127,15 @@ static NSDictionary *addressMapping = nil;
   entry = [[NSMutableDictionary alloc] initWithCapacity:4];
   [entry setObject:_vCard forKey:@"vCardData"];
   if ([self->attributes containsObject:@"companyId"]) {
-    if ((tmp = [_result valueForKey:@"companyId"]))
+    if ((tmp = [_record valueForKey:@"companyId"]))
       [entry setObject:tmp forKey:@"companyId"];
   }
   if ([self->attributes containsObject:@"globalID"]) {
-    if ((tmp = [_result valueForKey:@"globalID"]))
+    if ((tmp = [_record valueForKey:@"globalID"]))
       [entry setObject:tmp forKey:@"globalID"];
   }
   if ([self->attributes containsObject:@"objectVersion"]) {
-    if ((tmp = [_result valueForKey:@"objectVersion"]))
+    if ((tmp = [_record valueForKey:@"objectVersion"]))
       [entry setObject:tmp forKey:@"objectVersion"];
   }
   
@@ -247,6 +255,16 @@ static NSDictionary *addressMapping = nil;
   path = LSAttachmentPath;
   
   file = [[NSString alloc] initWithFormat:@"%@.%@.vcf", cId, oV];
+  if (LSHashCache)
+  {
+    int        offset;
+    NSString  *hash;
+
+    offset = [[cId stringValue] length] - 2;
+    hash = [[cId stringValue] substringFromIndex:offset];
+    hash = [NSString stringWithFormat:@"vcfdir%@", hash];
+    path = [path stringByAppendingPathComponent:hash];
+  }
   path = [path stringByAppendingPathComponent:file];
   [file release]; file = nil;
   
@@ -278,23 +296,39 @@ static NSDictionary *addressMapping = nil;
     return;
   }
 
+  manager = [NSFileManager defaultManager];
+
   path = LSAttachmentPath;
+  if (LSHashCache) {
+    int        offset;
+    NSString  *hash;
+
+    offset = [[cId stringValue] length] - 2;
+    hash = [[cId stringValue] substringFromIndex:offset];
+    hash = [NSString stringWithFormat:@"vcfdir%@", hash];
+    path = [path stringByAppendingPathComponent:hash];
+    if (![manager fileExistsAtPath:path])
+      [manager createDirectoryAtPath:path attributes:nil];
+  }
   file = [NSString stringWithFormat:@"%@.%@.vcf", cId, oV];
   path = [path stringByAppendingPathComponent:file];
 
-  manager = [NSFileManager defaultManager];
-  
   if ([manager fileExistsAtPath:path])
     [manager removeFileAtPath:path handler:nil];
   
   ok = [_vCard writeToFile:path atomically:YES];
+  if (!ok) 
+    [self errorWithFormat:@"could not write cache file: %@", path];
+  
+#if 0 // no reason to crash on that?!
   [self assert:ok reason:@"error during save of vCard cache file"];
+#endif
 }
 
 /* execution */
 
 - (void)_buildAndCacheVCardsForContacts:(NSArray *)_uncachedContacts
-  type:(NSString *)_type // person, enterprise
+  type:(NSString *)_type // person, enterprise, team
   result:(id)_result
   inContext:(id)_context
 {
@@ -410,18 +444,20 @@ static NSDictionary *addressMapping = nil;
       }
       else {
         EOKeyGlobalID *gid;
+        NSString      *en;
 	
         gid = [record valueForKey:@"globalID"];
-        if ([[gid entityName] isEqualToString:@"Person"])
+        en  = [gid entityName];
+        if ([en isEqualToString:@"Person"])
           [uncachedPersons addObject:record];
-        else if ([[gid entityName] isEqualToString:@"Enterprise"])
+        else if ([en isEqualToString:@"Enterprise"])
           [uncachedEnterprises addObject:record];
-        else if ([[gid entityName] isEqualToString:@"Team"])
+        else if ([en isEqualToString:@"Team"])
           [uncachedTeams addObject:record];
         else {
-	  NSString *error;
+      	  NSString *error;
 	  
-	  error = [NSString stringWithFormat:
+      	  error = [NSString stringWithFormat:
                                  @"invalid entityName '%@' "
                                  @"(Person, Enterprise and Team accepted)",
 			    [gid entityName]];
@@ -462,8 +498,8 @@ static NSDictionary *addressMapping = nil;
 
   // TODO: the build response should not be used
   [self setReturnValue:(self->buildResponse)
-	? [self _buildResponseForVCards:result inContext:_context]
-	: result];
+    ? [self _buildResponseForVCards:result inContext:_context]
+    : result];
   [result release];
 }
 

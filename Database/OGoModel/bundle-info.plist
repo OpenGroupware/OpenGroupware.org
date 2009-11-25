@@ -48,7 +48,6 @@
       { name = LSStaff;                    },
       { name = LSTeam;                     },
       { name = LSTelephone;                },
-      { name = LSTrust;                    },
       { name = LSUrl;                      },
       { name = LSUrlRating;                },
       { name = LSUrlCriterion;             },

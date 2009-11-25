@@ -28,7 +28,7 @@
 @implementation LSFetchDelegatedJobsCommand
 
 - (NSString *)destinationKey {
-  return @"creatorId";
+  return @"ownerId";
 }
 
 - (EOSQLQualifier *)_qualifier {
@@ -39,7 +39,7 @@
                                qualifierFormat:
                                @"(%A <> '%@') AND  (%A <> %A)",
                                @"jobStatus", LSJobArchived,
-                               @"creatorId", @"executantId",
+                               @"ownerId", @"executantId",
                                nil] autorelease];
 
   return [self _checkConjoinWithQualifier:qualifier];

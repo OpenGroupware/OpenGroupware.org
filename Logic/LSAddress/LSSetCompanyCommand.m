@@ -348,6 +348,8 @@ static NSString *autoNumberPrefix = @"OGo";
                 @"action"     , [self valueForKey:@"logAction"],
                 @"objectToLog", [self object],
                 nil);
+
+  [self calculateCTagInContext:_context];
 }
 
 /* accessors */

@@ -1,3 +1,33 @@
+2009-10-12  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* OGoModel.py: fixed typo in the state field of LSAddress
+	  that got introduced when the district attribute was
+	  added. (v5.5.28)
+
+2009-09-14  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* OGoModel.py: Added district to address. Added death date,
+	  family status, citizenship, birth place, and birth name
+	  to model. (v5.5.27)
+
+2009-09-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* OGoModel.py: Added ownerId/owner_id to job table. (v5.5.26)
+
+2009-05-17  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* OGoModel.py: Removed Trust from database model.
+
+	* Classes/GNUmakefile: Removed the LSTrust class, removing this 
+	  entity from them schema. (v5.5.25)
+
+	* bundle-info.plist: Removes the LSTrust class. (v5.5.25)
+
+2009-05-15  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* OGoModel.py (Note): added companyId attribute to note
+	  entity;  new attribute in schema. (v5.5.24)
+
 2008-07-23  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* OGoModel.py (Telephone & Address): added objectVersion

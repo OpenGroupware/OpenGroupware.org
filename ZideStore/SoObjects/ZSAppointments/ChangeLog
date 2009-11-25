@@ -1,3 +1,28 @@
+2009-05-01  Helge Hess  <helge.hess@opengroupware.org>
+
+  * SxDavCalendarQuery.m: fixed membugs (v1.5.126)
+
+2009-04-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDavCalendarMultiget.m: fixed dbl-release bugs (v1.5.125)
+
+2009-04-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAppointment.m: check for If-None-Match preconditions in GET (v1.5.124)
+
+2009-04-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDavCalendarMultiget.m: minor code cleanups (v1.5.123)
+
+2009-04-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* detect GroupDAVv2 queries and return etag/url/ctype, previous
+	  version did not return etags (baaad) (v1.5.122)
+
+2009-04-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* return text/calendar, not text/vcalendar as the MIME type (v1.5.121)
+
 2008-09-06  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* SxAppointment+Participants.m: removed pKeyForPKeyEmail method, this

@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2006 Helge Hess
+  Copyright (C) 2006-2009 Helge Hess
+  Copyright (C) 2006-2009 Adam Williams
 
   This file is part of OpenGroupware.org.
 
@@ -118,7 +119,8 @@ static BOOL debugOn = NO;
   }
   
   if ([self->queryType isEqualToString:@"VEVENT"]) {
-    if ((self->results = [self fetchDatesInContext:[self context]]) == nil)
+    self->results = [[self fetchDatesInContext:[self context]] retain];
+    if (self->results == nil)
       [self debugWithFormat:@"got no dates ..."];
     else if ([self->results isKindOfClass:[NSException class]]) {
       [self errorWithFormat:@"failed to fetch: %@", self->results];
@@ -127,7 +129,7 @@ static BOOL debugOn = NO;
   }
   
   if (self->results == nil)
-    self->results = [[NSArray array] objectEnumerator];
+    self->results = [[[NSArray array] objectEnumerator] retain];
   
   [self appendToResponse:[[self context] response] inContext:[self context]];
   return [[self context] response];
@@ -170,7 +172,7 @@ static BOOL debugOn = NO;
   
   u = [[self clientObject] baseURLInContext:_ctx];
   return [u stringByAppendingFormat:
-	      ([u hasSuffix:@"/"] ? @"%@.ics" : @"/%@.ics"), pkey];
+        ([u hasSuffix:@"/"] ? @"%@.ics" : @"/%@.ics"), pkey];
 }
 
 - (void)appendToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx {
@@ -229,14 +231,15 @@ static BOOL debugOn = NO;
         [_r appendContentXMLString:@"BEGIN:VCALENDAR\r\n"];
         [_r appendContentXMLString:@"VERSION:2.0\r\n"];
         // TODO: product-id
-	
+  
         [_r appendContentXMLString:[tmp stringValue]];
 
         [_r appendContentXMLString:@"END:VCALENDAR\r\n"];
         [_r appendContentString:@"</calendar-data>\n"];
-      } else {
-	        [self errorWithFormat:@"got no iCalendar data for event: %@", event];
-        }
+      }
+      else {
+        [self errorWithFormat:@"got no iCalendar data for event: %@", event];
+      }
     } /* end if vEventDataFields != nil */
     
     [_r appendContentString:@"      </D:prop>\n"];
@@ -288,29 +291,30 @@ static BOOL debugOn = NO;
     if ([n isEqualToString:@"prop"] && [an isNotEmpty]) {
       /* name is a "same level property" */
       [*_list addObject:an];
-    } else if ([n isEqualToString:@"comp"] && [an isNotEmpty]) {
+    }
+    else if ([n isEqualToString:@"comp"] && [an isNotEmpty]) {
         /* name is a component type */
         if ([an isEqualToString:@"VCALENDAR"]) {
           [self _loadRequestedCalDataProperties:node 
-	                                         list:&self->calendarDataFields];
+                list:&self->calendarDataFields];
         }
         else if ([an isEqualToString:@"VEVENT"]) {
           [self _loadRequestedCalDataProperties:node 
-	                                         list:&self->vEventDataFields];
+                list:&self->vEventDataFields];
         }
         else if ([an isEqualToString:@"VTODO"]) {
           [self _loadRequestedCalDataProperties:node 
-	                                         list:&self->vTodoDataFields];
+                list:&self->vTodoDataFields];
         }
         else {
           /* component type not recognized */
-	        [self warnWithFormat:@"unexpected CalDAV component name: %@", node];
+          [self warnWithFormat:@"unexpected CalDAV component name: %@", node];
         }
-      }
-      else {
+    }
+    else {
         /* node type not recognized */
         [self warnWithFormat:@"unexpected CalDAV XML element: %@", node];
-      }
+    }
   } /* end for */
 }
 
@@ -322,8 +326,8 @@ static BOOL debugOn = NO;
 
   /* was an empty element, so request everything ... */
   if (![self->calendarDataFields isNotEmpty]) {
-    self->vEventDataFields = [[NSMutableArray alloc] init];
-    self->vTodoDataFields  = [[NSMutableArray alloc] init];
+    self->vEventDataFields = [[NSMutableArray alloc] initWithCapacity:4];
+    self->vTodoDataFields  = [[NSMutableArray alloc] initWithCapacity:4];
   }
 }
 
@@ -350,15 +354,17 @@ static BOOL debugOn = NO;
         [self _loadRequestedCalDataProperties:node];
       else
         [self warnWithFormat:@"unexpected CalDAV XML element: %@", node];
-    } else if ([ns isEqualToString:XMLNS_WEBDAV]) {
-        if (self->requestedWebDAVProperties == nil) {
-	        self->requestedWebDAVProperties =
-	          [[NSMutableArray alloc] initWithCapacity:4];
-        }
-        [self->requestedWebDAVProperties addObject:n];
-      } else {
-          [self warnWithFormat:@"unexpected XML element/namespace: %@", node];
-        }
+    }
+    else if ([ns isEqualToString:XMLNS_WEBDAV]) {
+      if (self->requestedWebDAVProperties == nil) {
+        self->requestedWebDAVProperties =
+            [[NSMutableArray alloc] initWithCapacity:4];
+      }
+      [self->requestedWebDAVProperties addObject:n];
+    }
+    else {
+      [self warnWithFormat:@"unexpected XML element/namespace: %@", node];
+    }
   } /* end for */
 }
 
@@ -420,11 +426,11 @@ static BOOL debugOn = NO;
   if ((element = [self _elementNamed:@"time-range" inParent:element]) != nil) {
     if ([(an = [element attribute:@"start"]) isNotEmpty]) {
       self->startDate =
-	[[NSCalendarDate calendarDateWithICalRepresentation:an] copy];
+        [[NSCalendarDate calendarDateWithICalRepresentation:an] copy];
     }
     if ([(an = [element attribute:@"end"]) isNotEmpty]) {
       self->endDate =
-	[[NSCalendarDate calendarDateWithICalRepresentation:an] copy];
+        [[NSCalendarDate calendarDateWithICalRepresentation:an] copy];
     }
   }
 }
@@ -454,14 +460,16 @@ static BOOL debugOn = NO;
         [self _loadRequestedProperties:node];
       else
         [self warnWithFormat:@"unexpected WebDAV XML element: %@", node];
-    } else if ([ns isEqualToString:XMLNS_CALDAV]) {
+    }
+    else if ([ns isEqualToString:XMLNS_CALDAV]) {
         if ([n isEqualToString:@"filter"])
-	        [self _loadCalDAVFilter:node];
+          [self _loadCalDAVFilter:node];
         else
-	        [self warnWithFormat:@"unexpected CalDAV XML element: %@", node];
-      } else {
-          [self warnWithFormat:@"unexpected XML element/namespace: %@", node];
-         }
+          [self warnWithFormat:@"unexpected CalDAV XML element: %@", node];
+    }
+    else {
+      [self warnWithFormat:@"unexpected XML element/namespace: %@", node];
+    }
   } /* end for */
 }
 

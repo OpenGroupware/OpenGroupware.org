@@ -660,7 +660,9 @@ static BOOL debugEO = NO;
   /* check MIME-type */
   
   mtype = [[_ctx request] headerForKey:@"content-type"];
-  if (![mtype hasPrefix:@"text/x-vcard"]) {
+  if (![mtype hasPrefix:@"text/x-vcard"] &&
+      ![mtype hasPrefix:@"text/vcard"])
+  {
     if ([mtype length] > 0) {
       [self logWithFormat:@"ERROR: tried to PUT unsupported MIME type: %@",
             mtype];
@@ -802,6 +804,7 @@ static BOOL debugEO = NO;
 
 - (id)GETAction:(WOContext *)_ctx {
   SxContactManager *manager;
+  NSException  *error;
   NSEnumerator *e;
   WOResponse   *response;
   NSString     *vCard;
@@ -809,6 +812,11 @@ static BOOL debugEO = NO;
   NSDictionary *result;
   NSString     *etag;
   EOGlobalID   *gid;
+  
+  /* check HTTP preconditions */
+  
+  if ((error = [self matchesRequestConditionInContext:_ctx]) != nil)
+    return error;
 
   if ((gid = [self globalID]) == nil) {
     return [NSException exceptionWithHTTPStatus:404 /* not found */
@@ -822,6 +830,8 @@ static BOOL debugEO = NO;
 		 [NSArray arrayWithObject:gid]];
   
   if ((result = [e nextObject]) == nil) {
+    // TBD: careful, check whether this is a 403 (Forbidden) or a 404
+    // TBD: also: ensure consistency with PROPFIND!!!
     return [NSException exceptionWithHTTPStatus:404 /* not found */
 			reason:@"did not find vcard for given object id"];
   }

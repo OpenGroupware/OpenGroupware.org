@@ -40,6 +40,7 @@
        @"Team", @"entityName",
        [self NIL:[eoTeam valueForKey:@"ownerId"]], @"ownerObjectId",
        [self NIL:[eoTeam valueForKey:@"description"]], @"name",
+       [self NIL:[eoTeam valueForKey:@"email"]], @"email",
        nil]];
      if([_detail intValue] > 0) {
        [[result objectAtIndex:count] setObject:eoTeam forKey:@"*eoObject"];

@@ -283,107 +283,6 @@ CompanyCategory = {
     },
 } # entity CompanyCategory
 
-Trust = {
-    table:     "trust",
-    className: 'LSTrust',
-    
-    # attributes
-    
-    "companyId": {
-      column:     "company_id",
-      coltype:    't_id',
-      valueClass: 'NSNumber',
-      valueType:  'i',
-      flags:      [ primaryKey, lock, property, allowsNull, ],
-    },
-    "ownerId": {
-      column:     "owner_id",
-      coltype:    't_id',
-      valueClass: 'NSNumber',
-      valueType:  'i',
-      flags:      [ lock, property, allowsNull, ],
-    },
-    "contactId": {
-      column:     "contact_id",
-      coltype:    't_id',
-      valueClass: 'NSNumber',
-      valueType:  'i',
-      flags:      [ lock, property, allowsNull, ],
-    },
-    "number": {
-      column:        "fnumber",
-      pgsql+column:  "number",
-      mysql5+column: "number",
-      coltype:       't_smallstring',
-      valueClass:    'NSString',
-      width:         100,
-      flags:         [ lock, property, allowsNull, ],
-    },
-    "description": {
-      column:     "description",
-      coltype:    't_string',
-      valueClass: 'NSString',
-      width:      255,
-      flags:      [ lock, property, allowsNull, ],
-    },
-    "priority": {
-      column:     "priority",
-      coltype:    't_tinystring',
-      valueClass: 'NSString',
-      width:      50,
-      flags:      [ lock, property, allowsNull, ],
-    },
-    "keywords": {
-      column:     "keywords",
-      coltype:    't_string',
-      valueClass: 'NSString',
-      width:      255,
-      flags:      [ lock, property, allowsNull, ],
-    },
-    "url": {
-      column:     "url",
-      coltype:    't_string',
-      valueClass: 'NSString',
-      width:      255,
-      flags:      [ lock, property, allowsNull, ],
-    },
-    "email": {
-      column:     "email",
-      coltype:    't_smallstring',
-      valueClass: 'NSString',
-      width:      100,
-      flags:      [ lock, property, allowsNull, ],
-    },
-    "dbStatus": {
-      column:     "db_status",
-      coltype:    't_tinystring',
-      valueClass: 'NSString',
-      width:      50,
-      flags:      [ lock, property, allowsNull, ],
-    },
-    "isTrust": {
-      column:     "is_trust",
-      coltype:    't_bool',
-      valueClass: 'NSNumber',
-      valueType:  'i',
-      flags:      [ lock, property, allowsNull, ],
-    },
-    "isPrivate": {
-      column:     "is_private",
-      coltype:    't_bool',
-      valueClass: 'NSNumber',
-      valueType:  'i',
-      flags:      [ lock, property, allowsNull, ],
-    },
-    "isReadonly": {
-      column:     "is_readonly",
-      coltype:    't_bool',
-      valueClass: 'NSNumber',
-      valueType:  'i',
-      flags:      [ lock, property, allowsNull, ],
-    },
-} # entity Trust
-
 Staff = {
     table:     "staff",
     className: 'LSStaff',
@@ -475,12 +374,17 @@ Staff = {
     "toJob": {
       flags:       [ property, isToMany, ],
       source:      "Job.companyId",
-      destination: "creatorId",
+      destination: "ownerId",
     },
     "toJob1": {
       flags:       [ property, isToMany, ],
       source:      "Job.companyId",
       destination: "executantId",
+    },
+    "toJob2": {
+      flags:       [ property, isToMany, ],
+      source:      "Job.companyId",
+      destination: "creatorId",
     },
     "toJobHistory": {
       flags:       [ property, isToMany, ],
@@ -873,6 +777,12 @@ Person = {
       width:      50,
       flags:      [ property, allowsNull, ],
     },
+    "dayOfDeath": {
+      column:     "dayofdeath",
+      coltype:    't_datetime',
+      valueClass: 'NSCalendarDate',
+      flags:      [ property, allowsNull, ],
+    },
     "birthday": {
       column:     "birthday",
       coltype:    't_datetime',
@@ -1102,6 +1012,34 @@ Person = {
       width:      255,
       flags:      [ property, allowsNull, ],
     },        
+    "birthPlace": {
+      column:     "birthplace",
+      coltype:    't_string',
+      valueClass: 'NSString',
+      width:      255,
+      flags:      [ property, allowsNull, ],
+    },
+    "birthName": {
+      column:     "birthname",
+      coltype:    't_string',
+      valueClass: 'NSString',
+      width:      255,
+      flags:      [ property, allowsNull, ],
+    },
+    "familyStatus": {
+      column:     "family_status",
+      coltype:    't_string',
+      valueClass: 'NSString',
+      width:      255,
+      flags:      [ property, allowsNull, ],
+    },
+    "citizenship": {
+      column:     "citizenship",
+      coltype:    't_string',
+      valueClass: 'NSString',
+      width:      255,
+      flags:      [ property, allowsNull, ],
+    },
 
     # relationships
     
@@ -1138,6 +1076,11 @@ Person = {
     "toDateCompanyAssignment": {
       flags:       [ property, isToMany, ],
       source:      "DateCompanyAssignment.companyId",
+      destination: "companyId",
+    },
+    "toNote": {
+      flags:       [ property, isToMany, ],
+      source:      "Note.companyId",
       destination: "companyId",
     },
     "toProjectCompanyAssignment": {
@@ -1656,6 +1599,11 @@ Enterprise = {
       source:      "ProjectCompanyAssignment.companyId",
       destination: "companyId",
     },
+    "toNote": {
+      flags:       [ property, isToMany, ],
+      source:      "Note.companyId",
+      destination: "companyId",
+    },
     "toAddress": {
       flags:       [ property, isToMany, ],
       source:      "Address.companyId",
@@ -1798,6 +1746,13 @@ Address = {
       coltype:    't_smallstring',
       valueClass: 'NSString',
       width:      100,
+      flags:      [ lock, property, allowsNull, ],
+    },
+    "district": {
+      column:     "district",
+      coltype:    't_string',
+      valueClass: 'NSString',
+      width:      255,
       flags:      [ lock, property, allowsNull, ],
     },
     "type": {
@@ -2151,6 +2106,13 @@ Note = {
       valueType:  'i',
       flags:      [ lock, property, allowsNull, ],
     },
+    "companyId": {
+      column:     "company_id",
+      coltype:    't_id',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ lock, property, allowsNull, ],
+    },
     "firstOwnerId": {
       column:     "first_owner_id",
       coltype:    't_id',
@@ -2257,6 +2219,16 @@ Note = {
       flags:       [ property, ],
       source:      "dateId",
       destination: "Date.dateId",
+    },
+    "toPerson": {
+      flags:       [ property, ],
+      source:      "companyId",
+      destination: "Person.companyId",
+    },
+    "toEnterprise": {
+      flags:       [ property, ],
+      source:      "companyId",
+      destination: "Enterprise.companyId",
     },
     "toFirstOwner": {
       flags:       [ property, ],
@@ -2907,6 +2879,13 @@ Job = {
       valueType:  'i',
       flags:      [ property, allowsNull, ],
     },
+    "ownerId": {
+      column:     "owner_id",
+      coltype:    't_id',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ property, ],
+    },
     "name": {
       column:        "fname",
       pgsql+column:  "name",      
@@ -3105,6 +3084,11 @@ Job = {
     "toExecutant": {
       flags:       [ property, ],
       source:      "executantId",
+      destination: "Staff.companyId",
+    },
+    "toOwner": {
+      flags:       [ property, ],
+      source:      "ownerId",
       destination: "Staff.companyId",
     },
     "toParentJob": {

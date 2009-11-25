@@ -80,7 +80,7 @@ static NSArray *fileTypeGroupings = nil;
   
   locator = [NGResourceLocator resourceLocatorForGNUstepPath:
                                  @"WebServerResources"
-                               fhsPath:@"share/opengroupware.org-1.1/www"];
+                               fhsPath:@"share/opengroupware.org-5.5/www"];
   p = [locator lookupFileWithName:@"epoz_script_main.js"];
   hasEpoz = [fm fileExistsAtPath:p];
   if (!hasEpoz) NSLog(@"Note: folder-view did not find Epoz.");

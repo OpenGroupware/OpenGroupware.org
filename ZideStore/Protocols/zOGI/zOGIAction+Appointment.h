@@ -58,7 +58,8 @@
               withFlags:(NSArray *)_flags;
 -(id)_writeAppointment:(NSDictionary *)_appointment
            withCommand:(NSString *)_command
-             withFlags:(NSArray *)_flags;
+             withFlags:(NSArray *)_flags
+           withLogText:(NSString *)_logText;
 -(id)_translateParticipants:(NSArray *)_participants;
 -(id)_translateAppointment:(NSDictionary *)_appointment
                  withFlags:(NSArray *)_flags;

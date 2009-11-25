@@ -58,6 +58,11 @@
   if ([permissions rangeOfString:@"v"].length > 0) {
     /* render appointment in visible mode */
     [flags addObject:@"VISIBLE"];
+    if ([permissions rangeOfString:@"e"].length > 0)
+      [flags addObject:@"WRITE"];
+      else [flags addObject:@"READONLY"];
+    if ([permissions rangeOfString:@"d"].length > 0)
+      [flags addObject:@"DELETE"];
     appointment = [NSMutableDictionary dictionaryWithObjectsAndKeys:
       [_eoAppointment valueForKey:@"dateId"], @"objectId",
       @"Appointment", @"entityName",
@@ -337,24 +342,36 @@
 } /* end _addConflictsToDate */
 
 /* 
-  This provides a method to set all the status information for a participant
-  of an appointment.  This isn't currently used anywhere and is really
-  just a cut-n-paste of code from the XML-RPCd action;  we put it here as
-  a place horder so as not to loose the logic and command setup.
+  Used to process a putObject of a ParticipantStatus object.
  */
 -(id)_setParticipantStatus:(id)_pk 
   withStatus:(NSString *)_partstat withRole:(NSString *)_role
   withComment:(NSString *)_comment withRSVP:(NSNumber *)_rsvp {
   NSMutableDictionary *args;
+  NSMutableString     *logText;
 
+  logText = [NSMutableString stringWithString:@"Attendee Status Change:"];
   args = [NSMutableDictionary dictionaryWithCapacity:8];
   [args setObject:_pk forKey:@"appointment"];
-  if (_partstat != nil) [args setObject:_partstat forKey:@"partstatus"];
-  if (_role     != nil) [args setObject:_role     forKey:@"role"];
-  if (_comment  != nil) [args setObject:_comment  forKey:@"comment"];
-  if (_rsvp     != nil) [args setObject:_rsvp     forKey:@"rsvp"];
+  if (_partstat != nil) {
+    [args setObject:_partstat forKey:@"partstatus"];
+    [logText appendFormat:@"\nStatus: %@", _partstat];
+  }
+  if (_role     != nil) {
+    [args setObject:_role     forKey:@"role"];
+    [logText appendFormat:@"\nRole: %@", _role];
+  }
+  if (_rsvp     != nil) {
+    [args setObject:_rsvp     forKey:@"rsvp"];
+    [logText appendFormat:@"\nRSVP: %@", _rsvp];
+  }
+  if (_comment  != nil) {
+    [args setObject:_comment  forKey:@"comment"];
+    [logText appendFormat:@"\nComment: %@", _comment];
+  }
+  [args setObject:logText forKey:@"logText"];
   return [[self getCTX] runCommand:@"appointment::change-attendee-status"
-                                    arguments:args];
+                         arguments: args];
 } /* end _setParticipantStatus */
 
 /*
@@ -484,7 +501,8 @@
               withFlags:(NSArray *)_flags {
   return [self _writeAppointment:_appointment
                      withCommand:@"appointment::new"
-                       withFlags:_flags];
+                       withFlags:_flags
+                     withLogText:@"Appointment created via a zOGI API client."];
 } /* end _createAppointment */
 
 /*
@@ -495,7 +513,8 @@
               withFlags:(NSArray *)_flags {
   return [self _writeAppointment:_appointment
                      withCommand:@"appointment::set"
-                       withFlags:_flags];
+                       withFlags:_flags
+                     withLogText:@"Appointment updated via a zOGI API client."];
 } /* end _updateAppointment */
 
 /* 
@@ -526,7 +545,8 @@
    TODO: Check for version conflicts */
 -(id)_writeAppointment:(NSDictionary *)_appointment
            withCommand:(NSString *)_command
-             withFlags:(NSArray *)_flags {
+             withFlags:(NSArray *)_flags
+           withLogText:(NSString *)_logText {
   id                     appointment, exception, tmp;
   NSDictionary          *resource, *eoResource;
   NSEnumerator	        *enumerator;
@@ -588,12 +608,12 @@
   } /* end if-no-participants */
 
   /* perform logic command */
+  [appointment setObject:_logText forKey:@"logText"];
   if ([self isDebug])
     [self logWithFormat:@"performing %@ on appointment %@",
        _command,
        [appointment valueForKey:@"dateId"]];
-  appointment = [[self getCTX] runCommand:_command
-                                arguments:appointment];
+  appointment = [[self getCTX] runCommand:_command arguments:appointment];
   if ([appointment valueForKey:@"dateId"] == nil) {
     exception = [NSException exceptionWithHTTPStatus:500
                              reason:@"Failure to write appointment"];
@@ -839,44 +859,49 @@
 -(id)_setParticipantStatus:(NSDictionary *)_status
                   objectId:(NSString *)_objectId
                  withFlags:(NSArray *)_flags {
-  NSMutableDictionary *args;
-  id                   appointment;
   id                   result;
+  id                   appointment;
+  NSString            *status;
+  NSMutableString     *logText;
 
-  args = [NSMutableDictionary dictionaryWithCapacity:8];
-
-  /* Get appointment */
   appointment = [self _getUnrenderedDateForKey:_objectId];
-  if (appointment == nil)
+  if (appointment == nil) {
+    [self logWithFormat:@"request for non-existant appointmentId#%@", 
+                        _objectId];
     return [self _makeUnknownObject:_objectId];
-  /* Participant status */
-  if ([_status objectForKey:@"status"] != nil)
-    [args setObject:[[_status objectForKey:@"status"] uppercaseString]
-             forKey:@"partstatus"];
-   else
-     [args setObject:@"NEEDS-ACTION" forKey:@"partstatus"];
-  /* Participant role */
-  if ([_status objectForKey:@"role"] != nil)
-    [args setObject:[_status objectForKey:@"role"] 
-             forKey:@"role"];
-  /* Participant comment */
-  if ([_status objectForKey:@"comment"] != nil)
-    [args setObject:[_status objectForKey:@"comment"] 
-             forKey:@"comment"];
-  /* Participant RSVP */
-  if ([_status objectForKey:@"rsvp"] != nil)
-    [args setObject:[_status objectForKey:@"rsvp"] 
-             forKey:@"rsvp"];
-  [args setObject:appointment forKey:@"appointment"];
+  }
 
-  result = [[self getCTX] runCommand:@"appointment::change-attendee-status"
-                           arguments:args];
+  /* if no status is provided we reset to NEEDS-ACTION, this is the
+     documented behaviour for a ParticipantStatus putObject */ 
+  status = [_status objectForKey:@"status"];
+  if (status == nil) status = @"NEEDS-ACTION";
+
+  /* generate a nice verbose log message */ 
+  logText = [NSMutableString stringWithString:@"Participant status change:"];
+  [logText appendFormat:@"\nStatus: %@", status];
+  if ([[_status objectForKey:@"rsvp"] isNotNull]) {
+    if ([[_status objectForKey:@"rsvp"] intValue] == 1)
+      [logText appendFormat:@"\nRSVP: Yes"];
+    else [logText appendFormat:@"\nRSVP: No"];
+  }
+  if ([[_status objectForKey:@"comment"] isNotNull]) {
+    [logText appendFormat:@"\nComment: %@", [_status objectForKey:@"comment"]];
+  }
+
+  result = [[self getCTX] runCommand:@"appointment::change-attendee-status",
+                                     @"appointment", appointment,
+                                     @"comment", [_status objectForKey:@"comment"],
+                                     @"rsvp", [_status objectForKey:@"rsvp"],
+                                     @"partStatus", status,
+                                     @"logText", logText,
+                                     nil];
   if ([result intValue] == 1) {
+    [self logWithFormat:@"doing commit!"];
     [[self getCTX] commit];
   }
 
   return [self _getDateForKey:_objectId 
-                   withDetail:[NSNumber numberWithInt:65535]];
+                   withDetail:[NSNumber numberWithInt:36]];
 } /* end _setParticipantStatus */
 
 @end /* End zOGIAction(Appointment) */

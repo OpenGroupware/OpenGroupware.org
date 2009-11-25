@@ -33,8 +33,8 @@ int main(int argc, const char **argv, char **env) {
 #endif
   rc = WOWatchDogApplicationMainWithServerDefaults
     (@"XmlRpcApplication", argc, argv,
-     @"opengroupware.org-1.1/global.plist",
-     @"opengroupware.org-1.1/xmlrpcd.plist");
+     @"opengroupware.org-5.5/global.plist",
+     @"opengroupware.org-5.5/xmlrpcd.plist");
   
   [pool release];
 

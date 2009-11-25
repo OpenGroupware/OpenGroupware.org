@@ -380,6 +380,7 @@ static NSArray  *startDateOrderings = nil;
   tzeD = [[[eD timeZoneDetail] retain] autorelease];
   
   [self bumpChangeTrackingFields];
+  [self calculateCTagInContext:_context];
 
   [super _executeInContext:_context];
   

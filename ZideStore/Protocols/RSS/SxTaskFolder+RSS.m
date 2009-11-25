@@ -38,6 +38,7 @@
 
 /* implements "old" RSS support that reports tasks themselves */
 - (id)rssInContext:(id)_ctx {
+  
   // TODO: implement as SoMethod!
   id renderer;
   
@@ -53,13 +54,24 @@
                        inContext:(id)_ctx];
 }
 
+- (id)rssDelegatedTasksFeed:(id)_ctx {
+  return [self rssContentForFeed:@"job::get-delegated-tasks-rss"
+                       inContext:(id)_ctx];
+}
+
 - (id)rssToDoActionsFeed:(id)_ctx {
   return [self rssContentForFeed:@"job::get-todo-rss"
                        inContext:(id)_ctx];
 }
 
+- (id)rssToDoTasksFeed:(id)_ctx {
+  [self logWithFormat:@"rssToDoListFeed"];
+  return [self rssContentForFeed:@"job::get-todo-tasks-rss"
+                       inContext:(id)_ctx];
+}
+
 - (id)rssProjectActionsFeed:(id)_ctx {
-  return [self rssContentForFeed:@"job::get-project-task-rss"
+  return [self rssContentForFeed:@"job::get-project-rss"
                        inContext:(id)_ctx];
 }
 

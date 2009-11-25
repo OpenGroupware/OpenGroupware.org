@@ -3,13 +3,31 @@ RSS Support for ZideStore
 
 TBD: is this superflous? There seems to be RSS support in ZSProjects
 at least.
-
+  >> Adam Tauno Williams, 2009-05-20
+  >> Actually, it is kind of a mess. With a bit of support scattered
+  >> all over.
 
 Write some text on RSS support for ZideStore ...
+  >> Adam Tauno Williams, 2009-05-20
+  >> This is documented to some degree in WMOGAG
 
 Initial author: Bjoern Stierand.
-
 This attaches the 'rss' method to SxFolder and SxTaskFolder objects.
+ >> Adam Tauno Williams. 2009-05-20
+ >> SubjecT: Regarding Tasks
+ >> If calls the taskManagerInCommandContext and asks for tasks of
+ >> group and type.  Note that type is *always* the name of the
+ >> command job::get-executant-jobs.  So this returns a RSS feed
+ >> for all the jobs with an executant of the current folder. The
+ >> LSFetchJobForExecutantCommand just returns all the jobs that
+ >> are not archived and have the specified id as the executant.
+ >> So that is essentially just LSGetToDoActionsAsRSSCommand with
+ >> a specified id and supression of discovering team 
+ >> membership.  Should be easy to replace the [rather complicated]
+ >> current /rss feed with the new [spec conformant] RSS feed.
 
 Eg they should be available on:
   http://YOURHOST/zidestore/dav/helge/Projects/P10001/Documents/rss
+ >> Adam Tauno Williams. 2009-05-20
+ >> Should that RSS logic be moved over here?  Need to learn how
+ >> ZideStore handles the document folders.

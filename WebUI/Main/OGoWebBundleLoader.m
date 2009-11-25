@@ -30,9 +30,9 @@ static BOOL loadWebUIBundlesOnStartup = YES;
 
 // TODO: derive versions from Version file (see SaxXMLReaderFactory.m)
 #if CONFIGURE_64BIT
-static NSString *FHSOGoBundleDir = @"lib64/opengroupware.org-1.1/";
+static NSString *FHSOGoBundleDir = @"lib64/opengroupware.org-5.5/";
 #else
-static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
+static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-5.5/";
 #endif
 static NSArray  *FHSPathes = nil;
 

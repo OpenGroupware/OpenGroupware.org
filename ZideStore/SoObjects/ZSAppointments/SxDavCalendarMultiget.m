@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2006 Helge Hess
+  Copyright (C) 2006-2009 Helge Hess
+  Copyright (C) 2006-2009 Adam Williams
 
   This file is part of OpenGroupware.org.
 
@@ -28,6 +29,7 @@
   <calendar-multiget xmlns:D="DAV:" xmlns="urn:ietf:params:xml:ns:caldav">
     <D:prop>
       <D:getetag/>
+      <D:getcontenttype/>
       <calendar-data/>
     </D:prop>
     <D:href>/zidestore/dav/adam/Overview/10931.ics</D:href>
@@ -99,15 +101,16 @@ static BOOL debugOn = NO;
   }
 
   // retrieve the dates for the requested ids
-  self->results = [self fetchDatesInContext:[self context]];
+  self->results = [[self fetchDatesInContext:[self context]] retain];
 
   // if there are no valid requested dates make an empty enumerator
   if (self->results == nil) {
-    self->results = [[NSArray array] objectEnumerator];
-  } else if ([self->results isKindOfClass:[NSException class]]) {
-      [self errorWithFormat:@"failed to fetch: %@", self->results];
-      return self->results;
-    }
+    self->results = [[[NSArray array] objectEnumerator] retain];
+  }
+  else if ([self->results isKindOfClass:[NSException class]]) {
+    [self errorWithFormat:@"failed to fetch: %@", self->results];
+    return self->results;
+  }
 
   // buld the response  
   [self appendToResponse:[[self context] response] inContext:[self context]];
@@ -131,13 +134,15 @@ static BOOL debugOn = NO;
   if (_ctx != nil) {
     manager = [self aptManagerInContext:_ctx];
     // get an OGo commandContext so we can have a typeManager
-    ctx = [[self clientObject] commandContextInContext:[self context]];
-    tm = [ctx typeManager];
-    dates = [NSMutableArray arrayWithCapacity:[self->ids count]];
+    ctx        = [[self clientObject] commandContextInContext:[self context]];
+    tm         = [ctx typeManager];
+    dates      = [NSMutableArray arrayWithCapacity:[self->ids count]];
     enumerator = [self->ids objectEnumerator];
+    
     // make an array of gids for each key (id) that represents
     // a valid date.  If you pass a non-date gid to the 
     // SxAptManager it will die with a signal 6.
+    // TBD(hh): why, how? backtrace?
     while ((tmp = [enumerator nextObject]) != nil) {
       tmp = [tm globalIDForPrimaryKey:tmp];
       if (tmp != nil) {
@@ -150,7 +155,9 @@ static BOOL debugOn = NO;
       if ([self isDebuggingEnabled])
         [self debugWithFormat:@"got %d events ...", [dates count]];
       return [manager pkeysAndModDatesAndICalsForGlobalIDs:dates];
-    } else [self logWithFormat:@"got no dates for request"];
+    }
+    else
+      [self logWithFormat:@"got no dates for request"];
   }
   return nil;
 }
@@ -184,10 +191,9 @@ static BOOL debugOn = NO;
   
   /* generate events */
   while ((event = [self->results nextObject]) != nil) {
-    id ical, href, etag;
+    id ical, href;
 
     href = [self hrefForEvent:event inContext:_ctx];
-    etag = [event valueForKey:@"pkey"];
     ical = [event valueForKey:@"iCalData"];
 
     [_r appendContentString:@"  <D:response>\n"];
@@ -201,17 +207,19 @@ static BOOL debugOn = NO;
     [_r appendContentString:@"      <D:prop>\n"];
     /* etag */
     [_r appendContentString:@"<D:getetag>"];
-    [_r appendContentXMLString:[[event valueForKey:@"pkey"] stringValue]];
-    [_r appendContentXMLString:@":"];
-    [_r appendContentXMLString:[[event valueForKey:@"version"] stringValue]];
+    // int's can't contain XML special chars ... (no appendContentXMLString)
+    // TBD: might need quotes, not sure (eg <getetag>"233:23"</getetag>)
+    [_r appendContentString:[[event valueForKey:@"pkey"] stringValue]];
+    [_r appendContentString:@":"];
+    [_r appendContentString:[[event valueForKey:@"version"] stringValue]];
     [_r appendContentString:@"</D:getetag>\n"];
     /* ical */
     if ([ical isNotEmpty]) {
       [_r appendContentString:@"<C:calendar-data>"];
-      [_r appendContentXMLString:@"BEGIN:VCALENDAR\r\n"];
-      [_r appendContentXMLString:@"VERSION:2.0\r\n"];
+      [_r appendContentString:@"BEGIN:VCALENDAR\r\n"];
+      [_r appendContentString:@"VERSION:2.0\r\n"];
       [_r appendContentXMLString:[ical stringValue]];
-      [_r appendContentXMLString:@"END:VCALENDAR\r\n"];
+      [_r appendContentString:@"END:VCALENDAR\r\n"];
       [_r appendContentString:@"</C:calendar-data>\n"];
     } else {
         [self errorWithFormat:@"got no iCalendar data for event: %@", event];
@@ -233,11 +241,12 @@ static BOOL debugOn = NO;
   id<DOMNodeList> children;
   unsigned        i, count;
 
-  self->ids = [NSMutableArray arrayWithCapacity:128];
+  self->ids    = [[NSMutableArray alloc] initWithCapacity:128];
   queryElement = [[_rq contentAsDOMDocument] documentElement];
-  children = [queryElement childNodes];
+  children     = [queryElement childNodes];
+  
   for (i = 0, count = [children length]; i < count; i++) {
-    id<DOMElement>  node;
+    id<DOMElement> node;
 
     node = [children objectAtIndex:i];
     if ([node nodeType] != DOM_ELEMENT_NODE)
@@ -260,9 +269,10 @@ static BOOL debugOn = NO;
     key = [[key componentsSeparatedByString:@"."] objectAtIndex:0];
     if ([key intValue] > 0)
       [self->ids addObject:intObj([key intValue])];
-  } else {
-      [self warnWithFormat:@"href in multiget lacks .ics suffix"];
-     }
+  }
+  else {
+    [self warnWithFormat:@"href in multiget lacks .ics suffix"];
+  }
 }
 
 /* debugging */

@@ -32,6 +32,8 @@ libZSContacts_OBJC_FILES = \
 	\
 	ZSPersonListEntryRenderer.m	\
 	SxAddressFolder+ZL.m		\
+	\
+	SxDavAddrbookMultiget.m
 
 Contacts_RESOURCE_FILES += 	\
 	bundle-info.plist	\

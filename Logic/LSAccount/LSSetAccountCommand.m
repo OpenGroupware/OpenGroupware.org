@@ -46,27 +46,6 @@
   [super dealloc];
 }
 
-- (void)_setStaffInContext:(id)_context {
-  id staff   = nil;
-  id account = [self object];
-  
-  [self assert:(account != nil) reason:@"no account object for staff update"];
-
-  staff = [[account valueForKey:@"toStaff"] lastObject];
-
-  [self assert:(staff != nil) reason:@"no staff object for account update"];
-  
-  [staff takeValue:[account valueForKey:@"login"]       forKey:@"login"];
-  [staff takeValue:[account valueForKey:@"password"]    forKey:@"password"];
-  [staff takeValue:[account valueForKey:@"description"] forKey:@"description"];
-  [staff takeValue:[NSNumber numberWithBool:YES]        forKey:@"isAccount"];
-  [staff takeValue:[NSNumber numberWithBool:NO]         forKey:@"isTeam"];
-  [staff takeValue:@"updated"                           forKey:@"dbStatus"];
-
-  [self assert:(staff != nil) reason:@"no staff object to update !"];
-  [self assert:[[self databaseChannel] updateObject:staff]];
-}
-
 #if 0 // debugging code
 - (void)setObject:(id)_object {
   NSLog(@"set object to %@", _object);
@@ -110,7 +89,6 @@
 - (void)_executeInContext:(id)_context {
   [self assert:([self object] != nil) reason:@"no account object to act on"];
   [super _executeInContext:_context];
-  [self _setStaffInContext:_context];
 
   if (self->teams != nil) {
     LSRunCommandV(_context, @"account", @"setgroups",

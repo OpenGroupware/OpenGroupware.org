@@ -81,8 +81,9 @@
     */
     id note = [notes objectAtIndex:i];
 
-    if ([[note valueForKey:@"dateId"] isNotNull]) {
-      // project still assigned
+    if (([[note valueForKey:@"dateId"] isNotNull]) ||
+        ([[note valueForKey:@"companyId"] isNotNull])) {
+      // company or date still assigned
       LSRunCommandV(_context, @"note", @"set",
                               @"object", note, 
                               @"projectId", [EONull null],

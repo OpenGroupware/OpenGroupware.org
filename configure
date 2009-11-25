@@ -246,12 +246,12 @@ genConfigMake() {
   #cfgwrite "all :: "
   #cfgwrite "	@echo Local GNUstep config.make is active"
   #cfgwrite ""
-  cfgwrite "OGO_MAJOR_VERSION=1"
-  cfgwrite "OGO_MINOR_VERSION=1"
-  cfgwrite "ZIDESTORE_MAJOR_VERSION=1"
-  cfgwrite "ZIDESTORE_MINOR_VERSION=1"
-  cfgwrite "XMLRPCD_MAJOR_VERSION=1"
-  cfgwrite "XMLRPCD_MINOR_VERSION=1"
+  cfgwrite "OGO_MAJOR_VERSION=5"
+  cfgwrite "OGO_MINOR_VERSION=5"
+  cfgwrite "ZIDESTORE_MAJOR_VERSION=5"
+  cfgwrite "ZIDESTORE_MINOR_VERSION=5"
+  cfgwrite "XMLRPCD_MAJOR_VERSION=5"
+  cfgwrite "XMLRPCD_MINOR_VERSION=5"
   
   UNAME=`uname`
   if [ "X${UNAME}" = "XLinux" ];then

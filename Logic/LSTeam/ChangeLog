@@ -1,3 +1,11 @@
+2009-06-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSNewTeamCommand.m: removed creation of staff entries.
+	  (v5.5.22)
+
+	* LSSetTeamCommand.m: removed creation of staff entries.	
+	  (v5.5.22)
+
 2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSNewTeamCommand.m: renamed sybaseMessgaes to dbMessages

@@ -1,3 +1,96 @@
+2009-09-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSFilterJobCommand.h: Changes for Bug#2027. (v5.5.34)
+
+	* LSFetchArchivedJobsCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSFilterJobCommand.m: Changes for Bug#2027.(v5.5.34)
+
+	* LSGetToDoTasksAsRSSCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSFetchToDoJobsCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSFetchProjectJobsCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSGetDelegatedTasksAsRSSCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSFetchDelegatedJobsCommand.m: Changes for Bug#2027. (v5.5.34)
+
+	* LSJobActionCommand.m: Changes for Bug#2027. Members of the team named
+	  by the OGoHelpDeskRoleName default are permitted to create tasks
+	  whose owner is another user.  Creator remains as the user who created
+	  the task but the delegated and archived tasks lists, as well as RSS
+	  feeds, use owner rather than creator to correspond to the user.
+	  (v5.5.34)
+
+2009-06-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSSetJobCommand.m: update ctags table (v5.5.33)
+
+	* LSDeleteJobCommand.m: update ctags table (v5.5.33)
+
+	* LSNewJobCommand.m: update ctags table (v5.5.33)
+
+2009-06-09  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetToDoActionsAsRSSCommand.m: Removed dependency on staff table.
+	  (v5.5.32)
+
+	* LSGetDelegatedActionsAsRSSCommand.m: Removed dependency on staff
+	  table. (v5.5.32)
+
+2009-05-27  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSCriteriaSearchTaskCommand.m: Added command, used by zOGI to allow
+	  searching for tasks based on specified criteria. (v5.5.31)
+
+	* GNUmakefile: Added LSCriteriaSearchTaskCommand.m. (v5.5.31)
+
+	* commands.plist: Registered LSCriteriaSearchTaskCommand command
+	  object as job::criteria-search. (v5.5.31)
+
+	* bundle-info.plist: Registered new command object. (v5.5.31)
+
+2009-05-20  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSGetToDoTasksAsRSSCommand.m: added command that returns an RSS feed
+	  of the user's to-do tasks. (v5.5.30)
+
+	* LSGetDelegatedTasksAsRSSCommand.m: added command that returns an RSS
+	  feed of the user's currently delegated jobs. (v5.5.30)
+
+	* commands.plist: registered the new RSS commands.  Renamed the
+	  get-project-task-rss to get-project-rss since it is a feed of
+	  actions and not of tasks. (v5.5.30)
+
+	* bundle-info.plist: registered the new classes and commands.
+	  (v5.5.30)
+
+2009-04-09  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSFetchToDoJobsCommand.m: modified command to lookup a users team
+	  membership via Logic rather than relying on the get-relation stuff
+	  which fails to enumerate teams after a user changes their password.
+	  (v5.3.29)
+
+2009-03-31  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSNewJobCommand.m: removed ancient bit of "divided" logic when
+	  creating new tasks with a parent task. (v5.3.28)
+
+2009-03-30  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
+
+	* LSFetchJobIdTreeCommand.m: fixed crasher and added loop detection.
+	  (v5.3.27)
+
+	* LSFetchJobIdTreeCommand.m: command to create a graph of hierarchical
+	  tasks. (v5.3.26)
+
+	* commands.plist: Register the LSFetchJobIdTreeCommand command as
+	  job::get-jobid-tree (v5.3.26)
+
+	* bundle-info.plist: Register the job::get-jobid-tree command. (v5.3.26)
+
 2009-03-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSNewJobHistoryCommand.m: renamed sybaseMessages to dbMessages
