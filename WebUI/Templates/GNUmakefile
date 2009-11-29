@@ -39,7 +39,7 @@ TEMPLATE_DIRS = \
 	RegUI			\
 	RelatedLinksUI		\
 	Themes			\
-	ogo-webui-$(MAJORVERSION).$(MINORVERSION)		\
+	ogo-webui-$(MAJOR_VERSION).$(MINOR_VERSION)		\
 
 
 validate-wox ::
