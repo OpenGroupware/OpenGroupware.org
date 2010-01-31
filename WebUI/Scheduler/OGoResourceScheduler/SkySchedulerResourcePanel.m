@@ -65,6 +65,8 @@
 #include "common.h"
 #include <OGoScheduler/SkyAppointmentQualifier.h>
 #include <time.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 @interface SkySchedulerResourcePanel(PrivateMethods)
 - (void)setResources:(NSArray *)_resources;

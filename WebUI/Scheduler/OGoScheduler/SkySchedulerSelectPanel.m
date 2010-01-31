@@ -90,6 +90,8 @@
 #include <LSFoundation/LSCommandContext.h>
 #include <OGoScheduler/SkyAppointmentQualifier.h>
 #include <time.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 @interface SkySchedulerSelectPanel(PrivateMethods)
 - (void)setSelectedCompany:(id)_company;
