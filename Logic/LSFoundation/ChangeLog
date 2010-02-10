@@ -1,3 +1,7 @@
+2010-02-10  Sebastian Reitenbach <sebastia@loo-bugdead-prods.de>
+	* LSBaseCommand.m (-dealloc) do not release self->object,
+	fixing a double release when entering the NewsUI
+	
 2009-06-10  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSDBObjectBaseCommand.h|m: Added calculateCTagInContext method for

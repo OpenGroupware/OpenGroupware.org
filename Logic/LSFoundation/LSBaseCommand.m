@@ -128,7 +128,6 @@ static BOOL debug = NO;
   [self->commands  release];
   [self->operation release];
   [self->domain    release];
-  [self->object    release];
   [super dealloc];
 }
 
