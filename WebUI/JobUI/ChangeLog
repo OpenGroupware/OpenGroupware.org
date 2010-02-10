@@ -1,3 +1,8 @@
+2010-02-10  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* SkyJobList.m: (-_fetchJobs) do not release today and future
+	at the end of the method, fixing a double release when entering
+	the NewsUI
+
 2009-04-07  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSWJobEditor.m: log creation of a job link as a "05_created"

@@ -159,8 +159,6 @@ static NSDictionary *iconMap = nil;
  
   [d release];
   [result release];
-  [today release];
-  [future release];
   [s release];
   [j release];
 }
