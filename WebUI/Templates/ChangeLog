@@ -5,6 +5,9 @@
 	* Templates/LSWScheduler/LSWAppointmentHtmlMailPage.wod
 	* Templates/LSWScheduler/SkyAppointmentPrintViewer.wod
 	* change deprecated nilString binding into valueWhenEmpty
+	* BaseUI/LSWObjectEditor.wox
+	* change deprecated selection binding to selections
+	* change deprecated string binding to displayString
 
 2009-06-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 

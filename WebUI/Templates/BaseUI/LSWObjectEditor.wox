@@ -24,8 +24,8 @@
 	
 	<var:case const:key="multi">
           <var:multiselection list="currentValues" item="item"
-                              string="currentLabel" 
-                              selection="attributeValue" 
+                              displayString="currentLabel" 
+                              selections="attributeValue" 
                               const:size="4" const:multiple="YES" />
         </var:case>
 	
