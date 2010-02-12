@@ -1,3 +1,11 @@
+2010-02-12  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* Templates/OGoWebMail/LSWImapMailFolderTree.wod
+	* Templates/LSWProject/LSWProjectEditor.wod
+	* Templates/LSWScheduler/LSWAppointmentTextMailPage.wod
+	* Templates/LSWScheduler/LSWAppointmentHtmlMailPage.wod
+	* Templates/LSWScheduler/SkyAppointmentPrintViewer.wod
+	* change deprecated nilString binding into valueWhenEmpty
+
 2009-06-08  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* Themes/kde/ogo-webui-5.5: renamed components directory.

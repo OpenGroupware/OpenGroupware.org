@@ -38,7 +38,7 @@ LeaderLabel: WOString {
 }
 PrivateLabel: WOString {
   value     = teamSelection.description;
-  nilString = labels.teamNilSelect;
+  valueWhenEmpty = labels.teamNilSelect;
 }
 
 LeaderPopup: WOPopUpButton {

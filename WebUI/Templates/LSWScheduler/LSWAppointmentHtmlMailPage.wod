@@ -38,7 +38,7 @@ Creator: WOString {
 Comment: WOString {
   value     = comment;
   insertBR  = YES;
-  nilString = "no comment";
+  valueWhenEmpty = "no comment";
 }
 
 AttributeCell: SkyAttributeCell {}

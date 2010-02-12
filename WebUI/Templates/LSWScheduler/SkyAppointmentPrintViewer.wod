@@ -56,7 +56,7 @@ ReadPermissionAttr: SkySubAttribute {
 }
 AccessTeam: WOString {
   value     = accessTeamLabel;
-  nilString = labels.private;
+  valueWhenEmpty = labels.private;
 }
 
 CommentAttr: SkySubAttribute {
@@ -65,7 +65,7 @@ CommentAttr: SkySubAttribute {
 Comment: WOString {
   value      = appointment.comment;
   insertBR   = YES;
-  nilString  = "";
+  valueWhenEmpty  = "";
 }
 
 IgnoreConflictsAttr: SkySubAttribute {

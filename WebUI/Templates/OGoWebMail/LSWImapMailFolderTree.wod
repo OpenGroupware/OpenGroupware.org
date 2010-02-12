@@ -47,7 +47,7 @@ DocFolderNavRep2: WORepetition {
 
 DocFolderTitle: WOString {
   value     = folderTitle;
-  nilString = "untitled";         
+  valueWhenEmpty = "untitled";         
 }
 
 HasIdCond: WOConditional {
@@ -56,7 +56,7 @@ HasIdCond: WOConditional {
 
 DocFolderId: WOString {
   value     = folderId;
-  nilString = "";         
+  valueWhenEmpty = "";         
 }
 
 FolderLink: WOHyperlink {

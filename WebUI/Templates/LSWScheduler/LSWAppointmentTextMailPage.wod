@@ -24,10 +24,10 @@ Creator: WOString {
 }
 
 Comment: WOString {
-  value      = comment;
-  insertBR   = NO;
-  nilString  = "no comment";
-  escapeHTML = NO;
+  value           = comment;
+  insertBR        = NO;
+  valueWhenEmpty  = "no comment";
+  escapeHTML      = NO;
 }
 
 StartDayLabel: WOString {
