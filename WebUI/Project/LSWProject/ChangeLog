@@ -1,3 +1,7 @@
+2010-02-12  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* fix deprecation warning in prepareForEditCommand:type:configuration:
+	  use setValuesForKeysWithDictionary instead of takeValuesFromDictionary
+
 2009-03-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSWProjectEditor.m: Add support for OGoDefaultProjectStorageBackend

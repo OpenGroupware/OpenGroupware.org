@@ -585,7 +585,7 @@ static NSString *defaultStorageBackend = nil;
     
     oprops = [[self propertyManager] propertiesForGlobalID:
 				       [[self object] globalID]];
-    [[self snapshot] takeValuesFromDictionary:oprops];
+    [[self snapshot] setValuesForKeysWithDictionary:oprops];
   }
   
   if ([_command isEqualToString:@"delete"]) {
