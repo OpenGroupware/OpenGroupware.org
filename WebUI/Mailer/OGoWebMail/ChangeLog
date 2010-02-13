@@ -1,3 +1,7 @@
+2010-02-13  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* Defaults.plist: remove German commented out mail_MDN_text, 
+	  exchange German text for mail_MDN_subject with English equivalent
+
 2007-06-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWImapMailViewer.m: changed to use the new OGoMailDownloadAction
