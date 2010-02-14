@@ -1,6 +1,6 @@
 2010-02-14  Sebastian Reitenbach <sebastia@l00-bugead-prods.de>
 	* GNUmakefile fix installation a second time, include common.make,
-	  patch from Sergey Golovin
+	  patch from Sergey Golovin, but use -f instead of --remove-destination
 
 2006-02-17  Helge Hess  <helge.hess@opengroupware.org>
 

@@ -54,7 +54,7 @@ all :: validate-wox
 install ::
 	mkdir -p $(OGO_SHARED_TEMPLATES) 
 	for TEMPLATEDIR in $(TEMPLATE_DIRS); do \
-		cp -r --remove-destination $$TEMPLATEDIR $(OGO_SHARED_TEMPLATES)/; \
+		cp -rf $$TEMPLATEDIR $(OGO_SHARED_TEMPLATES)/; \
 	done;
 
 uninstall ::

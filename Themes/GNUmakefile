@@ -9,7 +9,7 @@ all ::
 
 install ::
 	mkdir -p $(OGO_SHARED_WWW)
-	cp -r --remove-destination $(WEBSERVER_RESOURCE_DIRS) $(OGO_SHARED_WWW)
+	cp -rf $(WEBSERVER_RESOURCE_DIRS) $(OGO_SHARED_WWW)
 
 clean ::
 

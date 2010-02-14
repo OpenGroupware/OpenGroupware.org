@@ -1,6 +1,6 @@
 2010-02-14  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
 	* GNUmakefile, fix error on installing the second time,
-	  patch from Sergey Golovin
+	  patch from Sergey Golovin, but use -f instead of --remove-destination
 
 2008-06-03  Adam Tauno Williams  <awilliam@whitemiceconsulting.com>
 

@@ -21,7 +21,7 @@ Skyrix_LANGUAGE_Projects = \
 all ::
 
 install :: ${RESOURCES_INSTALLATION_DIR}
-	cp -RPp --remove-destination ${Skyrix_LANGUAGE_Projects} ${RESOURCES_INSTALLATION_DIR}
+	cp -RPpf ${Skyrix_LANGUAGE_Projects} ${RESOURCES_INSTALLATION_DIR}
 
 
 ${RESOURCES_INSTALLATION_DIR}	 ::
