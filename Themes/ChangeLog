@@ -1,3 +1,7 @@
+2010-02-14  Sebastian Reitenbach <sebastia@l00-bugead-prods.de>
+	* GNUmakefile fix installation a second time, include common.make,
+	  patch from Sergey Golovin
+
 2006-02-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* WebServerResources/English.lproj/: added mimeicon_image_png_16x19.gif

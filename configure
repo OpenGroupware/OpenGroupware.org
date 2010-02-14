@@ -294,6 +294,7 @@ genConfigMake() {
     cfgwrite ""
     cfgwrite "OGO_SYSLIBDIR=\${DESTDIR}\${GNUSTEP_LIBRARIES}"
     cfgwrite "OGO_LIBDIR=\${DESTDIR}/\${GNUSTEP_LIBRARY}/OpenGroupware.org-\${OGO_MAJOR_VERSION}.\${OGO_MINOR_VERSION}"
+    cfgwrite "OGO_SHARED=\${DESTDIR}/\${GNUSTEP_LIBRARY}/OpenGroupware.org-\${OGO_MAJOR_VERSION}.\${OGO_MINOR_VERSION}"
     cfgwrite "OGO_SHARED_DBSETUP=\${OGO_LIBDIR}/DBSetup"
     cfgwrite "OGO_SHARED_TEMPLATES=\${OGO_LIBDIR}/Templates"
     cfgwrite "OGO_SHARED_TRANSLATIONS=\${OGO_LIBDIR}/Resources"

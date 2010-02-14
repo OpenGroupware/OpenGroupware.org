@@ -1,3 +1,7 @@
+2010-02-14  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* GNUmakefile, fix multiple installations, include common.make,
+	  patch by Sergey Golovin
+
 2010-02-12  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
 	* Templates/OGoWebMail/LSWImapMailFolderTree.wod
 	* Templates/LSWProject/LSWProjectEditor.wod

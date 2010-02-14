@@ -1,6 +1,7 @@
 # GNUstep makefile
 
 include ../../config.make
+include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 
 WOX_FILES = $(shell find . -name "*.wox")
@@ -53,7 +54,7 @@ all :: validate-wox
 install ::
 	mkdir -p $(OGO_SHARED_TEMPLATES) 
 	for TEMPLATEDIR in $(TEMPLATE_DIRS); do \
-		cp -r $$TEMPLATEDIR $(OGO_SHARED_TEMPLATES)/; \
+		cp -r --remove-destination $$TEMPLATEDIR $(OGO_SHARED_TEMPLATES)/; \
 	done;
 
 uninstall ::

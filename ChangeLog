@@ -1,3 +1,7 @@
+2010-02-14  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* configure, fix installation in GNUstep environment,
+	  patch from Sergey Golovin
+
 2008-10-14  Adam Tauno Williams  <awilliam@whitemiceconsulting.com>
 
 	* PDA: moved to Recyler

@@ -1,3 +1,7 @@
+2010-02-14  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* GNUmakefile, fix error on installing the second time,
+	  patch from Sergey Golovin
+
 2008-06-03  Adam Tauno Williams  <awilliam@whitemiceconsulting.com>
 
 	* English.lproj/JobUI.strings: added "overdue" label.
