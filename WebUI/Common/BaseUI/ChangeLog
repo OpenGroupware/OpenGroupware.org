@@ -1,3 +1,9 @@
+2010-02-15  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* SkyListSorter.m, in setSelection: fix exception/crasher, when
+	  entering the MailPreferences, and the SkyListSorter is shown.
+	  Still need to figure out why it crashes in the second iteration
+	  Patch from Sergey Golovin 
+
 2008-03-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWObjectEditor.m: treat NSString 'valueKeys' as KVC pathes, fixes

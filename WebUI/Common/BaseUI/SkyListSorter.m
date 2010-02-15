@@ -146,7 +146,7 @@ static int compareElements(id obj1, id obj2, void *context) {
 }
 
 - (void)setSelection:(NSMutableArray *)_selection {
-  if (self->selection != _selection && self->selection != nil) {
+  if (![self->selection isEqual:_selection] && self->selection != nil) {
     id tmp;
 
     tmp = self->selection;

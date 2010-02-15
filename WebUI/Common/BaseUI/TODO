@@ -1,2 +1,4 @@
 # $Id$
-
+Figure out why the crasher/exception in SkyListSorter.m happens at the
+second iteration. Fix submitted with svn revision 2294, however, would 
+be good to know what is actually really going wrong
