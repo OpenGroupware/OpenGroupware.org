@@ -22,7 +22,7 @@
 
 #import <Foundation/NSObject.h>
 
-@class NSArray;
+@class NSArray, EOGenericRecord;
 @class OGoContextManager, LSCommandContext;
 
 @interface OGoPersonQualifierSearchTool : NSObject
@@ -35,6 +35,10 @@
 }
 
 + (int)run:(NSArray *)_args;
+- (void)printException:(id)_result;
+- (void)printResult:(id)_result;
+- (void)printArrayResult:(NSArray *)_array;
+- (void)printEOGenericRecord:(EOGenericRecord *)_record;
 
 @end
 
@@ -78,6 +82,28 @@
 }
 
 /* result processing */
+
+- (void)printException:(id)_result {
+  printf("%s\n", [[_result description] cString]);
+  fflush(stdout);
+}
+
+- (void)printResult:(id)_result {
+  if ([_result isKindOfClass:[NSException class]]) {
+    [self printException:_result];
+  }
+  else if ([_result isKindOfClass:[NSArray class]]) {
+    [self printArrayResult:_result];
+  }
+  else if ([_result isKindOfClass:[EOGenericRecord class]]) {
+    [self printEOGenericRecord:_result];
+  }
+  else {
+    /* output */
+    printf("%s\n", [[_result description] cString]);
+    fflush(stdout);
+  }
+}
 
 - (void)printArrayResult:(NSArray *)_array {
   unsigned len;
@@ -154,23 +180,6 @@
   }
 }
 
-- (void)printResult:(id)_result {
-  if ([_result isKindOfClass:[NSException class]]) {
-    [self printException:_result];
-  }
-  else if ([_result isKindOfClass:[NSArray class]]) {
-    [self printArrayResult:_result];
-  }
-  else if ([_result isKindOfClass:[EOGenericRecord class]]) {
-    [self printEOGenericRecord:_result];
-  }
-  else {
-    /* output */
-    printf("%s\n", [[_result description] cString]);
-    fflush(stdout);
-  }
-}
-
 /* run with context */
 
 - (int)run:(NSArray *)_args onContext:(LSCommandContext *)_ctx {
@@ -185,7 +194,6 @@
   
   /* fetch records */
   
-#warning TODO
   records = [_ctx runCommand:@"person::qsearch", 
 		    @"qualifier", [_args objectAtIndex:1],
 		  nil];

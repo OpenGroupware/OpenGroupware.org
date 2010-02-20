@@ -93,14 +93,8 @@
 
 
 - (NSString *)cleanupNumber:(NSString *)_number {
-  NSDictionary *prefixMappings;
-  NSEnumerator *prefixes;
-  NSString     *prefix;
   NSString     *dialoutPrefix;
 
-
-  prefixMappings = [[NSUserDefaults standardUserDefaults]
-                                    dictionaryForKey:@"AsteriskDialerPrefixMap"];
   dialoutPrefix = [[NSUserDefaults standardUserDefaults] stringForKey:@"AsteriskDialOutPrefix"];
 
   _number = [_number stringByReplacingString:@" " withString:@""];
@@ -111,29 +105,6 @@
       _number = [dialoutPrefix stringByAppendingString:_number];
     }
   }
-return _number;
-#if 1
-  // first sort based on prefix length !!!
-  prefixes = [prefixMappings keyEnumerator];
-  while ((prefix = [prefixes nextObject])) {
-    if ([_number hasPrefix:prefix]) {
-      _number = [_number substringFromIndex:[prefix length]];
-      _number = [[prefixMappings objectForKey:prefix]
-                                 stringByAppendingString:_number];
-      break;
-    }
-  }
-#endif
-  
-/* #warning need prefix mapping table here ...
-  if ([_number hasPrefix:@"+493916623"])
-    _number = [_number substringFromIndex:10];
-  else if ([_number hasPrefix:@"+49"]) {
-    _number = [_number substringFromIndex:3];
-    _number = [@"00" stringByAppendingString:_number];
-  }
-  else
-    _number = nil; */
   return _number;
 }
 

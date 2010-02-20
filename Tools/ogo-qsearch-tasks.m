@@ -22,7 +22,7 @@
 
 #import <Foundation/NSObject.h>
 
-@class NSArray;
+@class NSArray, EOGenericRecord;
 @class OGoContextManager, LSCommandContext;
 
 @interface OGoTaskQualifierSearchTool : NSObject
@@ -35,6 +35,10 @@
 }
 
 + (int)run:(NSArray *)_args;
+- (void)printResult:(id)_result;
+- (void)printException:(id)_result;
+- (void)printEOGenericRecord:(EOGenericRecord *)_record;
+- (void)printArrayResult:(NSArray *)_array;
 
 @end
 
@@ -134,6 +138,11 @@
     printf("\n");
   }
 }
+ 
+- (void)printException:(id)_result {
+  printf("%s\n", [[_result description] cString]);
+  fflush(stdout);
+}
 
 - (void)printResult:(id)_result {
   if ([_result isKindOfClass:[NSException class]]) {
@@ -156,7 +165,6 @@
 
 - (int)run:(NSArray *)_args onContext:(LSCommandContext *)_ctx {
   NSArray  *records;
-  unsigned i, count;
   
   /* clean up arguments */
   
@@ -167,7 +175,6 @@
   
   /* fetch records */
   
-#warning TODO
    records = [_ctx runCommand:@"job::qsearch", 
                               @"qualifier", [_args objectAtIndex:1],
                               nil];

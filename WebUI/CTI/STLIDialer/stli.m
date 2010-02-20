@@ -26,7 +26,7 @@
 {
   STLIConnection *stli;
 }
-
+- (void)run;
 @end
 
 #include "common.h"
@@ -67,7 +67,7 @@
   }
   NSLog(@"monitoring device '%@' ..", device);
   
-  if ([call isNotEmpty]) {
+  if (![call isEmpty]) {
     if (![stli makeCallFromLocalDevice:device toDevice:call]) 
       NSLog(@"could not call device: %@", call);
   }

@@ -248,17 +248,17 @@ NSString *STLIExceptioName = @"STLIExceptioName";
   NSNotification *stliEvent;
   NSString  *eventName;
   NSString  *devInfo;
-  unsigned  idx;
+  NSRange  idx;
 
   if ([_line length] == 0) return;
-  
-  if ((idx = [_line indexOfString:@" "]) == NSNotFound) {
+  idx = [_line rangeOfString:@" "];
+  if (idx.length > 0) {
     eventName = _line;
     _line     = nil;
   }
   else {
-    eventName = [_line substringToIndex:idx];
-    _line     = [_line substringFromIndex:(idx + 1)];
+    eventName = [_line substringToIndex:idx.location];
+    _line     = [_line substringFromIndex:(idx.location + 1)];
   }
   
   /* check for call events and read associated device info */

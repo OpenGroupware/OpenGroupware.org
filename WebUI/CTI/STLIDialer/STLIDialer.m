@@ -39,7 +39,6 @@
   _number = [_number stringByReplacingString:@" " withString:@""];
   _number = [_number stringByReplacingString:@"-" withString:@""];
 
-#if 0
   // first sort based on prefix length !!!
   prefixes = [prefixMappings keyEnumerator];
   while ((prefix = [prefixes nextObject])) {
@@ -50,17 +49,6 @@
       break;
     }
   }
-#endif
-  
-#warning need prefix mapping table here ...
-  if ([_number hasPrefix:@"+493916623"])
-    _number = [_number substringFromIndex:10];
-  else if ([_number hasPrefix:@"+49"]) {
-    _number = [_number substringFromIndex:3];
-    _number = [@"00" stringByAppendingString:_number];
-  }
-  else
-    _number = nil;
   
   return _number;
 }
