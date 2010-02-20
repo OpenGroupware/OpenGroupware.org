@@ -1,3 +1,7 @@
+2010-02-20  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* SkyTeamDataSource.h: add initWithContext: to interface to
+	  fix compilation warning
+
 2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAccountsBundleManager.m: fixed OSX linking warnings (v5.3.22)

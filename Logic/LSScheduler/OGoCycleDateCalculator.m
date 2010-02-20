@@ -162,7 +162,7 @@
     }
     
     if (!cycleEnd) {
-      static const NSString *keys[2] = { @"startDate", @"endDate" };
+      static NSString *keys[2] = { @"startDate", @"endDate" };
       id values[2];
       NSDictionary *d;
       

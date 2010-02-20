@@ -37,6 +37,7 @@
   id                   context;
 }
 - (NSSet *)nativeKeys;
+- (id)initWithContext:(id)_context;
 @end
 
 @interface SkyTeamDocumentGlobalIDResolver : NSObject

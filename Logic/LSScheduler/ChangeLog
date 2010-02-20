@@ -1,3 +1,6 @@
+2010-02-20  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* OGoCycleDateCalculator.m: fix compilation warning
+
 2009-06-11  Adam Tauno Williams <awilliam@whitemiceconsulting.com>
 
 	* LSNewAppointmentCommand.m: updates ctags table. (v5.5.115)
