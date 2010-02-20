@@ -465,7 +465,7 @@ static NSArray      *formLetterTypes          = nil;
   NSMutableDictionary *result;
   id                  compId;
 
-  result = [NSMutableDictionary dictionary];
+  result = [[NSMutableDictionary alloc] init];
   compId = [[self object] valueForKey:@"companyId"];
   
   [result setObject:compId                 forKey:@"companyId"];

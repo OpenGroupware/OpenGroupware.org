@@ -1,3 +1,7 @@
+2010-02-20  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* SkyDefaultsDomain.m, in saveAllElements, do not call makeStandardDomainSearchList
+	  NSUseDefaults doesn't respond to that, fixes compilation warning.
+
 2007-06-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Resources/*.plist: removing trailing semicolons in plists to please

@@ -202,7 +202,6 @@
   }
   ASSIGN(self->oldDomain, newDomain);
   [newDomain release]; newDomain = nil;
-  [[NSUserDefaults standardUserDefaults] makeStandardDomainSearchList];
   return YES;
 }
 

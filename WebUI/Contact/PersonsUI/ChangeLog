@@ -1,3 +1,5 @@
+2010-02-20  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+	* SkyPersonViewer.m: fix compilation warning
 2008-02-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyPersonViewer.m: code cleanups (v5.3.78)
