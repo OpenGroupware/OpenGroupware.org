@@ -62,9 +62,9 @@ case "$2" in POST-INSTALL)
     ${SU} - ${OGO_USER} -c "
       Defaults write NSGlobalDomain JobPreferredExecutantsEnabled Yes
       Defaults write NSGlobalDomain JobReferredPersonEnabled Yes
-      Defaults write NSGlobalDomain LSCreateAccountsReadonly = Yes;
+      Defaults write NSGlobalDomain LSCreateAccountsReadonly Yes
       Defaults write NSGlobalDomain LSAttachmentPath '${OGO_HOME}/documents'
-      Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=\"127.0.0.1\"; userName=OGo; password=\"\"; port=5432; databaseName=OGo}'
+      Defaults write NSGlobalDomain LSConnectionDictionary '{ hostName=\"127.0.0.1\"; userName=OGo; password=\"\"; port=5432; databaseName=OGo }'
       Defaults write NSGlobalDomain LSDisableSessionLog Yes
       Defaults write NSGlobalDomain LSNewsImagesPath '${OGO_HOME}/news'
       Defaults write NSGlobalDomain LSNewsImagesUrl '/ArticleImages'
@@ -74,7 +74,8 @@ case "$2" in POST-INSTALL)
       Defaults write NSGlobalDomain skyrix_id `hostname`
       Defaults write NSGlobalDomain TimeZoneName GMT
       Defaults write NSGlobalDomain WODefaultSessionTimeOut 3600
-      Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain)'
+      Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain, `hostname -f` )'
+      Defaults write NSGlobalDomain WOPort 127.0.0.1:20000
       Defaults write NSGlobalDomain WOSendMail '/usr/sbin/sendmail'
       Defaults write ogo-nhsd-${OGO_VERSION} NGBundlePath '${PKG_PREFIX}/lib/opengroupware.org-${OGO_VERSION}/conduits'
       Defaults write skyaptnotify AptNotifyVerbose NO
