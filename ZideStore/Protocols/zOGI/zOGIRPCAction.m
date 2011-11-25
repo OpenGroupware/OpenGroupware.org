@@ -553,7 +553,7 @@
         [self logWithFormat:@"requesting %d enterprises for revolution",
            [tmpList count]];
       if ([tmpList count] > 0)
-        [result addObjectsFromArray:[self _getEnterprisesForKeys:tmpList withDetail:arg2]];
+        [result addObjectsFromArray:[self _getEnterprisesForKeys:tmpList withDetail:arg3]];
     } /* end if-revolve-requested */
   } else if ([arg1 isEqualToString:@"Enterprise"]) {
     /* SEARCH FOR ENTERPRISE */
@@ -588,7 +588,7 @@
         [self logWithFormat:@"requesting %d contacts for revolution",
            [tmpList count]];
       if ([tmpList count] > 0)
-        [result addObjectsFromArray:[self _getContactsForKeys:tmpList withDetail:arg2]];
+        [result addObjectsFromArray:[self _getContactsForKeys:tmpList withDetail:arg3]];
     } /* end if-revolve-requested */
   } else if ([arg1 isEqualToString:@"Appointment"])
     /* SEARCH FOR APPOINTMENTS */
