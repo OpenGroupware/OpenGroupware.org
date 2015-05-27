@@ -110,19 +110,23 @@ CREATE TABLE company_info (
 -- Likely reason: those columns where added to mirror obj_property
 CREATE TABLE company_value (
   company_value_id   int         not null,
-  company_id         int        ,
-  attribute          varchar(255)    ,
+  company_id         int,
+  attribute          varchar(255),
   attribute_type     varchar(50),
-  value_string       varchar(255)    ,
-  value_date         timestamp with time zone  ,
-  value_int          int       ,
-  is_enum            smallint      ,
-  category           varchar(255)    ,
-  uid                int        , 
-  label              varchar(255)    ,
-  type               int       ,
-  is_label_localized smallint      ,
+  value_string       varchar(255),
+  value_date         timestamp with time zone,
+  value_int          int,
+  is_enum            smallint,
+  category           varchar(255),
+  uid                int, 
+  label              varchar(255),
+  type               int,
+  is_label_localized smallint,
   db_status          varchar(50),
+  
+  start_date         timestamp with time zone,
+  end_date           timestamp with time zone,
+  
   constraint pk_company_value primary key (company_value_id));
 
 CREATE TABLE company_category (
@@ -134,12 +138,16 @@ CREATE TABLE company_category (
 
 CREATE TABLE company_assignment (
   company_assignment_id int         not null,
-  company_id            int        ,
-  sub_company_id        int        ,
-  is_headquarter        smallint      ,
-  is_chief              smallint      ,
-  function              varchar(255)    ,
+  company_id            int,
+  sub_company_id        int,
+  is_headquarter        smallint,
+  is_chief              smallint,
+  function              varchar(255),
   db_status             varchar(50),
+  
+  start_date         timestamp with time zone,
+  end_date           timestamp with time zone,
+  
   constraint pk_company_assignment primary key (company_assignment_id));
 
 CREATE TABLE appointment_resource (
@@ -250,6 +258,10 @@ CREATE TABLE project_company_assignment (
   has_access                    smallint,
   access_right                  varchar(50),
   db_status                     varchar(50),
+  
+  start_date                    timestamp with time zone,
+  end_date                      timestamp with time zone,
+  
   constraint                    pk_project_company_assignment
                                 primary key (project_company_assignment_id));
 
