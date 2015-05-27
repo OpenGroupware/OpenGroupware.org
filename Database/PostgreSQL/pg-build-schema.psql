@@ -772,17 +772,19 @@ CREATE VIEW project_teams AS
 CREATE RULE project_teams_add AS ON INSERT TO project_teams DO INSTEAD
   INSERT INTO project_company_assignment (
     project_company_assignment_id, company_id, project_id, info,
-    has_access, access_right, db_status
+    has_access, access_right, db_status,
+    start_date, end_date
   )
   VALUES (
     new.project_company_assignment_id, new.company_id, new.project_id, new.info,
-    new.has_access, new.access_right, new.db_status
+    new.has_access, new.access_right, new.db_status, new.start_date, new.end_date
   );
 CREATE RULE project_teams_set AS ON UPDATE TO project_teams DO INSTEAD
   UPDATE project_company_assignment
   SET company_id = new.company_id, project_id = new.project_id, info = new.info,
       has_access = new.has_access, access_right = new.access_right,
-      db_status  = new.db_status
+      db_status  = new.db_status,
+      start_date = new.start_date, end_date = new.end_date
   WHERE project_company_assignment_id = old.project_company_assignment_id;
 
 CREATE RULE project_teams_del AS ON DELETE TO project_teams DO INSTEAD
@@ -826,7 +828,7 @@ CREATE VIEW project_companies AS
 CREATE RULE project_companies_add AS ON INSERT TO project_companies DO INSTEAD
   INSERT INTO project_company_assignment (
     project_company_assignment_id, company_id, project_id, info, has_access,
-    access_right, db_status
+    access_right, db_status, start_date, end_date
   )
   VALUES (
     new.project_company_assignment_id, new.company_id, new.project_id, new.info,
