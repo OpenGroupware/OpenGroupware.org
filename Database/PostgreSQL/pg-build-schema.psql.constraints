@@ -106,6 +106,8 @@ ALTER TABLE document_editing ADD constraint
 -- table address
 ALTER TABLE address ADD constraint
     address2company foreign key (company_id) references company(company_id);
+ALTER TABLE address   ADD CONSTRAINT company_unique_adrtype
+  UNIQUE ( company_id, type );
 
 -- table telephone
 ALTER TABLE telephone ADD constraint
