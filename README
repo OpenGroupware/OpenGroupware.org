@@ -1,7 +1,4 @@
-# $Id$
-
-Welcome to OpenGroupware.org !
-==============================
+## OpenGroupware.org
 
 - for an overview over the source tree, take a look at the OVERVIEW file
 
@@ -24,4 +21,3 @@ and
 files. Except for modules contained in the ThirdParty directory, most
 sources are licensed under the GNU Lesser General Public License and
 the copyright is owned by SKYRIX Software AG.
-
