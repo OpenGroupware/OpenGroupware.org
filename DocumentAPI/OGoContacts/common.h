@@ -70,7 +70,7 @@
 #else
 #  include <objc/objc-api.h>
 #  ifndef SEL_EQ
-#    define SEL_EQ(__A__,__B__) sel_eq(__A__,__B__)
+#    define SEL_EQ(__A__,__B__) sel_isEqual(__A__,__B__)
 #  endif
 #endif
 

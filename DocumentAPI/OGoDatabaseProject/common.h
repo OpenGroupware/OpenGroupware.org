@@ -41,7 +41,7 @@
 #    define SEL_EQ(__A__,__B__) (__A__==__B__?YES:NO)
 #  else
 #    include <objc/objc-api.h>
-#    define SEL_EQ(__A__,__B__) sel_eq(__A__,__B__)
+#    define SEL_EQ(__A__,__B__) sel_isEqual(__A__,__B__)
 #  endif
 #endif
 
