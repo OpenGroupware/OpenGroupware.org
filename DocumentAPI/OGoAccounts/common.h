@@ -41,7 +41,8 @@
 #  if !GNU_RUNTIME
 #    define SEL_EQ(__A__,__B__) (__A__==__B__?YES:NO)
 #  else
-#    include <objc/objc-api.h>
+#    include <objc/objc.h>
+#    include <objc/runtime.h>
 #    define SEL_EQ(__A__,__B__) sel_isEqual(__A__,__B__)
 #  endif
 #endif

@@ -22,7 +22,8 @@
 #ifndef __LSWebInterface_LSWFoundation_common_H__
 #define __LSWebInterface_LSWFoundation_common_H__
 
-#include <objc/objc-api.h>
+#include <objc/objc.h>
+#include <objc/runtime.h>
 
 #import <Foundation/Foundation.h>
 #import <Foundation/NSDateFormatter.h>
