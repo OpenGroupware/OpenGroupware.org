@@ -100,7 +100,7 @@
       BOOL isLike;
       
 #if GNU_RUNTIME
-      isLike = sel_eq([(EOKeyValueQualifier *)q selector], 
+      isLike = sel_isEqual([(EOKeyValueQualifier *)q selector], 
 		      EOQualifierOperatorLike);
 #else
       isLike = [(EOKeyValueQualifier *)q selector] == EOQualifierOperatorLike
