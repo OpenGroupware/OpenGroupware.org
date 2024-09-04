@@ -1,11 +1,19 @@
 # GNUstep makefile
 
+OGoROOT=../..
+
 -include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
+include $(OGoROOT)/Version
+include ./Version
+
+# hh: 2024-09-04
+OGO_LIBDIR=${GNUSTEP_LIBRARY}
+OGO_MODELS=${OGO_LIBDIR}/Models-${MAJOR_VERSION}.${MINOR_VERSION}
 
 BUNDLE_NAME        = OGo
 BUNDLE_EXTENSION   = .model
-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-5.5/
+BUNDLE_INSTALL_DIR = $(OGO_MODELS)
 
 #ADDITIONAL_CPPFLAGS += -DUSE_EO_RECORDS=1
 

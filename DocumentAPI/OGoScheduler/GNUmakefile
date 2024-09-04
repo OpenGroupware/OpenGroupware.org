@@ -16,7 +16,9 @@ ifeq ($(FHS_INSTALL_ROOT),)
 ifeq ($(FOUNDATION_LIB),fd)
 RESOURCES_DIR=$(GNUSTEP_LOCAL_ROOT)/Libraries/Resources/OGoScheduler
 else
-RESOURCES_DIR=$(GNUSTEP_LOCAL_ROOT)/Library/Libraries/Resources/OGoScheduler
+# hh: 2024-09-04 GNUstep
+RESOURCES_DIR=$(GNUSTEP_LIBRARY)/OGoScheduler
+#RESOURCES_DIR=$(GNUSTEP_LOCAL_ROOT)/Library/Libraries/Resources/OGoScheduler
 endif
 else
 RESOURCES_DIR=$(FHS_INSTALL_ROOT)/share/opengroupware.org-5.5

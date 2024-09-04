@@ -2,9 +2,7 @@
 
 include ../common.make
 
-WOBUNDLE_NAME        = JobUI
-WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-5.5/WebUI/
+WOBUNDLE_NAME = JobUI
 
 JobUI_PRINCIPAL_CLASS = JobUIModule
 

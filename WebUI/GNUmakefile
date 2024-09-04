@@ -1,6 +1,7 @@
 # GNUstep makefile
 
 -include ../config.make
+include ../Version
 include $(GNUSTEP_MAKEFILES)/common.make
 
 SUBPROJECTS += \

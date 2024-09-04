@@ -3,9 +3,6 @@
 include ../common.make
 
 WOBUNDLE_NAME        = RegUI
-WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = \
-  $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-5.5/WebUI/
 
 RegUI_PRINCIPAL_CLASS = RegUIModule
 
