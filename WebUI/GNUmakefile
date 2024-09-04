@@ -15,8 +15,7 @@ SUBPROJECTS += \
 	NewsUI			\
 	Scheduler		\
 	Mailer			\
-	Project			\
-	SoOGo			\
+	Project
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make

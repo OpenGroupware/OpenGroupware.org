@@ -1,7 +1,0 @@
-# compilation settings
-
-OGoROOT   =../..
-WebUIROOT =..
-
-ADDITIONAL_BUNDLE_LIBS +=
-ADDITIONAL_LIB_DIRS    += 
