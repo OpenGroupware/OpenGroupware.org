@@ -90,8 +90,7 @@
         { name = LSNewTelephoneCommand;               },
         { name = LSSetTelephoneCommand;               },
         { name = LSGetVCardForGlobalIDsCommand;       },
-        { name = LSSetVCardCommand;                   },
-        { name = LSGetGeoCoordinatesForAddressCommand; }
+        { name = LSSetVCardCommand;                   }
     );
 
     SkyAccessHandlers = (
