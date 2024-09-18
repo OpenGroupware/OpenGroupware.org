@@ -65,16 +65,12 @@
   ofBundle:(NSBundle *)_bundle
 {
   _LSBundleCommandInfo *info;
-  NSDictionary *domainList;
-  NSDictionary *domains;
+    NSDictionary *domains;
   NSEnumerator *domainKeys;
   NSString     *domainKey;
-  NSZone       *z;
 
   //NSLog(@"processing commands.plist of %@", [_bundle bundleName]);
 
-  z = [self zone];
-  domainList = [_commands objectForKey:@"domainList"];
   domains    = [_commands objectForKey:@"domains"];
   domainKeys = [domains keyEnumerator];
   
@@ -277,7 +273,6 @@
 - (id)initWithName:(NSString *)_name className:(NSString *)_cname
   config:(NSDictionary *)_config
 {
-  int     idx;
   NSRange r;
   
   self = [super init];
@@ -287,7 +282,6 @@
   self->config           = [_config copy];
   
   r = [_name rangeOfString:@"::"];
-  idx = r.location;
   if (r.length > 0) {
     self->domain    = [[_name substringToIndex:r.location] copy];
     self->operation = 
