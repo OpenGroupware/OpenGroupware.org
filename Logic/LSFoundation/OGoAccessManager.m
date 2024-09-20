@@ -163,8 +163,6 @@ static Class   StrClass = Nil;
   allowedOnObjectIDs:(NSArray *)_oids
   forAccessGlobalID:(EOGlobalID *)_accountID
 {
-  EOGlobalID           *loginID = nil;
-  id                   login    = nil;
   id<OGoAccessHandler> handler  = nil;
   BOOL                 result;
   NSArray              *oids;
@@ -172,8 +170,8 @@ static Class   StrClass = Nil;
   TIME_START(@"operation:allowedOnObjectIDs:forAccessGlobalID:");
 
   result  = YES;
-  login   = [self->context valueForKey:LSAccountKey];
-  loginID = [login valueForKey:@"globalID"];
+  // unused: login   = [self->context valueForKey:LSAccountKey];
+  // unused: loginID = [login valueForKey:@"globalID"];
   
   if (![_accountID isNotNull]) {
     [self warnWithFormat:@"%s: missing _accountID", __PRETTY_FUNCTION__];

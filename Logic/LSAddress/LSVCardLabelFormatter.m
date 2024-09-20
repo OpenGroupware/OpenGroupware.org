@@ -30,7 +30,7 @@
 }
 
 - (NSString *)stringForObjectValue:(id)address {
-  NSString *name1, *name2, *name3, *street, *city, *zip, *country, *state;
+  NSString *name1, *name2, *name3, *street, *city, *zip, *country;
   NSString *label;
   
   name1   = [address valueForKey:@"name1"];
@@ -40,7 +40,9 @@
   city    = [address valueForKey:@"city"];
   zip     = [address valueForKey:@"zip"];
   country = [address valueForKey:@"country"];
+  #if 0 // hh(2024-09-19): unused
   state   = [address valueForKey:@"state"];
+  #endif
   
   if (!([street isNotEmpty] || [city isNotEmpty] || [zip isNotEmpty] || 
         [country isNotEmpty] || [name1 isNotEmpty] || [name2 isNotEmpty] ||

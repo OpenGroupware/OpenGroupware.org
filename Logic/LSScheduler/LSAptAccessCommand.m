@@ -143,9 +143,7 @@ static EONull   *null  = nil;
   readAccessGIDs:(NSMutableArray *)readAccessDates
   writeAccessLists:(NSMutableDictionary *)writeAccessLists
 {
-  EOGlobalID *accessTeamGid;
   NSNumber   *accessTeamId;
-  BOOL       isPrivate;
   BOOL       hasReadAccess;
   EOGlobalID *gid;
   NSNumber   *ownerId;
@@ -161,13 +159,13 @@ static EONull   *null  = nil;
 
   /* account is not the owner */
 
-  isPrivate     = NO;
   hasReadAccess = NO;
         
   accessTeamId = [row objectForKey:@"accessTeamId"];
   if (![accessTeamId isNotNull]) {
-    accessTeamGid = nil;
+    #if 0 // hh(2024-09-19): unused
     isPrivate = YES;
+    #endif
   }
   else {
     EOGlobalID *accessTeamGid;
@@ -197,23 +195,23 @@ static EONull   *null  = nil;
       cnt = [acl count];
             
       for (j = 0; j < cnt; j++) {
-	NSNumber *staffPid;
-
-	staffPid = [NSNumber numberWithInt:
-			       [[acl objectAtIndex:j] intValue]];
-              
-	wAccessTeamGid = [EOKeyGlobalID globalIDWithEntityName:@"Team"
-					keys:&staffPid keyCount:1
-					zone:NULL];
-
-	if ([loginTeams containsObject:wAccessTeamGid]) {
-	  hasWriteAccess = YES;
-	  break;
-	}
-	else if (loginPid == [staffPid intValue]) {
-	  hasWriteAccess = YES;
-	  break;
-	}
+	      NSNumber *staffPid;
+      
+	      staffPid = [NSNumber numberWithInt:
+			             [[acl objectAtIndex:j] intValue]];
+                    
+	      wAccessTeamGid = [EOKeyGlobalID globalIDWithEntityName:@"Team"
+					      keys:&staffPid keyCount:1
+					      zone:NULL];
+      
+	      if ([loginTeams containsObject:wAccessTeamGid]) {
+	        hasWriteAccess = YES;
+	        break;
+	      }
+	      else if (loginPid == [staffPid intValue]) {
+	        hasWriteAccess = YES;
+	        break;
+	      }
       }
     }
     if (hasWriteAccess) {
@@ -232,7 +230,7 @@ static EONull   *null  = nil;
       id l = [row valueForKey:@"writeAccessList"];
 	    
       if ([l isNotNull])
-	[writeAccessLists setObject:l forKey:gid];
+	      [writeAccessLists setObject:l forKey:gid];
     }
   }
 }

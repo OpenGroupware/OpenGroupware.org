@@ -83,7 +83,6 @@ static NSTimeZone *gmt = nil;
   NSNumber          *objectId = nil;
   EOEntity          *objectEntity;
   EOEntity          *logEntity = nil;
-  EODatabaseChannel *channel   = nil;
   EOAdaptorChannel  *adChannel = nil;
   EOSQLQualifier    *q         = nil;
   NSString          *abbrev;
@@ -96,7 +95,6 @@ static NSTimeZone *gmt = nil;
     : (NSTimeZone *)nil;
   if (tz == nil) tz = gmt;
   
-  channel   = [self databaseChannel];
   adChannel = [[self databaseChannel] adaptorChannel];
   logEntity = [[self databaseModel] entityNamed:@"Log"];
   logAttrs  = [logEntity attributes];

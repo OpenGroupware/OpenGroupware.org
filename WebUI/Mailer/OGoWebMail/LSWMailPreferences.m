@@ -274,11 +274,11 @@ static NSArray *NumberOfUploadFieldsValues = nil;
 }
 
 - (id)save {
-  id uid, ctx;
+  id ctx;
 
   [self setErrorString:nil];
 
-  uid = [[self account] valueForKey:@"companyId"];
+  // unused: uid = [[self account] valueForKey:@"companyId"];
 
   if ((ctx = [self imapContext])) {
     NSString *tmp;

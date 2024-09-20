@@ -498,10 +498,8 @@ static BOOL hideListOnlyAppointments = NO;
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   WOComponent    *co = [_ctx component];
   id             a;
-  NSCalendarDate *wD;
   NSNumber       *owner;
   BOOL           link;
-  BOOL           priv;
   BOOL           sevD  = NO;
   BOOL           noAcc;
   BOOL           shortInfo     = YES;
@@ -534,9 +532,9 @@ static BOOL hideListOnlyAppointments = NO;
   showFull      = [defaults boolForKey:@"scheduler_overview_full_names"];
   showAMPM      = [defaults boolForKey:@"scheduler_AMPM_dates"];
   
-  wD   = [self->weekday          valueInComponent:co];
   link = [self->isClickable      boolValueInComponent:co];
-  priv = [self->isPrivate        boolValueInComponent:co];
+  // unused: wD   = [self->weekday          valueInComponent:co];
+  // unused: priv = [self->isPrivate        boolValueInComponent:co];
   
   noAcc = [[a valueForKey:@"accessTeamId"] isNotNull] ? NO : YES;
   owner = [a valueForKey:@"ownerId"];

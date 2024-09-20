@@ -342,10 +342,8 @@ static NSString *SkyExternalLinkAction = nil;
   NSString    *label, *url, *tip, *target;
   BOOL        hasAction, isEnabled;
   id          tmp;
-  WEClientCapabilities *ccaps;
   
   sComponent = [_ctx component];
-  ccaps      = [[_ctx request] clientCapabilities];
   
   isEnabled = ((tmp = [self->conditions objectForKey:_key]))
     ? [tmp boolValueInComponent:sComponent]
@@ -430,14 +428,12 @@ static NSString *SkyExternalLinkAction = nil;
   pixel:(NSString *)pixel
 {
   WOComponent *sComponent;
-  NSString    *label, *url, *tip, *verb, *target;
+  NSString    *label, *url, *tip, *target;
   BOOL        hasAction, isEnabled;
   id          tmp;
-  WEClientCapabilities *ccaps;
   
-  verb       = _key;
+  // unused: verb = _key;
   sComponent = [_ctx component];
-  ccaps      = [[_ctx request] clientCapabilities];
   
   isEnabled = ((tmp = [self->conditions objectForKey:_key]))
     ? [tmp boolValueInComponent:sComponent]
@@ -606,7 +602,6 @@ static NSString *SkyExternalLinkAction = nil;
 {
   NSUserDefaults *ud;
   BOOL defLeft, hideInactive;
-  BOOL isFirst = YES;
   
   ud           = [[_ctx session] userDefaults];
   defLeft      = [ud boolForKey:@"SkyButtonRowDefaultButtonsLeft"];
@@ -627,7 +622,6 @@ static NSString *SkyExternalLinkAction = nil;
       if ([self->activeButtons containsObject:key]) {
         [self _appendTextButton:key toResponse:_response inContext:_ctx
               hideInactive:hideInactive];
-        isFirst = NO;
       }
     }
   }
@@ -635,14 +629,13 @@ static NSString *SkyExternalLinkAction = nil;
   /* encode each default button */
   {
     NSEnumerator *defOrdering;
-    NSString *key;
+    NSString     *key;
 
     defOrdering = [[ud arrayForKey:@"SkyButtonRowOrdering"] objectEnumerator];
     while ((key = [defOrdering nextObject])) {
       if ([self->activeButtons containsObject:key]) {
         [self _appendTextButton:key toResponse:_response inContext:_ctx
               hideInactive:hideInactive];
-        isFirst = NO;
       }
     }
   }
@@ -662,7 +655,6 @@ static NSString *SkyExternalLinkAction = nil;
       if ([self->activeButtons containsObject:key]) {
         [self _appendTextButton:key toResponse:_response inContext:_ctx
               hideInactive:hideInactive];
-        isFirst = NO;
       }
     }
   }

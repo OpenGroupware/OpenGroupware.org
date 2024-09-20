@@ -253,17 +253,14 @@ static NSArray  *startDateOrderings = nil;
 - (BOOL)_checkPermissionsInContext:(id)_context {
   EOKeyGlobalID *gid;
   NSNumber      *aid;
-  NSString      *t;
   NSString      *permissions;
   
   gid = [[self object] valueForKey:@"globalID"];
-  t   = [[self object] valueForKey:@"title"];
-    
+      
   if (gid == nil) {
     aid = [self valueForKey:@"dateId"];
     gid = [EOKeyGlobalID globalIDWithEntityName:@"Date" 
                          keys:&aid keyCount:1 zone:NULL];
-    t   = [self valueForKey:@"title"];
   }    
   permissions = LSRunCommandV(_context, @"appointment", @"access",
                               @"gid", gid, nil);

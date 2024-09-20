@@ -820,4 +820,5 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
   }
   return nil;
 }
+
 @end /* SxAptManager */

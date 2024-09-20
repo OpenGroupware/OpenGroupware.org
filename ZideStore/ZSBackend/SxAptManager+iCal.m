@@ -369,9 +369,7 @@ static BOOL catchExceptions = YES;
   NSMutableDictionary *sourceVEvents;  // events with another uid
   NSMutableArray      *unknownVEvents; // events with no uid
   NSMutableArray      *oldGIDList;
-  LSCommandContext    *ctx;
   unsigned            i, cnt;
-  NSString            *neededEntityName;
 
   if (skyrixId == nil) {
     skyrixId = [[NSUserDefaults standardUserDefaults]
@@ -388,12 +386,12 @@ static BOOL catchExceptions = YES;
     oldGIDList = [[gids mutableCopy] autorelease];
   }
   
-  ctx    = [self commandContext];
+  [self commandContext]; // hh(2024-09-20): may have side effects
   cnt    = [_events count];
   [self logWithFormat:@"putting %d events", cnt];
   if (!cnt) return nil;
 
-  neededEntityName = @"Date";
+  // unused: neededEntityName = @"Date";
   skyVEvents     = [NSMutableDictionary dictionaryWithCapacity:cnt];
   sourceVEvents  = [NSMutableDictionary dictionaryWithCapacity:cnt];
   unknownVEvents = [NSMutableArray arrayWithCapacity:cnt];

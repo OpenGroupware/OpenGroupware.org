@@ -73,11 +73,10 @@
 // command methods
 
 - (BOOL)_newEntry:(id)_object changedSinceEntry:(id)_oldEntry {
-  NSNumber *pkey;
   NSString *role, *status, *comment;
   NSNumber *rsvp;
 
-  pkey  = [_object valueForKey:@"companyId"];
+  // unused: pkey  = [_object valueForKey:@"companyId"];
   role  = [_object valueForKey:@"role"];
   rsvp  = [_object valueForKey:@"rsvp"];
   status = [_object valueForKey:@"partStatus"];
@@ -377,11 +376,10 @@
 
 - (void)_checkOwnerInContext:(id)_context {
   id       ac, acId;
-  NSString *login;
 
   // checks owner of appointment
   ac    = [_context valueForKey:LSAccountKey];
-  login = [ac valueForKey:@"login"];
+  // unused: login = [ac valueForKey:@"login"];
   acId  = [ac valueForKey:@"companyId"];
   
   if (![self isRootPKey:acId inContext:_context]) {

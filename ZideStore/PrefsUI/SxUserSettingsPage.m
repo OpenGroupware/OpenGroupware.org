@@ -143,11 +143,9 @@
                        nil] objectAtIndex:0];
 
       if (person != nil) {
-        id result;
-
         [person takeValue:mail forKey:@"email1"];
         
-        result = [cmdctx runCommand:@"person::set"
+        /*unused:result = */[cmdctx runCommand:@"person::set"
                          arguments:person];
         [cmdctx commit];
       }
@@ -201,9 +199,7 @@
   }
 
   if (update) {
-    id result;
-
-    result = [cmdctx runCommand:@"account::change-password",
+    /*result =*/ [cmdctx runCommand:@"account::change-password",
                      @"object", [self account],
                      @"newPassword", newPwd,
                      nil];

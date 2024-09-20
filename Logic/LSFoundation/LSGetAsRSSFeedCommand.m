@@ -30,8 +30,6 @@
 
 @implementation LSGetAsRSSFeedCommand
 
-static BOOL       debugOn      = NO; 
-
 + (void)initialize {
 }
 

@@ -381,19 +381,20 @@ static NSNumber *noNum  = nil;
   NSMutableDictionary *dict;
   NSEnumerator        *enumerator;
   id                  k;
-  NSString            *ns;
 
   if (![self isValid])
     return nil;
 
-  if (!_ns)
+  if (_ns == nil)
     return nil;
   
   if ([_ns isEqualToString:
              [self->fileManager defaultProjectDocumentNamespace]])
     return [self attributes];
   
-  ns         = [NSString stringWithFormat:@"{%@}", _ns];
+  #if 0 // hh(2024-09-19): unused
+  NSString *ns = [NSString stringWithFormat:@"{%@}", _ns];
+  #endif
   dict       = [NSMutableDictionary dictionaryWithCapacity:64];
   enumerator = [[[self extendedAttributes] allKeys] objectEnumerator];
   

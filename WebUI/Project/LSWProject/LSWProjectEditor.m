@@ -1184,14 +1184,13 @@ static NSString *defaultStorageBackend = nil;
 }
 
 - (id)search {
-  id result = nil;
   [self->allAccess release]; self->allAccess = nil;
   [self->resultList removeAllObjects];
   
   if (self->accountSearchText!=nil && [self->accountSearchText length] > 0)
-    result = [self _primarySearchAccounts:self->accountSearchText];
+    /*unused: result =*/ [self _primarySearchAccounts:self->accountSearchText];
   else if (self->searchTeam != nil)
-    result = [self _primarySearchTeam:self->searchTeam];
+    /*unused: result =*/ [self _primarySearchTeam:self->searchTeam];
   
   [self removeDuplicateAccountListEntries];
 

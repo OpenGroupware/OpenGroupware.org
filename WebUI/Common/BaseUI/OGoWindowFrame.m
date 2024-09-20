@@ -369,8 +369,6 @@ static NSNumber *num0 = nil, *num1 = nil;
 }
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
-  WOComponent *c;
-  id          cfg;
   BOOL        winScroller;
   unsigned    windowNesting;
 
@@ -385,8 +383,10 @@ static NSNumber *num0 = nil, *num1 = nil;
   else {
     winScroller = NO;
     
+    #if 0 // hh(2024-09-20): unused
     c    = [_ctx component];
     cfg  = [c config]; /* config of current component */
+    #endif
     
     if (windowNesting > 1) {
       [_response appendContentString:

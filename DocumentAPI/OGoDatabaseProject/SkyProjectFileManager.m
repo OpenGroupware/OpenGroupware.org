@@ -671,7 +671,6 @@ static inline NSNumber *boolNum(BOOL value) {
     }
   }
   if (![self movePaths:_paths toPath:trash handler:self]) {
-    NSMutableArray *files;
     NSEnumerator   *enumerator;
     NSString       *str;
 
@@ -682,9 +681,7 @@ static inline NSNumber *boolNum(BOOL value) {
 
     [self->errorUserInfo setObject:[NSMutableArray array]
          forKey:SkyProjectFM_MoveFailedAtPaths];
-
-    files = [NSMutableArray arrayWithCapacity:[_paths count]];
-    
+             
     while ((str = [enumerator nextObject])) {
       NSString *s = nil;
       
@@ -1041,7 +1038,6 @@ static inline NSNumber *boolNum(BOOL value) {
 
 - (BOOL)createFiles:(NSDictionary *)_dict atPath:(NSString *)_path {
   // TODO: split up method */
-  BOOL         isDir;
   NSNumber     *parentID, *ownerId;
   NSDictionary *parentAttrs;
   int          ec;
@@ -1052,7 +1048,6 @@ static inline NSNumber *boolNum(BOOL value) {
     return [self _buildErrorWithSource:_path dest:nil msg:20 handler:nil
                  cmd:_cmd];
 
-  isDir       = NO;
   parentAttrs = [self fileAttributesAtPath:_path traverseLink:NO];
   
   if (parentAttrs == nil) {
@@ -1239,7 +1234,6 @@ static inline NSNumber *boolNum(BOOL value) {
   
   NS_DURING {
     NSString *abstract;
-    NSNumber *fileSize;
 
     ec = 0;
     
@@ -1249,8 +1243,10 @@ static inline NSNumber *boolNum(BOOL value) {
           abstract = (id)[NSNull null];
     }
     
-    fileSize = [NSNumber numberWithInt:
+    #if 0 // hh(2024-09-19): unused
+    NSNumber *fileSize = [NSNumber numberWithInt:
                            (int)((_contents) ? [_contents length] : 0)];
+    #endif
 
     // TODO: this did not set checkaccess to no!
     doc = [self _newFileDocAtPath:_path withName:name abstract:abstract

@@ -825,21 +825,17 @@ lookupCommand(LSCommandContext *self, NSString *_domain, NSString *_command,
 }
 
 static id runCommand(LSCommandContext *self, id<LSCommand> _command) {
+  // hh(2024-09-19): This was asking for requiresChannel, but not actually
+  //                 using the result.
   volatile id result = nil;
   BOOL needsTx  = YES;
-  BOOL needsCh  = YES;
   BOOL openedTx = NO;
 
   static int profileDeep = 0;
 
-        
-  
-  needsCh = [_command requiresChannel];
-
   if (self->txStartTime == nil) {
     needsTx = [_command requiresTransaction];
-    needsCh = YES;
-
+    
     if (needsTx) {
       if (![self _beginTransaction]) {
         [self debugWithFormat:@"couldn't begin transaction"];

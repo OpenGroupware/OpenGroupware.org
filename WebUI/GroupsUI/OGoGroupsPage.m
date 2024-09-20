@@ -196,7 +196,7 @@ static NSString *OGoTeamCreatorRoleName = nil;
 - (void)_fetchMyTeams {
   LSCommandContext *cmdctx;
   NSArray *ownerGIDs;
-  NSArray *gids, *teams, *members;
+  NSArray *gids, *teams;
 
   [self resetList:nil];
   
@@ -227,7 +227,8 @@ static NSString *OGoTeamCreatorRoleName = nil;
   
   /* fetch members */
   
-  members = [cmdctx runCommand:@"team::members",
+  // hh(2024-09-19): result unused, but may have side effects
+  /*NSArray *members =*/ [cmdctx runCommand:@"team::members",
                     @"teams",      self->groupList,
                     @"returnType", intObj(LSDBReturnType_ManyObjects), 
                     nil];

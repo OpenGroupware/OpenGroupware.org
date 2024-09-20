@@ -376,9 +376,7 @@ static NSNull *null = nil;
   NSDictionary        *attr   = nil;
   NSDictionary        *attr2  = nil;
   NSMutableDictionary *result = nil;
-  NSDate              *st;
 
-  st    = [NSDate date];
   p     = [self->rootPath stringByAppendingString:
                [self->cdp stringByAppendingPathComponent2:_path]];
   lp    = [p lastPathComponent];
@@ -440,11 +438,8 @@ static NSNull *null = nil;
   NSString     *p  = nil;
   NSEnumerator *enumer = nil;
   NSString     *s;
-  NSDate       *st;
   NSAutoreleasePool *pool;
   
-  st = [NSDate date];
-
   _path = [self _makeAbsolutePath:_path];
   
   if (self->pathToDirList) {

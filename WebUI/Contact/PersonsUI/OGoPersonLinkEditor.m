@@ -128,7 +128,6 @@
 /* actions */
 
 - (id)save {
-  OGoObjectLinkManager *linkManager;
   LSCommandContext *cmdctx;
   NSEnumerator     *e;
   id obj;
@@ -137,8 +136,7 @@
     /* nothing selected */
     return [[self navigation] leavePage];
   
-  cmdctx      = [[self session] commandContext];
-  linkManager = [cmdctx linkManager];
+  cmdctx = [[self session] commandContext];
 
   /* walk over each record and create a link ... */
   

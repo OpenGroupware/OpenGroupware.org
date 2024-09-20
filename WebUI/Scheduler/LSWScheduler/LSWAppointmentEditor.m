@@ -397,7 +397,6 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   type:(NGMimeType *)_type
   configuration:(NSDictionary *)_cmdCfg
 {
-  NSArray *ps;
   id      appointment;
   
   if (![self _checkEditActivationPreconditions])
@@ -406,7 +405,6 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   appointment = [self object];
 
   [self _setupParticipantsForAppointment:appointment];
-  ps = nil;
   
   /* get comment */
   self->comment = [[self _getCommentOfAppointment:appointment] copy];
@@ -1968,10 +1966,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   NSArray *ps;
   id      obj;
   id      mailEditor;
-  id      page, l;
+  id      page;
   
-  l    = [self labels];
-  page = [self saveAndGoBackWithCount:1
+    page = [self saveAndGoBackWithCount:1
                action:([self isInNewMode] ? @"created" : @"edited")];
   
   /* if the save resulted in a conflict, we enter the conflict page */

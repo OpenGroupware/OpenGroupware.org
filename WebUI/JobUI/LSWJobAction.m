@@ -183,12 +183,9 @@ static NGMimeType *eoJobType = nil;
 - (id)_sendMessageToExecutant {
   NSString     *subject = nil;
   id           res;
-  id           creator;
   id<LSWMailEditorComponent, OGoContentPage> editor = nil;
-  id l;
   
-  l = [self labels];
-  creator = [self jobCreatorEO];
+  /* unused: creator =*/ [self jobCreatorEO];
   
   editor  = (id)[self pageWithName:@"LSWImapMailEditor"];
   [self enterPage:editor];
@@ -206,9 +203,6 @@ static NGMimeType *eoJobType = nil;
   id<LSWMailEditorComponent, OGoContentPage> editor = nil;
   NSString *subject = nil;
   id       res;
-  id       l;
-
-  l = [self labels];
 
   editor  = (id)[self pageWithName:@"LSWImapMailEditor"];
   [self enterPage:editor];

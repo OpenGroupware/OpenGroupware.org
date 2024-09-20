@@ -285,10 +285,9 @@ static NSArray* months = nil; /* label keys */
        Note: this makes the "new year" and "new month" as visible in the 
              weekview appear in the tabs, not the month/year of the day itself.
     */
-    NSCalendarDate *ws;
     
     // Note: uses a different week start for calc and set?
-    ws = [self weekStart];
+    // unused: ws = [self weekStart];
     [self setWeekStart:[self->day mondayOfWeek]]; /* set new weekstart */
 #if ENABLE_OGO_BUG_1132
     [self setMonth:[self->day bestMonthForWeekView:ws]];

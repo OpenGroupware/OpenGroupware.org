@@ -423,8 +423,7 @@ static BOOL debugOn = NO;
   id                  person;
   id                  tmp;
   NSMutableDictionary *map;
-  BOOL                createNewEntriesForUnknownParticipants;
-
+  
   if (![_persons isNotEmpty])
     return [NSArray array];
   
@@ -436,8 +435,6 @@ static BOOL debugOn = NO;
   cmdctx = [self commandContextInContext:_ctx];
   cm     = [SxContactManager managerWithContext:cmdctx];
   map    = [NSMutableDictionary dictionaryWithCapacity:[_persons count]];
-
-  createNewEntriesForUnknownParticipants = YES;
 
   emails  = [NSMutableArray arrayWithCapacity:[_persons count]];
   persons = [NSMutableArray arrayWithCapacity:8];

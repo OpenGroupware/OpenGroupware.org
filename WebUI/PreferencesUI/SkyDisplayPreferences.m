@@ -740,11 +740,9 @@ static NSNumber *NoNumber  = nil;
 }
 
 - (id)save {
-  NSNumber *uid;
-  BOOL     reloadDock;
+  BOOL reloadDock;
   
   reloadDock = NO;
-  uid        = [self accountId];
   
   if ([self isDockablePagesEditable]) {
     NSMutableArray *array;

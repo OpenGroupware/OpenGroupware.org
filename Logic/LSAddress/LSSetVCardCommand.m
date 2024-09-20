@@ -514,7 +514,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   inContext:(id)_c
 {
   NSMutableDictionary *cs;
-  id n, org, tmp;
+  id org, tmp;
   
   self->changeset = [[NSMutableDictionary alloc] initWithCapacity:48];
   [self->changeset setObject:yesNum forKey:@"isEnterprise"];
@@ -528,7 +528,9 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   
   /* name handling */
   
+  #if 0 // hh(2024-09-19): unused
   n   = [_vc valueForKey:@"n"]; // NGVCardName
+  #endif
   org = [_vc valueForKey:@"org"]; // NGVCardOrg
   if ([(tmp = [org valueForKey:@"orgnam"]) isNotNull])
     [self mapValue:tmp to:@"description"];

@@ -156,8 +156,7 @@
 
 - (int)run:(NSArray *)_args onContext:(LSCommandContext *)_ctx {
   NSArray  *records;
-  unsigned i, count;
-  
+    
   /* clean up arguments */
   
   if ([_args count] < 2) {

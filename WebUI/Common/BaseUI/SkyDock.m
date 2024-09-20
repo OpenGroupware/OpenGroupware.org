@@ -542,10 +542,6 @@ struct DockInfo {
 /* generate response */
 
 - (void)_appendGfxToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx {
-  BOOL hasLinks;
-  
-  hasLinks = [self disableLinks] ? NO : YES;
-  
   [_r appendContentString:
         @"<table cellpadding=\"0\" cellspacing=\"0\" "
         @"border=\"0\" width=\"100%\">"

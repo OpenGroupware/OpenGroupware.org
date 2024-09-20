@@ -406,10 +406,6 @@ static NSNumber *yes = nil, *no = nil;
 }
 
 - (id)save {
-  id uid;
-
-  uid = [[self account] valueForKey:@"companyId"];
-  
   if ([self isClipboardFormatEditable]) {
     id tmp = [[[self clipboardFormat] componentsSeparatedByString:@"\r\n"]
                      componentsJoinedByString:@"\n"];

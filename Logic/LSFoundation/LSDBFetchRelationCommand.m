@@ -150,9 +150,7 @@ static int RelMaxSearchCount = 0;
   EODatabaseChannel   *channel;
   NSArray             *allIds;
   int                 allIdsCount;
-  NSTimeInterval      st;
 
-  st          = [[NSDate date] timeIntervalSince1970];
   z           = [self zone];
   channel     = [self databaseChannel];
   allIds      = [self _ids];
@@ -269,7 +267,7 @@ static int RelMaxSearchCount = 0;
       pKey = [obj valueForKey:srcKey];
       
       for (j = 0, cnt2 = [rels count]; j < cnt2; j++) {
-	NSNumber *fKey;
+	      NSNumber *fKey;
         id       relObj;
         
         relObj = [rels objectAtIndex:j];

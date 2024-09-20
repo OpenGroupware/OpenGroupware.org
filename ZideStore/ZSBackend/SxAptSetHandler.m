@@ -316,21 +316,22 @@ static BOOL debugOn = NO;
   for (i = 0; i < count; i++) {
     NSDictionary *info;
     id pkeyNum;
-    int pkey, version;
     
     info    = [keys objectAtIndex:i];
     pkeyNum = [info objectForKey:@"dateId"];
+    #if 0 // hh(2024-09-20): unused
     pkey    = [pkeyNum intValue];
     version = [[info objectForKey:@"objectVersion"] intValue];
+    #endif
     
-      EOKeyGlobalID *gid;
-      
-      if (gidMiss == nil)
-        gidMiss = [[NSMutableArray alloc] initWithCapacity:count];
-      gid = [EOKeyGlobalID globalIDWithEntityName:@"Date"
-                           keys:&pkeyNum keyCount:1
-                           zone:NULL];
-      [gidMiss addObject:gid];
+    EOKeyGlobalID *gid;
+    
+    if (gidMiss == nil)
+      gidMiss = [[NSMutableArray alloc] initWithCapacity:count];
+    gid = [EOKeyGlobalID globalIDWithEntityName:@"Date"
+                         keys:&pkeyNum keyCount:1
+                         zone:NULL];
+    [gidMiss addObject:gid];
   }
   
   if (gidMiss == nil) {

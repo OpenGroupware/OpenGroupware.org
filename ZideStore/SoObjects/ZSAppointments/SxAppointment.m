@@ -838,17 +838,18 @@ static BOOL embedViewURL             = NO;
   WOResponse  *r;
   WORequest   *rq;
   id          obj;
-  NSTimeZone  *tz;
   id          cmdctx; 
-  NSString    *tzName, *etag;
+  NSString    *etag;
 
   if ((error = [self matchesRequestConditionInContext:_ctx]) != nil)
     return error;
 
   cmdctx = [self commandContextInContext:_ctx];
+  #if 0 // hh(2024-09-20): unused
   tzName = [[cmdctx userDefaults] stringForKey:@"timezone"];
   tz     = [tzName isNotEmpty]
     ? (id)[NSTimeZone timeZoneWithAbbreviation:tzName] : nil;
+  #endif
   
   if ((obj = [self objectInContext:_ctx]) == nil) {
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */

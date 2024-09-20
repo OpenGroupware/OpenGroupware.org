@@ -161,7 +161,6 @@ static NSString *OGoDateTimeTZFormat     = nil;
 
 - (void)initDateFormatters {
   BOOL   showAMPMDates;
-  NSZone *z;
   
   [self->formatDate       release];
   [self->formatTime       release];
@@ -169,7 +168,6 @@ static NSString *OGoDateTimeTZFormat     = nil;
   [self->formatDateTimeTZ release];
   
   showAMPMDates = [self->userDefaults boolForKey:@"scheduler_AMPM_dates"];
-  z             = [self zone];
   
   self->formatDate = [self _createDateFormatter:OGoDateFormat];
   if (showAMPMDates) {

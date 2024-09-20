@@ -224,7 +224,6 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
 - (id<WOActionResults>)_downloadInline:(BOOL)_inline {
   WOSession      *sn;
   NSURL          *url;
-  NGImap4Context *imapCtx;
   NGImap4Folder  *folder;
   NSData         *data;
   WORequest      *req;
@@ -285,7 +284,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
     NSString *partName;
     int msguid;
     
-    imapCtx = [self imapContext];
+    /*unused:imapCtx =*/[self imapContext]; // may have side effects
     url     = [self urlAsNSURL];
     path    = [url path];
     

@@ -139,11 +139,11 @@
 /* primary keys */
 
 - (NSArray *)globalIDsForObjects:(NSArray *)_objects {
-  EODatabaseContext *dbCtx;
   unsigned oc;
   NSArray *array;
-  
-  dbCtx = [self->context valueForKey:LSDatabaseContextKey];
+
+  // hh(2024-09-19): unused, but maybe the query has a side effect?
+  /*EODatabaseContext *dbCtx=*/[self->context valueForKey:LSDatabaseContextKey];
   
   array = nil;
   if ((oc = [_objects count]) > 0) {

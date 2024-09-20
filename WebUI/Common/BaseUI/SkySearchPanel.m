@@ -38,11 +38,10 @@
 - (id)init {
   if ((self = [super init])) {
     NGBundleManager *bm;
-    WOSession       *sn;
     NSArray         *tmp;
     
     bm = [NGBundleManager defaultBundleManager];
-    sn = [self session];
+    [self session]; // hh(2024-09-20): create session if not available?
 
     /* query bundle manager for all available dockables */
 

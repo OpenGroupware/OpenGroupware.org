@@ -582,12 +582,11 @@ static Class      StrClass        = nil;
   }
   if (ctx != nil) {
     NGImap4Client *client;
-    NSDictionary  *res;
 
     [ctx resetLastException];
 
     client = [ctx client];
-    res    = [client noop];
+    /*res=*/ [client noop];
     
     if ([ctx lastException] != nil) {
       [[self imapCtxHandler] resetImapContextWithSession:[self session]];
@@ -681,7 +680,6 @@ static Class      StrClass        = nil;
 /* wrapping */
 
 - (void)wrapMailText {
-  NSUserDefaults *ud;
   NSString *contentStr;
   
   if (![self->mailText isNotNull]) {
@@ -689,7 +687,6 @@ static Class      StrClass        = nil;
     return;
   }
   
-  ud = [self userDefaults];
   if (![self shouldWrapOutgoingMails])
     return;
   
@@ -2145,10 +2142,7 @@ static Class      StrClass        = nil;
 }
 
 - (NSString *)_checkOther:(NGMimeBodyPart *)_part {
-  NSString   *result;
   NGMimeType *mt;
-
-  result = nil;
   
   if ((mt = [_part contentType]) == nil)
     return nil;
@@ -2833,11 +2827,9 @@ static Class      StrClass        = nil;
 - (NSString *)_strForHeader:(NSString *)_header {
   /* called by: prevToSelections, prevBccSelections, prevCcSelections */
   NSEnumerator   *enumerator;
-  NSMutableArray *array;
   NSString       *result;
   NSDictionary   *obj;
   
-  array  = [NSMutableArray array];
   result = nil;
   
   enumerator = [self->addresses objectEnumerator];
@@ -2883,17 +2875,13 @@ static Class      StrClass        = nil;
   return dict;
 }
 - (void)_setStr:(NSString *)_mail forHeader:(NSString *)_header {
-  NSEnumerator   *enumerator;
-  NSMutableArray *array;
-  NSString       *result;
-  NSDictionary   *obj;
+  NSEnumerator *enumerator;
+  NSDictionary *obj;
 
   if ([_mail length] == 0)
     return;
   
   enumerator = [self->addresses objectEnumerator];
-  array      = [NSMutableArray array];
-  result     = nil;
   while ((obj = [enumerator nextObject]) != nil) {
     if ([[obj objectForKey:@"header"] isEqualToString:_header])
       break;
@@ -2965,14 +2953,9 @@ static Class      StrClass        = nil;
 
 - (id)doLogin {
   // TODO: move somewhere else
-  NSUserDefaults *defs;
-  OGoSession     *sn;
-  id             ctx;
-  NSString       *errorStr;
-  
-  sn       = [self session];    
-  defs     = [sn userDefaults];
-  errorStr = nil;
+  [self session]; // hh(2024-09-20): create session
+  id       ctx;
+  NSString *errorStr = nil;
 
   [[self imapCtxHandler] resetImapContextWithSession:[self session]];
 
