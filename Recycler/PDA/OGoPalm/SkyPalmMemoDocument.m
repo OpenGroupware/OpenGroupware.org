@@ -69,7 +69,7 @@
 
 - (NSString *)description {
   NSString *info = [NSString stringWithString:self->memo];
-  int idx = 0;
+  NSUInteger idx = 0;
 
   if (info == nil)
     return @"no_title";

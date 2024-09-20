@@ -490,7 +490,7 @@ static BOOL logPathOps       = NO;
   id<NSObject,SkyDocumentFileManager> fm = nil;
   NSString *p, *n;
   NSArray  *dir;
-  unsigned idx, count;
+  NSUInteger idx, count;
   
   p = [self pubPath];
   

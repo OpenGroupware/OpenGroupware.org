@@ -446,7 +446,7 @@ static EONull *null = nil;
 }
 
 - (NSException *)validateCategory:(NSString *)_category {
-  int idx;
+  NSUInteger idx;
   
   if ((idx = [self->db indexOfCategory:_category]) == NSNotFound) {
     NSString     *r;

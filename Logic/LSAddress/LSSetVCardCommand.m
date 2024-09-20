@@ -585,7 +585,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
       home,fax,pref
     The first type-key must always be present, the second is optional.
   */
-  int idx, secidx, prefidx, count;
+  NSUInteger idx, secidx, prefidx, count;
   
   if ((count = [_types count]) == 0) return NO;
   if (count > 3) return NO;

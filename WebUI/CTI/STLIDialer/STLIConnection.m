@@ -246,9 +246,9 @@ NSString *STLIExceptioName = @"STLIExceptioName";
 
 - (void)_queueEventLine:(NSString *)_line {
   NSNotification *stliEvent;
-  NSString  *eventName;
-  NSString  *devInfo;
-  unsigned  idx;
+  NSString   *eventName;
+  NSString   *devInfo;
+  NSUInteger idx;
 
   if ([_line length] == 0) return;
   

@@ -82,9 +82,9 @@
   return types;
 }
 
-- (int)selectPartIndexFromTypes:(NSArray *)_types {
+- (NSUInteger)selectPartIndexFromTypes:(NSArray *)_types {
   /* returns the index of the selected part or NSNotFound */
-  unsigned i, count;
+  NSUInteger i, count;
 
   if ((count = [_types count]) == 0)
     return NSNotFound;
@@ -104,7 +104,7 @@
 }
 
 - (void)selectChildInfo {
-  unsigned idx;
+  NSUInteger idx;
   
   [self->childInfo release]; self->childInfo = nil;
   self->childIndex = 0;

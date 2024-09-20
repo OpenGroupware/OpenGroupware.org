@@ -135,7 +135,7 @@ void __registerVolatileLoginDomain_LSLogic_LSAddress(id self, id _context,
   searchList = [[_defaults searchList] mutableCopyWithZone:NULL];
   NSCAssert(searchList, @"missing search list !");
   {
-    NSInteger idx;
+    NSUInteger idx;
     
     if ((idx = [searchList indexOfObject:domainName]) == NSNotFound) {
       [searchList insertObject:domainName atIndex:0];
@@ -146,7 +146,7 @@ void __registerVolatileLoginDomain_LSLogic_LSAddress(id self, id _context,
     }
   }
   {
-    int idx;
+    NSUInteger idx;
 
     argDomain = [_defaults volatileDomainForName:argDomainName];
     

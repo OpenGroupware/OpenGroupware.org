@@ -241,8 +241,8 @@ static BOOL catchExceptions = YES;
   LSCommandContext *ctx;
   NSArray *gids;
   NSArray *apts;
-  unsigned i, cnt;
-  unsigned idx;
+  NSUInteger i, cnt;
+  NSUInteger idx;
   id apt, gid, event;
 
   ctx  = [self commandContext];
