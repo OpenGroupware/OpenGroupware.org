@@ -110,15 +110,23 @@
 /* actions */
 
 - (BOOL)checkFileName {
-  NSRange r;
-  int     p2, i, p;
+  NSRange    r;
+  NSUInteger p2, i, p;
+  NSUInteger length = [self->newFileName length];
   
   r = [self->newFileName rangeOfString:@"."];
   p = (r.length == 0) ? NSNotFound : r.location;
   
   for (i = p; i != NSNotFound; i = p2) {
-#warning TODO: replace with -rangeOfString:
-    p2 = [self->newFileName indexOfString:@"." fromIndex:i+1];
+    #if 1 // hh(2024-09-19): untested implementation
+      NSUInteger nextIdx = i + 1;
+      NSRange sr = [self->newFileName rangeOfString:@"." options:NSLiteralSearch 
+                     range:NSMakeRange(nextIdx, length - nextIdx)];
+      p2 = sr.location;
+    #else
+      #warning TODO: replace with -rangeOfString:
+      p2 = [self->newFileName indexOfString:@"." fromIndex:i+1];
+    #endif
     if (p2 != NSNotFound)
       p = p2;
   }
