@@ -5,4 +5,5 @@ obj
 *.ds
 config.make
 Database/OGoModel/OGo.model/
+.nova
 
