@@ -24,9 +24,9 @@
 
 @implementation NSArray(QualifierArray)
 
-- (int)indexOfKeyValueQualifierForKey:(NSString *)_key {
+- (NSUInteger)indexOfKeyValueQualifierForKey:(NSString *)_key {
   // flat lookup of a key-value qualifier
-  unsigned i, count;
+  NSUInteger i, count;
   
   if ((count = [self count]) == 0)
     return NSNotFound;
@@ -44,9 +44,9 @@
   return NSNotFound;
 }
 
-- (int)indexOfQualifierOfClass:(Class)_clazz {
+- (NSUInteger)indexOfQualifierOfClass:(Class)_clazz {
   // flat lookup of a key-value qualifier
-  unsigned i, count;
+  NSUInteger i, count;
   
   if ((count = [self count]) == 0)
     return NSNotFound;
@@ -62,9 +62,9 @@
   return NSNotFound;
 }
 
-- (int)indexOfAndOrQualifier {
+- (NSUInteger)indexOfAndOrQualifier {
   // flat lookup of a key-value qualifier
-  unsigned i, count;
+  NSUInteger i, count;
   
   if ((count = [self count]) == 0)
     return NSNotFound;

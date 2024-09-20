@@ -30,13 +30,13 @@
 @interface NSArray(QualifierArray)
 
 // flat lookup of a key-value qualifier
-- (int)indexOfKeyValueQualifierForKey:(NSString *)_key;
+- (NSUInteger)indexOfKeyValueQualifierForKey:(NSString *)_key;
 
 // lookup the next qualifier matching the class
-- (int)indexOfQualifierOfClass:(Class)_clazz;
+- (NSUInteger)indexOfQualifierOfClass:(Class)_clazz;
 
 // lookup the next AND or OR qualifier
-- (int)indexOfAndOrQualifier;
+- (NSUInteger)indexOfAndOrQualifier;
 
 // gives back a dict of all keys mapped to a single value
 // eg "(a like 'a' and b like 'a' and c like 'c') "
