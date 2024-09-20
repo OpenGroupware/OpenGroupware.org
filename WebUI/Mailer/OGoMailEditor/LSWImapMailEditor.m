@@ -284,18 +284,22 @@ static Class      StrClass        = nil;
 }
 
 - (NSArray *)_extSearch:(NSString *)_entity matchingRecord:(id)_rec {
+  // TBD:hh(2024-09-19): This was unset, I assume the entity argument is the
+  //                     necessary value (person or enterprise).
   NSString *scmd;
   if (_rec == nil) return nil;
-  [scmd stringByAppendingString:@"::extended-search"]; // person or enterprise
+  scmd = [_entity stringByAppendingString:@"::extended-search"]; // person or enterprise
   return [self runCommandInTransaction:scmd,
 	         @"searchRecords", [NSArray arrayWithObjects:_rec, nil],
 	         @"operator", @"OR",
 	       nil];
 }
 - (NSArray *)_extSearch:(NSString *)_ent matchingAllRecords:(NSArray *)_recs {
+  // TBD:hh(2024-09-19): This was unset, I assume the entity argument is the
+  //                     necessary value (person or enterprise).
   NSString *scmd;
   if (_recs == nil) return nil;
-  [scmd stringByAppendingString:@"::extended-search"]; // person or enterprise
+  scmd = [_ent stringByAppendingString:@"::extended-search"]; // person or enterprise
   return [self runCommandInTransaction:scmd, 
 	         @"searchRecords", _recs,
 	         @"operator", @"AND",
