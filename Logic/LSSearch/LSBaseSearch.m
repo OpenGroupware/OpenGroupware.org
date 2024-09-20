@@ -56,7 +56,7 @@
    *
    */
   if ([val rangeOfString:@"'"].length > 0) {
-#if LIB_FOUNDATION_LIBRARY
+#if LIB_FOUNDATION_LIBRARY || GNUSTEP_BASE_LIBRARY
     val = [val stringByReplacingString:@"'" withString:@""];
 #else
 #  warning FIXME: incorrect implementation for this Foundation library!
@@ -279,7 +279,7 @@
 
   [_format appendString:@" "];
 
-#if LIB_FOUNDATION_LIBRARY
+#if LIB_FOUNDATION_LIBRARY || GNUSTEP_BASE_LIBRARY
   if ([val rangeOfString:@"*"].length > 0)
     val = [val stringByReplacingString:@"*" withString:@"%%"];
 #else

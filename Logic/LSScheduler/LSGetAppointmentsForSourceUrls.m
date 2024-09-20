@@ -102,7 +102,7 @@
         continue;
       }
       
-#if LIB_FOUNDATION_LIBRARY
+#if LIB_FOUNDATION_LIBRARY || GNUSTEP_BASE_LIBRARY
       if ([s rangeOfString:@"'"].length > 0)
         // TODO: improve that
         s = [s stringByReplacingString:@"'" withString:@"\\'"];
