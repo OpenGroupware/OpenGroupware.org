@@ -21,6 +21,7 @@
 */
 
 #include "OGoAptMailOpener.h"
+#include <LSFoundation/LSCommandContext.h>
 #include <OGoFoundation/LSWMailEditorComponent.h>
 #include "common.h"
 

@@ -412,7 +412,7 @@ static int  DefMaxSearchCount             = 10;
     l = [[NSString alloc] initWithFormat:
                     [[self labels] valueForKey:@"MailingListAddr"],
                     [obj objectForKey:@"name"],
-                    [[obj objectForKey:@"emails"] count]];
+                    [(NSArray *)[obj objectForKey:@"emails"] count]];
                               
     [emails addObject:[self recordForEmail:s label:l]];
     [s release]; [l release];

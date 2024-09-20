@@ -59,7 +59,7 @@
   if (month == 0)
     month = [[NSCalendarDate calendarDate] monthOfYear];
   if (weekNo == 0)
-    weekNo = [[NSCalendarDate calendarDate] weekOfYear];
+    weekNo = [(NSCalendarDate*)[NSCalendarDate calendarDate] weekOfYear];
     
   date = [NSCalendarDate mondayOfWeek:weekNo inYear:year timeZone:tz];
   

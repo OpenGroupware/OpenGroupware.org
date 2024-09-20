@@ -22,6 +22,7 @@
 
 #include "SxAppointment.h"
 #include "common.h"
+#include <NGExtensions/NSString+Ext.h> // stringByTrimming..
 #include <ZSBackend/SxContactManager.h>
 #include <ZSBackend/SxAptManager.h>
 
