@@ -229,7 +229,7 @@ static NSComparisonResult compareTeams(id team1, id team2, void *context) {
     if (([login intValue] != 10000) && ([login intValue] != 9999))
       [ac addObject:account];
     
-    if (![login intValue] == 10000)
+    if ([login intValue] != 10000)
       [aac addObject:account];
   }
 
