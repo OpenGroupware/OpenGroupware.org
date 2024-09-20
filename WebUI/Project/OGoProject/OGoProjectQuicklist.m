@@ -88,7 +88,7 @@
   return self->dataSource;
 }
 
-static int sortByName(id obj1, id obj2, void *data) {
+static NSComparisonResult sortByName(id obj1, id obj2, void *data) {
   if (obj1 == obj2)
     return NSOrderedSame;
   

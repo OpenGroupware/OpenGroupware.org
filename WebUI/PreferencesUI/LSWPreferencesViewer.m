@@ -49,7 +49,7 @@ static BOOL DisablePasswordModification = NO;
 static BOOL IsMailConfigEnabled         = NO;
 static NSArray *PreferencePages = nil;
 
-static int keySort(id o1, id o2, void *ctx) {
+static NSComparisonResult keySort(id o1, id o2, void *ctx) {
   NSString *key = ctx;
   
   o1 = [(NSDictionary *)o1 objectForKey:key];

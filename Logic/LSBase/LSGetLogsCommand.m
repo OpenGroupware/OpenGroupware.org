@@ -28,7 +28,7 @@
 #include <EOControl/EOKeyGlobalID.h>
 #include <GDLAccess/EOSQLQualifier.h>
 
-static int compareLogs(id part1, id part2, void* context) {
+static NSComparisonResult compareLogs(id part1, id part2, void* context) {
   return [(NSDate *)[part1 valueForKey:@"creationDate"]
  		           compare:(NSDate *)
 		    [part2 valueForKey:@"creationDate"]];

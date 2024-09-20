@@ -110,7 +110,7 @@ static Class SkyFSGlobalIDClass  = NULL;
 static BOOL  debugOn             = NO;
 static BOOL  hasEpoz             = NO;
 
-static int sortByIntField(id obj1, id obj2, void *ctx) {
+static NSComparisonResult sortByIntField(id obj1, id obj2, void *ctx) {
   int i1, i2;
   i1 = [[obj1 valueForKey:(id)ctx] intValue];
   i2 = [[obj2 valueForKey:(id)ctx] intValue];

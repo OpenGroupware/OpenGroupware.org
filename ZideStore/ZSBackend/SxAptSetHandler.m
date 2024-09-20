@@ -392,7 +392,7 @@ static BOOL debugOn = NO;
 
 /* set */
 
-static int dateIdCompare(id date1, id date2, void *self){
+static NSComparisonResult dateIdCompare(id date1, id date2, void *self) {
   return [(NSNumber *)[(NSDictionary *)date1 objectForKey:@"pkey"] 
 		      compare:[(NSDictionary *)date2 objectForKey:@"pkey"]];
 }

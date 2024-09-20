@@ -89,7 +89,7 @@
 
 #include "common.h"
 
-static int compareDates(id part1, id part2, void *context);
+static NSComparisonResult compareDates(id part1, id part2, void *context);
 
 @implementation LSAppointmentProposalCommand
 
@@ -1192,7 +1192,7 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   return [super valueForKey:_key];
 }
 
-static int compareDates(id part1, id part2, void *context) {
+static NSComparisonResult compareDates(id part1, id part2, void *context) {
   return ([[part1 valueForKey:@"startDate"]
                   earlierDate:[part2 valueForKey:@"startDate"]] ==
           [part1 valueForKey:@"startDate"]) ? -1 : 1;

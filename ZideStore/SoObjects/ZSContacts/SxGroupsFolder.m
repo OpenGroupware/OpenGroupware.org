@@ -284,7 +284,7 @@
   return [[self contactManagerInContext:_ctx] evoGroupsWithPrefix:nil];
 }
 
-static int compareGroupRecords(id obj1, id obj2, void *ctx) {
+static NSComparisonResult compareGroupRecords(id obj1, id obj2, void *ctx) {
   NSString *n1, *n2;
   n1 = [obj1 valueForKey:@"davDisplayName"];
   n2 = [obj2 valueForKey:@"davDisplayName"];

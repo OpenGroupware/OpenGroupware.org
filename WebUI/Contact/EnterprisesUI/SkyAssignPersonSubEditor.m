@@ -45,7 +45,7 @@
 #include <OGoContacts/SkyPersonDataSource.h>
 #include <OGoContacts/SkyPersonDocument.h>
 
-static int comparePersons(id e1, id e2, void* context) {
+static NSComparisonResult comparePersons(id e1, id e2, void* context) {
   static SkyPersonFormatter *formatter = nil;
 
   if (formatter == nil)

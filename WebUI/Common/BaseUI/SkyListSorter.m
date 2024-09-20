@@ -75,7 +75,7 @@
 #include <NGObjWeb/NGObjWeb.h>
 #include "common.h"
 
-static int compareElements(id obj1, id obj2, void *context) {
+static NSComparisonResult compareElements(id obj1, id obj2, void *context) {
   int index1, index2;
   
   index1 = [(NSArray *)context indexOfObject:obj1];

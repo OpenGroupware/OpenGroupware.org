@@ -82,7 +82,7 @@
 #include <LSFoundation/LSFoundation.h>
 #include "common.h"
 
-static int compareItems(id part1, id part2, void *context);
+static NSComparisonResult compareItems(id part1, id part2, void *context);
 
 @implementation SkySchedulerSelectPopUp
 
@@ -874,7 +874,7 @@ static NSString *_personName(id _item) {
   return [NSStringClass stringWithFormat:@"%@ %@", f, n];
 }
 
-static int compareItems(id _part1, id _part2, void *_ctx) {
+static NSComparisonResult compareItems(id _part1, id _part2, void *_ctx) {
   BOOL     tmp  = NO;
   BOOL     tmp1 = NO;  
   NSString *part1Kind = nil;

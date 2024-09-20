@@ -43,7 +43,7 @@
 
 #include "common.h"
 
-static int compareProjects(id p1, id p2, void *context) {
+static NSComparisonResult compareProjects(id p1, id p2, void *context) {
   NSString *n1, *n2;
   
   n1 = [p1 valueForKey:@"name"];

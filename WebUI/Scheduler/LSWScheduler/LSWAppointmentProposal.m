@@ -85,7 +85,7 @@
 - (void)setParticipantsFromProposal:(id)_part;
 @end
 
-static int compareDates(id part1, id part2, void* context) {
+static NSComparisonResult compareDates(id part1, id part2, void* context) {
   return [part1 caseInsensitiveCompare:part2];
 }
 

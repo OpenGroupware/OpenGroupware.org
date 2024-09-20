@@ -72,7 +72,7 @@
 
 #include <OGoJobs/SkyPersonJobDataSource.h>
 
-static int compareAccounts(id e1, id e2, void* context) {
+static NSComparisonResult compareAccounts(id e1, id e2, void* context) {
   BOOL isTeam1 = [[e1 valueForKey:@"isTeam"] boolValue];
   BOOL isTeam2 = [[e2 valueForKey:@"isTeam"] boolValue];
 

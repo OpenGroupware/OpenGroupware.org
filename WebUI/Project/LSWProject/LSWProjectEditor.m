@@ -81,7 +81,7 @@
 - (id)globalID;
 @end
 
-static int compareAccounts(id e1, id e2, void* context) {
+static NSComparisonResult compareAccounts(id e1, id e2, void* context) {
   return [[e1 valueForKey:@"fullNameLabel"]
           caseInsensitiveCompare:[e2 objectForKey:@"fullNameLabel"]];
 }

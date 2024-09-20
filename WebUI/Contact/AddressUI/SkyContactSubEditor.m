@@ -63,7 +63,7 @@
 
 @end /* SkyContactFormatter */
 
-static int compareAccounts(id e1, id e2, void* context) {
+static NSComparisonResult compareAccounts(id e1, id e2, void* context) {
   static SkyContactFormatter *formatter = nil;
 
   if (formatter == nil)

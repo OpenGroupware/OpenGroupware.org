@@ -160,7 +160,7 @@ static EOGlobalID *_globalID(id _obj) {
   return [self runCommand:@"team::get-by-globalID", @"gids", _gids, nil];
 }
 
-static int compareTeams(id team1, id team2, void *context) {
+static NSComparisonResult compareTeams(id team1, id team2, void *context) {
   static EONull *null = nil;
   NSString *name1 = [team1 valueForKey:@"description"];
   NSString *name2 = [team2 valueForKey:@"description"];

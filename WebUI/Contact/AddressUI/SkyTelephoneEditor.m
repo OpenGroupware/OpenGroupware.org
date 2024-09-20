@@ -43,7 +43,7 @@
 
 @implementation SkyTelephoneEditor
 
-static int cmpTypes(id t1, id t2, void* context) {
+static NSComparisonResult cmpTypes(id t1, id t2, void* context) {
   return [(NSString *)t1 compare:(NSString *)t2];
 }
 

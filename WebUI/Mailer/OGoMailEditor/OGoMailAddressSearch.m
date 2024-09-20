@@ -49,7 +49,7 @@
 + (NSString *)_formatEmail:(NSString *)_email forPerson:(id)_person;
 @end
 
-static int _comparePersons(id part1, id part2, void *context);
+static NSComparisonResult _comparePersons(id part1, id part2, void *context);
 
 @implementation OGoMailAddressSearch
 
@@ -692,7 +692,7 @@ static int  DefMaxSearchCount             = 10;
 
 @end /* OGoMailAddressSearch */
 
-static int _comparePersons(id part1, id part2, void *context) {
+static NSComparisonResult _comparePersons(id part1, id part2, void *context) {
   BOOL isP1Account, isP2Account;
 
   isP1Account = [[part1 valueForKey:@"isAccount"] boolValue];

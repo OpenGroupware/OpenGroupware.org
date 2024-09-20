@@ -458,7 +458,7 @@ static NSArray *aptKeys    = nil;
     [_r appendContentString:s];
 }
 
-static int sortContact(id eo1, id eo2, void *ctx) {
+static NSComparisonResult sortContact(id eo1, id eo2, void *ctx) {
   NSString *s1, *s2;
   NSComparisonResult r;
   

@@ -54,7 +54,7 @@ static NSArray *PersonKeys     = nil;
 static NSArray *EnterpriseKeys = nil;
 static NSArray *JobKeys        = nil;
 
-static int compareAttributes(id attr1, id attr2, void *context) {
+static NSComparisonResult compareAttributes(id attr1, id attr2, void *context) {
   NSString *name1 = nil;
   NSString *name2 = nil;
 
