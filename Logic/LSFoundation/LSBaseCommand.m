@@ -183,7 +183,7 @@ static BOOL debug = NO;
   profileNesting++;
   
   if (debug) {
-    fprintf(stderr, "# run %s %s::%s #subcommands=%i object=%s\n",
+    fprintf(stderr, "# run %s %s::%s #subcommands=%"PRIuPTR" object=%s\n",
                  [NSStringFromClass([self class]) cString],
                  [[self domain] cString], [[self operation] cString],
                  [self->commands count],

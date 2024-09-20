@@ -497,7 +497,7 @@ static NSArray* months = nil; /* label keys */
 }
 - (NSString *)dayIcon {
   char buf[16];
-  sprintf(buf, "day%02d", [[self day] dayOfMonth]);
+  sprintf(buf, "day%02ld", [[self day] dayOfMonth]);
   return [NSString stringWithCString:buf];
 }
 

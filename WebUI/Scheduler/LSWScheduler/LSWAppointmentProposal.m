@@ -869,7 +869,7 @@ static inline NSCalendarDate *_getDate(int _h, int _m, int _s, NSString *_tzA){
   
   now = [NSCalendarDate date];
 
-  snprintf(buf, sizeof(buf), "%04i-%02i-%02i %02d:%02d:%02d ",
+  snprintf(buf, sizeof(buf), "%04ld-%02ld-%02ld %02d:%02d:%02d ",
            [now yearOfCommonEra], [now monthOfYear], [now dayOfMonth],
            _h, _m, _s);
   s = [[NSString alloc] initWithCString:buf];

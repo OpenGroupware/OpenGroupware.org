@@ -56,7 +56,7 @@
 
 - (NSString *)size {
   char buf[32];
-  snprintf(buf, sizeof(buf), "%d", [[self->data content] length]);
+  snprintf(buf, sizeof(buf), "%ld", [[self->data content] length]);
   return [NSString stringWithCString:buf];
 }
 

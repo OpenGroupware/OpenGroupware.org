@@ -176,7 +176,7 @@
       NSString *s;
       char buf[64];
       
-      sprintf(buf, "%04i-%02i-%02i", 
+      sprintf(buf, "%04ld-%02ld-%02ld", 
 	      [tmp yearOfCommonEra], [tmp monthOfYear], [tmp dayOfMonth]);
       
       s = [[NSString alloc] initWithCString:buf];

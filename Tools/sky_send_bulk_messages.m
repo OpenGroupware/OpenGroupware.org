@@ -115,7 +115,7 @@
                         errorCode];
 
       if ([_data length] > 5000) {
-        fprintf(stderr, "[3] message: [size: %d]",
+        fprintf(stderr, "[3] message: [size: %ld]",
                 [_data length]);
       }
       else {
@@ -138,7 +138,7 @@
         e = [NSString stringWithFormat:
                       @"[1] Couldn`t write mail to sendmail! <%d>", errorCode];
         if ([_data length] > 5000) {
-          fprintf(stderr, "[1] message: [size: %d]", [_data length]);
+          fprintf(stderr, "[1] message: [size: %ld]", [_data length]);
         }
         else {
           fprintf(stderr, "[1] message: <%s>", (char *)[_data bytes]);

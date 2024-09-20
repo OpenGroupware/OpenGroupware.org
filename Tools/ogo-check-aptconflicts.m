@@ -138,7 +138,7 @@
   apts = [_ctx runCommand:@"appointment::get-by-globalid",
                @"gids", [conflictInfo allKeys], nil];
   
-  printf("Found %d conflicting appointments (%s - %s):\n", 
+  printf("Found %lu conflicting appointments (%s - %s):\n", 
          [conflictInfo count],
          [[_from description] cString],
          [[_to   description] cString]);
