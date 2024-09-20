@@ -307,16 +307,13 @@ static OGoContextSession *activeSession = nil;
 }
 
 - (BOOL)logout {
-  NSString *tmp;
-  
   if ([self->cmdContext isTransactionInProgress]) {
     if (![self commit])
       return NO;
   }
-  tmp = [[self->login retain] autorelease];
   
-  [self->login        release]; self->login        = nil;
-  [self->loginAccount release]; self->loginAccount = nil;
+  [self->login        autorelease]; self->login        = nil;
+  [self->loginAccount release];     self->loginAccount = nil;
   
   return [self->cmdContext logout];
 }
