@@ -36,10 +36,10 @@
   id             obj;
   unsigned int   i, cnt;
   
+  obj           = [self object];  
   cnt           = [obj count];
   permittedObjs = [[NSMutableArray alloc] initWithCapacity:cnt];
 
-  obj = [self object];  
   for (i = 0; i < cnt; i++) {
     id       docVersion;
     NSNumber *docId;
