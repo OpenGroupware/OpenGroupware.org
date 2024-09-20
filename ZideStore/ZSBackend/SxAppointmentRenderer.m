@@ -570,8 +570,12 @@ static BOOL debugRenderer = NO;
   return [self renderAppointmentAsICal:_eo timezone:tz];
 }
 - (id)renderAppointmentAsMIME:(id)_eo {
+  #if 0 // hh(2024-09-20): unused tz, should that be used?? Maybe UTC
   NSTimeZone *tz;
   tz = [[_eo valueForKey:@"startDate"] timeZone];
+  #else // could have required side effects though
+  [[_eo valueForKey:@"startDate"] timeZone];
+  #endif
   return [self renderAppointmentAsMIME:_eo timezone:nil];
 }
 
