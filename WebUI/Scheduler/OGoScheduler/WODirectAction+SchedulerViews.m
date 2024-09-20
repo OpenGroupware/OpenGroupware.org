@@ -291,6 +291,8 @@
 
 - (EOKeyGlobalID *)globalIDForMultiKeyValue:(NSArray *)oids {
   // TODO: explain when a multi-value key can happen!
+  // hh(2024-09-19):
+  // => probably unused and has an incorrect implementation below
   EOKeyGlobalID *gid;
   unsigned      i, cnt;
   id            *pKeys;
@@ -301,9 +303,16 @@
   pKeys = (id *)calloc(cnt + 2, sizeof(id));
   for (i = 0; i < cnt; i++)
     pKeys[i] = [NSNumber numberWithInt:[[oids objectAtIndex:i] intValue]];
-  
+
+  #if 0
+  // cannot do `[gid entityName]`, because `gid` is nil!
   gid = [EOKeyGlobalID globalIDWithEntityName:[gid entityName]
 		       keys:pKeys keyCount:cnt zone:NULL];
+  #else
+  #warning FIXME: Creating key global ID w/o entityName?
+  gid = [EOKeyGlobalID globalIDWithEntityName:nil
+                       keys:pKeys keyCount:cnt zone:NULL];
+  #endif
   if (pKeys != NULL) free(pKeys);
   
   return gid;
