@@ -198,7 +198,8 @@
     [[dateInYear firstMondayAndLastWeekInYear:&(self->lastWeek)] copy];
   
   tmp = [self valueForBinding:@"weekStart"];
-  if ([tmp weekOfYear] > self->lastWeek) self->lastWeek = [tmp weekOfYear];
+  if ([(NSCalendarDate *)tmp weekOfYear] > self->lastWeek) 
+    self->lastWeek = [(NSCalendarDate *)tmp weekOfYear];
   //NSLog(@"WEEK START: %i - %@", [tmp weekOfYear], tmp);
   //if (tmp) [self setWeekStart:[NSNumber numberWithInt:[tmp weekOfYear]]];
 

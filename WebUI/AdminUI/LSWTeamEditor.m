@@ -458,7 +458,7 @@ static BOOL IsMailConfigEnabled = NO;
   id team;
   
   if ([[self session] activeAccountIsRoot])
-    [self->defaults synchronize];
+    [(NSUserDefaults *)self->defaults synchronize];
   
   team = [self snapshot];
   [team takeValue:self->assignedAccounts forKey:@"accounts"];

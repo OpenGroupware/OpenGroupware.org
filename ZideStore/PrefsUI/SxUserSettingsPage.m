@@ -250,7 +250,7 @@
   }
   ud = [[self commandContext] userDefaults];
   [ud takeValue:array forKey:@"ZLGroupSelection"];
-  [ud synchronize];
+  [(NSUserDefaults *)ud synchronize];
   return self;
 }
 
