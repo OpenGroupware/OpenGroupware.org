@@ -528,10 +528,12 @@ static NSNull *null = nil;
 }
 
 - (BOOL)supportsFeature:(NSString *)_featureURI atPath:(NSString *)_path {
+  #if 0 // HH(2024-09-18): path unused, correct or bug?
   NSString *p = nil;
 
   p = [self->rootPath stringByAppendingString:
            [self->cdp stringByAppendingPathComponent2:_path]];
+  #endif
   return [self->fm supportsFeature:_featureURI atPath:_path];
 }
 
