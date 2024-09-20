@@ -462,5 +462,6 @@ int main(int argc, const char **argv, char **env) {
   // do not release pool or tool, process will exit anyway ...
   
   exit(rc);
+  [pool release]; // please compiler
   return rc;
 }

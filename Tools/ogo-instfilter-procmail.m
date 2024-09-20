@@ -383,8 +383,9 @@ int main(int argc, const char **argv, char **env) {
 #endif
   
   result = [SkyInstallProcMail runWithArguments:
-				 [[NSProcessInfo processInfo] arguments]];
+				     [[NSProcessInfo processInfo] arguments]];
   
-  // [pool release]; // do not release, OS cleans up for us is faster ;-)
+  exit(0);
+  [pool release]; // please the compiler
   return result;
 }

@@ -97,5 +97,6 @@ int main(int argc, char **argv, char **env) {
   }
   
   exit (1);
+  [pool release]; // to please the compiler
   return 1;
 }

@@ -164,5 +164,6 @@ int main(int argc, char **argv, char **env) {
   // [pool release]; // we are cleaned up by the kernel in just a second ...
   
   exit(0);
+  [pool release]; // please the compiler
   return 0;
 }
