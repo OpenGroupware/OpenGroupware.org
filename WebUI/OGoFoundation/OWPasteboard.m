@@ -199,7 +199,7 @@
 
 - (NSString *)description {
   return [NSString stringWithFormat:
-                     @"<%@[0x%p]: name=%@ owner=%@ changeCount=%i>",
+                     @"<%@[%p]: name=%@ owner=%@ changeCount=%i>",
                      NSStringFromClass([self class]), self,
                      [self name], [self owner], [self changeCount]];
 }

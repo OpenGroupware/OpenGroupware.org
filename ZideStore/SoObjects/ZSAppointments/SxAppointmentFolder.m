@@ -808,7 +808,7 @@ static BOOL addGroupToWriteACL = YES;
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:64];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   if (self->group) [ms appendFormat:@" group=%@", self->group];
   [ms appendString:@">"];
   return ms;

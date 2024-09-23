@@ -320,7 +320,7 @@ static BOOL logBundleLoading          = NO;
   if ([d length] > 40)
     d = [[d substringToIndex:28] stringByAppendingString:@".."];
   
-  [self logWithFormat:@"notification %@ object 0x%p(%@): %@",
+  [self logWithFormat:@"notification %@ object %p(%@): %@",
 	  [_notification name], obj, NSStringFromClass([obj class]), d];
 }
 

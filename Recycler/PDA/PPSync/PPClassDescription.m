@@ -56,7 +56,7 @@
 
 - (NSString *)description {
   return [NSString stringWithFormat:
-                     @"<0x%p[%@]: name=%@ creator=%04X type=%04X>",
+                     @"<%p[%@]: name=%@ creator=%04X type=%04X>",
                      self, NSStringFromClass([self class]),
                      [self entityName],
                      [self creator],

@@ -367,7 +367,7 @@ static OGoContextSession *activeSession = nil;
 /* description */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@[0x%p]: login=%@ tx=%s>",
+  return [NSString stringWithFormat:@"<%@[%p]: login=%@ tx=%s>",
                      NSStringFromClass([self class]), self,
 		     self->login ? self->login : (NSString *)@"<no login>",
                      [self->cmdContext isTransactionInProgress] ? "yes" :"no"];

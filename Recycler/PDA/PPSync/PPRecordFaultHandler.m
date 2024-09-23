@@ -68,7 +68,7 @@
 /* description */
 
 - (NSString *)descriptionForObject:(id)_fault {
-  return [NSString stringWithFormat:@"<%@[0x%p]: on=%@ oid=%@ db=%@>",
+  return [NSString stringWithFormat:@"<%@[%p]: on=%@ oid=%@ db=%@>",
                      NSStringFromClass(*(Class *)_fault),
                      _fault,
                      NSStringFromClass([self targetClass]),

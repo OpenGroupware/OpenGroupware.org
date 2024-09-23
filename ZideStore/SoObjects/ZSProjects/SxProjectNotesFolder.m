@@ -299,7 +299,7 @@ static BOOL debugOn = NO;
 - (NSString *)description {
   NSMutableString *ms = [NSMutableString stringWithCapacity:128];
   
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   [ms appendFormat:@" name='%@'", [self nameInContainer]];
   [ms appendString:@">"];
   return ms;

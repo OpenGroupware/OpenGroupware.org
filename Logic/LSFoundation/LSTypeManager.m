@@ -335,9 +335,9 @@
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
 
-  [ms appendFormat:@" ctx=0x%p", self->context];
+  [ms appendFormat:@" ctx=%p", self->context];
   
   if (self->pkeyToGid != NULL)
     [ms appendFormat:@" #pkey-map=%d", NSCountMapTable(self->pkeyToGid)];

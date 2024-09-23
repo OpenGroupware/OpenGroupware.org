@@ -934,7 +934,7 @@ static id runCommand(LSCommandContext *self, id<LSCommand> _command) {
   id tmp;
 
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
 
   if ((tmp = [self valueForKey:LSAccountKey]) != nil)
     [ms appendFormat:@" login=%@", [tmp valueForKey:@"login"]];

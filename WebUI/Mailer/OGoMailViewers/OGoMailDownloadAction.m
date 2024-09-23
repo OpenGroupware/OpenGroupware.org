@@ -106,7 +106,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   if ((tmp = [self decodeData:_data withEncoding:_encoding]) != nil)
     return tmp;
   
-  [self logWithFormat:@"encoding for '%@' failed on data 0x%p(len=%d)",
+  [self logWithFormat:@"encoding for '%@' failed on data %p(len=%d)",
           _encoding, _data, [_data length]];
   return _data;
 }

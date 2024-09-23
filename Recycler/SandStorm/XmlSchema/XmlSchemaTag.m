@@ -18,7 +18,7 @@
 - (NSString *)description {
   NSMutableString *s;
   
-  s = [NSMutableString stringWithFormat:@"<0x%p[%@]: ",
+  s = [NSMutableString stringWithFormat:@"<%p[%@]: ",
                          self, NSStringFromClass([self class])];
   [s appendString:@">"];
   return s;

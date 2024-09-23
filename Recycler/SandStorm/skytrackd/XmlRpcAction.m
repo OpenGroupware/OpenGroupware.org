@@ -142,7 +142,7 @@
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@[0x%p]: xmlrpc: %@>",
+  return [NSString stringWithFormat:@"<%@[%p]: xmlrpc: %@>",
                    NSStringFromClass([self class]), self,
                    self->command];
 }

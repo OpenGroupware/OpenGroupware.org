@@ -1181,9 +1181,9 @@ static Class   StrClass = Nil;
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   
-  [ms appendFormat:@" ctx=0x%p",   self->context];
+  [ms appendFormat:@" ctx=%p",   self->context];
   [ms appendFormat:@" #handlers=%d", [self->accessHandlers count]];
   
   [ms appendString:@">"];

@@ -170,7 +170,7 @@ static BOOL       debugViewerLookup = NO;
   sn = [self session];
 
   if (debugViewerLookup) {
-    [self logWithFormat:@"lookup viewer for type %@ data 0x%p(%d)",
+    [self logWithFormat:@"lookup viewer for type %@ data %p(%d)",
 	    _type, _data, [_data length]];
   }
   

@@ -632,7 +632,7 @@ static NSArray  *emptyArray          = nil;
 }
 
 - (id)searchAction {
-  if (debugOn) [self debugWithFormat:@"0x%p did click search ...", self];
+  if (debugOn) [self debugWithFormat:@"%p did click search ...", self];
   self->uscFlags.isClicked = 1;
   return nil;
 }

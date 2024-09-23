@@ -323,7 +323,7 @@
   
   ms = [NSMutableString stringWithCapacity:128];
   
-  [ms appendFormat:@"<0x%p[%@]: ", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]: ", self, NSStringFromClass([self class])];
   [ms appendFormat:@" command=%@::%@", self->domain, self->command];
   [ms appendFormat:@" op=%@",          self->operation];
   [ms appendFormat:@" name=%@",        self->commandClassName];
