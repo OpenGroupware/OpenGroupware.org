@@ -331,7 +331,7 @@ static NSNumber *yesNum = nil;
 {
   EODataSource *ds;
   
-  ds = [(SkyProjectDataSource *)[NSClassFromString(_className) alloc] 
+  ds = [(SkyProjectDataSource *)[NGClassFromString(_className) alloc] 
 				initWithContext:[self context]];
   if (_fspec != nil) [ds setFetchSpecification:_fspec];
   return [ds autorelease];

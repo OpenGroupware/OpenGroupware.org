@@ -153,12 +153,12 @@
 
 - (Class)projectFileManagerClass {
   static Class fmClass = Nil;
-  if (fmClass == Nil) fmClass = NSClassFromString(@"SkyProjectFileManager");
+  if (fmClass == Nil) fmClass = NGClassFromString(@"SkyProjectFileManager");
   return fmClass;
 }
 - (Class)projectDocumentClass {
   static Class docClass = Nil;
-  if (docClass == Nil) docClass = NSClassFromString(@"SkyProjectDocument");
+  if (docClass == Nil) docClass = NGClassFromString(@"SkyProjectDocument");
   return docClass;
 }
 

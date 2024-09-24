@@ -122,7 +122,7 @@
   }
   
   // TODO: make this a parameter to make UIxMailTree reusable
-  return [_object isKindOfClass:NSClassFromString(@"SOGoMailAccount")];
+  return [_object isKindOfClass:NGClassFromString(@"SOGoMailAccount")];
 }
 
 - (NSString *)treeNavigationLinkForObject:(id)_object atDepth:(int)_depth {

@@ -46,7 +46,7 @@
   static Class SkyFSGlobalIdClass = Nil;
 
   if (SkyFSGlobalIdClass == Nil)
-    SkyFSGlobalIdClass = NSClassFromString(@"SkyFSGlobalID");
+    SkyFSGlobalIdClass = NGClassFromString(@"SkyFSGlobalID");
     
   if (SkyFSGlobalIdClass) {
     if ([self isKindOfClass:SkyFSGlobalIdClass])
@@ -82,7 +82,7 @@
   static Class SkyFSGlobalIdClass = NULL;
 
   if (!SkyFSGlobalIdClass) {
-    SkyFSGlobalIdClass = NSClassFromString(@"SkyFSGlobalID");
+    SkyFSGlobalIdClass = NGClassFromString(@"SkyFSGlobalID");
   }
 
   if (SkyFSGlobalIdClass) {

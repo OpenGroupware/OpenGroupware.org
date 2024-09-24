@@ -120,7 +120,7 @@
     : @"SkyPubNodeRenderFactory";
 }
 - (Class)renderFactoryClass {
-  return NSClassFromString([self renderFactoryName]);
+  return NGClassFromString([self renderFactoryName]);
 }
 - (id)renderFactory {
   return [[[[self renderFactoryClass] alloc] init] autorelease];

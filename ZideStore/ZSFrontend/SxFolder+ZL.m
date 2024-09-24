@@ -148,7 +148,7 @@
   unsigned i, count;
   
   if (entryClass == Nil) 
-    entryClass = NSClassFromString(@"SoObjectResultEntry");
+    entryClass = NGClassFromString(@"SoObjectResultEntry");
   if ([self doExplainQueries]) {
     [self logWithFormat:@"ZL Subfolder Query [depth=%@]: %@",
             [[(WOContext *)_ctx request] headerForKey:@"depth"],

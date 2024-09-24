@@ -166,8 +166,8 @@
     : [self->formURL absoluteString];
   
   formClazz = self->formClassName
-    ? NSClassFromString(self->formClassName)
-    : NSClassFromString(fname);
+    ? NGClassFromString(self->formClassName)
+    : NGClassFromString(fname);
   
   if ((data = [self formData]) == nil) {
     NSString    *ctype;

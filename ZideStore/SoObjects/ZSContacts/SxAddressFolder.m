@@ -96,7 +96,7 @@
   }
   
   [self debugWithFormat:@"use %@ for key: '%@'", n, _key];
-  return NSClassFromString(n);
+  return NGClassFromString(n);
 }
 
 - (id)childForExistingKey:(NSString *)_key inContext:(id)_ctx {

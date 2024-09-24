@@ -187,7 +187,7 @@
 
 
     if ([activePage isKindOfClass:
-                    NSClassFromString(@"SkyProject4DocumentViewer")]) {
+                    NGClassFromString(@"SkyProject4DocumentViewer")]) {
       [activePage setDocumentId:[[self fileManager] globalIDForPath:newPath]];
     }
     return page;

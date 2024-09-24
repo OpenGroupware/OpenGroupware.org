@@ -97,7 +97,7 @@
 }
 
 - (Class)dsClass {
-  return NSClassFromString(@"SkyPersonDataSource");
+  return NGClassFromString(@"SkyPersonDataSource");
 }
 
 - (int)run:(NSArray *)_args onContext:(LSCommandContext *)_ctx {

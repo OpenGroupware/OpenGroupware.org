@@ -195,7 +195,7 @@ static NSArray * addressTypes = nil;
   static Class clz = Nil;
 
   if (clz == Nil)
-    clz = NSClassFromString(@"SkyPersonJobDataSource");
+    clz = NGClassFromString(@"SkyPersonJobDataSource");
 
 
   if (self->globalID == nil)

@@ -127,7 +127,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   }
   
   if (HandlerClass == Nil) {
-    HandlerClass = NSClassFromString(@"SkyImapContextHandler");
+    HandlerClass = NGClassFromString(@"SkyImapContextHandler");
     if (HandlerClass == Nil)
       [self errorWithFormat:@"did not find SkyImapContextHandler class!"];
   }
@@ -157,7 +157,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   
   // TODO: explain how this can happen
   if (RootFolderClass == Nil)
-    RootFolderClass = NSClassFromString(@"NGImap4ServerRoot");
+    RootFolderClass = NGClassFromString(@"NGImap4ServerRoot");
   if ([folder isKindOfClass:RootFolderClass]) {
     [self warnWithFormat:@"could not load folder for URL: %@", 
 	    [self urlAsNSURL]];

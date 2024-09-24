@@ -891,7 +891,7 @@ extern NSDictionary *NSParseDictionaryFromData(NSData *);
 
       if (!SkyProjectFileManagerClass)
         SkyProjectFileManagerClass =
-          NSClassFromString(@"SkyProjectFileManager");
+          NGClassFromString(@"SkyProjectFileManager");
       
       [tfm changeFileAttributes:attributes atPath:_newPath];
 

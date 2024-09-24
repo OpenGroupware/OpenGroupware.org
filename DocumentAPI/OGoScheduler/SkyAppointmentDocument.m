@@ -53,7 +53,7 @@ static NSNumber *yesNum               = nil;
   // TODO: check parent class version!!
   
   CalDateClass         = [NSCalendarDate class];
-  AccountDocumentClass = NSClassFromString(@"SkyAccountDocument");
+  AccountDocumentClass = NGClassFromString(@"SkyAccountDocument");
   debugDocRegistration = [ud boolForKey:@"DebugDocumentRegistration"];
   
   if (emptyArray == nil) 

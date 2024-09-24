@@ -279,7 +279,7 @@ char   pilotport[255];
       continue;
     }
     
-    if ((conduitClass = NSClassFromString(conduitClassName)) == Nil) {
+    if ((conduitClass = NGClassFromString(conduitClassName)) == Nil) {
       NSLog(@"  did not find conduit class %@ in bundle %@",
             conduitClassName, conduitBundle);
     }

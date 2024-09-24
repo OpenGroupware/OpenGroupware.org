@@ -40,7 +40,7 @@
 @implementation SkyProject(JobDataSource)
 
 - (EODataSource *)jobDataSource {
-  return [[[NSClassFromString(@"SkyProjectJobDataSource")
+  return [[[NGClassFromString(@"SkyProjectJobDataSource")
                              alloc] initWithContext:[self context]
                                     projectId:[self globalID]] autorelease];
 }

@@ -514,7 +514,7 @@ static NSArray     *extDesktopPages   = nil;
 
 - (Class)projectDocumentDataSourceClass {
   /* for project-wide searches */
-  return NSClassFromString(@"SkyProjectDocumentDataSource");
+  return NGClassFromString(@"SkyProjectDocumentDataSource");
 }
 - (EODataSource *)projectDocumentDataSource {
   LSCommandContext *cmdctx;

@@ -368,7 +368,7 @@ static NSDictionary *_bindingForAppointment(id self, id obj);
     return ds;
 
   
-  if ((c = NSClassFromString(@"SkyPalmDateDataSource")) == nil)
+  if ((c = NGClassFromString(@"SkyPalmDateDataSource")) == nil)
     return ds;
   
   // TODO: fix type casts
@@ -445,7 +445,7 @@ static NSDictionary *_bindingForAppointment(id self, id obj);
       
       [appointment takeValue:oldStart forKey:@"oldStartDate"];
       page = [self saveAndGoBackWithCount:2 action:@"moved"];
-      if ([page isKindOfClass:NSClassFromString(@"SkySchedulerConflictPage")])
+      if ([page isKindOfClass:NGClassFromString(@"SkySchedulerConflictPage")])
         return page;
   }
 

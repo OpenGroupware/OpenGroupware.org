@@ -108,13 +108,13 @@ NSString *ProfileCommandsFileName = nil;
     /* setup helper objects */
     
     self->typeManager = 
-      [[NSClassFromString(@"LSTypeManager") alloc] initWithContext:self];
+      [[NGClassFromString(@"LSTypeManager") alloc] initWithContext:self];
     
     self->objectPropertyManager =
-      [[NSClassFromString(@"SkyObjectPropertyManager") 
+      [[NGClassFromString(@"SkyObjectPropertyManager") 
 			 alloc] initWithContext:self];
     self->linkManager =
-      [[NSClassFromString(@"OGoObjectLinkManager") 
+      [[NGClassFromString(@"OGoObjectLinkManager") 
 			 alloc] initWithContext:self];
     self->accessManager = [[SkyAccessManager alloc] initWithContext:self];
     
@@ -202,7 +202,7 @@ NSString *ProfileCommandsFileName = nil;
   
   d = [[EOEntityClassDescription alloc] initWithEntity:entity];
   [EOClassDescription registerClassDescription:(EOClassDescription *)d
-                      forClass:NSClassFromString([entity className])];
+                      forClass:NGClassFromString([entity className])];
   [d release]; d = nil;
 }
 - (void)_requireClassDescriptionForClass:(NSNotification *)_notification {
@@ -231,7 +231,7 @@ NSString *ProfileCommandsFileName = nil;
 
   d = [[EOEntityClassDescription alloc] initWithEntity:entity];
   [EOClassDescription registerClassDescription:d
-                      forClass:NSClassFromString([entity className])];
+                      forClass:NGClassFromString([entity className])];
   [d release]; d = nil;
 }
 

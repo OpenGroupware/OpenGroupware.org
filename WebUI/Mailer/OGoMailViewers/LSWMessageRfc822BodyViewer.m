@@ -47,7 +47,7 @@
     id message;
     
     pool = [[NSAutoreleasePool alloc] init];
-    parser = [[NSClassFromString(@"NGMimeMessageParser") alloc] init];
+    parser = [[NGClassFromString(@"NGMimeMessageParser") alloc] init];
     message = [[parser parsePartFromData:_obj] retain];
     [parser release]; parser = nil;
     [pool release]; pool = nil;

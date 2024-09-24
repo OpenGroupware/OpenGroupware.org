@@ -155,7 +155,7 @@ static int ShowBodySize = -1;
   NSData         *data;
   
   encoding = [[self encodingString] lowercaseString];
-  imapCtx  = [NSClassFromString(@"SkyImapContextHandler")
+  imapCtx  = [NGClassFromString(@"SkyImapContextHandler")
                                sessionImapContext:[self session]];
   path     = [_url path];
 

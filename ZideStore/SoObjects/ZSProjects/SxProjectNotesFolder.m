@@ -227,7 +227,7 @@ static BOOL debugOn = NO;
 
 - (Class)recordClassForKey:(NSString *)_key {
   /* triggered by SxFolder lookup */
-  return NSClassFromString(@"SxNote");
+  return NGClassFromString(@"SxNote");
 }
 
 /* permissions */

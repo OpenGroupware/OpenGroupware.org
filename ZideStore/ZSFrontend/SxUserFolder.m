@@ -190,14 +190,14 @@ static NSDictionary *personalFolderMap = nil;
   }
   else {
     id folder; // TODO: folder-class
-    folder = [[NSClassFromString(@"SxMsgRootFolder") alloc] 
+    folder = [[NGClassFromString(@"SxMsgRootFolder") alloc] 
                initWithName:_key inContainer:self];
     return [folder autorelease];
   }
 }
 - (id)storeInfoFolder:(NSString *)_key inContext:(id)_ctx {
   id folder; // TODO: folder-class
-  folder = [[NSClassFromString(@"SxStoreInfoFolder") alloc] 
+  folder = [[NGClassFromString(@"SxStoreInfoFolder") alloc] 
              initWithName:_key inContainer:self];
   return [folder autorelease];
 }
@@ -242,7 +242,7 @@ static NSDictionary *personalFolderMap = nil;
   //[self logWithFormat:@"creating personal folder: %@: %@", _name, _info];
   
   tmp = [_info objectForKey:@"class"];
-  clazz = tmp ? NSClassFromString(tmp) : Nil;
+  clazz = tmp ? NGClassFromString(tmp) : Nil;
   if (clazz == Nil) {
     [self logWithFormat:@"ERROR: got no class for personal folder '%@': %@",
             _name, _info];
@@ -262,14 +262,14 @@ static NSDictionary *personalFolderMap = nil;
 }
 
 - (id)optionsForm:(NSString *)_name inContext:(id)_ctx {
-  return [[[NSClassFromString(@"SxOptionsForm") alloc] 
+  return [[[NGClassFromString(@"SxOptionsForm") alloc] 
            initWithName:_name inContainer:_ctx] autorelease];
 }
 
 - (id)lookupInbox:(NSString *)_key inContext:(id)_ctx {
   Class clazz;
   
-  if ((clazz = NSClassFromString(@"ZSOGoMailAccount")) == Nil) {
+  if ((clazz = NGClassFromString(@"ZSOGoMailAccount")) == Nil) {
     static BOOL didWarn = NO;
     if (!didWarn) {
       [self logWithFormat:@"Note: the SOGo mailer is not installed."];

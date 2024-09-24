@@ -78,7 +78,7 @@
     {
       Class c;
       
-      if ((c = NSClassFromString(@"SkyAccountLogDataSource")) == Nil) {
+      if ((c = NGClassFromString(@"SkyAccountLogDataSource")) == Nil) {
         NSLog(@"WARNING[%s]: failed creating SkyAccountLogDataSource-class",
               __PRETTY_FUNCTION__);
         return;

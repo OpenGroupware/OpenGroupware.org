@@ -44,15 +44,15 @@
 #endif
 
   [NSURLHandle registerURLHandleClass:
-                 NSClassFromString(@"WOHTTPURLHandle")];
+                 NGClassFromString(@"WOHTTPURLHandle")];
   [NSURLHandle registerURLHandleClass:
-                 NSClassFromString(@"SkyProjectURLHandle")];
+                 NGClassFromString(@"SkyProjectURLHandle")];
 
 #if DEBUG && 0
   NSLog(@"register doc request handler ..");
 #endif
   
-  rh = [NSClassFromString(@"SkyP4DocumentRequestHandler") alloc];
+  rh = [NGClassFromString(@"SkyP4DocumentRequestHandler") alloc];
   rh = [rh init];
   
   [[WOApplication application]

@@ -35,15 +35,15 @@ static NSDictionary *extToFactory = nil;
     
     md = [NSMutableDictionary dictionaryWithCapacity:8];
     
-    [md setObject:NSClassFromString(@"OGoCyrusConfigFile") 
+    [md setObject:NGClassFromString(@"OGoCyrusConfigFile") 
         forKey:@"cyrus"];
-    [md setObject:NSClassFromString(@"OGoPostfixConfigFile") 
+    [md setObject:NGClassFromString(@"OGoPostfixConfigFile") 
         forKey:@"postfix"];
-    [md setObject:NSClassFromString(@"OGoAccountsVirtualConfigFile") 
+    [md setObject:NGClassFromString(@"OGoAccountsVirtualConfigFile") 
         forKey:@"uvirtual"];
-    [md setObject:NSClassFromString(@"OGoTeamsVirtualConfigFile") 
+    [md setObject:NGClassFromString(@"OGoTeamsVirtualConfigFile") 
         forKey:@"tvirtual"];
-    [md setObject:NSClassFromString(@"OGoQuotaTabConfigFile") 
+    [md setObject:NGClassFromString(@"OGoQuotaTabConfigFile") 
         forKey:@"quotatab"];
     
     extToFactory = [md copy];

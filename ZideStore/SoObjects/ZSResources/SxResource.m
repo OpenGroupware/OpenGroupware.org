@@ -60,7 +60,7 @@
     NSString *className = @"SxZLGroupRenderer";
     didInit = YES;
     
-    if ((RendererClass = NSClassFromString(className)) == Nil)
+    if ((RendererClass = NGClassFromString(className)) == Nil)
       [self logWithFormat:@"Note: attempt to access '%@'", className];
     // TODO: need a fallback renderer
   }

@@ -229,7 +229,7 @@
   //NSLog(@"instantiate command %@", _i->command);
   
   if (_i->commandClass == Nil)
-    _i->commandClass = NSClassFromString(_i->commandClassName);
+    _i->commandClass = NGClassFromString(_i->commandClassName);
   
   if (_i->commandClass == nil) {
     [self errorWithFormat:@"did not find class %@ for command %@",

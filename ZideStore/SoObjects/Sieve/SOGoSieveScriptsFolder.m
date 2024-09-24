@@ -70,7 +70,7 @@
 - (NSString *)lookupScript:(NSString *)_key inContext:(id)_ctx {
   Class clazz;
   
-  clazz = NSClassFromString(@"SOGoSieveScriptObject");
+  clazz = NGClassFromString(@"SOGoSieveScriptObject");
   return [[[clazz alloc] initWithName:_key inContainer:self] autorelease];
 }
 

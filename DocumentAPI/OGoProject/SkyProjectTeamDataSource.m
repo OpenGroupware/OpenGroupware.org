@@ -57,7 +57,7 @@
   static EODataSource  *ds    = nil;
 
   if (ds == nil) {
-    Class clazz = NSClassFromString(@"SkyTeamDataSource");
+    Class clazz = NGClassFromString(@"SkyTeamDataSource");
     ds = [[clazz alloc] initWithContext:self->context];
   }
 

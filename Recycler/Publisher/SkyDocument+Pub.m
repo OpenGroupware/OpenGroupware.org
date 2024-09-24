@@ -714,31 +714,31 @@ static BOOL logPathOps       = NO;
 }
 - (NSArray *)pubAllPersons {
   return [self pubAllFromDataSourceOfClass:
-                 NSClassFromString(@"SkyPersonDataSource")];
+                 NGClassFromString(@"SkyPersonDataSource")];
 }
 - (NSArray *)pubAllEnterprises {
   return [self pubAllFromDataSourceOfClass:
-                 NSClassFromString(@"SkyEnterpriseDataSource")];
+                 NGClassFromString(@"SkyEnterpriseDataSource")];
 }
 - (NSArray *)pubAllAccounts {
   return [self pubAllFromDataSourceOfClass:
-                 NSClassFromString(@"SkyAccountDataSource")];
+                 NGClassFromString(@"SkyAccountDataSource")];
 }
 - (NSArray *)pubAllJobs {
   return [self pubAllFromDataSourceOfClass:
-                 NSClassFromString(@"SkyJobDataSource")];
+                 NGClassFromString(@"SkyJobDataSource")];
 }
 - (NSArray *)pubAllAppointments {
   return [self pubAllFromDataSourceOfClass:
-                 NSClassFromString(@"SkyAppointmentDataSource")];
+                 NGClassFromString(@"SkyAppointmentDataSource")];
 }
 - (NSArray *)pubAllProjects {
   return [self pubAllFromDataSourceOfClass:
-                 NSClassFromString(@"SkyProjectDataSource")];
+                 NGClassFromString(@"SkyProjectDataSource")];
 }
 - (NSArray *)pubAllTeams {
   return [self pubAllFromDataSourceOfClass:
-                 NSClassFromString(@"SkyTeamDataSource")];
+                 NGClassFromString(@"SkyTeamDataSource")];
 }
 
 - (NSArray *)pubTocListDocuments {

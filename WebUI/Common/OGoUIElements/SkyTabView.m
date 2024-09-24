@@ -75,7 +75,7 @@ static Class        baseClass  = Nil;
 + (void)initialize {
   NSMutableDictionary *md;
   
-  if ((baseClass = NSClassFromString(@"WETabView")) == Nil)
+  if ((baseClass = NGClassFromString(@"WETabView")) == Nil)
     NSLog(@"ERROR(%s): missing WETabView class", __PRETTY_FUNCTION__);
   
   md = [[NSMutableDictionary alloc] initWithCapacity:8];
@@ -92,7 +92,7 @@ static Class        baseClass  = Nil;
       forKey:@"fontColor"];
 
   // TODO: theoretical leak ...
-  [md setObject:[[NSClassFromString(@"SkyTabFontAssociation") alloc] init]
+  [md setObject:[[NGClassFromString(@"SkyTabFontAssociation") alloc] init]
       forKey:@"fontSize"];
   
   defAssocs = [md copy];

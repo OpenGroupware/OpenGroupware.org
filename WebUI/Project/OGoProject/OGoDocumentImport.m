@@ -286,7 +286,7 @@
 
 - (BOOL)showTitle {
   return [[self fileManager]
-                isKindOfClass:NSClassFromString(@"SkyProjectFileManager")];
+                isKindOfClass:NGClassFromString(@"SkyProjectFileManager")];
 }
 - (BOOL)showFilename {
   return [self fileId] ? NO : YES;

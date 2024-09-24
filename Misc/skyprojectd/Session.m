@@ -28,10 +28,10 @@
 }
 
 - (Class)fileManagerClass {
-  return NSClassFromString(@"SkyProjectFileManager");
+  return NGClassFromString(@"SkyProjectFileManager");
 }
 - (Class)dataSourceClass {
-  return NSClassFromString(@"SkyProjectDataSource");
+  return NGClassFromString(@"SkyProjectDataSource");
 }
 
 - (void)setFileManager:(id)_fm {

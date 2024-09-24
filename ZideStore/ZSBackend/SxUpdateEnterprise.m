@@ -61,7 +61,7 @@
 */
 
 - (Class)fetchObjectClass {
-  return NSClassFromString(@"SxFetchEnterprise");
+  return NGClassFromString(@"SxFetchEnterprise");
 }
 
 - (NSString *)setCommand {

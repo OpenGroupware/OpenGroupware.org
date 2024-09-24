@@ -66,7 +66,7 @@
 /* datasource classes */
 
 - (Class)projectDataSourceClass {
-  return NSClassFromString(@"OGoClientProjectDataSource");
+  return NGClassFromString(@"OGoClientProjectDataSource");
 }
 
 /* datasources */

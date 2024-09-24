@@ -484,7 +484,7 @@ static NSException *FMLastError(id fm) {
 - (NSException *)davMoveToTargetObject:(id)_target newName:(NSString *)_name
   inContext:(id)_ctx
 {
-  if ([_target isKindOfClass:NSClassFromString(@"SxTmpDocument")]) {
+  if ([_target isKindOfClass:NGClassFromString(@"SxTmpDocument")]) {
     /* 
        We do not delete "real" resources for temporary files, see bug #1921 for
        details.
@@ -499,7 +499,7 @@ static NSException *FMLastError(id fm) {
 - (NSException *)davCopyToTargetObject:(id)_target newName:(NSString *)_name
   inContext:(id)_ctx
 {
-  if ([_target isKindOfClass:NSClassFromString(@"SxTmpDocument")]) {
+  if ([_target isKindOfClass:NGClassFromString(@"SxTmpDocument")]) {
     id       fm;
     NSString *p;
     NSData   *content;

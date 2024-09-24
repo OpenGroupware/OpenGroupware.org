@@ -113,7 +113,7 @@
 }
 
 - (Class)historyDataSourceClass {
-  return NSClassFromString(@"SkyDocumentHistoryDataSource");
+  return NGClassFromString(@"SkyDocumentHistoryDataSource");
 }
 - (EODataSource *)historyDataSource {
   // TODO: use a generic capability query, not a method

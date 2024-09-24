@@ -200,7 +200,7 @@
     doCache = [[_array objectAtIndex:1] boolValue];
   
   dsName  = [[_array objectAtIndex:0] stringValue];
-  dsClass = NSClassFromString(dsName);
+  dsClass = NGClassFromString(dsName);
   if (dsClass == Nil) {
     [self debugWithFormat:@"missing datasource class %@", dsName];
     return nil;

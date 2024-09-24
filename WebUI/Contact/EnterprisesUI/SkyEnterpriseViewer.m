@@ -616,7 +616,7 @@ static NSArray *accessChecks = nil;
   ctx  = [self commandContext];
   pgid = [[self fakeProject] globalID];
 
-  if ((pClass = NSClassFromString(@"SkyProjectFileManager")) == nil) {
+  if ((pClass = NGClassFromString(@"SkyProjectFileManager")) == nil) {
     [self logWithFormat:
             @"WARNING[%s] couldn`t found SkyProjectFileManager class",
             __PRETTY_FUNCTION__];

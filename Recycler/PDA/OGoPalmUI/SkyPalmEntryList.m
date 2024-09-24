@@ -318,7 +318,7 @@
   
   classString = NSStringFromClass([[self->selections objectAtIndex:0] class]);
   classString = [NSString stringWithFormat:@"%@Selection", classString];
-  selectionClass = NSClassFromString(classString);
+  selectionClass = NGClassFromString(classString);
 
   recordSelection = [[selectionClass alloc] init];
   return AUTORELEASE(recordSelection);

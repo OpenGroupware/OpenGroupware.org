@@ -141,7 +141,7 @@ static int  DefMaxSearchCount             = 10;
 - (EODataSource *)mailingListDS {
   EODataSource *ds;
   
-  ds = [NSClassFromString(@"SkyMailingListDataSource") alloc];
+  ds = [NGClassFromString(@"SkyMailingListDataSource") alloc];
 
   // TODO: fix prototype
   ds = [(SkyAccessManager *)ds initWithContext:cmdctx];

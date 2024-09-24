@@ -309,7 +309,7 @@ static NSComparisonResult compareTeams(id team1, id team2, void *context) {
   unsigned i, cnt;
 
   if (ProjectFileManagerClass == Nil)
-    ProjectFileManagerClass = NSClassFromString(@"SkyProjectFileManager");
+    ProjectFileManagerClass = NGClassFromString(@"SkyProjectFileManager");
   
   projectIds = [[self userDefaults] arrayForKey:@"docked_projects"];
   

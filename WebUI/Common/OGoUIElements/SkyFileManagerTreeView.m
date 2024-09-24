@@ -269,7 +269,7 @@ static NSDictionary *onlySubFoldersHints = nil;
   static Class   FileManagerClass = NULL;
 
   if (LoadClass == YES) {
-    FileManagerClass = NSClassFromString(@"SkyProjectFileManager");
+    FileManagerClass = NGClassFromString(@"SkyProjectFileManager");
     LoadClass = NO;
   }
 

@@ -180,7 +180,7 @@ static NSArray *applicationPaths = nil;
   if((taskClass = self->taskclass) == nil)
     taskClass = @"MasterTask";
   
-  clazz = NSClassFromString(taskClass);
+  clazz = NGClassFromString(taskClass);
   return [[(MasterTask *)[clazz alloc] initWithTemplate:self] autorelease];
 }
 

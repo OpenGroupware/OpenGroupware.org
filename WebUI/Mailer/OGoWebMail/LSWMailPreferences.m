@@ -368,7 +368,7 @@ static NSArray *NumberOfUploadFieldsValues = nil;
 
 - (id)mailFormattingManager {
   // TODO: weird ...
-  return NSClassFromString(@"LSWImapMailEditor");
+  return NGClassFromString(@"LSWImapMailEditor");
 }
 
 - (NSString *)accountEmail {

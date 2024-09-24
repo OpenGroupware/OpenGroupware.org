@@ -37,7 +37,7 @@
   Class clazz;
   id    pm;
   
-  if ((clazz = NSClassFromString(@"ZLPropMapper")) == nil)
+  if ((clazz = NGClassFromString(@"ZLPropMapper")) == nil)
     return;
   
   if ((pm = [[[clazz alloc] initWithDictionary:_dict] autorelease]) == nil) {

@@ -50,7 +50,7 @@ static NSDictionary *Classes   = nil;
       str   = [tag substringToIndex:1];
       cName = [@"XmlSchema" stringByAppendingString:[str uppercaseString]];
       cName = [cName stringByAppendingString:[tag substringFromIndex:1]];
-      clazz = NSClassFromString(cName);
+      clazz = NGClassFromString(cName);
 
       NSAssert2((clazz != Nil),
                 @"%s: could not find class for string: %@",

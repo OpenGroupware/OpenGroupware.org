@@ -435,7 +435,7 @@ static NSString *FHSOGoBundleDir               = nil;
 
     d = [[EOEntityClassDescription alloc] initWithEntity:entity];
     [EOClassDescription registerClassDescription:d
-                        forClass:NSClassFromString([entity className])];
+                        forClass:NGClassFromString([entity className])];
     [d release]; d = nil;
   }
 }
@@ -460,7 +460,7 @@ static NSString *FHSOGoBundleDir               = nil;
 
   d = [[EOEntityClassDescription alloc] initWithEntity:entity];
   [EOClassDescription registerClassDescription:d
-                      forClass:NSClassFromString([entity className])];
+                      forClass:NGClassFromString([entity className])];
   [d release]; d = nil;
 }
 

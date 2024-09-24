@@ -72,7 +72,7 @@
     [self registerAsPersistentInstance];
 
     self->dataSource  = [[SkyImapMailPanelDataSource allocWithZone:z] init];
-    self->state       = [[NSClassFromString(@"SkyImapMailListState")
+    self->state       = [[NGClassFromString(@"SkyImapMailListState")
                                            allocWithZone:z]
  initWithDefaults:d];
     [(NSObject *)self->state setName:@"PanelMailList"];
@@ -124,7 +124,7 @@
     self->initializeImap = NO;
   }
   
-  return [NSClassFromString(@"SkyImapContextHandler")
+  return [NGClassFromString(@"SkyImapContextHandler")
                            sessionImapContext:[self session]];
 }
 

@@ -127,7 +127,7 @@ static NSArray* months = nil; /* label keys */
   if (![self _loadDataSourceBundle:_bundleName])
     return NO;
   
-  if ((c = NSClassFromString(_dsName)) == Nil) {
+  if ((c = NGClassFromString(_dsName)) == Nil) {
     [self logWithFormat:@"ERROR: missing datasource class: %@", _dsName];
     return NO;
   }

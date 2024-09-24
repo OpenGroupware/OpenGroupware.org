@@ -136,9 +136,9 @@ static NSComparisonResult sortByIntField(id obj1, id obj2, void *ctx) {
   bm = [NGBundleManager defaultBundleManager];
   ud = [NSUserDefaults standardUserDefaults];
   
-  SkyFSDocumentClass  = NSClassFromString(@"SkyFSDocument");
-  SkyFSGlobalIDClass  = NSClassFromString(@"SkyFSGlobalID");
-  SkySvnDocumentClass = NSClassFromString(@"SkySvnDocument");
+  SkyFSDocumentClass  = NGClassFromString(@"SkyFSDocument");
+  SkyFSGlobalIDClass  = NGClassFromString(@"SkyFSGlobalID");
+  SkySvnDocumentClass = NGClassFromString(@"SkySvnDocument");
 
   /* Epoz */
   
@@ -315,7 +315,7 @@ static NSComparisonResult sortByIntField(id obj1, id obj2, void *ctx) {
   Class              class;
     
   dgid = _object;
-  if ((class = NSClassFromString(@"SkyProjectFileManager")) == Nil) {
+  if ((class = NGClassFromString(@"SkyProjectFileManager")) == Nil) {
     [self warnWithFormat:@"did not find SkyProjectFileManager class!"];
     return nil;
   }
@@ -466,7 +466,7 @@ static NSComparisonResult sortByIntField(id obj1, id obj2, void *ctx) {
 }
 
 - (Class)historyDataSourceClass {
-  return NSClassFromString(@"SkyDocumentHistoryDataSource");
+  return NGClassFromString(@"SkyDocumentHistoryDataSource");
 }
 - (EODataSource *)historyDataSource {
   if (![[self fileManager] supportsHistoryDataSource])
@@ -562,7 +562,7 @@ static NSComparisonResult sortByIntField(id obj1, id obj2, void *ctx) {
 
   if ([gid isKindOfClass:[EOKeyGlobalID class]]) {
     self->document =
-      [[NSClassFromString(@"SkyProjectDocument") alloc]
+      [[NGClassFromString(@"SkyProjectDocument") alloc]
                                                  initWithGlobalID:gid
                                                  fileManager:fm];
   
@@ -947,7 +947,7 @@ static NSComparisonResult sortByIntField(id obj1, id obj2, void *ctx) {
 }
 
 - (Class)dbFileManagerClass {
-  return NSClassFromString(@"SkyProjectFileManager");
+  return NGClassFromString(@"SkyProjectFileManager");
 }
 - (BOOL)isDocumentInDBProject {
   Class clazz;
@@ -1383,7 +1383,7 @@ static NSComparisonResult sortByIntField(id obj1, id obj2, void *ctx) {
 - (BOOL)hasPublisher {
   static int hasPub = -1;
   if (hasPub == -1)
-    hasPub = NSClassFromString(@"SkyPublisherModule") ? 1 : 0;
+    hasPub = NGClassFromString(@"SkyPublisherModule") ? 1 : 0;
   return hasPub;
 }
 - (BOOL)hasPubPreview {
@@ -1512,7 +1512,7 @@ static NSComparisonResult sortByIntField(id obj1, id obj2, void *ctx) {
       */
       Class clazz;
       
-      if ((clazz = NSClassFromString(tmp)) != Nil) {
+      if ((clazz = NGClassFromString(tmp)) != Nil) {
 	if (![clazz canShowInDocumentViewer:self])
 	  continue;
       }

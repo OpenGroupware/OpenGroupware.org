@@ -147,7 +147,7 @@ static BOOL printTimings = NO;
   }
   
   /* make filemanager */
-  if ((fmClass = NSClassFromString(@"SkyProjectFileManager")) == Nil) {
+  if ((fmClass = NGClassFromString(@"SkyProjectFileManager")) == Nil) {
     [self logWithFormat:
 	    @"did not find filemanager class: SkyProjectFileManager!"];
     return nil;

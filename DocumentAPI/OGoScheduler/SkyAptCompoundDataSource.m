@@ -64,7 +64,7 @@
 
 // helper
 - (Class)palmDateDataSourceClass {
-  return NSClassFromString(@"SkyPalmDateDataSource");
+  return NGClassFromString(@"SkyPalmDateDataSource");
 }
 - (Class)skyAptDataSourceClass {
   return [SkyAptDataSource class];

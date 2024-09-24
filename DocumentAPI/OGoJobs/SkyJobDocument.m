@@ -318,7 +318,7 @@ static BOOL debugDocRegistration = NO;
     EOFetchSpecification *fspec;
 
     creatorId = [[(EOKeyGlobalID *)self->creator keyValuesArray] lastObject];
-    clazz = NSClassFromString(@"SkyAccountDataSource");
+    clazz = NGClassFromString(@"SkyAccountDataSource");
     ds    = [(SkyAccountDataSource *)[clazz alloc] 
 				     initWithContext:[self context]];
     qual  = [[EOKeyValueQualifier alloc]
@@ -379,7 +379,7 @@ static BOOL debugDocRegistration = NO;
 
     executorId = [[(EOKeyGlobalID *)self->executor keyValuesArray] lastObject];
 
-    clazz = NSClassFromString(dsName);
+    clazz = NGClassFromString(dsName);
     ds    = [(SkyAccountDataSource *)[clazz alloc] 
 				     initWithContext:[self context]];
     qual  = [[EOKeyValueQualifier alloc]

@@ -723,7 +723,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
     
   /* load LSWBase */
 
-  NSClassFromString(@"LSWBaseModule");
+  NGClassFromString(@"LSWBaseModule");
 
   /* find startpage */
 

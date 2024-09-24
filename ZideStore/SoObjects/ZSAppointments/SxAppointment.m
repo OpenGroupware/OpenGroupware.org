@@ -169,7 +169,7 @@ static BOOL embedViewURL             = NO;
   if (!didInit) {
     didInit = YES;
     
-    if ((RendererClass = NSClassFromString(@"SxZLFullAptRenderer")) == Nil) {
+    if ((RendererClass = NGClassFromString(@"SxZLFullAptRenderer")) == Nil) {
       // TODO: fall back to a default renderer?!
       [self logWithFormat:
               @"Note: did not find 'SxZLFullAptRenderer' class, cannot "

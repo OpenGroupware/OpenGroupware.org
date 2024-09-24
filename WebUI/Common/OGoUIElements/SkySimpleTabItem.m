@@ -57,7 +57,7 @@ static Class        baseClass  = Nil;
 + (void)initialize {
   NSMutableDictionary *md;
 
-  if ((baseClass = NSClassFromString(@"WETabItem")) == Nil)
+  if ((baseClass = NGClassFromString(@"WETabItem")) == Nil)
     NSLog(@"ERROR(%s): missing WETabItem class", __PRETTY_FUNCTION__);
   
   md = [[NSMutableDictionary alloc] initWithCapacity:8];

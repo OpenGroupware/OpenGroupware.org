@@ -39,13 +39,13 @@
   NSDictionary *dkey = nil;
   
   if (EnterpriseClass == Nil)
-    EnterpriseClass = NSClassFromString(@"LSEnterprise");
+    EnterpriseClass = NGClassFromString(@"LSEnterprise");
   if (PersonClass == Nil)
-    PersonClass = NSClassFromString(@"LSPerson");
+    PersonClass = NGClassFromString(@"LSPerson");
   if (InvoiceActionClass == Nil)
-    InvoiceActionClass = NSClassFromString(@"LSInvoiceAction");
+    InvoiceActionClass = NGClassFromString(@"LSInvoiceAction");
   if (InvoiceClass == Nil)
-    InvoiceClass = NSClassFromString(@"LSInvoice");
+    InvoiceClass = NGClassFromString(@"LSInvoice");
   if (StrClass == Nil)
     StrClass = [NSString class];
   

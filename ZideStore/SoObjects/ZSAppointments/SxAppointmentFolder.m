@@ -220,7 +220,7 @@ static BOOL addGroupToWriteACL = YES;
 
 - (id)overviewFolderInContext:(id)_ctx {
   id folder;
-  folder = [[NSClassFromString(@"SxAppointmentFolder") alloc] 
+  folder = [[NGClassFromString(@"SxAppointmentFolder") alloc] 
 	     initWithName:@"Overview" inContainer:self];
   [folder setGroup:[self group]];
   [(SxAppointmentFolder *)folder setIsOverview:YES];
@@ -822,7 +822,7 @@ static BOOL addGroupToWriteACL = YES;
   static Class RendererClass = NULL;
 
   if (RendererClass == NULL) {
-    RendererClass = NSClassFromString(@"SxZLAptRenderer");
+    RendererClass = NGClassFromString(@"SxZLAptRenderer");
 
     if (RendererClass == NULL) {
       [self logWithFormat:@"try to instantiate 'SxZLAptRenderer'"];

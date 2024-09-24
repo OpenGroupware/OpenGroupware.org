@@ -97,7 +97,7 @@
   // TODO: fix prototype
   // TODO: this is not really correct? (but should work sufficiently well)
   ds = [(SkyAccessManager *)
-	 [NSClassFromString(@"SkyPersonJobDataSource") alloc] 
+	 [NGClassFromString(@"SkyPersonJobDataSource") alloc] 
 	 initWithContext:[self commandContext]];
   if (ds == nil) {
     [self errorWithFormat:

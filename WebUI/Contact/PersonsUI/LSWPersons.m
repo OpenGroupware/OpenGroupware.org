@@ -703,7 +703,7 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 
 - (Class)wizardClass {
   // TODO: check whether this is used somewhere
-  return NSClassFromString(@"SkyPersonWizard");
+  return NGClassFromString(@"SkyPersonWizard");
 }
 - (id)wizard {
   // TODO: check whether this is used somewhere

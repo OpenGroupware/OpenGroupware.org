@@ -50,14 +50,14 @@ static BOOL showGroupOverviewFolders = -1;
 
 - (id)calendarFolder:(NSString *)_key inContext:(id)_ctx {
   id folder;
-  folder = [[NSClassFromString(@"SxAppointmentFolder") alloc] 
+  folder = [[NGClassFromString(@"SxAppointmentFolder") alloc] 
 	     initWithName:_key inContainer:self];
   [folder takeValue:[self nameInContainer] forKey:@"group"];
   return [folder autorelease];
 }
 - (id)overviewFolder:(NSString *)_key inContext:(id)_ctx {
   id folder;
-  folder = [[NSClassFromString(@"SxAppointmentFolder") alloc] 
+  folder = [[NGClassFromString(@"SxAppointmentFolder") alloc] 
 	     initWithName:_key inContainer:self];
   [folder takeValue:[self nameInContainer] forKey:@"group"];
   [folder setIsOverview:YES];
@@ -65,7 +65,7 @@ static BOOL showGroupOverviewFolders = -1;
 }
 - (id)taskFolder:(NSString *)_key inContext:(id)_ctx {
   id folder;
-  folder = [[NSClassFromString(@"SxTaskFolder") alloc] 
+  folder = [[NGClassFromString(@"SxTaskFolder") alloc] 
 	     initWithName:_key inContainer:self];
   [folder takeValue:[self nameInContainer] forKey:@"group"];
   return [folder autorelease];

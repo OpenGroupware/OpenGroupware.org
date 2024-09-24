@@ -173,7 +173,7 @@ static NSSet *Valid_interface_ContentTags = nil;
   NSEnumerator *tagEnum;
   id           tag;
   
-  schemaRegistry = NSClassFromString(@"XmlSchema");
+  schemaRegistry = NGClassFromString(@"XmlSchema");
   
   tagEnum = [self->imports objectEnumerator];
   while ((tag = [tagEnum nextObject])) {

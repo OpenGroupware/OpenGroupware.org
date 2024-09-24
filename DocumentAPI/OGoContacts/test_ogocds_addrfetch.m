@@ -118,7 +118,7 @@
 }
 
 - (Class)dsClass {
-  return NSClassFromString(@"SkyPersonDataSource");
+  return NGClassFromString(@"SkyPersonDataSource");
 }
 
 - (NSDictionary *)fetchHints {

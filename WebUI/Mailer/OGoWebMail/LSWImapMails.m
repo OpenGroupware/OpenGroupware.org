@@ -323,7 +323,7 @@ static int  DisableFilter = -1;
 
 - (id)filterManager {
   // TODO: improve that
-  return NSClassFromString(@"LSWImapMailFilterManager");
+  return NGClassFromString(@"LSWImapMailFilterManager");
 }
 
 /* notifications */

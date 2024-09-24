@@ -208,7 +208,7 @@
   resource = [resource valueForKey:@"class"];
   if ([resource length]) {
     //NSLog(@"%s found %@", __PRETTY_FUNCTION__, resource);
-    return NSClassFromString(resource);
+    return NGClassFromString(resource);
   }
   return [PPRecordDatabase class];
 }
@@ -220,10 +220,10 @@
 {
   if (_type == 'DATA') {
     switch (_creator) {
-      case 'addr': return NSClassFromString(@"PPAddressDatabase");
-      case 'todo': return NSClassFromString(@"PPToDoDatabase");
-      case 'date': return NSClassFromString(@"PPDatebookDatabase");
-      case 'memo': return NSClassFromString(@"PPMemoDatabase");
+      case 'addr': return NGClassFromString(@"PPAddressDatabase");
+      case 'todo': return NGClassFromString(@"PPToDoDatabase");
+      case 'date': return NGClassFromString(@"PPDatebookDatabase");
+      case 'memo': return NGClassFromString(@"PPMemoDatabase");
     }
   }
   {

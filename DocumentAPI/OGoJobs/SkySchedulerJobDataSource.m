@@ -110,7 +110,7 @@
   NSTimeZone           *timeZone;
 
   if (qualClass == NULL)
-    qualClass = NSClassFromString(@"SkyAppointmentQualifier");
+    qualClass = NGClassFromString(@"SkyAppointmentQualifier");
 
   fs = [self fetchSpecification];
 

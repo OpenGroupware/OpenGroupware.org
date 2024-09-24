@@ -222,14 +222,14 @@ static BOOL debugOn = NO;
 - (id)folderWithName:(NSString *)_name inContext:(id)_ctx {
   id folder;
   
-  folder = [[NSClassFromString(@"SxDocumentFolder") alloc] 
+  folder = [[NGClassFromString(@"SxDocumentFolder") alloc] 
              initWithName:_name inContainer:self];
   return [folder autorelease];
 }
 - (id)fileWithName:(NSString *)_name inContext:(id)_ctx {
   id file;
   
-  file = [[NSClassFromString(@"SxDocument") alloc] 
+  file = [[NGClassFromString(@"SxDocument") alloc] 
              initWithName:_name inContainer:self];
   return [file autorelease];
 }
@@ -261,13 +261,13 @@ static BOOL debugOn = NO;
   id file;
   
   [self logWithFormat:@"lookup tmpfile: '%@'", _name];
-  file = [[NSClassFromString(@"SxTmpDocument") alloc] 
+  file = [[NGClassFromString(@"SxTmpDocument") alloc] 
              initWithName:_name inContainer:self];
   return [file autorelease];
 }
 
 - (BOOL)useSeparateTmpFilesWithFileManager:(id)_fm {
-  return [_fm isKindOfClass:NSClassFromString(@"SkyProjectFileManager")];
+  return [_fm isKindOfClass:NGClassFromString(@"SkyProjectFileManager")];
 }
 
 - (id)lookupStoredName:(NSString *)_name inContext:(id)_ctx {

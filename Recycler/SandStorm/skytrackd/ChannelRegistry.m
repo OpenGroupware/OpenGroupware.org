@@ -79,7 +79,7 @@
       Channel  *channel    = nil;
       NSString *changeFile = nil;
  
-      classType = NSClassFromString([entry objectForKey:@"type"]);
+      classType = NGClassFromString([entry objectForKey:@"type"]);
       channel = [[classType alloc] init];
       [channel initWithDictionary:entry name:[entry objectForKey:@"name"]];
 
@@ -117,7 +117,7 @@
             Class actionClass = Nil;
             id actionObject;
             
-            actionClass = NSClassFromString([action valueForKey:@"type"]);
+            actionClass = NGClassFromString([action valueForKey:@"type"]);
             actionObject = [actionClass actionWithArguments:
                                         [action valueForKey:@"arguments"]];
             if (actionObject != nil) {
@@ -165,7 +165,7 @@
 {
   Class classType = Nil;
 
-  classType = NSClassFromString(_type);
+  classType = NGClassFromString(_type);
 
   if (classType != nil) {
     Channel *chan = nil;
@@ -288,7 +288,7 @@
         Class regClass = Nil;
         id    action   = nil;
   
-        regClass = NSClassFromString(_actionType);
+        regClass = NGClassFromString(_actionType);
         action = [regClass actionWithArguments:_args];
 
         [registryEntry registerAction:action forElement:_element];

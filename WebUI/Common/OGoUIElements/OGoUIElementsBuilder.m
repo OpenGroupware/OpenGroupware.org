@@ -94,10 +94,10 @@ static WOAssociation *yesAssoc         = nil;
 }
 
 - (Class)collapsibleContentClass {
-  return NSClassFromString(@"SkyCollapsibleContentMode");
+  return NGClassFromString(@"SkyCollapsibleContentMode");
 }
 - (Class)collapsibleTitleClass {
-  return NSClassFromString(@"SkyCollapsibleTitleMode");
+  return NGClassFromString(@"SkyCollapsibleTitleMode");
 }
 
 /* support elements */
@@ -374,9 +374,9 @@ static WOAssociation *yesAssoc         = nil;
   switch (c1) {
     case 'f': { /* starting with 'f' */
       if (tl == 5 && [tagName isEqualToString:@"field"])
-	return NSClassFromString(@"OGoField");
+	return NGClassFromString(@"OGoField");
       if (tl == 8 && [tagName isEqualToString:@"fieldset"])
-	return NSClassFromString(@"OGoFieldSet");
+	return NGClassFromString(@"OGoFieldSet");
       break;
     }
     case 't': { /* starting with 't' */
@@ -385,18 +385,18 @@ static WOAssociation *yesAssoc         = nil;
       c2 = [tagName characterAtIndex:1];
       
       if (tl == 2) {
-        if (c2 == 'd') return NSClassFromString(@"WETableData");
-        if (c2 == 'h') return NSClassFromString(@"WETableHeader");
+        if (c2 == 'd') return NGClassFromString(@"WETableData");
+        if (c2 == 'h') return NGClassFromString(@"WETableHeader");
       }
       if (tl > 5) {
         if ([tagName isEqualToString:@"tbutton"])
-          return NSClassFromString(@"WETableViewButtonMode");
+          return NGClassFromString(@"WETableViewButtonMode");
         if ([tagName isEqualToString:@"ttitle"])
-          return NSClassFromString(@"WETableViewTitleMode");
+          return NGClassFromString(@"WETableViewTitleMode");
         if ([tagName isEqualToString:@"tfooter"])
-          return NSClassFromString(@"WETableViewFooterMode");
+          return NGClassFromString(@"WETableViewFooterMode");
         if ([tagName isEqualToString:@"tgroup"])
-          return NSClassFromString(@"WETableViewGroupMode");
+          return NGClassFromString(@"WETableViewGroupMode");
       }
       break;
     }

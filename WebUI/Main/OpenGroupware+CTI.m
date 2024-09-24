@@ -75,7 +75,7 @@
     return nil;
   }
   
-  if ((readerClass = NSClassFromString(_name)))
+  if ((readerClass = NGClassFromString(_name)))
     return [[[readerClass alloc] init] autorelease];
   
   [self logWithFormat:

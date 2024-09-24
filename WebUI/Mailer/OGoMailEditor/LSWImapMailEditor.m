@@ -390,7 +390,7 @@ static Class      StrClass        = nil;
   LSCommandContext *cmdctx;
   
   cmdctx = (id)[[self session] commandContext];
-  ds = [NSClassFromString(@"SkyMailingListDataSource") alloc];
+  ds = [NGClassFromString(@"SkyMailingListDataSource") alloc];
   
   // TODO: fix prototype (this is not a SkyAccessManager ..)
   ds = [(SkyAccessManager *)ds initWithContext:(id)cmdctx];
