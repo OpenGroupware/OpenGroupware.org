@@ -386,9 +386,15 @@ static BOOL debugOn = NO;
   id       entry;
 
   for (idx = [_emails count]; idx != 0; ) {
-    entry = [_emails objectAtIndex:--idx];
+    entry = [_emails objectAtIndex:--idx]; // hh: ugh!
+    #if 1 // hh(2024-09-24): This is probably what was desired?
+    // TODO: HACK HACK: why is the backend calling into the frontend?
+    if ((entry = [SxAptManager gidForPKeyEmail:entry]) == nil)
+      continue;
+    #else
     if ((entry = [SxAppointment gidForPKeyEmail:entry]) == nil)
       continue;
+    #endif
 
     [_gids addObject:entry];
     [_emails removeObjectAtIndex:idx];

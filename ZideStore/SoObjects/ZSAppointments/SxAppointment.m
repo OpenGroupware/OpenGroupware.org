@@ -838,14 +838,13 @@ static BOOL embedViewURL             = NO;
   WOResponse  *r;
   WORequest   *rq;
   id          obj;
-  id          cmdctx; 
   NSString    *etag;
 
   if ((error = [self matchesRequestConditionInContext:_ctx]) != nil)
     return error;
 
-  cmdctx = [self commandContextInContext:_ctx];
   #if 0 // hh(2024-09-20): unused
+  cmdctx = [self commandContextInContext:_ctx];
   tzName = [[cmdctx userDefaults] stringForKey:@"timezone"];
   tz     = [tzName isNotEmpty]
     ? (id)[NSTimeZone timeZoneWithAbbreviation:tzName] : nil;
