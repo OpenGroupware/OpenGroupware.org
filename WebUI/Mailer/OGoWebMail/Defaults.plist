@@ -56,8 +56,8 @@
 
   mail_MDN_type                     = "ask";
   mail_MDN_text                     = "This is a Return Receipt for the mail you sent on $date$ \nto $to$ with subject '$subject$'.\n\nThis only acknowledges that the message was displayed on the recipient's machine. \nThis is no guarantee that the message has been read or understood.";
-  //mail_MDN_text                     = "Dies ist eine Antwortbest‰tigung f¸r die Nachricht, die Sie am $date$ \nan $to$ mit dem Titel '$subject$' gesendet haben.\n\nDas bedeutet lediglich, dass die Nachricht auf dem Bildschirm des Empf‰ngers dargestellt wurde. \nDas ist keine Garantie daf¸r, dass die Nachricht gelesen oder verstanden wurde.";
-  mail_MDN_subject                  = "Antwortbest‰tigung";
+  //mail_MDN_text                     = "Dies ist eine Antwortbest√§tigung f√ºr die Nachricht, die Sie am $date$ \nan $to$ mit dem Titel '$subject$' gesendet haben.\n\nDas bedeutet lediglich, dass die Nachricht auf dem Bildschirm des Empf√§ngers dargestellt wurde. \nDas ist keine Garantie daf√ºr, dass die Nachricht gelesen oder verstanden wurde.";
+  mail_MDN_subject                  = "Antwortbest√§tigung";
 
   mail_editor_text_rows             = 20;
   mail_editor_text_columns          = 80;

@@ -56,7 +56,7 @@
     "Cerca%20nella%20radice"           = { class = SxSearchFolder; };
     "Hoofdmap voor zoeken"             = { class = SxSearchFolder; };
     "Hoofdmap%20voor%20zoeken"         = { class = SxSearchFolder; };
-    "Søgerod"       		       = { class = SxSearchFolder; };
+    "SÃ¸gerod"       		       = { class = SxSearchFolder; };
     "S%f8gerod"                        = { class = SxSearchFolder; };
   };
 }

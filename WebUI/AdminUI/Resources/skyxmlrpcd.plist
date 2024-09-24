@@ -13,8 +13,8 @@
                XML-RPC Server lauschen soll.";
        };
      ptBR = {
-       title = "Porta de escuta do serviço OpenGroupware XML-RPC";
-       info = "Define a porta que o serviço OpenGroupware XML-RPC deve escutar.";
+       title = "Porta de escuta do serviÃ§o OpenGroupware XML-RPC";
+       info = "Define a porta que o serviÃ§o OpenGroupware XML-RPC deve escutar.";
      };
      },
   );
