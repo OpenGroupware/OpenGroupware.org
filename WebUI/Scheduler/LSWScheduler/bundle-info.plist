@@ -74,12 +74,12 @@
       },
       { verb = view;     type = "eo/date"; component = LSWAppointmentViewer; },
       
-      { verb=print; type="eo-gid/date"; component=SkyAppointmentPrintViewer;},
-      { verb=print; type="eo/date";     component=SkyAppointmentPrintViewer;},
+      { verb = print; type="eo-gid/date"; component=SkyAppointmentPrintViewer;},
+      { verb = print; type="eo/date";     component=SkyAppointmentPrintViewer;},
       
-      { verb = edit;     type = "eo/date"; component = LSWAppointmentEditor; },
-      { verb = new;      type = "eo/date"; component = LSWAppointmentEditor; },
-      { verb = proposal; type = "eo/date"; component = LSWAppointmentProposal; },
+      { verb = edit;     type = "eo/date"; component = LSWAppointmentEditor;  },
+      { verb = new;      type = "eo/date"; component = LSWAppointmentEditor;  },
+      { verb = proposal; type = "eo/date"; component = LSWAppointmentProposal;},
       { verb = move;     type = "eo/date"; component = LSWAppointmentMove; },
       { 
         verb = mailview; type = "eo-pkey/date";
