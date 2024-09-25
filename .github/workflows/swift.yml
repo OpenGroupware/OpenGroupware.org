@@ -33,7 +33,7 @@ jobs:
             libcrypt-dev make libz-dev gobjc \
             gnustep-make gnustep-base-runtime libgnustep-base-dev
       - name: Configure and install SOPE
-        run:
+        run:  |
           ls
           ls ..
           ls ../..
