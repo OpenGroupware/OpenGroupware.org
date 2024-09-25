@@ -15,6 +15,9 @@ ADDITIONAL_LIB_DIRS += \
 	-L../DocumentAPI/OGoScheduler/$(GNUSTEP_OBJ_DIR)	\
 	-L../DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)	\
 
+# Otherwise explicitly linked shared libs are not requested!
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
+
 LSFoundationLIBS = \
 	-lLSFoundation	\
 	-lGDLAccess	\

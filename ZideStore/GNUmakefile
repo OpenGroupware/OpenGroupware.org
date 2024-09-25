@@ -18,6 +18,9 @@ ifneq ($(FOUNDATION_LIB),apple)
 SUBPROJECTS += Protocols
 endif
 
+# Otherwise explicitly linked shared libs are not requested!
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
+
 -include ZLConnect.make
 
 -include GNUmakefile.preamble

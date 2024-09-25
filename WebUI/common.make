@@ -35,3 +35,6 @@ ADDITIONAL_BUNDLE_LIBS += \
 ADDITIONAL_CPPFLAGS += -Wall -pipe -Wno-protocol
 
 SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)
+
+# Otherwise explicitly linked shared libs are not requested!
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed

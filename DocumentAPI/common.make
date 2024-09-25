@@ -22,3 +22,6 @@ ADDITIONAL_LIB_DIRS += \
 	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
 SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)
+
+# Otherwise explicitly linked shared libs are not requested!
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
