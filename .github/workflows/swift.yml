@@ -16,14 +16,16 @@ jobs:
           - ubuntu:noble
     container: ${{ matrix.image }}
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          path: OGo
       - name: Checkout SOPE Repository
         uses: actions/checkout@v4
         with:
           repository: OpenGroupware/SOPE
           ref: refs/heads/develop
-          path: SOPE-develop
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+          path: SOPE
       - name: Update APT and Install Cache Deps
         run:  |
           apt-get -y -qq update
@@ -40,7 +42,7 @@ jobs:
           ls ../../OpenGroupware.org; echo "---"
           ls /__w/; echo "---"
           find /__w/; echo "---"
-          cd ../../OpenGroupware.org/SOPE-develop
+          cd SOPE
           ./configure \
           --with-gnustep \
           --enable-debug \
@@ -52,7 +54,8 @@ jobs:
           make -j 8 all
           make install
       - name: Configure OGo
-        run:          
+        run:  |
+          cd OGo        
           ./configure \
             --with-gnustep \
             --gsmake=/usr/share/GNUstep/Makefiles \
