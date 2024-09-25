@@ -281,6 +281,34 @@
 
 @end /* NSObject(ContentPageTyping) */
 
+// hh(2024-09-25): I think setting those makes sense, if unset.
+// OGo pages should *never* be cached, right?
+// And while it may work w/ gstep-base, the HTTP parser used to have issues
+// w/ keepalive?
+// mod_ngobjweb used to deal with such things.
+@implementation OGoContentPage(HTTPHeaders)
+- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
+  [super appendToResponse:_response inContext:_ctx];
+  if ([_response headerForKey:@"Connection"] == nil) {
+    [_response setHeader:@"Close" forKey:@"Connection"];
+  }
+  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+  if ([_response headerForKey:@"Cache-Control"] == nil) {
+    [_response setHeader:@"The no-store" forKey:@"Cache-Control"];
+  }
+}
+@end
+
 /* for compatibility, to be removed */
 @implementation LSWContentPage
+- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
+  [super appendToResponse:_response inContext:_ctx];
+  if ([_response headerForKey:@"Connection"] == nil) {
+    [_response setHeader:@"Close" forKey:@"Connection"];
+  }
+  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+  if ([_response headerForKey:@"Cache-Control"] == nil) {
+    [_response setHeader:@"The no-store" forKey:@"Cache-Control"];
+  }
+}
 @end /* LSWContentPage */
