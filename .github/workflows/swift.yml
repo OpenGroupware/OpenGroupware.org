@@ -34,10 +34,13 @@ jobs:
             gnustep-make gnustep-base-runtime libgnustep-base-dev
       - name: Configure and install SOPE
         run:  |
-          ls
-          ls ..
-          ls ../..
-          cd SOPE-develop
+          ls; echo "---"
+          ls ..; echo "---"
+          ls ../..; echo "---"
+          ls ../../OpenGroupware.org; echo "---"
+          ls /__w/; echo "---"
+          find /__w/; echo "---"
+          cd ../../OpenGroupware.org/SOPE-develop
           ./configure \
           --with-gnustep \
           --enable-debug \
