@@ -36,12 +36,6 @@ jobs:
             gnustep-make gnustep-base-runtime libgnustep-base-dev
       - name: Configure and install SOPE
         run:  |
-          ls; echo "---"
-          ls ..; echo "---"
-          ls ../..; echo "---"
-          ls ../../OpenGroupware.org; echo "---"
-          ls /__w/; echo "---"
-          find /__w/; echo "---"
           cd SOPE
           ./configure \
           --with-gnustep \
@@ -62,4 +56,6 @@ jobs:
             --enable-debug \
             --disable-strip
       - name: Build OGo
-        run: make -j 8 all
+        run:  |
+          cd OGo        
+          make -j 8 all
