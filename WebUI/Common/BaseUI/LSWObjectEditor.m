@@ -217,9 +217,13 @@
 }
 
 - (void)setAttribute:(NSDictionary *)_attribute {
+  #if 0 // hh(2024-09-26): WOSimpleRepetition DOES clear the value
+  assert(_attribute != nil);
+  NSAssert(_attribute != nil, @"no attribute passed ..");
+  #endif
   self->attribute  = _attribute;
   self->currentKey = [_attribute valueForKey:@"key"];
-  NSAssert(self->currentKey, @"no key set ..");
+  NSAssert(_attribute == nil || self->currentKey != nil, @"no key set ..");
 }
 - (NSDictionary *)attribute {
   return self->attribute;

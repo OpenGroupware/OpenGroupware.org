@@ -29,6 +29,15 @@
 
 /*
   DEPRECATED
+  - hh(2024-09-26): but still used in various places
+    - SkyInvoiceArticleEditor
+    - SkyArticleUnitEditor
+    - SkyArticleCategoryEditor
+    - SkyArticleAssignmentEditor
+    - SkyPersonAttributesEditor
+    - SkyPersonEditor
+    - SkyJobAttributesEditor
+    ...
 
   Usage:
     TODO: document bindings
