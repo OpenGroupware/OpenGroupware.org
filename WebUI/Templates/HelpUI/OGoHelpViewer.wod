@@ -28,10 +28,8 @@ LinePix:   WOImage { filename = "line_stretch.gif"; }
 LineLeft:  WOImage { filename = "line_left.gif";    }
 LineRight: WOImage { filename = "line_right.gif";   }
 
-FooterRowLabel2a: WOHyperlink {
-  string = "SKYRIX Software AG";
-  href   = "http://www.skyrix.com";
-  TARGET = "SKYRIX";
+FooterRowLabel2a: WOString {
+  value = "SKYRIX Software AG & Contributors";
 }
 
 PathInfo: WOString { value = context.pathInfo; }
