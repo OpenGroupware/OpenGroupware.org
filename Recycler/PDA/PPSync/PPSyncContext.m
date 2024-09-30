@@ -208,7 +208,7 @@
   resource = [resource valueForKey:@"class"];
   if ([resource length]) {
     //NSLog(@"%s found %@", __PRETTY_FUNCTION__, resource);
-    return NSClassFromString(resource);
+    return NGClassFromString(resource);
   }
   return [PPRecordDatabase class];
 }
@@ -220,10 +220,10 @@
 {
   if (_type == 'DATA') {
     switch (_creator) {
-      case 'addr': return NSClassFromString(@"PPAddressDatabase");
-      case 'todo': return NSClassFromString(@"PPToDoDatabase");
-      case 'date': return NSClassFromString(@"PPDatebookDatabase");
-      case 'memo': return NSClassFromString(@"PPMemoDatabase");
+      case 'addr': return NGClassFromString(@"PPAddressDatabase");
+      case 'todo': return NGClassFromString(@"PPToDoDatabase");
+      case 'date': return NGClassFromString(@"PPDatebookDatabase");
+      case 'memo': return NGClassFromString(@"PPMemoDatabase");
     }
   }
   {
@@ -750,7 +750,7 @@
     [NSException raise:@"PalmOpenError"
                  format:
                    @"ERROR: %@ couldn't open database '%@' "
-                   @"(card %i, mode=0x%p): %i %@",
+                   @"(card %i, mode=%p): %i %@",
                    self, db, card, mode, len, reason];
     return nil;
   }
@@ -1016,7 +1016,7 @@
     return NO;
   }
   if (newId != [(PPGlobalID *)_oid uniqueID]) {
-    NSLog(@"WARNING: new id 0x%p is not equal to old id 0x%p !",
+    NSLog(@"WARNING: new id %p is not equal to old id %p !",
           newId, [(PPGlobalID *)_oid uniqueID]);
   }
   return YES;
@@ -1173,7 +1173,7 @@
   NSMutableString *s;
 
   s = [NSMutableString stringWithCapacity:128];
-  [s appendFormat:@"<%@[0x%p]:", NSStringFromClass([self class]), self];
+  [s appendFormat:@"<%@[%p]:", NSStringFromClass([self class]), self];
   [s appendFormat:@" user=%@", self->userName];
   if (self->lanSyncEnabled)
     [s appendString:@" lanSync"];

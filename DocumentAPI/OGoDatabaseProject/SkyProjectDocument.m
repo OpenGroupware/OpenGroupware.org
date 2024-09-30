@@ -381,19 +381,20 @@ static NSNumber *noNum  = nil;
   NSMutableDictionary *dict;
   NSEnumerator        *enumerator;
   id                  k;
-  NSString            *ns;
 
   if (![self isValid])
     return nil;
 
-  if (!_ns)
+  if (_ns == nil)
     return nil;
   
   if ([_ns isEqualToString:
              [self->fileManager defaultProjectDocumentNamespace]])
     return [self attributes];
   
-  ns         = [NSString stringWithFormat:@"{%@}", _ns];
+  #if 0 // hh(2024-09-19): unused
+  NSString *ns = [NSString stringWithFormat:@"{%@}", _ns];
+  #endif
   dict       = [NSMutableDictionary dictionaryWithCapacity:64];
   enumerator = [[[self extendedAttributes] allKeys] objectEnumerator];
   
@@ -849,7 +850,7 @@ static Class DOMNodeClass = Nil;
   NSMutableString *s;
 
   s = [NSMutableString stringWithCapacity:32];
-  [s appendFormat:@"<%@[0x%p]:", NSStringFromClass([self class]), self];
+  [s appendFormat:@"<%@[%p]:", NSStringFromClass([self class]), self];
 
   if ([self isNew]) {
     [s appendString:@" new"];
@@ -949,7 +950,7 @@ static Class DOMNodeClass = Nil;
   /* TODO: split up big method */
   if (DebugOn) {
     [self logWithFormat:
-            @"%s: refetching doc=0x%p,path=%@: attrs=%s, ext=%s",
+            @"%s: refetching doc=%p,path=%@: attrs=%s, ext=%s",
           __PRETTY_FUNCTION__, self, [self path],
           self->attributes         ? "yes" : "no",
           self->extendedAttributes ? "yes" : "no"];
@@ -979,7 +980,7 @@ static Class DOMNodeClass = Nil;
     NSAutoreleasePool *pool;
     
     if (DebugOn) {
-      NSLog(@"%s: refetching props of '%@' (instance=0x%p) ...",
+      NSLog(@"%s: refetching props of '%@' (instance=%p) ...",
             __PRETTY_FUNCTION__, [self path], self);
     }
     

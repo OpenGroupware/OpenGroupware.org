@@ -514,7 +514,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   inContext:(id)_c
 {
   NSMutableDictionary *cs;
-  id n, org, tmp;
+  id org, tmp;
   
   self->changeset = [[NSMutableDictionary alloc] initWithCapacity:48];
   [self->changeset setObject:yesNum forKey:@"isEnterprise"];
@@ -528,7 +528,9 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   
   /* name handling */
   
+  #if 0 // hh(2024-09-19): unused
   n   = [_vc valueForKey:@"n"]; // NGVCardName
+  #endif
   org = [_vc valueForKey:@"org"]; // NGVCardOrg
   if ([(tmp = [org valueForKey:@"orgnam"]) isNotNull])
     [self mapValue:tmp to:@"description"];
@@ -583,7 +585,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
       home,fax,pref
     The first type-key must always be present, the second is optional.
   */
-  int idx, secidx, prefidx, count;
+  NSUInteger idx, secidx, prefidx, count;
   
   if ((count = [_types count]) == 0) return NO;
   if (count > 3) return NO;
@@ -783,7 +785,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   /* check whether the address type already exists */
 
 #if 0
-  [self debugWithFormat:@"  phone: %@ (0x%p)", lChangeSet, phoneEO];
+  [self debugWithFormat:@"  phone: %@ (%p)", lChangeSet, phoneEO];
 #endif
 
   if (![phoneEO isNotNull]) {

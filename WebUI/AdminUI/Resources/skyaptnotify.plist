@@ -15,7 +15,7 @@
        };
      ptBR = {
        title = "Registro verboso";
-       info = "O registro da ferramenta skyaptnotify ser· mais detalhado.";
+       info = "O registro da ferramenta skyaptnotify ser√° mais detalhado.";
      };
      },
      {
@@ -32,8 +32,8 @@
                Appointment Notification Dienst versendet werden.";
        };
      ptBR = {
-       title = "Remetente da notificaÁ„o de compromisso";
-       info = "Especifica o remetente ( De: ) mostrado nos e-mails enviados pelo sistema de notificaÁıes.";
+       title = "Remetente da notifica√ß√£o de compromisso";
+       info = "Especifica o remetente ( De: ) mostrado nos e-mails enviados pelo sistema de notifica√ß√µes.";
      };
      },
      {
@@ -56,8 +56,8 @@
                Dienstes nicht mehr gew&auml;hrleistet werden.";
        };
      ptBR = {
-       title = "Nome do usu·rio OpenGroupware usado pelo serviÁo de notificaÁ„o de compromissos";
-       info = "Especifica o nome do usu·rio OpenGroupware usado pelo serviÁo de notificaÁ„o de compromissos. Nos casos normais usa-se o <i>root</i>. Cuidado com o fato de que ao mudar este usu·rio, seu sistema de notificaÁ„o poder· n„o mais funcionar.";
+       title = "Nome do usu√°rio OpenGroupware usado pelo servi√ßo de notifica√ß√£o de compromissos";
+       info = "Especifica o nome do usu√°rio OpenGroupware usado pelo servi√ßo de notifica√ß√£o de compromissos. Nos casos normais usa-se o <i>root</i>. Cuidado com o fato de que ao mudar este usu√°rio, seu sistema de notifica√ß√£o poder√° n√£o mais funcionar.";
      };
      },
      {
@@ -83,8 +83,8 @@
                Einstellung angepasst werden";
        };
      ptBR = {
-       title = "Senha do usu·rio especificado acima";
-       info = "Digite a senha do usu·rio especificado em <i>AptNotifySkyrixUser</i>. Certifique-se que a senha est· correta, sen„o o serviÁo de notificaÁ„o de compromissos n„o funcionar·. Se o usu·rio <i>root</i> mudar sua senha, este par‚metro dever· mudar de acordo.";
+       title = "Senha do usu√°rio especificado acima";
+       info = "Digite a senha do usu√°rio especificado em <i>AptNotifySkyrixUser</i>. Certifique-se que a senha est√° correta, sen√£o o servi√ßo de notifica√ß√£o de compromissos n√£o funcionar√°. Se o usu√°rio <i>root</i> mudar sua senha, este par√¢metro dever√° mudar de acordo.";
      };
      },
   );

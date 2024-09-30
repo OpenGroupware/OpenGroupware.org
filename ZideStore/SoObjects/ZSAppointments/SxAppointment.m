@@ -169,7 +169,7 @@ static BOOL embedViewURL             = NO;
   if (!didInit) {
     didInit = YES;
     
-    if ((RendererClass = NSClassFromString(@"SxZLFullAptRenderer")) == Nil) {
+    if ((RendererClass = NGClassFromString(@"SxZLFullAptRenderer")) == Nil) {
       // TODO: fall back to a default renderer?!
       [self logWithFormat:
               @"Note: did not find 'SxZLFullAptRenderer' class, cannot "
@@ -838,17 +838,17 @@ static BOOL embedViewURL             = NO;
   WOResponse  *r;
   WORequest   *rq;
   id          obj;
-  NSTimeZone  *tz;
-  id          cmdctx; 
-  NSString    *tzName, *etag;
+  NSString    *etag;
 
   if ((error = [self matchesRequestConditionInContext:_ctx]) != nil)
     return error;
 
+  #if 0 // hh(2024-09-20): unused
   cmdctx = [self commandContextInContext:_ctx];
   tzName = [[cmdctx userDefaults] stringForKey:@"timezone"];
   tz     = [tzName isNotEmpty]
     ? (id)[NSTimeZone timeZoneWithAbbreviation:tzName] : nil;
+  #endif
   
   if ((obj = [self objectInContext:_ctx]) == nil) {
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */

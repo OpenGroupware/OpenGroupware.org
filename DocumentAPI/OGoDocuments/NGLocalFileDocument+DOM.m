@@ -81,8 +81,8 @@ static int  maxContentDOMCacheSize = 16000;
   if (domimp == nil) {
     Class clazz;
     
-    if ((clazz = NSClassFromString(@"NGDOMImplementation")) == Nil)
-      clazz = NSClassFromString(@"DOMImplementation");
+    if ((clazz = NGClassFromString(@"NGDOMImplementation")) == Nil)
+      clazz = NGClassFromString(@"DOMImplementation");
     
     domimp = [[clazz alloc] init];
   }

@@ -78,7 +78,7 @@ static NSString   *skyrixId = nil;
   
   [_date setTimeZone:gmt];
   
-  snprintf(buf, sizeof(buf), "%04i%02i%02iT%02i%02i%02iZ",
+  snprintf(buf, sizeof(buf), "%04ld%02ld%02ldT%02ld%02ld%02ldZ",
 	   [_date yearOfCommonEra], [_date monthOfYear], [_date dayOfMonth],
 	   [_date hourOfDay], [_date minuteOfHour], [_date secondOfMinute]);
   s = [[NSString alloc] initWithCString:buf];
@@ -120,7 +120,7 @@ static NSString   *skyrixId = nil;
   NSString *s;
   char buf[32];
   
-  snprintf(buf, sizeof(buf), "%04d%02d%02d",
+  snprintf(buf, sizeof(buf), "%04ld%02ld%02ld",
 	   [_date yearOfCommonEra], [_date monthOfYear], [_date dayOfMonth]);
   
   _name = [_name stringByAppendingString:@";VALUE=DATE"];

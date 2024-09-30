@@ -151,7 +151,7 @@
 
         cname = [resource valueForKey:@"palmDataSource"];
         if ([cname length])
-          ds = [NSClassFromString(cname) alloc];
+          ds = [NGClassFromString(cname) alloc];
         else {
           NSLog(@"%s invalid class for palmDb: %@",
                 __PRETTY_FUNCTION__, _palmDb);

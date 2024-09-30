@@ -32,9 +32,12 @@
 #    define SEL_EQ(__A__,__B__) (__A__==__B__?YES:NO)
 #  endif
 #else
-#  include <objc/objc-api.h>
+#  include <objc/objc.h>
+#  include <objc/runtime.h>
 #  ifndef SEL_EQ
-#    define SEL_EQ(__A__,__B__) sel_eq(__A__,__B__)
+// HH: 2024-09-02
+//#    define SEL_EQ(__A__,__B__) sel_eq(__A__,__B__)
+#    define SEL_EQ(__A__,__B__) sel_isEqual(__A__,__B__)
 #  endif
 #endif
 
@@ -725,7 +728,6 @@ FREE_ARRAYS:
 - (NSMutableString *)_buildOrQualifierString:(NSArray *)_kvQualifiers
   qualCnt:(int *)qCnt_ identifier:(NSString *)_ident
 {
-  NSEnumerator     *enumerator;
   NSMutableString  *result;
   int              i, cnt;
   NSMutableArray   *readyQuals;
@@ -733,7 +735,6 @@ FREE_ARRAYS:
   cnt        = [_kvQualifiers count];
   result     = [NSMutableString stringWithCapacity:cnt * 40];
   readyQuals = [[NSMutableArray alloc] initWithCapacity:cnt];
-  enumerator = [_kvQualifiers objectEnumerator];
 
   for (i = 0; i < cnt; i++) {
     EOQualifier *qual;
@@ -773,21 +774,23 @@ FREE_ARRAYS:
   // TODO: split up this huge method!
   NSMutableString *result = nil;
   
-  NSString    *oidName, *nsName, *tName, *kName, *typeName;
+  NSString    *oidName, *tName, *typeName;
   EOEntity    *e;
-  EOAttribute *oidAttr, *nsAttr, *keyAttr, *typeAttr;
+  EOAttribute *oidAttr, *typeAttr;
 
   e        = [self entity];
   result   = nil;
   tName    = [e externalName];
   oidAttr  = [e attributeNamed:@"objectId"];
   oidName  = [oidAttr columnName];
+  #if 0 // hh(2024-09-19): unused
   nsAttr   = [e attributeNamed:@"namespacePrefix"];
   nsName   = [nsAttr columnName];
   keyAttr  = [e attributeNamed:@"key"];
-  kName    =  [keyAttr columnName];
+  kName    = [keyAttr columnName];
+  #endif
   typeAttr = [e attributeNamed:@"objectType"];
-  typeName =  [typeAttr columnName];
+  typeName = [typeAttr columnName];
   
   if ([_qualifier isKindOfClass:EOAndQualifierClass]) {
     BOOL           isFirst;

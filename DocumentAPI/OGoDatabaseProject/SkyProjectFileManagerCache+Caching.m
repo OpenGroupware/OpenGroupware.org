@@ -258,7 +258,7 @@
 - (id)genericRecordForGID:(EOGlobalID *)_gid manager:(id)_manager {
   EOKeyGlobalID       *kgid;
   NSString            *entityName;
-  id                  genRec, doc;
+  id                  doc;
   NSMutableDictionary *cache;
 
   if (![_gid isNotNull]) {
@@ -269,7 +269,6 @@
     
   kgid       = (id)_gid;
   entityName = [kgid entityName];
-  genRec     = nil;
   cache      = [self pk2GenRecCache];
 
   if ((doc = [cache objectForKey:[kgid keyValues][0]]))

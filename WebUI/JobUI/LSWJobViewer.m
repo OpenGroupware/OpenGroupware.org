@@ -758,14 +758,12 @@ static BOOL     debugOn = NO;
 }
 
 - (void)_getExtendedAttributes {
-  OGoSession   *sn;
   id           pm;
   NSDictionary *dict;
  
   if (debugOn)
     [self logWithFormat:@"call to _getExtendedAttributes"];
  
-  sn = (id)[self existingSession];
   pm = [self propertyManager];
 
   /* get all properties of the job,  we do not filter to just the ext-attr
@@ -829,13 +827,11 @@ static BOOL     debugOn = NO;
 } /* end  _getExtendedAttributes method */
 
 - (void)_getJobHistoryActors {
-  OGoSession   *sn;
   id           jh;      
   NSArray      *array  = [self->job valueForKey:@"jobHistory"];
   register IMP objAtIdx;
   register int i, cnt;
 
-  sn = (id)[self existingSession];
   objAtIdx = [array methodForSelector:@selector(objectAtIndex:)];
 
   for (i = 0, cnt = [array count]; i < cnt; i++) {

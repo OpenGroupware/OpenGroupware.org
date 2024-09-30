@@ -576,8 +576,8 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   NSDictionary     *row;
   NSMutableArray   *result;
   NSArray          *tmp;
-  NSString    *oidName, *nsName, *tName, *kName, *typeName;
-  EOAttribute *oidAttr, *nsAttr, *keyAttr, *typeAttr;
+  NSString    *oidName, *tName, *typeName;
+  EOAttribute *oidAttr, *typeAttr;
 
   e   = [self entity];
   adc = [self adaptorChannel];
@@ -586,11 +586,13 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   oidAttr = [e attributeNamed:@"objectId"];
   oidName = [oidAttr columnName];
 
+  #if 0 // hh(2024-09-19): unused
   nsAttr = [e attributeNamed:@"namespacePrefix"];
   nsName = [nsAttr columnName];
     
   keyAttr = [e attributeNamed:@"key"];
   kName   = [keyAttr columnName];
+  #endif
 
   typeAttr = [e attributeNamed:@"objectType"];
   typeName = [typeAttr columnName];

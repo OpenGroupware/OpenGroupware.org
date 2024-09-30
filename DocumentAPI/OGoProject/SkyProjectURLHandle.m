@@ -202,8 +202,8 @@
 
     NSLog(@"WARNING[%s] depricated call ...", __PRETTY_FUNCTION__);
 
-    if (!(class = NSClassFromString(@"SkyProjectFileManager"))) {
-      class = NSClassFromString(@"SkyFSFileManager");
+    if (!(class = NGClassFromString(@"SkyProjectFileManager"))) {
+      class = NGClassFromString(@"SkyFSFileManager");
     }
     fm = nil;
     if (class)

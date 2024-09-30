@@ -35,15 +35,15 @@ static NSDictionary *extToFactory = nil;
     
     md = [NSMutableDictionary dictionaryWithCapacity:8];
     
-    [md setObject:NSClassFromString(@"OGoCyrusConfigFile") 
+    [md setObject:NGClassFromString(@"OGoCyrusConfigFile") 
         forKey:@"cyrus"];
-    [md setObject:NSClassFromString(@"OGoPostfixConfigFile") 
+    [md setObject:NGClassFromString(@"OGoPostfixConfigFile") 
         forKey:@"postfix"];
-    [md setObject:NSClassFromString(@"OGoAccountsVirtualConfigFile") 
+    [md setObject:NGClassFromString(@"OGoAccountsVirtualConfigFile") 
         forKey:@"uvirtual"];
-    [md setObject:NSClassFromString(@"OGoTeamsVirtualConfigFile") 
+    [md setObject:NGClassFromString(@"OGoTeamsVirtualConfigFile") 
         forKey:@"tvirtual"];
-    [md setObject:NSClassFromString(@"OGoQuotaTabConfigFile") 
+    [md setObject:NGClassFromString(@"OGoQuotaTabConfigFile") 
         forKey:@"quotatab"];
     
     extToFactory = [md copy];
@@ -218,7 +218,7 @@ static NSDictionary *extToFactory = nil;
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   
   if (self->path) [ms appendFormat:@" dir='%@'", self->path];
   if (self->fileManager && self->fileManager != [NSFileManager defaultManager])

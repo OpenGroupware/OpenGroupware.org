@@ -195,7 +195,7 @@
     pool = [NSAutoreleasePool new];
 
     if (defaultRenderer == nil)
-      defaultRenderer = [[NSClassFromString(@"SkyNodeRendererSet") alloc] init];
+      defaultRenderer = [[NGClassFromString(@"SkyNodeRendererSet") alloc] init];
     
     domAssoc     = [WOAssociation associationWithValue:self->domDocument];
     factoryAssoc = [WOAssociation associationWithValue:defaultRenderer];

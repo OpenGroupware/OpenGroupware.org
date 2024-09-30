@@ -106,7 +106,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   if ((tmp = [self decodeData:_data withEncoding:_encoding]) != nil)
     return tmp;
   
-  [self logWithFormat:@"encoding for '%@' failed on data 0x%p(len=%d)",
+  [self logWithFormat:@"encoding for '%@' failed on data %p(len=%d)",
           _encoding, _data, [_data length]];
   return _data;
 }
@@ -127,7 +127,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   }
   
   if (HandlerClass == Nil) {
-    HandlerClass = NSClassFromString(@"SkyImapContextHandler");
+    HandlerClass = NGClassFromString(@"SkyImapContextHandler");
     if (HandlerClass == Nil)
       [self errorWithFormat:@"did not find SkyImapContextHandler class!"];
   }
@@ -157,7 +157,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
   
   // TODO: explain how this can happen
   if (RootFolderClass == Nil)
-    RootFolderClass = NSClassFromString(@"NGImap4ServerRoot");
+    RootFolderClass = NGClassFromString(@"NGImap4ServerRoot");
   if ([folder isKindOfClass:RootFolderClass]) {
     [self warnWithFormat:@"could not load folder for URL: %@", 
 	    [self urlAsNSURL]];
@@ -224,7 +224,6 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
 - (id<WOActionResults>)_downloadInline:(BOOL)_inline {
   WOSession      *sn;
   NSURL          *url;
-  NGImap4Context *imapCtx;
   NGImap4Folder  *folder;
   NSData         *data;
   WORequest      *req;
@@ -285,7 +284,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
     NSString *partName;
     int msguid;
     
-    imapCtx = [self imapContext];
+    /*unused:imapCtx =*/[self imapContext]; // may have side effects
     url     = [self urlAsNSURL];
     path    = [url path];
     

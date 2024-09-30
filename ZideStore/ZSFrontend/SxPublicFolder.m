@@ -82,7 +82,7 @@
 
 - (id)enterpriseFolderInContext:(id)_ctx {
   id folder;
-  folder = [[NSClassFromString(@"SxEnterpriseFolder") alloc] 
+  folder = [[NGClassFromString(@"SxEnterpriseFolder") alloc] 
 	     initWithName:@"Enterprises" inContainer:self];
   [folder takeValue:@"public"     forKey:@"type"];
   return [folder autorelease];
@@ -90,7 +90,7 @@
 
 - (id)contactsFolderInContext:(id)_ctx {
   id folder;
-  folder = [[NSClassFromString(@"SxPersonFolder") alloc] 
+  folder = [[NGClassFromString(@"SxPersonFolder") alloc] 
 	     initWithName:@"Contacts" inContainer:self];
   [folder takeValue:@"public" forKey:@"type"];
   return [folder autorelease];
@@ -98,7 +98,7 @@
 
 - (id)accountsFolderInContext:(id)_ctx {
   id folder;
-  folder = [[NSClassFromString(@"SxPersonFolder") alloc] init];
+  folder = [[NGClassFromString(@"SxPersonFolder") alloc] init];
   [folder takeValue:@"account"  forKey:@"type"];
   [folder takeValue:self        forKey:@"container"];
   [folder takeValue:@"Accounts" forKey:@"nameInContainer"];
@@ -107,14 +107,14 @@
 
 - (id)calendarFolderInContext:(id)_ctx {
   id folder;
-  folder = [[NSClassFromString(@"SxAppointmentFolder") alloc] 
+  folder = [[NGClassFromString(@"SxAppointmentFolder") alloc] 
 	     initWithName:@"Calendar" inContainer:self];
   [folder takeValue:@"all intranet" forKey:@"group"];
   return [folder autorelease];
 }
 
 - (id)freeBusyInContext:(id)_ctx {
-  id cmd = [[NSClassFromString(@"SxFreeBusy") alloc] init];
+  id cmd = [[NGClassFromString(@"SxFreeBusy") alloc] init];
   return [cmd autorelease];
 }
 

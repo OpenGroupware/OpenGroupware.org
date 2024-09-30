@@ -89,7 +89,7 @@ static int logDavResponse = -1;
     
     className = [@"SkyProject_" stringByAppendingString:method];
     
-    if ((daClass = NSClassFromString(className)) == nil) {
+    if ((daClass = NGClassFromString(className)) == nil) {
       NSLog(@"WARNING[%s] missing class for handling method %@",
             __PRETTY_FUNCTION__, method);
       [response setStatus:500];

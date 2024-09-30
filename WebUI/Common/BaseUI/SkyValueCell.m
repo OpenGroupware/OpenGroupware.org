@@ -135,17 +135,17 @@
 
   if (doFont) {
     NSString *t;
-    NSString *sizeKey, *faceKey, *colorKey;
+    NSString *sizeKey, *faceKey;
     
     [_response appendContentString:@"<font"];
 
     if ([[_ctx component] isEditorPage]) {
-      colorKey = @"editFont_color";
+      //unused: colorKey = @"editFont_color";
       sizeKey  = @"editFont_size";
       faceKey  = @"editFont_face";
     }
     else {
-      colorKey = @"font_color";
+      //colorKey = @"font_color";
       sizeKey  = @"font_size";
       faceKey  = @"font_face";
     }

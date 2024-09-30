@@ -137,8 +137,7 @@ static NSDictionary *onlySubFoldersHints = nil;
 }
 
 - (id)invokeActionForRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
-  id res;
-  res = [super invokeActionForRequest:_req inContext:_ctx];
+  /* id res = */ [super invokeActionForRequest:_req inContext:_ctx];
   [self->fsCache release]; self->fsCache = nil;
   return nil;
 }
@@ -270,7 +269,7 @@ static NSDictionary *onlySubFoldersHints = nil;
   static Class   FileManagerClass = NULL;
 
   if (LoadClass == YES) {
-    FileManagerClass = NSClassFromString(@"SkyProjectFileManager");
+    FileManagerClass = NGClassFromString(@"SkyProjectFileManager");
     LoadClass = NO;
   }
 

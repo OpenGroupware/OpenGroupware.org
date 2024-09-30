@@ -185,8 +185,9 @@ static NSArray *FileSystemAttributes = nil;
 }
 
 - (NSDictionary *)removeFileSystemAttributes:(NSDictionary *)_attrs {
-  id           objs[[_attrs count]];
-  id           keys[[_attrs count]];
+  int ac = [_attrs count];
+  id           objs[ac];
+  id           keys[ac];
   int          objCnt = 0;
   NSEnumerator *enumerator;
   id           obj;

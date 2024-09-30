@@ -78,7 +78,8 @@
 @implementation SkyEnterpriseViewer
 
 static inline void _newObjectLinkEnterprise(SkyEnterpriseViewer *self);
-static int compareDocumentEntries(id document1, id document2, void *context);
+static NSComparisonResult compareDocumentEntries(id document1, id document2,
+                                                 void *context);
 
 static NSArray *accessChecks = nil;
 
@@ -615,7 +616,7 @@ static NSArray *accessChecks = nil;
   ctx  = [self commandContext];
   pgid = [[self fakeProject] globalID];
 
-  if ((pClass = NSClassFromString(@"SkyProjectFileManager")) == nil) {
+  if ((pClass = NGClassFromString(@"SkyProjectFileManager")) == nil) {
     [self logWithFormat:
             @"WARNING[%s] couldn`t found SkyProjectFileManager class",
             __PRETTY_FUNCTION__];
@@ -655,7 +656,9 @@ static NSArray *accessChecks = nil;
   return nil;
 }
 
-static int compareDocumentEntries(id document1, id document2, void *context) {
+static NSComparisonResult compareDocumentEntries
+  (id document1, id document2, void *context) 
+{
   BOOL doc1IsFolder     = [[document1 valueForKey:@"isFolder"] boolValue];
   BOOL doc2IsFolder     = [[document2 valueForKey:@"isFolder"] boolValue];
   BOOL doc1IsObjectLink = [[document1 valueForKey:@"isObjectLink"] boolValue];

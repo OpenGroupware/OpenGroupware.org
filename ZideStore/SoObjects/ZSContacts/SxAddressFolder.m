@@ -96,7 +96,7 @@
   }
   
   [self debugWithFormat:@"use %@ for key: '%@'", n, _key];
-  return NSClassFromString(n);
+  return NGClassFromString(n);
 }
 
 - (id)childForExistingKey:(NSString *)_key inContext:(id)_ctx {
@@ -387,7 +387,7 @@
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:64];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   if (self->type != nil) [ms appendFormat:@" type=%@", self->type];
   [ms appendFormat:@" name=%@", [self nameInContainer]];
   [ms appendString:@">"];

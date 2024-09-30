@@ -240,7 +240,7 @@
 /* description */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<0x%p[%@]: count: %d>",
+  return [NSString stringWithFormat:@"<%p[%@]: count: %d>",
                    self, NSStringFromClass([self class]),
                    [[self containedIds] count]];
 }

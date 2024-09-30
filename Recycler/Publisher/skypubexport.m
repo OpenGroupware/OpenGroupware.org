@@ -147,7 +147,7 @@ static BOOL printTimings = NO;
   }
   
   /* make filemanager */
-  if ((fmClass = NSClassFromString(@"SkyProjectFileManager")) == Nil) {
+  if ((fmClass = NGClassFromString(@"SkyProjectFileManager")) == Nil) {
     [self logWithFormat:
 	    @"did not find filemanager class: SkyProjectFileManager!"];
     return nil;
@@ -733,7 +733,7 @@ static BOOL printTimings = NO;
       if ([p hasSuffix:@"/"] && ([p length] > 1))
         p = [p substringToIndex:([p length] - 1)];
       
-      [self debugWithFormat:@"T[0x%p]: %@", doc, p];
+      [self debugWithFormat:@"T[%p]: %@", doc, p];
       [self->pathToDoc   setObject:doc forKey:p];
       [(id)self->fileManager addDocumentToCache:doc];
     }
@@ -765,7 +765,7 @@ static BOOL printTimings = NO;
       if ([p hasSuffix:@"/"] && ([p length] > 1))
         p = [p substringToIndex:([p length] - 1)];
       
-      [self debugWithFormat:@"P[0x%p]: %@", doc, p];
+      [self debugWithFormat:@"P[%p]: %@", doc, p];
       
       [self->pathToDoc setObject:doc forKey:p];
       [(id)self->fileManager addDocumentToCache:doc];

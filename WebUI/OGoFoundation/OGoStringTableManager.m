@@ -105,7 +105,6 @@ static BOOL   debugOn = NO;
 /* labels */
 
 - (NSString *)labelForKey:(NSString *)_key component:(WOComponent *)_component{
-  WOApplication   *app;
   NSArray         *langs;
   NSBundle        *bundle;
   id              value = nil;
@@ -137,7 +136,7 @@ static BOOL   debugOn = NO;
   
   /* lookup bundle */
   
-  app = [WOApplication application];
+  /*app =*/ [WOApplication application]; // unused, but maybe side effect?
   
   bm = [NGBundleManager defaultBundleManager];
   bundle = [bm bundleProvidingResource:cname ofType:@"WOComponents"];
@@ -364,16 +363,13 @@ static BOOL   debugOn = NO;
   e = [_languages objectEnumerator];
   while ((language = [e nextObject]) != nil) {
     OGoStringTable *table;
-    NSArray  *ls;
     NSRange  r;
     NSString *tname;
       
     r = [language rangeOfString:@"_"];
     if (r.length > 0)
       language = [language substringToIndex:r.location];
-    
-    ls = [NSArray arrayWithObject:language];
-    
+        
     path = [_tableName stringByAppendingPathExtension:@"strings"];
     path = [[language stringByAppendingPathExtension:@"lproj"]
                       stringByAppendingPathComponent:path];

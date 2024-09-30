@@ -40,7 +40,7 @@
   EODataSource *ds = nil;
   Class clazz;
 
-  if ((clazz = NSClassFromString(@"SkyPersonJobDataSource")) == Nil) {
+  if ((clazz = NGClassFromString(@"SkyPersonJobDataSource")) == Nil) {
     NSLog(@"WARNING(%s): did not find person-job datasource ..",
           __PRETTY_FUNCTION__);
     return nil;

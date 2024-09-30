@@ -374,7 +374,7 @@
 
 - (BOOL)showTitle {
   return [[self fileManager]
-                isKindOfClass:NSClassFromString(@"SkyProjectFileManager")];
+                isKindOfClass:NGClassFromString(@"SkyProjectFileManager")];
 }
 - (BOOL)showFilename {
   return ([self fileId] != nil) ? NO : YES;
@@ -466,7 +466,6 @@
 
 - (id)_saveAndRelease:(BOOL)_release unlock:(BOOL)_unlock {
   /* TODO: better error messages in this method! */
-  SkyProjectFileManager *fm;
   SkyProjectDocument    *ldocument;
 
   if ((ldocument = [self document]) == nil)
@@ -477,7 +476,7 @@
     return [self _createFile];
   }
   
-  fm = [self fileManager];
+  /*unused: fm =*/ [self fileManager]; // hh(2024-09-20): may have side effects
   
   //  [fm flush]; /* clear cache for new path */
   

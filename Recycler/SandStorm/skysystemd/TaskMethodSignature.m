@@ -300,7 +300,7 @@
 /* description */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<0x%p[%@]: signature=%@>",
+  return [NSString stringWithFormat:@"<%p[%@]: signature=%@>",
                      self, NSStringFromClass([self class]),
                      self->signature];
 }

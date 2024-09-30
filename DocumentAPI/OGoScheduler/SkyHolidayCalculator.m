@@ -623,7 +623,7 @@ static NSDictionary *holidaysConfig = nil;
   
   [self setYear:[_date yearOfCommonEra]];
   
-  sprintf(buf, "%04i-%02i-%02i", self->year,
+  sprintf(buf, "%04i-%02ld-%02ld", self->year,
 	  [_date monthOfYear],
 	  [_date dayOfMonth]);
   

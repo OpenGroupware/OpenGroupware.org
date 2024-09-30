@@ -260,7 +260,7 @@
 /* careing about ampm dates */
 
 - (unsigned int)indexOf24HourEntry:(NSString *)_entry {
-  int idx;
+  NSUInteger idx;
   idx = [[self hour24Strings] indexOfObject:_entry];
   // only return a valid index
   return (idx == NSNotFound) ? 0 : idx;

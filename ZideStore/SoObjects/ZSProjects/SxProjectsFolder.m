@@ -107,7 +107,7 @@ static BOOL kontactGroupDAV = YES;
 
 - (Class)recordClassForKey:(NSString *)_key {
   /* triggered by SxFolder lookup */
-  return NSClassFromString(@"SxProjectFolder");
+  return NGClassFromString(@"SxProjectFolder");
 }
 
 - (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
@@ -166,7 +166,7 @@ static BOOL kontactGroupDAV = YES;
 - (NSString *)description {
   NSMutableString *ms = [NSMutableString stringWithCapacity:128];
   
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   
   if (self->projectNames)
     [ms appendFormat:@" #projects=%i", [self->projectNames count]];

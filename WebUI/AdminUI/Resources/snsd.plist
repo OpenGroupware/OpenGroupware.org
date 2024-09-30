@@ -15,9 +15,9 @@
                die Funktion Ihres SKYRiX-System zerst&ouml;ren.";
        };
      ptBR = {
-       title = "Porta de escuta do serviÁo snsd";
-       info = "O serviÁo snsd escutar· por esta porta. <br/>
-               <b>Este par‚metro pode danificar sua instalaÁ„o OpenGroupware</b>.";
+       title = "Porta de escuta do servi√ßo snsd";
+       info = "O servi√ßo snsd escutar√° por esta porta. <br/>
+               <b>Este par√¢metro pode danificar sua instala√ß√£o OpenGroupware</b>.";
      };
      },
      {
@@ -34,9 +34,9 @@
                <i>/var/log/skyrix41/skyrix-snsd.log</i>.";
        };
      ptBR = {
-       title = "Caminho do arquivo de registro do serviÁo snsd";
-       info = "Especifica o caminho do arquivo de registro usado pelo serviÁo snsd. <br/>
-               O valor padr„o È <i>/var/log/skyrix41/skyrix-snsd.log</i>.";
+       title = "Caminho do arquivo de registro do servi√ßo snsd";
+       info = "Especifica o caminho do arquivo de registro usado pelo servi√ßo snsd. <br/>
+               O valor padr√£o √© <i>/var/log/skyrix41/skyrix-snsd.log</i>.";
      };
      },
      {
@@ -55,7 +55,7 @@
        };
      ptBR = {
        title = "Registro verboso do servidor snsd";
-       info = "Ao encontrar dificuldadees com o serviÁo snsd, vocÍ pode ativar este par‚metro para conseguir mais detalhes do serviÁo snsd.";
+       info = "Ao encontrar dificuldadees com o servi√ßo snsd, voc√™ pode ativar este par√¢metro para conseguir mais detalhes do servi√ßo snsd.";
      };
      },
 

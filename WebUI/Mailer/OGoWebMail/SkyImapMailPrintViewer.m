@@ -88,7 +88,7 @@
 - (NSString *)_formatDateValue:(NSCalendarDate *)_date {
   char buf[32];
   
-  snprintf(buf, sizeof(buf), "%04i-%02i-%02i %02i:%02i",
+  snprintf(buf, sizeof(buf), "%04ld-%02ld-%02ld %02ld:%02ld",
            [_date yearOfCommonEra], [_date monthOfYear], [_date dayOfMonth],
            [_date hourOfDay], [_date minuteOfHour]);
   return [NSString stringWithCString:buf];

@@ -67,8 +67,6 @@
 + (BOOL)usePKeyEmails;
 + (NSString *)pKeyEmailForParticipant:(id)_participant;
 + (NSString *)emailForParticipant:(id)_participant;
-+ (NSNumber *)pKeyForPKeyEmail:(NSString *)_email isTeam:(BOOL *)_isTeamFlag;
-+ (EOGlobalID *)gidForPKeyEmail:(NSString *)_email;
 @end /* SxAppointment(Participants) */
 
 #endif /* __Appointments_SxAppointment_H__ */

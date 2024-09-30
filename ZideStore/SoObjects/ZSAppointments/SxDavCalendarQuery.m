@@ -145,12 +145,11 @@ static BOOL debugOn = NO;
 }
 
 - (NSEnumerator *)fetchDatesInContext:(id)_ctx {
-  id           folder;
   SxAptManager *manager;
   NSArray      *dates;
   SxAptSetIdentifier *sid;
   
-  folder  = [self clientObject];
+  /*folder  =*/ [self clientObject];
   manager = [self aptManagerInContext:_ctx];
   
   // TODO: consider limit set by client

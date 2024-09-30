@@ -100,32 +100,32 @@ static WOAssociation *yesAssoc = nil;
   return @"LSWSkyrixFrame";
 }
 - (Class)windowFrameClass {
-  return NSClassFromString(@"OGoWindowFrame");
+  return NGClassFromString(@"OGoWindowFrame");
 }
 - (Class)viewerTitleClass {
-  return NSClassFromString(@"LSWViewerTitle");
+  return NGClassFromString(@"LSWViewerTitle");
 }
 - (Class)buttonRowClass {
-  return NSClassFromString(@"SkyButtonRow");
+  return NGClassFromString(@"SkyButtonRow");
 }
 - (Class)attributeClass {
-  return NSClassFromString(@"SkyAttribute");
+  return NGClassFromString(@"SkyAttribute");
 }
 - (Class)tabClass {
-  return NSClassFromString(@"SkyTabView");
+  return NGClassFromString(@"SkyTabView");
 }
 - (Class)objValueClass {
-  return NSClassFromString(@"SkyObjectValue");
+  return NGClassFromString(@"SkyObjectValue");
 }
 - (Class)tabItemClass {
-  return NSClassFromString(@"SkyTabItem");
+  return NGClassFromString(@"SkyTabItem");
 }
 
 - (Class)fontClass {
-  return NSClassFromString(@"SkyConfigFont");
+  return NGClassFromString(@"SkyConfigFont");
 }
 - (Class)editFontClass {
-  return NSClassFromString(@"SkyConfigEditFont");
+  return NGClassFromString(@"SkyConfigEditFont");
 }
 
 - (NSString *)calPopUpComponentName {
@@ -1034,9 +1034,9 @@ static WOAssociation *yesAssoc = nil;
   switch (c1) {
   case 't': /* starting with 't' */
     if (tl == 7 && [tagName isEqualToString:@"td-attr"])
-      return NSClassFromString(@"SkyAttributeCell");
+      return NGClassFromString(@"SkyAttributeCell");
     if (tl == 8 && [tagName isEqualToString:@"td-value"])
-      return NSClassFromString(@"SkyValueCell");
+      return NGClassFromString(@"SkyValueCell");
     break;
   }
   return [super classForElement:_element];

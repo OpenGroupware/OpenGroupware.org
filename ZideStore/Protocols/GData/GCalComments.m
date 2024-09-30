@@ -62,7 +62,7 @@
 - (NSString *)description {
   NSMutableString *ms = [NSMutableString stringWithCapacity:128];
   
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   
   [ms appendFormat:@" event=%@", [self container]];
   

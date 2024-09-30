@@ -72,7 +72,7 @@
   EODataSource *ds;
   Class clazz;
   
-  if ((clazz = NSClassFromString(_dsName)) == nil) {
+  if ((clazz = NGClassFromString(_dsName)) == nil) {
     [self logWithFormat:@"no datasource named '%@' ...", _dsName];
     return nil;
   }
@@ -135,7 +135,7 @@
 /* filemanager factories */
 
 - (Class)fileManagerClass {
-  return NSClassFromString(@"SkyProjectFileManager");
+  return NGClassFromString(@"SkyProjectFileManager");
 }
 
 - (id)fileManagerForCode:(NSString *)_code {

@@ -105,7 +105,7 @@ static BOOL debugOn = NO;
       continue;
     }
     
-    if ((clazz = NSClassFromString(clazzName)) == Nil) {
+    if ((clazz = NGClassFromString(clazzName)) == Nil) {
       [self warnWithFormat:
 	      @"did not find class as registered in bundle: '%@'\n  "
 	      @"%@", clazzName, _bundle];

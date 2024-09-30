@@ -62,7 +62,7 @@
 
 - (Class)documentClass {
   static Class clazz = Nil;
-  if (clazz == Nil) clazz = NSClassFromString(@"SkyEnterpriseDocument");
+  if (clazz == Nil) clazz = NGClassFromString(@"SkyEnterpriseDocument");
   return clazz;
 }
 

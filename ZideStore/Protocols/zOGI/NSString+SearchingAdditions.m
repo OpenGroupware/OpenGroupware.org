@@ -29,7 +29,7 @@
  }
 
 - (BOOL)containsString:(NSString *)aString ignoringCase:(BOOL)flag {
-  unsigned mask = (flag ? NSCaseInsensitiveSearch : NULL);
+  unsigned mask = (flag ? NSCaseInsensitiveSearch : 0);
   NSRange range = [self rangeOfString:aString options:mask];
   return (range.length > 0);
  }

@@ -167,12 +167,12 @@ static OGoHelpManager *shared = nil; // THREAD
 }
 
 - (NSString *)helpSection {
-  NSBundle *bundle;
+  NSBundle *hbundle;
   
-  if ((bundle = [NSBundle bundleForClass:[self class]]) == nil)
+  if ((hbundle = [NSBundle bundleForClass:[self class]]) == nil)
     return nil;
   
-  return [bundle helpSection];
+  return [hbundle helpSection];
 }
 
 @end /* WOComponent(HelpMethods) */

@@ -318,10 +318,7 @@
 }
 
 - (void)_executeInContext:(id)_context {
-  id       obj;
-  NSNumber *pId        = nil;
-  NSString *type       = nil;
-  //EODatabaseContext *dbCtx;
+  id obj;
   
   obj = [self object];
   [self assert:(obj != nil) reason:@"no object available"];
@@ -333,8 +330,10 @@
             [obj valueForKey:@"title"]];
   }
   
+  #if 0 // hh(2024-09-19): unused
   pId  = [obj valueForKey:@"parentDateId"];
   type = [obj valueForKey:@"type"];
+  #endif
 
   [[_context propertyManager] removeAllPropertiesForGlobalID:
 				[obj valueForKey:@"globalID"]];
@@ -359,14 +358,15 @@
   if (self->deleteAllCyclic) {
     [[self _deleteCyclicInContext:_context] raise];
   } else {
-      /* reset the parentDateId of all the appointments in the cycle as
-         we are deleting an appointment from the cycle chain and thus
-         run the risk that we are deleting the root appointment */
-      [[self _deleteNoCyclicInContext:_context] raise];
-      [[self _removeObjectLogsInContext:_context] raise];
-      //[self assert:[dbCtx beginTransaction] reason:@"couldn't begin tx .."];
-      [super _executeInContext:_context];
-    }
+    // by Adam in 2008:
+    /* reset the parentDateId of all the appointments in the cycle as
+       we are deleting an appointment from the cycle chain and thus
+       run the risk that we are deleting the root appointment */
+    [[self _deleteNoCyclicInContext:_context] raise];
+    [[self _removeObjectLogsInContext:_context] raise];
+    //[self assert:[dbCtx beginTransaction] reason:@"couldn't begin tx .."];
+    [super _executeInContext:_context];
+  }
 }
 
 /* entity name for DB-delete-command (superclass) */

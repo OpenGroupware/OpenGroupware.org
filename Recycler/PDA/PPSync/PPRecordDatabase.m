@@ -446,7 +446,7 @@ static EONull *null = nil;
 }
 
 - (NSException *)validateCategory:(NSString *)_category {
-  int idx;
+  NSUInteger idx;
   
   if ((idx = [self->db indexOfCategory:_category]) == NSNotFound) {
     NSString     *r;
@@ -505,7 +505,7 @@ static EONull *null = nil;
   NSMutableString *s;
 
   s = [NSMutableString stringWithCapacity:100];
-  [s appendFormat:@"<%@[0x%p]:", NSStringFromClass([self class]), self];
+  [s appendFormat:@"<%@[%p]:", NSStringFromClass([self class]), self];
 
   [s appendString:[self propertyDescription]];
 
@@ -521,7 +521,7 @@ static EONull *null = nil;
   if ([self isPrivate])
     [s appendString:@" private"];
   
-  //[s appendFormat:@" db=0x%p", self->db];
+  //[s appendFormat:@" db=%p", self->db];
   [s appendString:@">"];
   return s;
 }

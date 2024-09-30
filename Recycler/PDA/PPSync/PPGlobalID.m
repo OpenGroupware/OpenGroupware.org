@@ -95,7 +95,7 @@
 
   s = [NSMutableString stringWithCapacity:128];
   
-  [s appendFormat:@"<%@[0x%p]: db=%@ uid=%i", 
+  [s appendFormat:@"<%@[%p]: db=%@ uid=%i", 
        NSStringFromClass([self class]), self,
        self->dbName, self->uniqueID];
   

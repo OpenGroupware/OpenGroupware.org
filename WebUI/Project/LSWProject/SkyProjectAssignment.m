@@ -43,7 +43,7 @@
 
 #include "common.h"
 
-static int compareProjects(id p1, id p2, void *context) {
+static NSComparisonResult compareProjects(id p1, id p2, void *context) {
   NSString *n1, *n2;
   
   n1 = [p1 valueForKey:@"name"];
@@ -397,7 +397,6 @@ static int compareProjects(id p1, id p2, void *context) {
   [self->resultList removeAllObjects];
 
   if (self->searchText != nil && [self->searchText length] > 0) {
-    id              ac;
     NSMutableArray  *result;
     NSMutableString *str;
     NSArray         *fields    = nil;
@@ -406,7 +405,7 @@ static int compareProjects(id p1, id p2, void *context) {
     NSString        *field     = nil;
     id              p          = nil;
 
-    ac         = [[self session] activeAccount];
+    /*unused:ac=*/ [[self session] activeAccount];
     result    = [NSMutableArray arrayWithCapacity:16];
     str       = [NSMutableString stringWithCapacity:32];
     

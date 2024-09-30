@@ -34,6 +34,9 @@ $(WEBUID_NAME)_TOOL_LIBS += \
 $(WEBUID_NAME)_TOOL_LIBS += \
 	-lldap
 
+# Otherwise explicitly linked shared libs are not requested!
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
+
 
 # Parameters for bundle lookups
 

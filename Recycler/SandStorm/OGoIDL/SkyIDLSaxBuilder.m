@@ -59,7 +59,7 @@ static NSDictionary *Classes   = nil;
       str   = [tag substringToIndex:1];
       cName = [@"SkyIDL" stringByAppendingString:[str uppercaseString]];
       cName = [cName stringByAppendingString:[tag substringFromIndex:1]];
-      clazz     = NSClassFromString(cName);
+      clazz     = NGClassFromString(cName);
       if (clazz != Nil)
         [dummy setObject:clazz forKey:tag];
     }

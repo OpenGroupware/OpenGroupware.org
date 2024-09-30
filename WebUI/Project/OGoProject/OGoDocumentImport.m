@@ -286,7 +286,7 @@
 
 - (BOOL)showTitle {
   return [[self fileManager]
-                isKindOfClass:NSClassFromString(@"SkyProjectFileManager")];
+                isKindOfClass:NGClassFromString(@"SkyProjectFileManager")];
 }
 - (BOOL)showFilename {
   return [self fileId] ? NO : YES;
@@ -364,7 +364,6 @@
 
 - (id)save {
   /* TODO: better error messages in this method! */
-  SkyProjectFileManager *fm;
   SkyProjectDocument    *ldocument;
 
   if (!(ldocument = [self document]))
@@ -375,7 +374,7 @@
     return [self _createFile];
   }
   
-  fm = [self fileManager];
+  /*unused: fm =*/ [self fileManager]; // hh(2024-09-20): may have side effects
   
   //  [fm flush]; /* clear cache for new path */
   

@@ -53,7 +53,7 @@
   WOAssociation *a;
   Class         c;
 
-  if ((c = NSClassFromString(@"WERichString")) == Nil) {
+  if ((c = NGClassFromString(@"WERichString")) == Nil) {
     NSLog(@"%s: missing WERichString class", __PRETTY_FUNCTION__);
     [self release];
     return nil;

@@ -24,7 +24,7 @@
 #include <LSFoundation/LSCommandContext.h>
 #include "common.h"
 
-static int compareParticipants(id part1, id part2, void *context);
+static NSComparisonResult compareParticipants(id part1, id part2, void *context);
 
 @interface NSObject(PRIVATE)
 - (EOGlobalID *)globalID;
@@ -632,7 +632,7 @@ static NSArray  *emptyArray          = nil;
 }
 
 - (id)searchAction {
-  if (debugOn) [self debugWithFormat:@"0x%p did click search ...", self];
+  if (debugOn) [self debugWithFormat:@"%p did click search ...", self];
   self->uscFlags.isClicked = 1;
   return nil;
 }
@@ -709,7 +709,7 @@ static NSArray  *emptyArray          = nil;
 
 @end /* OGoUserSelectionComponent */
 
-static int compareParticipants(id part1, id part2, void *context) {
+static NSComparisonResult compareParticipants(id part1, id part2, void *context) {
   if ([[part1 valueForKey:@"isTeam"] boolValue]) {
     if (![[part2 valueForKey:@"isTeam"] boolValue])
       return NSOrderedAscending;

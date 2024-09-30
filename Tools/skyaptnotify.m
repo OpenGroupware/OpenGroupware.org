@@ -1423,5 +1423,6 @@ int main(int argc, char **argv, char **env) {
   [pool release];
 #endif
   exit(result);
+  [pool release]; // please compiler
   return result;
 }

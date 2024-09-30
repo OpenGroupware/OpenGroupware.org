@@ -234,7 +234,7 @@
     
     /* load defaults */
     
-    Class defaultsClass = NSClassFromString(@"LSUserDefaults");
+    Class defaultsClass = NGClassFromString(@"LSUserDefaults");
     defs = [defaultsClass alloc];
     defs = [defs initWithUserDefaults:
                    [NSUserDefaults standardUserDefaults]

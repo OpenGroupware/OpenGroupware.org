@@ -40,6 +40,7 @@
 	  TODO: might be culture specific.
 */
 
+// hh(2024-09-19): I wish someone would have outlined why.
 #warning BROKEN, RETURNS 2006
 
 - (BOOL)isFirstWeekOfYear {

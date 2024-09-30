@@ -57,16 +57,15 @@
 
 - (void)_prepareForExecutionInContext:(id)_context {
   NSNumber *accountId;
-  id  obj;
-  int versionCount;
-  id  versCount, status, account;
+  id obj;
+  id status, account;
   
   obj = [self object];
   [obj takeValue:[self->folder valueForKey:@"documentId"]
        forKey:@"parentDocumentId"];
   [super _prepareForExecutionInContext:_context];
   
-  versCount = [obj valueForKey:@"versionCount"];
+  // unused: versCount = [obj valueForKey:@"versionCount"];
   status    = [obj valueForKey:@"status"];
   account   = [_context valueForKey:LSAccountKey];
   accountId = [account valueForKey:@"companyId"];
@@ -74,7 +73,8 @@
   if (status == nil)
     status = @"edited";
 
-  versionCount = (versCount == nil) ? 0 : [versCount intValue];
+  // hh(2024-09-18): versionCount wasn't used for anything
+  // versionCount = (versCount == nil) ? 0 : [versCount intValue];
 
   if (![self isRootAccountId:accountId]) {
     if (![[obj valueForKey:@"isFolder"] boolValue]) {

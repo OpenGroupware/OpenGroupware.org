@@ -65,16 +65,12 @@
   ofBundle:(NSBundle *)_bundle
 {
   _LSBundleCommandInfo *info;
-  NSDictionary *domainList;
-  NSDictionary *domains;
+    NSDictionary *domains;
   NSEnumerator *domainKeys;
   NSString     *domainKey;
-  NSZone       *z;
 
   //NSLog(@"processing commands.plist of %@", [_bundle bundleName]);
 
-  z = [self zone];
-  domainList = [_commands objectForKey:@"domainList"];
   domains    = [_commands objectForKey:@"domains"];
   domainKeys = [domains keyEnumerator];
   
@@ -124,7 +120,8 @@
 {
   NSString *path;
   
-  //NSLog(@"lookup info for command %@ in %@", _command, _bundle);
+  // NSLog(@"lookup info for command %@ in %@ (%@)",
+  //  _command, _bundle, [_bundle isLoaded] ? @"loaded" : @"not-loaded");
   
   if ((path = [_bundle pathForResource:@"commands" ofType:@"plist"]) == nil) {
     [self warnWithFormat:@"did not find commands.plist in bundle %@ !",
@@ -138,6 +135,18 @@
     }
     else
       [self warnWithFormat:@"could not load commands model: %@", path];
+  }
+  
+  /* Load bundle if that didn't happen yet */
+  if (![_bundle isLoaded]) {
+    NGBundleManager *bm = [NGBundleManager defaultBundleManager];
+
+    [self logWithFormat:@"Loading bundle %@ for command %@...", 
+            [_bundle bundleIdentifier], _command];
+    if (![bm loadBundle: _bundle]) {
+      [self errorWithFormat:@"Could not load bundle %@ for command %@.",
+            [_bundle bundleIdentifier], _command];
+    }
   }
   
   /* look into info cache (which got filled previously) */
@@ -220,7 +229,7 @@
   //NSLog(@"instantiate command %@", _i->command);
   
   if (_i->commandClass == Nil)
-    _i->commandClass = NSClassFromString(_i->commandClassName);
+    _i->commandClass = NGClassFromString(_i->commandClassName);
   
   if (_i->commandClass == nil) {
     [self errorWithFormat:@"did not find class %@ for command %@",
@@ -277,7 +286,6 @@
 - (id)initWithName:(NSString *)_name className:(NSString *)_cname
   config:(NSDictionary *)_config
 {
-  int     idx;
   NSRange r;
   
   self = [super init];
@@ -287,7 +295,6 @@
   self->config           = [_config copy];
   
   r = [_name rangeOfString:@"::"];
-  idx = r.location;
   if (r.length > 0) {
     self->domain    = [[_name substringToIndex:r.location] copy];
     self->operation = 
@@ -316,7 +323,7 @@
   
   ms = [NSMutableString stringWithCapacity:128];
   
-  [ms appendFormat:@"<0x%p[%@]: ", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]: ", self, NSStringFromClass([self class])];
   [ms appendFormat:@" command=%@::%@", self->domain, self->command];
   [ms appendFormat:@" op=%@",          self->operation];
   [ms appendFormat:@" name=%@",        self->commandClassName];

@@ -93,7 +93,7 @@ static NSArray *objVersionName = nil;
     
     ctx = [(OGoSession *)[self session] commandContext];
     // TODO: fix typing
-    doc = [(SkyAccessManager *)[NSClassFromString([_type subType]) alloc] 
+    doc = [(SkyAccessManager *)[NGClassFromString([_type subType]) alloc] 
 			       initWithContext:ctx];
     [self setObject:doc];
     [doc release]; doc = nil;

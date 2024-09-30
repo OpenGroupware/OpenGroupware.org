@@ -78,7 +78,7 @@ static BOOL debugFavorites = YES;
   
   [[_fav retain] autorelease];
   if (debugFavorites) {
-    [self logWithFormat:@"favorite gid is %@, fav 0x%p<%@>", 
+    [self logWithFormat:@"favorite gid is %@, fav %p<%@>", 
 	    favGid, _fav, NSStringFromClass([_fav class])];
   }
   

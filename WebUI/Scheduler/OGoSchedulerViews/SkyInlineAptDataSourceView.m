@@ -523,7 +523,7 @@ static NSArray      *coreTeamAttrs   = nil;
   NSCalendarDate *end;
 
   if (palmClass == NULL) {
-    palmClass = NSClassFromString(@"SkyPalmDateDocument");
+    palmClass = NGClassFromString(@"SkyPalmDateDocument");
   }
   if ([_apt isKindOfClass:palmClass] && [_apt isUntimed])
     return YES;

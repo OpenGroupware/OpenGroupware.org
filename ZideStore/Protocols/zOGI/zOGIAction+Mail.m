@@ -34,7 +34,7 @@
 {
   NGMimeMessage       *message;
   NGMutableHashMap    *header;
-  NSArray             *recipients;
+  NSArray             *recipients = _recipients;
 
   if (recipients == nil)
     return;

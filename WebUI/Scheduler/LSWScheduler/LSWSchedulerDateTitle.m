@@ -163,7 +163,7 @@
       tz = [tz stringByEscapingURL];
       if (tz == nil) tz = @"GMT";
       
-      snprintf(buf, sizeof(buf), "year=%i&month=%i&day=%i&tz=%s",
+      snprintf(buf, sizeof(buf), "year=%ld&month=%ld&day=%ld&tz=%s",
 	       [d yearOfCommonEra], [d monthOfYear], [d dayOfMonth],
 	       [tz UTF8String]);
       url = [NSString stringWithCString:buf];
@@ -198,7 +198,7 @@
         NSString *desc;
         char buf[16];
         
-        snprintf(buf, sizeof(buf), "%04i-%02i-%02i",
+        snprintf(buf, sizeof(buf), "%04ld-%02ld-%02ld",
                  [d yearOfCommonEra], [d monthOfYear], [d dayOfMonth]);
         desc = [[NSString alloc] initWithCString:buf];
         [self appendJS:desc toReponse:_response inContext:_ctx];

@@ -331,10 +331,9 @@ static BOOL isRootAccountId(NSNumber *aid) {
   NSException              *exc;
   SkyObjectPropertyManager *pm;
   EOGlobalID               *gid;
-  NSString                 *status;
 
   /* check for checkout */
-  status   = [[_doc fileAttributes] objectForKey:@"SkyStatus"];
+  // unused: status   = [[_doc fileAttributes] objectForKey:@"SkyStatus"];
   tmpAttrs = nil;
 
   if (![self _fmdIsStatusValidForDocument:_doc])
@@ -512,11 +511,7 @@ static BOOL isRootAccountId(NSNumber *aid) {
   /* split objects argument into global-ids and documents */
   
   while ((obj = [enumerator nextObject]) != nil) {
-    BOOL isDict;
-
-    isDict = YES;
     if ([obj isKindOfClass:GidClass]) {
-      isDict       = NO;
       gids[gidCnt] = obj;
       gidCnt++;
     }

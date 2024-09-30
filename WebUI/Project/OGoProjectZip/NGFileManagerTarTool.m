@@ -138,7 +138,6 @@ static NSString *GetPathToTarTool(void) {
   NSFileHandle               *inputHandle = nil;
   NSFileHandle               *nullHandle  = nil;
   NSTask                     *untarTask   = nil;
-  int                        result;
 
   localFm     = [NSFileManager defaultManager];
   unixTool    = GetNGUnixTool();
@@ -165,7 +164,9 @@ static NSString *GetPathToTarTool(void) {
   [inputHandle closeFile];
 
   if ([untarTask isRunning]) [untarTask waitUntilExit];
+  #if 0 // unused
   result = [untarTask terminationStatus];
+  #endif
   [untarTask release];
 
   oldSourceFm = [self sourceFileManager];
@@ -198,7 +199,6 @@ static NSString *GetPathToTarTool(void) {
 }
 
 - (NSDictionary *)infoOnTaredData:(NSData *)_data {
-  NGUnixTool          *unixTool      = nil;
   NSTask              *tarInfoTask   = nil;
   NSFileHandle        *nullHandle    = nil;
   NSFileHandle        *inputHandle   = nil;
@@ -210,9 +210,8 @@ static NSString *GetPathToTarTool(void) {
   NSString            *tmpString     = nil;
   NSEnumerator        *enumer        = nil;
   NSString            *infoString    = nil;
-  int                 result;
 
-  unixTool      = GetNGUnixTool();
+  /*unixTool =*/ GetNGUnixTool();
   info          = [[NSMutableDictionary alloc] init];
 
   inputPipe     = [NSPipe pipe];
@@ -233,7 +232,7 @@ static NSString *GetPathToTarTool(void) {
   [inputHandle closeFile];
 
   outputData = [outputHandle readDataToEndOfFile];
-  result     = [tarInfoTask terminationStatus];
+  // unused: result = [tarInfoTask terminationStatus];
   tmpString  =
     [[NSString alloc] initWithData:outputData
                       encoding:[NSString defaultCStringEncoding]];

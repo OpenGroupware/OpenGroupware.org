@@ -354,11 +354,9 @@
 }
 
 - (id)viewMail {
-  NSNotificationCenter *nc;
-  BOOL                 wasUnread;
-  id                   page;
+  BOOL wasUnread;
+  id   page;
 
-  nc        = [NSNotificationCenter defaultCenter];
   wasUnread = ![self->message isRead];
 
   if (![self->message isRead]) {

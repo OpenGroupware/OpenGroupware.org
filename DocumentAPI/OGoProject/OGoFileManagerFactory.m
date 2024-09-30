@@ -64,7 +64,7 @@ static NSDictionary *baseToClass  = nil;
     config = [bm configForResource:baseName ofType:@"OGoProjectBases"
 		 providedByBundle:bundle];
     fmClassName = [config objectForKey:@"fileManagerClass"];
-    fmClass     = NSClassFromString(fmClassName);
+    fmClass     = NGClassFromString(fmClassName);
     if (fmClass == Nil) {
       NSLog(@"ERROR: did not find filemanager class for base '%@'.", baseName);
       continue;
@@ -130,24 +130,24 @@ static NSDictionary *baseToClass  = nil;
   Class fmClass;
   
   if ([_scheme isEqualToString:@"file"]) {
-    fmClass = NSClassFromString(@"SkyFSFileManager");
+    fmClass = NGClassFromString(@"SkyFSFileManager");
 
     if (fmClass == nil) { /* try to load bundle */
       [[[NGBundleManager defaultBundleManager]
                          bundleForClassNamed:@"SkyFSFileManager"] load];
 
-      fmClass = NSClassFromString(@"SkyFSFileManager");
+      fmClass = NGClassFromString(@"SkyFSFileManager");
     }
   }
   else if ([_scheme isEqualToString:@"subversion"])
-    fmClass = NSClassFromString(@"SkySvnFileManager");
+    fmClass = NGClassFromString(@"SkySvnFileManager");
   else if ([_scheme isEqualToString:@"skyrix"])
-    fmClass = NSClassFromString(@"SkyProjectFileManager");
+    fmClass = NGClassFromString(@"SkyProjectFileManager");
   else {
     [self warnWithFormat:@"%s: unknown filemanager scheme '%@', "
 	  @"trying SkyProjectFileManager !",
 	  __PRETTY_FUNCTION__, _scheme];
-    fmClass = NSClassFromString(@"SkyProjectFileManager");
+    fmClass = NGClassFromString(@"SkyProjectFileManager");
   }
   return fmClass;
 }

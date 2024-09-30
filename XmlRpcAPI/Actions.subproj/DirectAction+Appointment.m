@@ -845,7 +845,6 @@
 
 - (id)appointment_deleteNoteAction:(id)_noteId {
   id note;
-  id result;
   
   if ([_noteId isKindOfClass:[NSString class]])
     _noteId = [NSNumber numberWithInt:[_noteId intValue]];
@@ -855,7 +854,7 @@
   if (note == nil)
     return [self faultWithFaultCode:XMLRPC_FAULT_INTERNAL_ERROR
                  reason:@"Note does not exist"];
-  result = [[self commandContext] runCommand:@"note::delete",
+  /*unused: result =*/ [[self commandContext] runCommand:@"note::delete",
                    @"documentId", _noteId,
                    @"reallyDelete", [NSNumber numberWithBool:YES],
                  nil];

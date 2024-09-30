@@ -36,7 +36,7 @@
 
 #include "common.h"
 
-int compareEnterprises(id e1, id e2, void* context) {
+NSComparisonResult compareEnterprises(id e1, id e2, void* context) {
   return [[e1 valueForKey:@"description"]
 	   caseInsensitiveCompare:[e2 valueForKey:@"description"]];
 }

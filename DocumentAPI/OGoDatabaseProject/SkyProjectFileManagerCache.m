@@ -476,7 +476,7 @@ static NSNumber *yesNum = nil;
 /* description */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<0x%p[%@]: project=%@>",
+  return [NSString stringWithFormat:@"<%p[%@]: project=%@>",
                      self, NSStringFromClass([self class]),
                      [self->project valueForKey:@"projectId"]];
 }

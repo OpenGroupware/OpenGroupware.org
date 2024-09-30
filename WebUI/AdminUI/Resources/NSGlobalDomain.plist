@@ -11,8 +11,8 @@
        info = "Diese eindeutige Zeichenkette unterscheidet verschiedene SKYRiX-Installationen voneinander.";
        };
      ptBR = {
-       title = "String identificador da instalaÁ„o OpenGroupware";
-       info = "Este string permite diferenciar uma instalaÁ„o OpenGroupware de outra";
+       title = "String identificador da instala√ß√£o OpenGroupware";
+       info = "Este string permite diferenciar uma instala√ß√£o OpenGroupware de outra";
      };
      },
      {
@@ -27,8 +27,8 @@
        info = "Alle von SKYRiX erstellten Dokumente werden in diesem Pfad gespeichert. Im Normalfall sollte dieser Wert auf <i>~skyrix41/documents</i> zeigen.";
        };
      ptBR = {
-       title = "DiretÛrio para salvar os documentos dos usu·rios do OpenGroupware";
-       info = "Todos os documentos criados pelo OpenGroupware ser„o salvos neste caminho. O valor padr„o para este caminho È <i>~opengroupware/documents</i>";
+       title = "Diret√≥rio para salvar os documentos dos usu√°rios do OpenGroupware";
+       info = "Todos os documentos criados pelo OpenGroupware ser√£o salvos neste caminho. O valor padr√£o para este caminho √© <i>~opengroupware/documents</i>";
      };
      },
      {
@@ -45,7 +45,7 @@
        };
      ptBR = {
        title = "Adaptador para conectar o OpenGroupware ao banco de dados"; 
-       info = "Selecione o adaptador adequado ao seu banco de dados. <b>Cuidado: Um valor errado danificar· o OpenGroupware e seus dados.</b> Se o OpenGroupware estiver funcionando no momento, n„o h· necessidade de alterar este par‚metro.";
+       info = "Selecione o adaptador adequado ao seu banco de dados. <b>Cuidado: Um valor errado danificar√° o OpenGroupware e seus dados.</b> Se o OpenGroupware estiver funcionando no momento, n√£o h√° necessidade de alterar este par√¢metro.";
      };
      },
      {
@@ -62,7 +62,7 @@
        };
      ptBR = {
        title = "Modelo de banco de dados a ser usado";
-       info = "Escolha o modelo de banco de dados que combina com seu banco de dados, dado por <i>LSAdaptor</i> acima. <b>Cuidado: Se um modelo errado for selecionado, o OpenGroupware ser· danificado.</b>";
+       info = "Escolha o modelo de banco de dados que combina com seu banco de dados, dado por <i>LSAdaptor</i> acima. <b>Cuidado: Se um modelo errado for selecionado, o OpenGroupware ser√° danificado.</b>";
      };
      },
      {
@@ -76,8 +76,8 @@
        info = "Mit diesem Parameter wird festgelegt, wie viele Ergebnisse maximal bei einer Suchanfragen zur&uuml;ckgegeben werden.";
        };
      ptBR = {
-       title = "N˙mero m·ximo de resultados nas operaÁıes de pesquisa de dados";
-       info = "Este par‚metro especifica quantos resultados devem ser apresentados ao se executar pesquisas no banco de dados.";
+       title = "N√∫mero m√°ximo de resultados nas opera√ß√µes de pesquisa de dados";
+       info = "Este par√¢metro especifica quantos resultados devem ser apresentados ao se executar pesquisas no banco de dados.";
      };
      },
      {
@@ -91,8 +91,8 @@
        info = "In diesem Pfad werden die Bilder der News-Anwendung gespeichert. Der Default-Pfad f&uuml;r diese Option ist <i>~skyrix41/news</i>.";
        };
      ptBR = {
-       title = "Caminho para armazenar as imagens da aplicaÁ„o <b>NotÌcias</b>";
-       info = "As imagens das notÌcias ser„o armazenadas neste caminho. O caminho padr„o È <i>~opengroupware/news</i>.";
+       title = "Caminho para armazenar as imagens da aplica√ß√£o <b>Not√≠cias</b>";
+       info = "As imagens das not√≠cias ser√£o armazenadas neste caminho. O caminho padr√£o √© <i>~opengroupware/news</i>.";
      };
      },
      {
@@ -106,8 +106,8 @@
        info = "Unter dieser URL stellt der Webserver die News-Bilder bereit. Ein entsprechender Alias-Eintrag zu diesem Parameter muss in der Webserver-Konfigurationsdatei <i>~skyrix41/Library/WebServer/httpd.conf</i> gesetzt sein. Der Default-Wert f&uuml; diesen Parameter ist <i>/ArticleImages</i>.";
        };
      ptBR = {
-       title = "URL para o servidor web servir as imagens das notÌcias";
-       info = "O servidor web publicar· as imagens das notÌcias sob este URL. Note que dever· existir uma entrada de <b>alias</b> apropriada no arquivo de configuraÁ„o do servidor web (em geral localizado em /etc/httpd/...). O valor padr„o È <i> ArticleImages</i>."; 
+       title = "URL para o servidor web servir as imagens das not√≠cias";
+       info = "O servidor web publicar√° as imagens das not√≠cias sob este URL. Note que dever√° existir uma entrada de <b>alias</b> apropriada no arquivo de configura√ß√£o do servidor web (em geral localizado em /etc/httpd/...). O valor padr√£o √© <i> ArticleImages</i>."; 
      };
      },
      {
@@ -123,7 +123,7 @@
        };
      ptBR = {
        title = "Onde encontrar os <i>bundles</i> OpenGroupware";
-       info = "Os <i>bundles</i> OpenGroupware (i.e. as partes que compÙem a aplicaÁ„o) ser„o pesquisadas neste caminho. O valor padr„o È <i>~opengroupware/Library/OpenGroupware.org </i>. <b>Cuidado:</b> Ao definir um caminho errado, o OpenGroupware n„o mais ter· suas aplicaÁıes, tornando-se um sistema in˙til.";
+       info = "Os <i>bundles</i> OpenGroupware (i.e. as partes que comp√¥em a aplica√ß√£o) ser√£o pesquisadas neste caminho. O valor padr√£o √© <i>~opengroupware/Library/OpenGroupware.org </i>. <b>Cuidado:</b> Ao definir um caminho errado, o OpenGroupware n√£o mais ter√° suas aplica√ß√µes, tornando-se um sistema in√∫til.";
      };
      },
      {
@@ -137,8 +137,8 @@
        info = "Dieser Parameter legt die SKYRiX Zeitzone fest.";
        };
      ptBR = {
-       title = "Fuso hor·rio de referÍncia interna do OpenGroupware";
-       info = "Especifica o fuso hor·rio interno de referÍncia do sistema OpenGroupware, a partir do qual o fuso hor·rio do usu·rio È calculado. … recomendado manter sempre o valor padr„o GMT.";
+       title = "Fuso hor√°rio de refer√™ncia interna do OpenGroupware";
+       info = "Especifica o fuso hor√°rio interno de refer√™ncia do sistema OpenGroupware, a partir do qual o fuso hor√°rio do usu√°rio √© calculado. √â recomendado manter sempre o valor padr√£o GMT.";
      };
      },
   );

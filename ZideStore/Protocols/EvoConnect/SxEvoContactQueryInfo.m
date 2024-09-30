@@ -223,7 +223,6 @@ static EOQualifier *qIsPersOrContact = nil;
 - (BOOL)_processAndQualifier:(EOAndQualifier *)_q {
   /* disassemble qualifier */
   NSMutableArray *qs;
-  BOOL     isPersonOrContact;
   unsigned i;
   NSString *fileAsLike, *email1Like, *cnLike, *snLike;
   
@@ -231,7 +230,7 @@ static EOQualifier *qIsPersOrContact = nil;
   if ([qs count] == 0)
     return YES;
   
-  isPersonOrContact = [qs removeQualifier:qIsPersOrContact];
+  /*unused: isPersonOrContact =*/ [qs removeQualifier:qIsPersOrContact];
   
   fileAsLike = [qs removeKeyValueQualifierForKey:@"fileas"
                    operation:EOQualifierOperatorLike];

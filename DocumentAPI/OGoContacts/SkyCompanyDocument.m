@@ -375,7 +375,7 @@ static BOOL DebugDocumentRegistration = NO;
     static Class clazz = Nil;
 
     if (clazz == Nil)
-      clazz = NSClassFromString(@"SkyAccountDocument");
+      clazz = NGClassFromString(@"SkyAccountDocument");
       
     self->contact = [[clazz alloc] initWithGlobalID:self->contactGID
                                  context:[self context]];
@@ -409,7 +409,7 @@ static BOOL DebugDocumentRegistration = NO;
     return self->owner;
 
   if (clazz == Nil)
-    clazz = NSClassFromString(@"SkyAccountDocument");
+    clazz = NGClassFromString(@"SkyAccountDocument");
   
   self->owner = [[clazz alloc] initWithGlobalID:self->ownerGID
 			       context:[self context]];

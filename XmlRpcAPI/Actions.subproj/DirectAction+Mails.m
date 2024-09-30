@@ -25,14 +25,13 @@
 @implementation DirectAction(MailMethods)
 
 - (id)mail_createMailAction {
-  id            ctx;
   NSString      *ctxPath, *ctxId;
   NSFileManager *f;
   NSDate        *now;
   
   static int FailedCnt = 0;
 
-  ctx = [self commandContext];
+  [self commandContext]; // hh(2024-09-20): may have side effects
   f  = fm();
 
   ctxId = nil;

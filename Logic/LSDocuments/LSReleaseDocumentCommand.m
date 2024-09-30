@@ -53,14 +53,9 @@
   BOOL           isOk      = NO;
   id             editing   = nil;
   id             document;
-  NSUserDefaults *defaults;
-  NSString       *path;
   
   document = [self object];
-  defaults = [_context userDefaults];
-  path     = [defaults stringForKey:@"LSAttachmentPath"];
-  
-  editing = [document valueForKey:@"toDocumentEditing"];
+  editing  = [document valueForKey:@"toDocumentEditing"];
 
   [editing takeValue:[EONull null] forKey:@"title"];
   [editing takeValue:[EONull null] forKey:@"abstract"];
@@ -141,13 +136,11 @@
   id   obj;
   id   editing;
   NSCalendarDate *now;
-  NSUserDefaults *defaults;
   NSFileManager  *manager;
 
   obj      = [self object];
   editing  = [obj valueForKey:@"toDocumentEditing"];
   now      = [NSCalendarDate date];
-  defaults = [_context userDefaults];
   manager  = [NSFileManager defaultManager];
   
   [obj takeValue:now forKey:@"lastmodifiedDate"];

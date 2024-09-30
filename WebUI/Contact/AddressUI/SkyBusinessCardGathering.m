@@ -565,12 +565,12 @@ static NSArray *typeOrderings = nil;
   
   [self applyDerivedAttributesOnPerson];
   if (debugOn) 
-    [self debugWithFormat:@"applied attributes: 0x%p",self->gatheringPerson];
+    [self debugWithFormat:@"applied attributes: %p",self->gatheringPerson];
   
   /* create person */
   
   person = [self _createPersonWithParameters:self->gatheringPerson];
-  if (debugOn) [self debugWithFormat:@"created person: 0x%p", person];
+  if (debugOn) [self debugWithFormat:@"created person: %p", person];
   [self postPersonCreated:person];
   
   /* process assigned companies or create a new one */

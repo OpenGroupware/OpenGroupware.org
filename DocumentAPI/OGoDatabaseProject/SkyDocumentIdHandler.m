@@ -220,15 +220,15 @@ static EOSQLQualifier *trueQualifier = nil;
   [ms appendFormat:@" item=#%i/%i min=%i,max=%i",
         self->itemCnt, self->itemSize, self->minId, self->maxId];
   
-  if (self->documents != NULL) [ms appendFormat:@" d=0x%p", self->documents];
-  if (self->projects  != NULL) [ms appendFormat:@" p=0x%p", self->projects];
+  if (self->documents != NULL) [ms appendFormat:@" d=%p", self->documents];
+  if (self->projects  != NULL) [ms appendFormat:@" p=%p", self->projects];
 }
 
 - (NSString *)description {
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   [self appendAttributesToDescription:ms];
   [ms appendString:@">"];
   return ms;

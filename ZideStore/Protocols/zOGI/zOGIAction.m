@@ -214,8 +214,7 @@ static int zOGIMailNotificationEnabled = -1;
 /*
   Returns the primary key for the provided EOGlobalID
 */
-- (NSString *)_getPKeyForEO:(EOKeyGlobalID *)_arg 
-{
+- (NSString *)_getPKeyForEO:(EOKeyGlobalID *)_arg {
   return [[[_arg keyValuesArray] objectAtIndex: 0] valueForKey:@"stringValue"];
 }
 
@@ -232,16 +231,15 @@ static int zOGIMailNotificationEnabled = -1;
 
   pkeys = nil;
 
-  if (_arg == nil) 
-  {
+  if (_arg == nil) {
     [self warnWithFormat:@"argument for getEOsForPKeys is nil"];
-    return [result initWithObjects: nil]; 
+    return [NSArray array]; 
   }
 
   /* If the _arg is a single value */
-  if ([_arg isKindOfClass:[NSString class]] ||
+  if ([_arg isKindOfClass:[NSString   class]] ||
       [_arg isKindOfClass:[EOGlobalID class]] ||
-      [_arg isKindOfClass:[NSNumber class]]) 
+      [_arg isKindOfClass:[NSNumber   class]]) 
   {
     result = [NSArray arrayWithObject:[self _getEOForPKey:_arg]];
     return result;
@@ -249,46 +247,44 @@ static int zOGIMailNotificationEnabled = -1;
 
   /* _arg is a multiple value */
   pkeys = [NSMutableArray arrayWithCapacity:64];
-  if ([_arg isKindOfClass:[NSArray class]]) 
-  {
+  if ([_arg isKindOfClass:[NSArray class]]) {
     [pkeys addObjectsFromArray: _arg] ;
-  } else if ([_arg isKindOfClass:[NSDictionary class]]) 
-    {
-      [pkeys addObjectsFromArray:[_arg allKeys]];
-    } else 
-      {
-        [self warnWithFormat:@"Unknown arg type for getEOsForPKeys"];
-        return [result initWithObjects: nil]; 
-        /* TODO: THROW AN EXCEPTION! */
-      }
+  } 
+  else if ([_arg isKindOfClass:[NSDictionary class]])  {
+    [pkeys addObjectsFromArray:[_arg allKeys]];
+  } 
+  else  {
+    [self warnWithFormat:@"Unknown arg type for getEOsForPKeys"];
+    return [NSArray array];
+    /* TODO: THROW AN EXCEPTION! */
+  }
   
   if ([[pkeys objectAtIndex:0] isKindOfClass:[EOKeyGlobalID class]])
     return pkeys;
 
   /* Normalize array values to NSNumbers */
-  for(i = 0; i < [pkeys count]; i++ ) 
-  {
-    if ([[pkeys objectAtIndex:i] isKindOfClass:[NSNumber class]]) 
-    {
+  for(i = 0; i < [pkeys count]; i++ ) {
+    if ([[pkeys objectAtIndex:i] isKindOfClass:[NSNumber class]]) {
       /* We don't need to do anything, already a number */
-    } else if ([[pkeys objectAtIndex:i] isKindOfClass:[NSString class]]) 
-      {
-         /* Convert any NSString values into NSNumbers */
-         tmp = [NSNumber numberWithInt:[[pkeys objectAtIndex:i] intValue]];
-         if ([tmp intValue] == 0)
-         {
-           [self warnWithFormat:@"Discarding %@ in Pk->EO conversion",
+    } 
+    else if ([[pkeys objectAtIndex:i] isKindOfClass:[NSString class]]) {
+       /* Convert any NSString values into NSNumbers */
+       tmp = [NSNumber numberWithInt:[[pkeys objectAtIndex:i] intValue]];
+       if ([tmp intValue] == 0) {
+         [self warnWithFormat:@"Discarding %@ in Pk->EO conversion",
+            [pkeys objectAtIndex:i]];
+       } 
+       else
+         [pkeys replaceObjectAtIndex:i withObject:tmp];
+    } 
+    else {
+      [self warnWithFormat:@"Discarding %@ in Pk->EO conversion",
               [pkeys objectAtIndex:i]];
-         } else
-             [pkeys replaceObjectAtIndex:i withObject:tmp];
-      } 
-         else [self warnWithFormat:@"Discarding %@ in Pk->EO conversion",
-                  [pkeys objectAtIndex:i]];
+    }
   } /* End of cleaning for */
 
   result = [[[self getCTX] typeManager] globalIDsForPrimaryKeys:pkeys];
-  if ([result containsObject:[NSNull null]]) 
-  {
+  if ([result containsObject:[NSNull null]]) {
      /* TODO: THROW AN EXCEPTION */
   }
   return result;

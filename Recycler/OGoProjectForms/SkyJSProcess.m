@@ -28,7 +28,7 @@
 
 - (void)dealloc {
 #if DEBUG
-  NSLog(@"%s: dealloc JS process 0x%p ..", __PRETTY_FUNCTION__, self);
+  NSLog(@"%s: dealloc JS process %p ..", __PRETTY_FUNCTION__, self);
 #endif
   RELEASE(self->fromString);
   RELEASE(self->fromHandle);

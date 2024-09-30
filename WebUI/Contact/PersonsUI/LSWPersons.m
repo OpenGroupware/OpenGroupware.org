@@ -276,11 +276,9 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   return self->maxSearchCount;
 }
 - (NSString *)limitedSearchLabel {
-  NSString *maxSearch;
-  id       l;
+  id l;
   
-  l         = [self labels];
-  maxSearch = [maxSearchCountDef stringValue];
+  l = [self labels];
   
   return [NSString stringWithFormat:@"%@ %@ %@",
                      [l valueForKey:@"limitedSearchLabel"],
@@ -705,7 +703,7 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 
 - (Class)wizardClass {
   // TODO: check whether this is used somewhere
-  return NSClassFromString(@"SkyPersonWizard");
+  return NGClassFromString(@"SkyPersonWizard");
 }
 - (id)wizard {
   // TODO: check whether this is used somewhere

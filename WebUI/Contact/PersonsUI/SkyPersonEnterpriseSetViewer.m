@@ -102,7 +102,7 @@
 
 - (NSString *)epInfo {
   char buf[32];
-  sprintf(buf, "(%d/%d)", (self->enterpriseIndex + 1), 
+  sprintf(buf, "(%d/%ld)", (self->enterpriseIndex + 1), 
 	  [[self enterprises] count]);
   return [NSString stringWithCString:buf];
 }

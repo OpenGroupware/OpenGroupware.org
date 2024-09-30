@@ -15,8 +15,8 @@
         info = "Dieses Feld beinhaltet alle Domains, die vom lokalen MTA akzeptiert werden. Diese werden verwendet, um die entsprechenden E-Mail Adressen der Accounts in dem MTA zu exportieren. Die einzelnen Domains muessen jeweils in einer neuen Zeile stehen.";
       };
       ptBR = {
-        title = "Todos os domÌnios aceitos pelo MTA local.";
-        info = "Estes s„o os domÌnios que ser„o aceitos pelo MTA local. Esta lista ser· usada para se obter os endeeÁos de e-mails corretos das contas. Um domÌnio por linha.";
+        title = "Todos os dom√≠nios aceitos pelo MTA local.";
+        info = "Estes s√£o os dom√≠nios que ser√£o aceitos pelo MTA local. Esta lista ser√° usada para se obter os endee√ßos de e-mails corretos das contas. Um dom√≠nio por linha.";
       };
     },
   );

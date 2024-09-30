@@ -272,7 +272,7 @@ static NSSet *AllListAttrs = nil;
     unsigned            psCount     = 0;      
     id       *ps;
     NSArray  *a;        
-    unsigned j, k;
+    unsigned j;
       
     apt         = [results    objectAtIndex:i];
     agid        = [resultGids objectAtIndex:i];
@@ -283,12 +283,11 @@ static NSSet *AllListAttrs = nil;
     if ((psCount = [pgida count]) == 0)
       continue;
 
-    k  = 0;
-    a  = nil;
+        a  = nil;
     ps = calloc(psCount + 2, sizeof(id));
     NSAssert(ps, @"calloc() failed ..");
 
-      for (j = 0, k = 0; j < psCount; j++) {
+      for (j = 0; j < psCount; j++) {
           EOGlobalID *pgid = nil;
           
           pgid = [pgida objectAtIndex:j];

@@ -358,7 +358,7 @@
   return (time(NULL) - 1047000000) / [self refreshInterval];
 }
 
-static int pkeyCompare(id date1, id date2, void *self) {
+static NSComparisonResult pkeyCompare(id date1, id date2, void *self) {
   return [(NSNumber *)[(NSDictionary *)date1 objectForKey:@"pkey"] 
 		      compare:(NSNumber *)
 		      [(NSDictionary *)date2 objectForKey:@"pkey"]];

@@ -132,12 +132,11 @@ static inline char __hexToChar(char c) {
   int        srcCnt;
   char       *source;
   char       cntrWord[64];
-  int        cnt, blockCnt, cntrCnt;
+  int        cnt, cntrCnt;
   BOOL       isFlag;
   RTFBlock   *block;
 
   cnt      = 0;
-  blockCnt = 0;
   isFlag   = NO;
   cntrCnt   = 0;
 

@@ -115,5 +115,5 @@ plainText = "Enviar como texto plano"
 deleteButtonLabel = "borrar;"
 LSWMailFilterEditor = "Editar Filtro de Correo"
 footerRowLabel1 = "SKYRiX;"
-footerRowLabel2         = "2000-2009 SKYRIX Software AG";
+footerRowLabel2         = "2000-2024 SKYRIX Software AG & Contributors";
 LSWMailFolderEditor = "Editar Carpeta"

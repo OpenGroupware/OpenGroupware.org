@@ -144,11 +144,9 @@ static id noNum(void) {
   LSCommandContext *ctx;
 
   if ((ctx = [self commandContext]) != nil) {
-    id owner;
     id project = nil;
     id account = nil;
     id loginGID = nil;
-    NSNumber *uid;
     
     project = [self _projectForProjectCode:_projectID];
     
@@ -157,7 +155,7 @@ static id noNum(void) {
       return noNum();
     }
 
-    owner = [ctx runCommand:@"project::get-owner",
+    /* unused: owner = */ [ctx runCommand:@"project::get-owner",
                  @"project", project,
                  nil];
 
@@ -166,7 +164,7 @@ static id noNum(void) {
                         valueForKey:LSAccountKey]
                         globalID];
 
-    uid = [[loginGID keyValuesArray] objectAtIndex:0];
+    // unused: uid = [[loginGID keyValuesArray] objectAtIndex:0];
     
     if (![self isCurrentUserRoot] &&
         ![loginGID isEqual:[[project valueForKey:@"leader"] globalID]])

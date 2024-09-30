@@ -20,7 +20,7 @@
        };
      ptBR = {
        title = "Tamanho da Fila de Escuta do Unix (Unix Listen Queue)";
-       info = "O <i>default</i> WOListenQueue configura a fila de escuta do socket que est· aceitando conexıes encaminhadas por HTTP. O tamanho da fila de escuta determina quantas conexıes ser„o aceitas antes do sistema responder que est· ocupado (busy) e rejeitar os acessos (note que o mÛdulo Apache tentar· reconectar v·rias vezes se o servidor estiver ocupado (busy)).";
+       info = "O <i>default</i> WOListenQueue configura a fila de escuta do socket que est√° aceitando conex√µes encaminhadas por HTTP. O tamanho da fila de escuta determina quantas conex√µes ser√£o aceitas antes do sistema responder que est√° ocupado (busy) e rejeitar os acessos (note que o m√≥dulo Apache tentar√° reconectar v√°rias vezes se o servidor estiver ocupado (busy)).";
      };
      },
 
@@ -40,7 +40,7 @@
        };
      ptBR = {
        title = "Define o prefixo dos recursos web internos para o sistema OpenGroupware";
-       info = "Especifica o prefixo para as imagens usadas no sistema OpenGroupware. Um erro neste caminho mostrar· um sistema sem imagens.";
+       info = "Especifica o prefixo para as imagens usadas no sistema OpenGroupware. Um erro neste caminho mostrar√° um sistema sem imagens.";
      };
      },
      {
@@ -54,8 +54,8 @@
        info = "Dieser Parameter legt den Zeitintervall fest, bevor eine Session durch Inaktivit&auml;t automatisch beendet wird.";
        };
      ptBR = {
-       title = "Define o intervalo de tempo de inatividade (em segundos) antes da sess„o expirar.";
-       info = "Este par‚metro especifica o intervalo (em segundos) de inatividade da sess„o antes dela expirar.";
+       title = "Define o intervalo de tempo de inatividade (em segundos) antes da sess√£o expirar.";
+       info = "Este par√¢metro especifica o intervalo (em segundos) de inatividade da sess√£o antes dela expirar.";
      };
      },
      {
@@ -71,7 +71,7 @@
        };
      ptBR = {
        title = "Usar o login do OpenGroupware para o login no IMAP?";
-       info = "Com este par‚metro ser· possÌvel fazer login no IMAP pelo OpenGroupware. Se seu servidor IMAP tiver os mesmos nomes de conta que o servidor OpenGroupware, vocÍ pode colocar YES aqui.";
+       info = "Com este par√¢metro ser√° poss√≠vel fazer login no IMAP pelo OpenGroupware. Se seu servidor IMAP tiver os mesmos nomes de conta que o servidor OpenGroupware, voc√™ pode colocar YES aqui.";
      };
      },
      {
@@ -85,8 +85,8 @@
        info = "Mit diesem Parameter kann festgelegt werden, wie oft ein Termin wiederholt werden kann. Je nach Leistung ihres Systems k&ouml;nnen sie diesen Wert anpassen. Der Standardwert ist 100.";
        };
      ptBR = {
-       title = "N˙mero m·ximo de repetiÁıes de compromissos";
-       info = "Quantas vezes um compromisso pode ser repetido? VocÍ poder· alterar este valor mas haver· impactos no desempenho de seu sistema. O valor padr„o È 100.";
+       title = "N√∫mero m√°ximo de repeti√ß√µes de compromissos";
+       info = "Quantas vezes um compromisso pode ser repetido? Voc√™ poder√° alterar este valor mas haver√° impactos no desempenho de seu sistema. O valor padr√£o √© 100.";
      };
      },
   );

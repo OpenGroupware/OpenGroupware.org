@@ -175,7 +175,7 @@ static BOOL    debugOn = NO;
   [self debugWithFormat:@"lookup rootfolder '%@' of %@", _name, 
           [self nameInContainer]];
   
-  folder = [[NSClassFromString(@"SxDocumentFolder") alloc] 
+  folder = [[NGClassFromString(@"SxDocumentFolder") alloc] 
              initWithName:_name inContainer:self];
   return [folder autorelease];
 }
@@ -185,7 +185,7 @@ static BOOL    debugOn = NO;
   [self debugWithFormat:@"lookup notes folder '%@' of %@", _name, 
           [self nameInContainer]];
   
-  folder = [[NSClassFromString(@"SxProjectNotesFolder") alloc] 
+  folder = [[NGClassFromString(@"SxProjectNotesFolder") alloc] 
              initWithName:_name inContainer:self];
   return [folder autorelease];
 }
@@ -349,7 +349,7 @@ static BOOL    debugOn = NO;
 - (NSString *)description {
   NSMutableString *ms = [NSMutableString stringWithCapacity:128];
   
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   
   if (self->projectGlobalID)
     [ms appendFormat:@" gid=%@", self->projectGlobalID];

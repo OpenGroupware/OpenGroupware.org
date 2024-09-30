@@ -63,7 +63,7 @@
 
 @end /* SkyContactFormatter */
 
-static int compareAccounts(id e1, id e2, void* context) {
+static NSComparisonResult compareAccounts(id e1, id e2, void* context) {
   static SkyContactFormatter *formatter = nil;
 
   if (formatter == nil)
@@ -170,7 +170,7 @@ static int compareAccounts(id e1, id e2, void* context) {
     return nil;
   
   ctx   = [(OGoSession *)[self session] commandContext];
-  clazz = NSClassFromString(@"SkyAccountDataSource");
+  clazz = NGClassFromString(@"SkyAccountDataSource");
 
   // TODO: fix type
   ds    = [(SkyAccessManager *)[clazz alloc] initWithContext:ctx];

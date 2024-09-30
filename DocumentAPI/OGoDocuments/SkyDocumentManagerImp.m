@@ -101,7 +101,7 @@
 #endif
 
     if ((tmp = [bundleConfig objectForKey:@"GlobalIDClass"])) {
-      if (NSClassFromString(tmp) != [_gid class])
+      if (NGClassFromString(tmp) != [_gid class])
         continue;
     }
     
@@ -147,7 +147,7 @@
     Class c;
     id resolver;
     
-    if ((c = NSClassFromString(resourceName)) == Nil) {
+    if ((c = NGClassFromString(resourceName)) == Nil) {
       NSLog(@"WARNING(%s): couldn't resolve resolver class '%@'",
             __PRETTY_FUNCTION__, resourceName);
       return nil;

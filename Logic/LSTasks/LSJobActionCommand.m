@@ -249,8 +249,7 @@ extern NSString *LSWJobHasChanged;
 }
 
 - (void)_validateKeysForContext:(id)_context {
-  id      job, account, userId;
-  NSArray *groups;
+  id job, account;
   
   job = [self object];
 
@@ -262,8 +261,9 @@ extern NSString *LSWJobHasChanged;
   /* check permissions */
   
   account = [_context valueForKey:LSAccountKey];
-  userId  = [account valueForKey:@"companyId"];
-  groups  = [self groupIdsForLoginInContext:_context];
+  // hh(2024-09-19): unused, but maybe side effects?:
+  /*id userId = */ [account valueForKey:@"companyId"];
+  /*NSArray *groups = */[self groupIdsForLoginInContext:_context];
   
   /* special processing */
   

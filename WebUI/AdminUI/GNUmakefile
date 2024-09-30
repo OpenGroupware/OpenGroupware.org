@@ -2,9 +2,7 @@
 
 include ../common.make
 
-WOBUNDLE_NAME        = AdminUI
-WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-5.5/WebUI
+WOBUNDLE_NAME = AdminUI
 
 AdminUI_PRINCIPAL_CLASS = LSWUserManagerModule
 

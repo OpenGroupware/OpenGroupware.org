@@ -448,13 +448,12 @@ static NSArray     *extDesktopPages   = nil;
 }
 
 - (EOQualifier *)qualifier {
-  EOQualifier *q;
-  NSString *s;
-  SEL      op;
+  EOQualifier    *q;
+  NSString       *s;
   NSMutableArray *qualifiers;
   
   qualifiers = [NSMutableArray arrayWithCapacity:4];
-  op         = EOQualifierOperatorCaseInsensitiveLike;
+  // unused: op = EOQualifierOperatorCaseInsensitiveLike;
 
   s = self->title;
   if ([s length] > 0) {
@@ -515,7 +514,7 @@ static NSArray     *extDesktopPages   = nil;
 
 - (Class)projectDocumentDataSourceClass {
   /* for project-wide searches */
-  return NSClassFromString(@"SkyProjectDocumentDataSource");
+  return NGClassFromString(@"SkyProjectDocumentDataSource");
 }
 - (EODataSource *)projectDocumentDataSource {
   LSCommandContext *cmdctx;

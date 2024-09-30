@@ -159,7 +159,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
       self->aeFlags.isSchedulerClassicEnabled = 1;
     
     self->aeFlags.isMailEnabled =
-      [NSClassFromString(@"OGoAptMailOpener") isMailEnabled] ? 1 : 0;
+      [NGClassFromString(@"OGoAptMailOpener") isMailEnabled] ? 1 : 0;
     
     self->aeFlags.isAllDayEvent      = 0;
     self->aeFlags.isAllDayEventSetup = 0;
@@ -397,7 +397,6 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   type:(NGMimeType *)_type
   configuration:(NSDictionary *)_cmdCfg
 {
-  NSArray *ps;
   id      appointment;
   
   if (![self _checkEditActivationPreconditions])
@@ -406,7 +405,6 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   appointment = [self object];
 
   [self _setupParticipantsForAppointment:appointment];
-  ps = nil;
   
   /* get comment */
   self->comment = [[self _getCommentOfAppointment:appointment] copy];
@@ -1827,7 +1825,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   if (![self shouldShowPalmDates])
     return _ds;
 
-  if ((c = NSClassFromString(@"SkyPalmDateDataSource")) == Nil) {
+  if ((c = NGClassFromString(@"SkyPalmDateDataSource")) == Nil) {
     static BOOL didLog = NO;
     if (!didLog) {
       [self logWithFormat:@"Note: missing SkyPalmDateDataSource class"];
@@ -1854,7 +1852,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [[[_ds appointment] valueForKey:@"endDate"]   setTimeZone:self->timeZone];
   
   if ([_action isNotNull]) {
-    opener = [NSClassFromString(@"OGoAptMailOpener")
+    opener = [NGClassFromString(@"OGoAptMailOpener")
 			       mailOpenerForObject:[self snapshot] 
 			       action:_action
 			       page:self];
@@ -1958,7 +1956,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   if ([[self navigation] activePage] == self)
     return nil;
 
-  return [NSClassFromString(@"OGoAptMailOpener")
+  return [NGClassFromString(@"OGoAptMailOpener")
 			   mailEditorForObject:[self object]
 			   action:@"removed" page:self];
 }
@@ -1968,14 +1966,13 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   NSArray *ps;
   id      obj;
   id      mailEditor;
-  id      page, l;
+  id      page;
   
-  l    = [self labels];
-  page = [self saveAndGoBackWithCount:1
+    page = [self saveAndGoBackWithCount:1
                action:([self isInNewMode] ? @"created" : @"edited")];
   
   /* if the save resulted in a conflict, we enter the conflict page */
-  if ([page isKindOfClass:NSClassFromString(@"SkySchedulerConflictPage")])
+  if ([page isKindOfClass:NGClassFromString(@"SkySchedulerConflictPage")])
     return page;
   
   if (![self isMailEnabled]) {
@@ -2005,7 +2002,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 
   [self setErrorString:nil];
   
-  mailEditor = [NSClassFromString(@"OGoAptMailOpener")
+  mailEditor = [NGClassFromString(@"OGoAptMailOpener")
 				 mailEditorForObject:obj
 				 action:
 				   [self isInNewMode] ? @"created" : @"edited"
@@ -2080,7 +2077,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
       
     [appointment takeValue:oldStart forKey:@"oldStartDate"];
     page = [self saveAndGoBackWithCount:2 action:@"moved"];
-    if ([page isKindOfClass:NSClassFromString(@"SkySchedulerConflictPage")])
+    if ([page isKindOfClass:NGClassFromString(@"SkySchedulerConflictPage")])
       return page;
   }
 
@@ -2092,7 +2089,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
       
       [[self object] takeValue:oldStart forKey:@"oldStartDate"];
       
-      mailEditor = [NSClassFromString(@"OGoAptMailOpener")
+      mailEditor = [NGClassFromString(@"OGoAptMailOpener")
 				     mailEditorForObject:[self object]
 				     action:@"moved"
 				     page:self];

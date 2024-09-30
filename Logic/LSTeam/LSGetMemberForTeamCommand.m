@@ -35,7 +35,8 @@
 
 @implementation LSGetMemberForTeamCommand
 
-static int compareAccounts(id member1, id member2, void *context) {
+static NSComparisonResult compareAccounts(id member1, id member2, void *context) 
+{
   NSString *name1;
   NSString *name2;
   

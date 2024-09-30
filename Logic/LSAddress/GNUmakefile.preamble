@@ -6,6 +6,9 @@ ADDITIONAL_CPPFLAGS += \
         -DOGO_MINOR_VERSION=$(MINOR_VERSION)   \
         -DOGO_SUBMINOR_VERSION=$(SUBMINOR_VERSION)
 
+# Otherwise LSAddress/LSSearch are not requested in the .so
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
+
 ADDITIONAL_INCLUDE_DIRS += -I. -I..
 
 LSAddress_BUNDLE_LIBS += \

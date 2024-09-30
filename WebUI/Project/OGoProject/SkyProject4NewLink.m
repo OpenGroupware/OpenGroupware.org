@@ -140,7 +140,7 @@ static BOOL debugOn = NO;
 
 - (BOOL)showTitle {
   return [[self fileManager]
-                isKindOfClass:NSClassFromString(@"SkyProjectFileManager")];
+                isKindOfClass:NGClassFromString(@"SkyProjectFileManager")];
 }
 
 - (BOOL)isEditorPage {
@@ -340,7 +340,7 @@ static BOOL debugOn = NO;
   //       a title
   // TODO: should be replaced with a feature check:
   //         [fm requiresPathExtensionAtPath:xx];
-  if ([fm isKindOfClass:NSClassFromString(@"SkyProjectFileManager")]) {
+  if ([fm isKindOfClass:NGClassFromString(@"SkyProjectFileManager")]) {
     if ([[fname pathExtension] length] == 0)
       fname = [fname stringByAppendingPathExtension:@"link"];
   }

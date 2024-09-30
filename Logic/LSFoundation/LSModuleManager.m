@@ -119,9 +119,11 @@
   withDictionary:(NSDictionary *)_cfg
   factory:(id)_factory
 {
+  #if 0 // hh(2024-09-19): operations queried but not used?
   NSDictionary *operations = nil;
 
   operations = [_cfg objectForKey:@"operations"];
+  #endif
 }
 
 - (void)configureWithDictionary:(NSDictionary *)_cfg factory:(id)_factory {
@@ -189,7 +191,7 @@
       continue;
     }
     
-    if ((clazz = NSClassFromString(clazzName)) == Nil) {
+    if ((clazz = NGClassFromString(clazzName)) == Nil) {
       [self warnWithFormat:
 	      @"did not find class as registered in bundle: '%@'\n  "
 	      @"%@", clazzName, _bundle];

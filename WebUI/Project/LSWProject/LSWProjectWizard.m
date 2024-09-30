@@ -100,7 +100,6 @@ int _compareAccounts(id e1, id e2, void* context) {
   id             project;
   WOSession      *sn;
   NSCalendarDate *today;
-  NSCalendarDate *silvester;
 
   project   = [self snapshot];
   sn        = [self session];
@@ -109,12 +108,13 @@ int _compareAccounts(id e1, id e2, void* context) {
   
   [today setTimeZone:[(OGoSession *)sn timeZone]];
   
+  [project takeValue:today     forKey:@"startDate"];
+  #if 0 // hh(2024-09-19): unused
   silvester = [NSCalendarDate dateWithYear:2028  month:12    day:31 
                               hour:0    minute:0  second:0
                               timeZone:[today timeZone]];
-  
-  [project takeValue:today     forKey:@"startDate"];
   //  [project takeValue:silvester forKey:@"endDate"];
+  #endif
 
   [self->ownerSelection release]; self->ownerSelection = nil;
   self->ownerSelection = [[sn activeAccount] retain];

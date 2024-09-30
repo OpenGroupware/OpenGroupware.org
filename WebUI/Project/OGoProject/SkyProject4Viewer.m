@@ -423,7 +423,7 @@ static inline BOOL _showUnknownFiles(id self) {
 - (BOOL)isPublisherEnabled {
   static int isEnabled = -1;
   if (isEnabled == -1)
-    isEnabled = NSClassFromString(@"SkyPublishProject") ? 1 : 0;
+    isEnabled = NGClassFromString(@"SkyPublishProject") ? 1 : 0;
   return isEnabled;
 }
 
@@ -510,7 +510,7 @@ static inline BOOL _showUnknownFiles(id self) {
 - (BOOL)hasPubPreview {
   static int hasPub = -1;
   if (hasPub == -1)
-    hasPub = NSClassFromString(@"SkyPubDirectAction") ? 1 : 0;
+    hasPub = NGClassFromString(@"SkyPubDirectAction") ? 1 : 0;
   return hasPub ? YES : NO;
 }
 
