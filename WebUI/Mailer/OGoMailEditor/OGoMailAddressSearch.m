@@ -49,7 +49,7 @@
 + (NSString *)_formatEmail:(NSString *)_email forPerson:(id)_person;
 @end
 
-static int _comparePersons(id part1, id part2, void *context);
+static NSComparisonResult _comparePersons(id part1, id part2, void *context);
 
 @implementation OGoMailAddressSearch
 
@@ -141,7 +141,7 @@ static int  DefMaxSearchCount             = 10;
 - (EODataSource *)mailingListDS {
   EODataSource *ds;
   
-  ds = [NSClassFromString(@"SkyMailingListDataSource") alloc];
+  ds = [NGClassFromString(@"SkyMailingListDataSource") alloc];
 
   // TODO: fix prototype
   ds = [(SkyAccessManager *)ds initWithContext:cmdctx];
@@ -412,7 +412,7 @@ static int  DefMaxSearchCount             = 10;
     l = [[NSString alloc] initWithFormat:
                     [[self labels] valueForKey:@"MailingListAddr"],
                     [obj objectForKey:@"name"],
-                    [[obj objectForKey:@"emails"] count]];
+                    [(NSArray *)[obj objectForKey:@"emails"] count]];
                               
     [emails addObject:[self recordForEmail:s label:l]];
     [s release]; [l release];
@@ -692,7 +692,7 @@ static int  DefMaxSearchCount             = 10;
 
 @end /* OGoMailAddressSearch */
 
-static int _comparePersons(id part1, id part2, void *context) {
+static NSComparisonResult _comparePersons(id part1, id part2, void *context) {
   BOOL isP1Account, isP2Account;
 
   isP1Account = [[part1 valueForKey:@"isAccount"] boolValue];

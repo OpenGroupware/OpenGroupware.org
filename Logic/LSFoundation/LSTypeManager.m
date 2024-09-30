@@ -139,11 +139,11 @@
 /* primary keys */
 
 - (NSArray *)globalIDsForObjects:(NSArray *)_objects {
-  EODatabaseContext *dbCtx;
   unsigned oc;
   NSArray *array;
-  
-  dbCtx = [self->context valueForKey:LSDatabaseContextKey];
+
+  // hh(2024-09-19): unused, but maybe the query has a side effect?
+  /*EODatabaseContext *dbCtx=*/[self->context valueForKey:LSDatabaseContextKey];
   
   array = nil;
   if ((oc = [_objects count]) > 0) {
@@ -335,9 +335,9 @@
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
 
-  [ms appendFormat:@" ctx=0x%p", self->context];
+  [ms appendFormat:@" ctx=%p", self->context];
   
   if (self->pkeyToGid != NULL)
     [ms appendFormat:@" #pkey-map=%d", NSCountMapTable(self->pkeyToGid)];

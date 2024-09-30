@@ -100,7 +100,7 @@
   WOAssociation *a;
   Class         c;
 
-  if ((c = NSClassFromString(@"WETreeView")) == Nil) {
+  if ((c = NGClassFromString(@"WETreeView")) == Nil) {
     NSLog(@"%s: missing WETreeView class", __PRETTY_FUNCTION__);
     RELEASE(self);
     return nil;

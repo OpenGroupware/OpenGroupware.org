@@ -68,8 +68,8 @@ static void _categoryInitialize(void) {
   if (domimp == nil) {
     Class clazz;
     
-    if ((clazz = NSClassFromString(@"NGDOMImplementation")) == Nil)
-      clazz = NSClassFromString(@"DOMImplementation");
+    if ((clazz = NGClassFromString(@"NGDOMImplementation")) == Nil)
+      clazz = NGClassFromString(@"DOMImplementation");
     
     domimp = [[clazz alloc] init];
   }

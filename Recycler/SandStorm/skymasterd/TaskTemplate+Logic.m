@@ -180,14 +180,14 @@ static NSArray *applicationPaths = nil;
   if((taskClass = self->taskclass) == nil)
     taskClass = @"MasterTask";
   
-  clazz = NSClassFromString(taskClass);
+  clazz = NGClassFromString(taskClass);
   return [[(MasterTask *)[clazz alloc] initWithTemplate:self] autorelease];
 }
 
 /* description */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<0x%p[%@]: %@>",
+  return [NSString stringWithFormat:@"<%p[%@]: %@>",
                      self, NSStringFromClass([self class]),
                      [self taskclass]];
 }

@@ -146,7 +146,7 @@ static BOOL debugWCAP = YES;
 
 - (id)lookupWCAPCommand:(NSString *)_key inContext:(id)_ctx {
   NSString     *sid;
-  id           sn, user, pwd;
+  id           sn, user;
   SxUserFolder *userFolder;
   
   sid = [[(WOContext *)_ctx request] formValueForKey:@"id"];
@@ -165,7 +165,9 @@ static BOOL debugWCAP = YES;
     [sn terminate];
     return nil;
   }
+  #if 0 // hh(2024-09-20): unused
   pwd = [sn valueForKey:@"WCAPPassword"];
+  #endif
   
   if (debugWCAP) {
     [self logWithFormat:@"should handle using WCAP session: %@", sn];

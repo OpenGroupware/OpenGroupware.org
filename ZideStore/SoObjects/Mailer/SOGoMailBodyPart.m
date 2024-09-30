@@ -264,10 +264,10 @@ static BOOL debugOn = NO;
     if ([pe isEqualToString:@"gif"] ||
 	[pe isEqualToString:@"png"] ||
 	[pe isEqualToString:@"jpg"])
-      return NSClassFromString(@"SOGoImageMailBodyPart");
+      return NGClassFromString(@"SOGoImageMailBodyPart");
   case 4:
     if ([pe isEqualToString:@"mail"])
-      return NSClassFromString(@"SOGoMessageMailBodyPart");
+      return NGClassFromString(@"SOGoMessageMailBodyPart");
   default:
     return self;
   }

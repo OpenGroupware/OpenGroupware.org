@@ -96,9 +96,9 @@ static NSArray  *extAttrSpec = nil;
   if (yesNum == nil) yesNum = [NSNumber numberWithBool:YES];
   if (noNum  == nil) noNum  = [NSNumber numberWithBool:NO];
 
-  attrArray       = [[ud arrayForKey:@"scheduler_viewer_fetchattrnames"] copy];
-  teamAttrNames   = [[ud arrayForKey:@"scheduler_viewer_teamattrnames"]  copy];
-  personAttrNames =[[ud arrayForKey:@"scheduler_viewer_personattrnames"] copy];
+  attrArray       = [[ud arrayForKey:@"scheduler_viewer_fetchattrnames"]  copy];
+  teamAttrNames   = [[ud arrayForKey:@"scheduler_viewer_teamattrnames"]   copy];
+  personAttrNames = [[ud arrayForKey:@"scheduler_viewer_personattrnames"] copy];
   
   extAttrSpec = [[ud arrayForKey:@"OGoExtendedAptAttributes"] copy];
   if ([extAttrSpec isNotEmpty])

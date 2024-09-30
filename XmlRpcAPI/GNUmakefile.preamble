@@ -37,3 +37,6 @@ SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)
 ifeq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
 $(XMLRPCD_NAME)_TOOL_LIBS += -liconv
 endif
+
+# Otherwise explicitly linked shared libs are not requested!
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed

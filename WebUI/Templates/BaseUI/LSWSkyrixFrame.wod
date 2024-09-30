@@ -190,10 +190,8 @@ Logout: WOHyperlink {
   ALIGN    = "TOP";
 }
 */
-FooterRowLabel2a: WOHyperlink {
-  string = labels.footer_skyrixag;
-  href   = "http://www.skyrix.com";
-  TARGET = "SKYRIX";
+FooterRowLabel2a: WOString {
+  value = "SKYRIX Software AG & Contributors";
 }
 
 FooterRowLabel3a: WOString {

@@ -158,6 +158,15 @@ static BOOL logBundleLoading          = NO;
   [pool release];
 }
 
+#if 1 // hh(2024-09-26): use hardcoded name OpenGroupware (vs ogo-webui-5.5)
+// because this affects links and such. Stick to just OGo.
+// Note:
+// - Changing the name affects resource pathes, specifically components.cfg
+//   lookup in WebUI/Templates (e.g. Themes/blue/ogo-webui-5.5)
+- (NSString *)name {
+  return @"OpenGroupware";
+}
+#else
 - (NSString *)name {
   /* override to avoid clashes with "." processing */
   static NSString *cName = nil;
@@ -167,6 +176,7 @@ static BOOL logBundleLoading          = NO;
 	                     lastPathComponent] copy];
   return cName;
 }
+#endif
 
 - (void)_setVersion {
   NSString *cvsTag;
@@ -320,7 +330,7 @@ static BOOL logBundleLoading          = NO;
   if ([d length] > 40)
     d = [[d substringToIndex:28] stringByAppendingString:@".."];
   
-  [self logWithFormat:@"notification %@ object 0x%p(%@): %@",
+  [self logWithFormat:@"notification %@ object %p(%@): %@",
 	  [_notification name], obj, NSStringFromClass([obj class]), d];
 }
 

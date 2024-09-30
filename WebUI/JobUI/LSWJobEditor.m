@@ -72,7 +72,7 @@
 
 #include <OGoJobs/SkyPersonJobDataSource.h>
 
-static int compareAccounts(id e1, id e2, void* context) {
+static NSComparisonResult compareAccounts(id e1, id e2, void* context) {
   BOOL isTeam1 = [[e1 valueForKey:@"isTeam"] boolValue];
   BOOL isTeam2 = [[e2 valueForKey:@"isTeam"] boolValue];
 
@@ -516,9 +516,7 @@ static BOOL HasSkyProject4Desktop    = NO;
   configuration:(NSDictionary *)_cmdCfg
 {
   // TODO: clean up!
-  WOSession *sn;
-
-  sn = [self session];
+  [self session]; // hh(2024-09-20): create if missing?
   
   self->isProjectLinkMode    = [[_type subType]
                                        isEqualToString:@"project-job"];
@@ -699,8 +697,6 @@ static BOOL HasSkyProject4Desktop    = NO;
       [error appendString:[labels valueForKey:@"error_end_before_start"]];
     }
     else {
-      id p;
-      
       if ([self isInNewMode]) {
         NSCalendarDate *nowDate = [NSCalendarDate date];
 
@@ -710,10 +706,6 @@ static BOOL HasSkyProject4Desktop    = NO;
             == NSOrderedDescending) {
           [error appendString:[labels valueForKey:@"error_start_before_now"]];
         }
-        p = self->project;
-      }
-      else {
-        p = self->project;
       }
     }
   }
@@ -1123,13 +1115,12 @@ static BOOL _isIntKeyEq(id a, id b, NSString *key) {
   // TODO: clean up this mess!
   NSMutableString *comment;
   NSFormatter     *form    = nil;
-  BOOL nameChanged, startDateChanged, endDateChanged, notifyChanged;
+  BOOL startDateChanged, endDateChanged, notifyChanged;
   BOOL projectChanged, executantChanged;
   id   l, tmp;
 
   /* detect changes */
 
-  nameChanged = ![[sc valueForKey:@"name"] isEqual:[s valueForKey:@"name"]];
   startDateChanged = ![[sc valueForKey:@"startDate"]
                            isEqual:[s valueForKey:@"startDate"]];
   endDateChanged = ![[sc valueForKey:@"endDate"]

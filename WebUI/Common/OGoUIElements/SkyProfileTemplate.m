@@ -35,7 +35,7 @@
 
 #include "common.h"
 
-#if NeXT_RUNTIME || APPLE_RUNTIME
+#if NeXT_RUNTIME || APPLE_RUNTIME || GNUSTEP_BASE_LIBRARY
 #  include <objc/objc.h>
 #  define sel_get_name(__X__) sel_getName(__X__)
 #endif

@@ -65,10 +65,6 @@
     return;
   
   if ([self _shouldFetchAttribute:@"extendedAttributes"]) {
-    id obj;
-    
-    obj = [_objs lastObject];
-    
     LSRunCommandV(_context, @"person", @"get-extattrs",
                   @"objects",     _objs,
                   @"entityName",  @"Person",

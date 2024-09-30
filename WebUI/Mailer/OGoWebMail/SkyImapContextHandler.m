@@ -90,10 +90,6 @@ static NSString *ImapDSKey      = @"ImapDSKey";
 - (void)prepareForLogin:(NSString *)_login passwd:(NSString *)_passwd
   host:(NSString *)_host savePwd:(BOOL)_savePwd session:(id)_session
 {
-  NSUserDefaults *defs;
-  
-  defs = [_session userDefaults];
-  
   if (!_savePwd) {
     [self _deleteDefault:@"imap_passwd" session:_session];
   }
@@ -131,7 +127,6 @@ static NSString *ImapDSKey      = @"ImapDSKey";
   NSString         *login = nil, *host = nil;
   NSUserDefaults   *defs, *ud;
   LSCommandContext *cmdCtx;
-  BOOL             result;
   NSDictionary     *condict;
   id tmp;
 
@@ -166,13 +161,12 @@ static NSString *ImapDSKey      = @"ImapDSKey";
   imapCtx = [[NGImap4Context alloc] initWithConnectionDictionary:condict];
   [imapCtx enterSyncMode];
 
-  result = YES;
   NS_DURING {
     if (![imapCtx openConnection]) {
       NSException *localException;
 	
       if ((localException = [imapCtx lastException]))
-	*error_ = [self descriptionForConnectException:localException];
+      	*error_ = [self descriptionForConnectException:localException];
 	
       imapCtx = nil;
     }

@@ -137,13 +137,11 @@ static int NGImap4_messageWithURL = -1;
   {
     EOSortOrdering *so;
     SEL            sel;
-    NSArray        *soArray;
 
     sel     = ([state isDescending])
       ? EOCompareDescending : EOCompareAscending;
     so      = [EOSortOrdering sortOrderingWithKey:[state sortedKey]
                               selector:sel];
-    soArray = [NSArray arrayWithObject:so];
 
     if ([state sortedKey]) {
       EOFetchSpecification *fetchSpec;

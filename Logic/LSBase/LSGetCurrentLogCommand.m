@@ -25,7 +25,7 @@
 @interface LSGetCurrentLogCommand : LSDBObjectBaseCommand
 @end
 
-static int compareLogs(id part1, id part2, void* context) {
+static NSComparisonResult compareLogs(id part1, id part2, void* context) {
   return [(NSDate *)[part1 valueForKey:@"creationDate"]
  		           compare:(NSDate *)[part2 valueForKey:@"creationDate"]];
 }

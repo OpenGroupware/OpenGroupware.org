@@ -810,13 +810,10 @@ extern NSDictionary *NSParseDictionaryFromData(NSData *);
   id           toolFm;
   NSData       *attributesData = nil;
   NSException  *result         = nil;
-  NSString     *plpc           = nil;
   NSString     *filepath       = nil;
 
   if ([_path length] == 0)
     return nil;
-
-  plpc = [_path lastPathComponent];
 
   tfm    = [self targetFileManager];
   toolFm = [_tool fileManager];
@@ -894,7 +891,7 @@ extern NSDictionary *NSParseDictionaryFromData(NSData *);
 
       if (!SkyProjectFileManagerClass)
         SkyProjectFileManagerClass =
-          NSClassFromString(@"SkyProjectFileManager");
+          NGClassFromString(@"SkyProjectFileManager");
       
       [tfm changeFileAttributes:attributes atPath:_newPath];
 

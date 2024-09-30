@@ -102,7 +102,7 @@
 #include <EOControl/EOKeyGlobalID.h>
 #include "common.h"
 
-static int compareParticipants(id part1, id part2, void *context);
+static NSComparisonResult compareParticipants(id part1, id part2, void *context);
 
 @implementation LSListParticipantsCommand
 
@@ -1088,7 +1088,8 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
 @end /* LSListParticipantsCommand */
 
 
-static int compareParticipants(id part1, id part2, void *context) {
+static NSComparisonResult compareParticipants(id part1, id part2, void *context) 
+{
   BOOL     part1IsTeam;
   BOOL     part2IsTeam;
   NSString *name1      = nil;

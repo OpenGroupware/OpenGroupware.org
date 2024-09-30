@@ -543,7 +543,6 @@ static inline BOOL _keyHasNamespace(SkyAttributeDataSource *self,
 
 - (NSSet *)_evaluateQualifier:(EOQualifier *)_qual {
   NSSet *result   = nil;
-  BOOL  isOrQual  = NO;
   BOOL  isAndQual = NO;
   
   if (_qual == nil)
@@ -566,7 +565,7 @@ static inline BOOL _keyHasNamespace(SkyAttributeDataSource *self,
     isAndQual = YES;
   }
   else if ([_qual isKindOfClass:[EOOrQualifier class]]) {
-    isOrQual = YES;
+    // no-op
   }
   else {
     /* neither AND nor OR qualifier */

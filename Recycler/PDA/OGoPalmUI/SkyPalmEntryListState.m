@@ -103,7 +103,7 @@ static NSString *SelectedDevice        = @"SelectedDevice";
 
         cname = [resource valueForKey:@"entryListState"];
         if ([cname length])
-          state = [NSClassFromString(cname) alloc];
+          state = [NGClassFromString(cname) alloc];
         else {
           NSLog(@"%s invalid class for palmDb: %@",
                 __PRETTY_FUNCTION__, _palmDb);

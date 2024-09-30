@@ -45,7 +45,7 @@
 
 #if 0
 - (Class)evoMapEnumeratorClass {
-  return NSClassFromString(@"EvoGroupEnumerator");
+  return NGClassFromString(@"EvoGroupEnumerator");
 }
 #endif
 
@@ -138,7 +138,7 @@
   static Class RendererClass = NULL;
   
   if (RendererClass == NULL) {
-    if ((RendererClass = NSClassFromString(@"SxEvoGroupRenderer")) == Nil) {
+    if ((RendererClass = NGClassFromString(@"SxEvoGroupRenderer")) == Nil) {
       static BOOL didLog = NO;
       if (!didLog) {
 	[self logWithFormat:@"no Evolution support installed"];
@@ -153,7 +153,7 @@
   static Class RendererClass = NULL;
   
   if (RendererClass == NULL) {
-    if ((RendererClass = NSClassFromString(@"SxZLGroupRenderer")) == Nil) {
+    if ((RendererClass = NGClassFromString(@"SxZLGroupRenderer")) == Nil) {
       static BOOL didLog = NO;
       if (!didLog) {
 	[self logWithFormat:@"no ZideLook support installed"];
@@ -237,7 +237,7 @@
   if ([_name hasSuffix:@".ics"])
     return [self iCalendarForGroup:_name inContext:_ctx];
   
-  folder = [[NSClassFromString(@"SxResourceGroupFolder") alloc] 
+  folder = [[NGClassFromString(@"SxResourceGroupFolder") alloc] 
              initWithName:_name inContainer:self];
   return [folder autorelease];
 }

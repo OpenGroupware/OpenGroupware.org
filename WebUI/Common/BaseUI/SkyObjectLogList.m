@@ -148,7 +148,7 @@ static NSNumber *noN = nil;
     NSAssert((obj != nil), @"No object is set");
 
     if (DocumentClass == Nil)
-      DocumentClass = NSClassFromString(@"SkyDocument");
+      DocumentClass = NGClassFromString(@"SkyDocument");
 
     if ([obj isKindOfClass:DocumentClass]) {
       obj = [[self runCommand:@"object::get-by-globalid",

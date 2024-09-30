@@ -127,7 +127,7 @@ static NSArray* months = nil; /* label keys */
   if (![self _loadDataSourceBundle:_bundleName])
     return NO;
   
-  if ((c = NSClassFromString(_dsName)) == Nil) {
+  if ((c = NGClassFromString(_dsName)) == Nil) {
     [self logWithFormat:@"ERROR: missing datasource class: %@", _dsName];
     return NO;
   }
@@ -285,10 +285,9 @@ static NSArray* months = nil; /* label keys */
        Note: this makes the "new year" and "new month" as visible in the 
              weekview appear in the tabs, not the month/year of the day itself.
     */
-    NSCalendarDate *ws;
     
     // Note: uses a different week start for calc and set?
-    ws = [self weekStart];
+    // unused: ws = [self weekStart];
     [self setWeekStart:[self->day mondayOfWeek]]; /* set new weekstart */
 #if ENABLE_OGO_BUG_1132
     [self setMonth:[self->day bestMonthForWeekView:ws]];
@@ -498,7 +497,7 @@ static NSArray* months = nil; /* label keys */
 }
 - (NSString *)dayIcon {
   char buf[16];
-  sprintf(buf, "day%02d", [[self day] dayOfMonth]);
+  sprintf(buf, "day%02ld", [[self day] dayOfMonth]);
   return [NSString stringWithCString:buf];
 }
 

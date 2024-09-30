@@ -440,11 +440,10 @@ static NGMimeType   *eoDateType        = nil;
 - (unsigned)_fetchAndCheckWithMemberIds:(NSArray *)partIds {
   unsigned i, max;
   NSArray  *myTeams;
-  NSNumber *meId;
   id       me;
   
   me   = [[self session] activeAccount];
-  meId = [me valueForKey:@"companyId"];
+  // unused: meId = [me valueForKey:@"companyId"];
   
   myTeams = [self _fetchTeamGIDsForAccountGID:[me globalID]];
   

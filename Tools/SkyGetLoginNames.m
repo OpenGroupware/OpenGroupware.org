@@ -197,7 +197,6 @@
 int main(int argc, char **argv, char **env) {
   NSAutoreleasePool *pool;
   SkyGetLoginNames  *tool;
-  int res;
   
   pool = [[NSAutoreleasePool alloc] init];
 #if LIB_FOUNDATION_LIBRARY  
@@ -205,7 +204,7 @@ int main(int argc, char **argv, char **env) {
 #endif
   
   tool = [[SkyGetLoginNames alloc] init];
-  res = [tool runWithArguments:[[NSProcessInfo processInfo] arguments]];
+  /*res =*/ [tool runWithArguments:[[NSProcessInfo processInfo] arguments]];
   [tool release];
   
   [pool release];

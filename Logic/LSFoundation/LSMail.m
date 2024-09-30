@@ -111,7 +111,7 @@
   NSLog(@"Mail subject : %@ \n", subject);    
   fprintf(f,"Subject:%s\n\n",[[subject stringValue] cString]);
   NSLog(@"Mail message : %@ \n",message);    
-  fprintf(f,[[message stringValue] cString]);
+  fprintf(f,"%s",[[message stringValue] cString]);
   fprintf(f,"\n\n");
   pclose(f);
 }

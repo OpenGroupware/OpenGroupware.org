@@ -4,9 +4,7 @@ include ../common.make
 
 MODULE_NAME = LSWPreferences
 
-WOBUNDLE_NAME        = PreferencesUI
-WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-5.5/WebUI/
+WOBUNDLE_NAME = PreferencesUI
 
 PreferencesUI_PRINCIPAL_CLASS = LSWPreferencesModule
 

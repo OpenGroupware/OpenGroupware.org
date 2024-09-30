@@ -258,7 +258,7 @@
 
 /* Delete the specified note */
 - (id)_deleteNote:(id)_noteId withCommit:(BOOL)_doCommit {
-  id note, result;
+  id note;
 
   if ([_noteId isKindOfClass:[NSString class]])
     _noteId = [NSNumber numberWithInt:[_noteId intValue]];
@@ -268,7 +268,7 @@
   if (note == nil)
     return [NSException exceptionWithHTTPStatus:500
                         reason:@"Note does not exist"];
-  result = [[self getCTX] runCommand:@"note::delete",
+  /*result =*/ [[self getCTX] runCommand:@"note::delete",
                    @"documentId", _noteId,
                    @"reallyDelete", [NSNumber numberWithBool:YES],
                  nil];

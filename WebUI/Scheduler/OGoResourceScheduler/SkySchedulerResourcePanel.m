@@ -20,6 +20,7 @@
   02111-1307, USA.
 */
 
+#include <unistd.h> // getpid
 #include <OGoFoundation/OGoComponent.h>
 
 /*

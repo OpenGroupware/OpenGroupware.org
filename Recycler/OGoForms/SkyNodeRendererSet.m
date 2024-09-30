@@ -52,15 +52,15 @@
   if ((self = [super init])) {
     id tmp;
     
-    tmp = [[NSClassFromString(@"ODXHTMLNodeRenderFactory") alloc] init];
+    tmp = [[NGClassFromString(@"ODXHTMLNodeRenderFactory") alloc] init];
     [self registerFactory:tmp forNamespaceURI:XMLNS_XHTML];
     RELEASE(tmp);
     
-    tmp = [[NSClassFromString(@"ODXULNodeRenderFactory") alloc] init];
+    tmp = [[NGClassFromString(@"ODXULNodeRenderFactory") alloc] init];
     [self registerFactory:tmp forNamespaceURI:XMLNS_XUL];
     RELEASE(tmp);
     
-    tmp = [[NSClassFromString(@"ODBindNodeRenderFactory") alloc] init];
+    tmp = [[NGClassFromString(@"ODBindNodeRenderFactory") alloc] init];
     [self registerFactory:tmp forNamespaceURI:XMLNS_OD_BIND];
     RELEASE(tmp);
   }
@@ -76,7 +76,7 @@
 
 - (ODNodeRenderer *)textNodeRendererForNode:(id)_domNode {
   static id r = nil;
-  if (r == nil) r = [[NSClassFromString(@"ODRNodeText") alloc] init];
+  if (r == nil) r = [[NGClassFromString(@"ODRNodeText") alloc] init];
   return r;
 }
 
@@ -101,14 +101,14 @@
   if ([nsuri isEqualToString:XMLNS_XHTML]) {
     static id<ODNodeRendererFactory> rf = nil;
     if (rf == nil)
-      rf = [[NSClassFromString(@"ODXHTMLNodeRenderFactory") alloc] init];
+      rf = [[NGClassFromString(@"ODXHTMLNodeRenderFactory") alloc] init];
 
     tagRenderer = [rf rendererForNode:_domNode inContext:nil];
   }
   else if ([nsuri isEqualToString:XMLNS_XUL]) {
     static id<ODNodeRendererFactory> rf = nil;
     if (rf == nil)
-      rf = [[NSClassFromString(@"ODXULNodeRenderFactory") alloc] init];
+      rf = [[NGClassFromString(@"ODXULNodeRenderFactory") alloc] init];
     
     tagRenderer = [rf rendererForNode:_domNode inContext:nil];
   }
@@ -118,9 +118,9 @@
     static id<ODNodeRendererFactory> bindrf = nil;
     
     if (worf == nil)
-      worf = [[NSClassFromString(@"ODWONodeRenderFactory") alloc] init];
+      worf = [[NGClassFromString(@"ODWONodeRenderFactory") alloc] init];
     if (bindrf == nil)
-      bindrf = [[NSClassFromString(@"ODBindNodeRenderFactory") alloc] init];
+      bindrf = [[NGClassFromString(@"ODBindNodeRenderFactory") alloc] init];
     
     rendererName = [_domNode tagName];
 #if LIB_FOUNDATION_LIBRARY
@@ -129,7 +129,7 @@
 #  warning FIXME: incorrect implementation on this Foundation library!
 #endif
     rendererName = [@"ODR_sky_" stringByAppendingString:rendererName];
-    tagRenderer = [[[NSClassFromString(rendererName) alloc] init] autorelease];
+    tagRenderer = [[[NGClassFromString(rendererName) alloc] init] autorelease];
     
     if (tagRenderer == nil)
       tagRenderer = [bindrf rendererForNode:_domNode inContext:nil];      
@@ -139,7 +139,7 @@
   else {
     static id r = nil;
     if (r == nil)
-      r = [[NSClassFromString(@"ODRGenericTag") alloc] init];
+      r = [[NGClassFromString(@"ODRGenericTag") alloc] init];
     tagRenderer = r;
   }
   
@@ -172,7 +172,7 @@
       
     default:
       if (r == nil)
-        r = [[NSClassFromString(@"ODNodeRenderer") alloc] init];
+        r = [[NGClassFromString(@"ODNodeRenderer") alloc] init];
       return r;
   }
 }

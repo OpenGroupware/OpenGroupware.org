@@ -164,7 +164,6 @@
 int main(int argc, char **argv, char **env) {
   NSAutoreleasePool *pool;
   SkyAddAccount  *tool;
-  int res;
   
   pool = [[NSAutoreleasePool alloc] init];
   
@@ -173,8 +172,8 @@ int main(int argc, char **argv, char **env) {
 #endif
   
   tool = [[SkyAddAccount alloc] init];
-  res = [tool runWithArguments:
-		[[NSProcessInfo processInfo] arguments]];
+  /*res =*/ [tool runWithArguments:
+		                [[NSProcessInfo processInfo] arguments]];
   [tool release];
   
   [pool release];

@@ -36,7 +36,7 @@
 
 static int MAX_ELEMENTS = 10;
 
-int sortByPriority(id task1, id task2, void *context) {
+NSComparisonResult sortByPriority(id task1, id task2, void *context) {
   NSNumber *tmpprio;
   int prio1, prio2;
 

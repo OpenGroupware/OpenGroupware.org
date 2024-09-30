@@ -83,7 +83,7 @@
 - (NSString *)itemLabel {
   NSCalendarDate *date;
   static int showYear = -1;
-  unsigned weekOfYear, year;
+  unsigned year;
   
   if (showYear == -1) {
     showYear = [[NSUserDefaults standardUserDefaults]
@@ -93,7 +93,7 @@
   
   date       = [self itemDate];
   year       = [date yearOfCommonEra];
-  weekOfYear = [date weekOfYear];
+  // unused: weekOfYear = [date weekOfYear];
   
   if ([self->item intValue] == 1) {
     short woy, nowy;
@@ -198,7 +198,8 @@
     [[dateInYear firstMondayAndLastWeekInYear:&(self->lastWeek)] copy];
   
   tmp = [self valueForBinding:@"weekStart"];
-  if ([tmp weekOfYear] > self->lastWeek) self->lastWeek = [tmp weekOfYear];
+  if ([(NSCalendarDate *)tmp weekOfYear] > self->lastWeek) 
+    self->lastWeek = [(NSCalendarDate *)tmp weekOfYear];
   //NSLog(@"WEEK START: %i - %@", [tmp weekOfYear], tmp);
   //if (tmp) [self setWeekStart:[NSNumber numberWithInt:[tmp weekOfYear]]];
 

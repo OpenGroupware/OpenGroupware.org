@@ -142,7 +142,7 @@
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
 
   if (self->url) [ms appendFormat:@" url=%@", [self->url absoluteString]];
 

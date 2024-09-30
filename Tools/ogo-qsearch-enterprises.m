@@ -22,7 +22,7 @@
 
 #import <Foundation/NSObject.h>
 
-@class NSArray;
+@class NSArray, NSException;
 @class OGoContextManager, LSCommandContext;
 
 @interface OGoEnterpriseQualifierSearchTool : NSObject
@@ -35,6 +35,9 @@
 }
 
 + (int)run:(NSArray *)_args;
+
+- (void)printResult:(id)_result;
+- (void)printException:(NSException *)_exception;
 
 @end
 
@@ -169,6 +172,10 @@
     printf("%s\n", [[_result description] cString]);
     fflush(stdout);
   }
+}
+- (void)printException:(NSException *)_exception {
+  NSLog(@"EXCEPTION:\n  name:   %@\n  reason: %@\n  info: %@", 
+  [_exception name], [_exception reason], [_exception userInfo]);
 }
 
 /* run with context */

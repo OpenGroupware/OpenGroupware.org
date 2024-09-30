@@ -61,7 +61,7 @@
 */
 
 - (Class)fetchObjectClass {
-  return NSClassFromString(@"SxFetchEnterprise");
+  return NGClassFromString(@"SxFetchEnterprise");
 }
 
 - (NSString *)setCommand {
@@ -103,8 +103,6 @@
 }
 
 - (id)update {
-  NSDictionary *phones;
-
   [self updateAddress:@"ship"
         values:[self->attrs objectForKey:@"other_addr"]];
   [self updateAddress:@"bill"
@@ -112,7 +110,7 @@
   [self updateAddress:@"private"
         values:[self->attrs objectForKey:@"private_addr"]];
 
-  phones = [self->attrs objectForKey:@"phoneNumbers"];
+  /*unused: phones =*/ [self->attrs objectForKey:@"phoneNumbers"];
 
   return [super update];
 }

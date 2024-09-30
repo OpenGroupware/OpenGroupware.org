@@ -6,8 +6,8 @@ Prerequisites
 =============
 
 SOPE 4.7
-- gnustep-make (gstep-make 1.13 from www.gnustep.org)
-- Foundation library (eg SOPE-4.5/libFoundation)
+- gnustep-make (Ubuntu package)
+- gnustep-base (Ubuntu package)
 - libxml2/libxml2-dev
 - autoconf
 - openldap2/openldap2-dev
@@ -47,11 +47,11 @@ Building
 If the prerequisites are properly fulfilled, building OpenGroupware.org is
 a simple:
 
-  ./configure
+  ./configure \
+    --with-gnustep \
+    --gsmake=/usr/share/GNUstep/Makefiles \
+    --enable-debug --disable-strip
   make all
-
-Get a coffee, compiling all the OGo packages takes about 8 minutes on Debian 
-Athlon 1.8+ (and about 17 minutes on a MacOSX G4 1.25, 13min on YDL).
 
 Installation:
 
@@ -60,7 +60,7 @@ Installation:
 Configuration
 =============
 
-TODO: write configuration guide for OGo 1.1
+TODO: write configuration guide
 
 - mod_ngobjweb setup
 - init script
@@ -70,6 +70,9 @@ TODO: write configuration guide for OGo 1.1
 
 links
 *****
+
+2024-09-04: Probably best to use `--with-gnustep` now. GNUstep itself got some
+            FHS support in the meantime.
 
 ln -s ~/myogosrctree/WebUI/Resources \
             $FHS_INSTALL_ROOT/share/opengroupware.org-5.5/translations
@@ -104,18 +107,18 @@ defaults
 ********
   If you are upgrading, removing defaults should work fine if you use
   defaults values, thats is:
-    Defaults delete NSGlobalDomain LSModelName
-    Defaults delete NSGlobalDomain NGBundlePath
-    Defaults delete NSGlobalDomain LSAdaptor
+    defaults delete NSGlobalDomain LSModelName
+    defaults delete NSGlobalDomain NGBundlePath
+    defaults delete NSGlobalDomain LSAdaptor
 
   LSConnectionDictionary
   => no need to set if you use user=OGo, pwd emtpy, DB=OGo
-  Defaults write NSGlobalDomain LSConnectionDictionary \
+  defaults write NSGlobalDomain LSConnectionDictionary \
     '{userName="OGo"; databaseName="OGo";hostName="localhost";password="abc123";}'
 
   NGBundlePath
     => IMPORTANT: not required for standard locations!
-    Defaults write NSGlobalDomain NGBundlePath \
+    defaults write NSGlobalDomain NGBundlePath \
       '"$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-5.5/Commands:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-5.5/DataSources:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-5.5/WebUI:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-5.5/"'
 
 init-scripts

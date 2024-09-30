@@ -62,9 +62,8 @@ static NSNull *null = nil;
   NSEnumerator     *enumerator = nil;
   NSArray          *array      = nil;
   NSString         *eName      = nil;
-  EOAdaptorChannel *adc        = nil;
-  
-  adc        = [self beginTransaction];
+    
+  /*EOAdaptorChannel *adc = */ [self beginTransaction];
   array      = [super fetchObjects];
   enumerator = [array objectEnumerator];
   docs       = malloc(sizeof(id) * [array count]);

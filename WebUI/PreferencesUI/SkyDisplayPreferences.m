@@ -510,8 +510,8 @@ static NSNumber *NoNumber  = nil;
 }
 
 - (id)addPageAtTop {
-  unsigned int idx;
-  id           page;
+  NSUInteger idx;
+  id         page;
 
   page = [[[self item] retain] autorelease];
   idx  = [self->undockedPages indexOfObjectIdenticalTo:page];
@@ -740,11 +740,9 @@ static NSNumber *NoNumber  = nil;
 }
 
 - (id)save {
-  NSNumber *uid;
-  BOOL     reloadDock;
+  BOOL reloadDock;
   
   reloadDock = NO;
-  uid        = [self accountId];
   
   if ([self isDockablePagesEditable]) {
     NSMutableArray *array;

@@ -401,7 +401,7 @@
   }
   
   arg0 = [_array objectAtIndex:0];
-  if ([arg0 isKindOfClass:NSClassFromString(@"SkyDocument")]) {
+  if ([arg0 isKindOfClass:NGClassFromString(@"SkyDocument")]) {
     gid = [arg0 globalID];
   }
   else if ([arg0 isKindOfClass:[NSString class]]) {

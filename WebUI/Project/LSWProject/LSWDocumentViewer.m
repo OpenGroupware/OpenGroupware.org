@@ -95,7 +95,9 @@ static NGMimeType *gidPropType = nil;
 
 /* operations */
 
-static int compareDocumentVersions(id version1, id version2, void *context) {
+static NSComparisonResult compareDocumentVersions
+  (id version1, id version2, void *context) 
+{
   NSNumber *no1 = [version1 valueForKey:@"version"];
   NSNumber *no2 = [version2 valueForKey:@"version"];
   return [no2 compare:no1];

@@ -137,7 +137,6 @@ static BOOL     EnableSpamassasinFilter = NO;
   NSString        *rulePrefix;
   id              entries, aEntry;
   NSEnumerator    *entrEnum;
-  BOOL            isFirst;
   NSString        *fileName;
   int i;
   
@@ -146,9 +145,7 @@ static BOOL     EnableSpamassasinFilter = NO;
     return;
     
   // NSLog(procmailFilter);
-  
-  isFirst   = YES;
-  
+    
   target = [[NSMutableString alloc] init];
   entrEnum = [entries objectEnumerator];
   match = [aFilter objectForKey:@"match"];
@@ -194,9 +191,11 @@ static BOOL     EnableSpamassasinFilter = NO;
   NSArray         *f;
   NSMutableString *procmailFilter;
   NSEnumerator    *enumerator;
-  BOOL            firstEntry;
   id              aFilter;
+  #if 0 // hh(2024-09-20): unused
   NSDictionary    *vacation, *forward;
+  BOOL            firstEntry;
+  #endif
   
   f = [NSArray arrayWithContentsOfFile:_fileName];
   if ([f count] == 0) {
@@ -205,9 +204,11 @@ static BOOL     EnableSpamassasinFilter = NO;
   }
   
   enumerator = [f objectEnumerator];
+  #if 0 // hh(2024-09-20): unused
   vacation   = nil;
   forward    = nil;
   firstEntry = YES;
+  #endif
   
   procmailFilter = [NSMutableString stringWithCapacity:2048];
   
@@ -382,8 +383,9 @@ int main(int argc, const char **argv, char **env) {
 #endif
   
   result = [SkyInstallProcMail runWithArguments:
-				 [[NSProcessInfo processInfo] arguments]];
+				     [[NSProcessInfo processInfo] arguments]];
   
-  // [pool release]; // do not release, OS cleans up for us is faster ;-)
+  exit(0);
+  [pool release]; // please the compiler
   return result;
 }

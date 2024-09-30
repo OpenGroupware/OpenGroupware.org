@@ -22,7 +22,8 @@
 #ifndef __OGo_LSWScheduler_common_H__
 #define __OGo_LSWScheduler_common_H__
 
-#include <objc/objc-api.h>
+#include <objc/objc.h>
+#include <objc/runtime.h>
 #import <Foundation/Foundation.h>
 
 #include <EOControl/EOControl.h>

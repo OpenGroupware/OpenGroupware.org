@@ -30,7 +30,7 @@
 /* make configurable and document */
 const unsigned int batchSize = 200;
 
-static int compareGroups(id group1, id group2, void *context) {
+static NSComparisonResult compareGroups(id group1, id group2, void *context) {
   NSString *name1 = [group1 valueForKey:@"description"];
   NSString *name2 = [group2 valueForKey:@"description"];
     

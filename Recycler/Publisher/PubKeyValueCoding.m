@@ -58,7 +58,7 @@
   if ([_value isKindOfClass:[EOKeyGlobalID class]])
     return [[_value keyValues][0] stringValue];
   
-  if ([_value isKindOfClass:[NSClassFromString(@"SkyDocument") class]])
+  if ([_value isKindOfClass:[NGClassFromString(@"SkyDocument") class]])
     return [_value npsStringValueForKey:@"id" inContext:_ctx];
   
   if ([_value isKindOfClass:[NSClassFromString(@"NSBoolNumber") class]])

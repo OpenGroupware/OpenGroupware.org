@@ -102,7 +102,7 @@ static SkyPubPreviewNodeRenderFactory *singleton = nil;
     static ODNodeRenderer *npsRenderer = nil;
     
     if (npsRenderer == nil)
-      npsRenderer = [[NSClassFromString(@"SkyPubSKYOBJPreviewNodeRenderer")
+      npsRenderer = [[NGClassFromString(@"SkyPubSKYOBJPreviewNodeRenderer")
                                        alloc] init];
     return npsRenderer;
   }
@@ -164,7 +164,7 @@ static SkyPubPreviewNodeRenderFactory *singleton = nil;
     id tmp;
     
     if (factory == nil)
-      factory = [[NSClassFromString(@"ODBindNodeRenderFactory") alloc] init];
+      factory = [[NGClassFromString(@"ODBindNodeRenderFactory") alloc] init];
     
     if ((tmp = [factory rendererForNode:_domNode inContext:_ctx]))
       return tmp;
@@ -176,7 +176,7 @@ static SkyPubPreviewNodeRenderFactory *singleton = nil;
 
     if (miscRenderer == nil) {
       miscRenderer =
-        [[NSClassFromString(@"SkyPubSourceNodeRenderer") alloc] init];
+        [[NGClassFromString(@"SkyPubSourceNodeRenderer") alloc] init];
     }
     
     return miscRenderer;

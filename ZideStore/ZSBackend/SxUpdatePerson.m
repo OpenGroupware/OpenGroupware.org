@@ -91,7 +91,7 @@
 
 
 - (Class)fetchObjectClass {
-  return NSClassFromString(@"SxFetchPerson");
+  return NGClassFromString(@"SxFetchPerson");
 }
 
 - (NSString *)setCommand {

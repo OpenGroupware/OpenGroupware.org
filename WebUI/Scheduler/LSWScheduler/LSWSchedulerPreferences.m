@@ -1498,13 +1498,12 @@ static NSNumber *noNum = nil;
   groupKeys = [self->holidayGroups allKeys];
 
   for (i = 0, cnt = [groupKeys count]; i < cnt; i++) {
-    NSString *key, *gKey, *showKey, *editableKey, *selectedKey;
+    NSString *key, *showKey, *editableKey, *selectedKey;
     NSNumber *flag;
     BOOL     editable;
 
     key  = [groupKeys objectAtIndex:i];
-    gKey = key;
-
+    
     editableKey = [key stringByAppendingString:@"_editable"];
     editable    = [[self->holidayGroups objectForKey:editableKey] boolValue];
 

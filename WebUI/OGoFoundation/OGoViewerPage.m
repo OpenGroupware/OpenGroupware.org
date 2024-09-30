@@ -178,7 +178,7 @@
   
   fmt = [NSString stringWithFormat:
                       @"ERROR (please report): could not get entity of object "
-                      @"0x%p<%@>: %@",
+                      @"%p<%@>: %@",
                       _obj, NSStringFromClass([_obj class]),
                       _obj];
   [self setErrorString:fmt];
@@ -211,7 +211,7 @@
   /* check if the object is a document and turn it into an EO if possible */
   
   if (docClass == Nil)
-    docClass = NSClassFromString(@"SkyDocument");
+    docClass = NGClassFromString(@"SkyDocument");
   if ([obj isKindOfClass:docClass]) {
     EOGlobalID   *gid;
     id           tmp;

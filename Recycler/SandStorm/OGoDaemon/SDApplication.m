@@ -126,7 +126,7 @@ static NSMutableArray *namespacesToBeRegistered = nil;
     }
     
     /* setup request handler */
-    rh = [[NSClassFromString([self defaultRequestHandlerClassName])
+    rh = [[NGClassFromString([self defaultRequestHandlerClassName])
                             alloc] init];
     [self setDefaultRequestHandler:rh];
     RELEASE(rh); rh = nil;

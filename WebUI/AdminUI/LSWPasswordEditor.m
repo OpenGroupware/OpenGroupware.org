@@ -306,7 +306,7 @@ static int minPwdLength = 0;
     return;
   }
 
-  if ((c = NSClassFromString(@"SkyAccountLogDataSource")) == Nil) {
+  if ((c = NGClassFromString(@"SkyAccountLogDataSource")) == Nil) {
     [self logWithFormat:
 	    @"WARNING[%s]: failed creating SkyAccountLogDataSource-class",
 	    __PRETTY_FUNCTION__];

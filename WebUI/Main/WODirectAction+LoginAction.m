@@ -228,7 +228,6 @@ static int LSAllowSpacesInLogin = -1;
 
 - (void)_configureUserAgentFromRequest:(WORequest *)req {
   WEClientCapabilities *ccaps;
-  NSString  *userAgent;
   WOSession *s;
     
   s = [self session];
@@ -236,9 +235,7 @@ static int LSAllowSpacesInLogin = -1;
     NSLog(@"ccaps: %@", ccaps);
     [s takeValue:ccaps forKey:@"clientCapabilities"];
   }
-    
-  userAgent = [req headerForKey:@"user-agent"];
-    
+        
   if ([ccaps isFastTableBrowser])
     [s takeValue:nYes forKey:@"isFastTableBrowser"];
   if ([ccaps isCSS1Browser])  [s takeValue:nYes forKey:@"isCSS1Browser"];

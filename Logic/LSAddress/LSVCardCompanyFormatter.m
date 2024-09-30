@@ -303,7 +303,7 @@ static BOOL         renderOGoPhoneType = NO;
   return ms;
 }
 
-static int compareKey(id o1, id o2, void *ctx) {
+static NSComparisonResult compareKey(id o1, id o2, void *ctx) {
   if (o1 == o2) return NSOrderedSame;
   return [(NSString *)[o1 valueForKey:ctx] compare:[o2 valueForKey:ctx]];
 }

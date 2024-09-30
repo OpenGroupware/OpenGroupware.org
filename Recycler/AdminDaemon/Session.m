@@ -56,7 +56,7 @@
   EODataSource *ds;
   Class clazz;
   
-  if ((clazz = NSClassFromString(_dsName)) == nil) {
+  if ((clazz = NGClassFromString(_dsName)) == nil) {
     [self logWithFormat:@"no datasource named '%@' ...", _dsName];
     return nil;
   }

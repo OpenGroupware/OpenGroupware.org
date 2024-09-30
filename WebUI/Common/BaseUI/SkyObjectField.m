@@ -234,14 +234,12 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
 - (BOOL)isMailEditorInContext:(WOContext *)_ctx {
   WOComponent      *comp  = nil;
   OGoSession       *sn    = nil;
-  LSCommandContext *cctx  = nil;
   NGBundleManager  *bm    = nil;
   NSString         *eType = nil;
 
 
   comp  = [_ctx component];
   sn    = (OGoSession *)[comp session];
-  cctx  = [sn commandContext];
   bm    = [NGBundleManager defaultBundleManager];
   eType = [[sn userDefaults] objectForKey:@"mail_editor_type"];
 
@@ -309,9 +307,11 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
   tmp  = [[[SkyExternalLinkAction stringValue] 
 	         stringByAppendingString:@"?url="]
                  stringByAppendingString:tmp];
-  
+
+#if 0  
 #warning DEBUG LOG
   [self logWithFormat:@"X: %@", tmp];
+#endif
 
   // TODO: the following looks weird! Use the proper NSString method
   tmp = [WOResponse stringByEscapingHTMLAttributeValue:tmp];

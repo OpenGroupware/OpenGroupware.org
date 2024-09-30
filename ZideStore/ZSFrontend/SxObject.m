@@ -671,7 +671,7 @@ static BOOL kontactGroupDAV = YES;
 - (NSString *)description {
   NSMutableString *ms;
   ms = [NSMutableString stringWithCapacity:64];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   
   if (self->nameInContainer)  
     [ms appendFormat:@" name=%@",  self->nameInContainer];

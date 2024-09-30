@@ -110,7 +110,7 @@
   
   if (factory == nil) {
     factory =
-      [[NSClassFromString(@"SkyPubSourceNodeRenderFactory") alloc] init];
+      [[NGClassFromString(@"SkyPubSourceNodeRenderFactory") alloc] init];
   }
   
   return factory;
@@ -120,7 +120,7 @@
 
   if (factory == nil) {
     factory =
-      [[NSClassFromString(@"SkyPubPreviewNodeRenderFactory") alloc] init];
+      [[NGClassFromString(@"SkyPubPreviewNodeRenderFactory") alloc] init];
   }
   
   return factory;

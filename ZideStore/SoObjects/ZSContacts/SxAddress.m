@@ -52,7 +52,7 @@ static Class NGVCardClass = Nil;
 static BOOL debugEO = NO;
 
 + (void)initialize {
-  if ((NGVCardClass = NSClassFromString(@"NGVCard")) == Nil)
+  if ((NGVCardClass = NGClassFromString(@"NGVCard")) == Nil)
     NSLog(@"Note: NGVCard class not available, vCard parsing not available.");
 }
 
@@ -493,7 +493,7 @@ static BOOL debugEO = NO;
   if ((n = [[self soClass] lookupKey:_slot inContext:nil]) == nil)
     return Nil;
   
-  if ((clazz = NSClassFromString(n)) != Nil)
+  if ((clazz = NGClassFromString(n)) != Nil)
     return clazz;
 
   if ([ms containsObject:n])

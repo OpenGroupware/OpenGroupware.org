@@ -47,7 +47,7 @@
 - (id)evoRendererInContext:(id)_ctx {
   static Class EvoRenderer = Nil;
   if (EvoRenderer == Nil) {
-    if ((EvoRenderer = NSClassFromString(@"SxEvoEnterpriseRenderer")) == nil) {
+    if ((EvoRenderer = NGClassFromString(@"SxEvoEnterpriseRenderer")) == nil) {
       static BOOL didLog = NO;
       if (!didLog) {
 	[self logWithFormat:@"Note: no Evolution support installed!"];
@@ -66,7 +66,7 @@
     NSString *className = @"SxZLEnterpriseRenderer";
     didInit = YES;
     
-    if ((RendererClass = NSClassFromString(className)) == Nil) {
+    if ((RendererClass = NGClassFromString(className)) == Nil) {
       [self logWithFormat:@"ERROR: did not find class '%@'!", className];
       return nil;
     }
@@ -129,7 +129,7 @@
     NSString *className = @"SxZLFullEnterpriseRenderer";
     didInit = YES;
     
-    if ((RendererClass = NSClassFromString(className)) == Nil)
+    if ((RendererClass = NGClassFromString(className)) == Nil)
       [self logWithFormat:@"ERROR: did not find renderer: '%@'", className];
   }
   return RendererClass;

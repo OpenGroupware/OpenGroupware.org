@@ -146,7 +146,7 @@ static NSString *sieveFolderName  = @"Filters";
 {
   Class clazz;
 
-  if ((clazz = NSClassFromString(_cn)) == Nil) {
+  if ((clazz = NGClassFromString(_cn)) == Nil) {
     [self logWithFormat:@"ERROR: did not find class '%@' for key: '%@'", 
 	    _cn, _key];
     return [NSException exceptionWithHTTPStatus:500 /* server error */

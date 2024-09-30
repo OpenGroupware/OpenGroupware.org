@@ -32,7 +32,7 @@
 
 #include "common.h"
 
-static int compareParticipants(id part1, id part2, void *context);
+static NSComparisonResult compareParticipants(id part1, id part2, void *context);
 
 @implementation LSWAppointmentMailPage
 
@@ -228,7 +228,8 @@ static int compareParticipants(id part1, id part2, void *context);
 @implementation LSWAppointmentTextMailPage
 @end /* LSWAppointmentTextMailPage */
 
-static int compareParticipants(id part1, id part2, void *context) {
+static NSComparisonResult compareParticipants(id part1, id part2, void *context) 
+{
   NSString *name1, *name2;
   
   name1 = [part1 valueForKey:@"name"];

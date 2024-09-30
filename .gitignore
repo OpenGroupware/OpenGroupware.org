@@ -1,0 +1,9 @@
+obj
+*.zsp
+*.lso
+*.cmd
+*.ds
+config.make
+Database/OGoModel/OGo.model/
+.nova
+

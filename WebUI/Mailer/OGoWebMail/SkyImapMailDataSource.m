@@ -399,7 +399,7 @@ static NSString *formatSubject(NSString *_s) {
   return formatSubject(_s);
 }
 
-static int sortEmailHeader(id o1, id o2, void *_so) {
+static NSComparisonResult sortEmailHeader(id o1, id o2, void *_so) {
   // TODO: performance!
   NSEnumerator *enumerator;
   id           obj;
@@ -586,7 +586,7 @@ static int sortEmailHeader(id o1, id o2, void *_so) {
   if (profileDS) 
     [self logWithFormat:@"fetchMessages:   sorting on client ..."];
   result = [result sortedArrayUsingFunction:sortEmailHeader
-		   context:self->sortOrderings];
+            		   context:self->sortOrderings];
   if (profileDS) [self logWithFormat:@"fetchMessages: done."];
   return result;
 }

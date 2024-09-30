@@ -46,6 +46,7 @@ static NSString *themesDirName    = @"Themes";
   NSDictionary *env;
   id tmp;
   
+  // Note: Neither is set on the Ubuntu gstep-base configuration.
   env = [[NSProcessInfo processInfo] environment];
   if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
     tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
@@ -93,6 +94,7 @@ static NSString *themesDirName    = @"Themes";
     tmp = [tmp stringByAppendingString:_fhs];
     if ([ma containsObject:tmp]) continue;
     
+    if (debugOn) [self logWithFormat:@"CHECK: %@", tmp];
     if (![fm fileExistsAtPath:tmp isDirectory:&isDir])
       continue;
     if (!isDir) {

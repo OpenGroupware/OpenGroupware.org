@@ -28,7 +28,7 @@
 - (id)_getNoteOfAppointment:(id)_app;
 @end
 
-static int compareNotes(id part1, id part2, void *context) {
+static NSComparisonResult compareNotes(id part1, id part2, void *context) {
   NSCalendarDate *d1;
   NSCalendarDate *d2;
   

@@ -33,14 +33,9 @@
   BOOL           isOk      = NO;
   id             editing   = nil;
   id             document;
-  NSUserDefaults *defaults;
-  NSString       *path;
   
   document = [self object];
-  defaults = [_context userDefaults];
-  path     = [defaults stringForKey:@"LSAttachmentPath"];
-  
-  editing = [document valueForKey:@"toDocumentEditing"];
+  editing  = [document valueForKey:@"toDocumentEditing"];
 
   {
     NSString *fileName;

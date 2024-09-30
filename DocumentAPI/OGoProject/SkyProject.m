@@ -275,12 +275,12 @@ static NSNull   *null  = nil;
     return self->leader;
 
   if (docClazz == Nil)
-    docClazz = NSClassFromString(@"SkyAccountDocument");
+    docClazz = NGClassFromString(@"SkyAccountDocument");
     
   if (ds == nil) {
     Class clazz = Nil;
 
-    clazz = NSClassFromString(@"SkyAccountDataSource");
+    clazz = NGClassFromString(@"SkyAccountDataSource");
     ds = [clazz alloc];
     // TODO: fix type
     ds = [(SkyProjectDataSource *)ds initWithContext:[self context]];
@@ -328,7 +328,7 @@ static NSNull   *null  = nil;
     return self->team;
 
   teamId = [[(EOKeyGlobalID *)self->team keyValuesArray] lastObject];
-  clazz = NSClassFromString(@"SkyTeamDataSource");
+  clazz = NGClassFromString(@"SkyTeamDataSource");
   // TODO: fix type
   ds = [(SkyProjectDataSource *)[clazz alloc] initWithContext:[self context]];
   qual  = [[EOKeyValueQualifier alloc]
@@ -376,8 +376,8 @@ static NSNull   *null  = nil;
   // TODO: hh asks: what am I supposed to use?
   [self logWithFormat:@"WARNING(%s): deprecated ...", __PRETTY_FUNCTION__];
   
-  if ((class = NSClassFromString(@"SkyProjectFileManager")) == Nil)
-    class = NSClassFromString(@"SkyFSFileManager");
+  if ((class = NGClassFromString(@"SkyProjectFileManager")) == Nil)
+    class = NGClassFromString(@"SkyFSFileManager");
   
   return [[[class alloc] initWithContext:[self context]
                          projectGlobalID:[self globalID]] autorelease];
@@ -389,11 +389,11 @@ static NSNull   *null  = nil;
   
   NSLog(@"WARNING[%s] deprecated ...", __PRETTY_FUNCTION__);
 
-  if ((class = NSClassFromString(@"SkyDocumentDataSource"))) {
+  if ((class = NGClassFromString(@"SkyDocumentDataSource"))) {
     return [[[class alloc] initWithContext:[self context]
                            projectGlobalID:[self globalID]] autorelease];
   }
-  if ((class = NSClassFromString(@"SkyFSDataSource")) == Nil)
+  if ((class = NGClassFromString(@"SkyFSDataSource")) == Nil)
     return nil;
   
   if ((fm = [self fileManager]) == nil) 

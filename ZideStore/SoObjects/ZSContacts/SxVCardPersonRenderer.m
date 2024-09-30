@@ -167,8 +167,8 @@
   [ms appendString:@"\r\n"];
 
   [self appendProperty:@"NICKNAME" 
-	filledValue:[_object valueForKey:@"nickname"]
-	to:tmp];
+	      filledValue:[_object valueForKey:@"nickname"]
+	      to:ms]; // hh(2024-09-20): was 'to:tmp', probably wrong
   
   if ((tmp = [_object valueForKey:@"bday"]) != nil) {
     [ms appendString:@"BDAY:"];
@@ -176,7 +176,7 @@
       NSString *s;
       char buf[64];
       
-      sprintf(buf, "%04i-%02i-%02i", 
+      sprintf(buf, "%04ld-%02ld-%02ld", 
 	      [tmp yearOfCommonEra], [tmp monthOfYear], [tmp dayOfMonth]);
       
       s = [[NSString alloc] initWithCString:buf];

@@ -46,7 +46,7 @@
     : [[[self context] request] browserLanguages];
   
   if ((_class == nil) && (_fname != nil))
-    _class = NSClassFromString(_fname);
+    _class = NGClassFromString(_fname);
   
   if ((_fname == nil) && (_class != nil))
     _fname = NSStringFromClass(_class);

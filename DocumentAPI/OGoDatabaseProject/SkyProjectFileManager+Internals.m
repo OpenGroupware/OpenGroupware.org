@@ -475,14 +475,12 @@ static inline NSNumber *boolNum(BOOL value) {
   array:(NSMutableArray *)_array
 {
   NSDictionary *attrs;
-  NSArray      *result;
 
   if (_array == nil) {
     NSLog(@"ERROR[%s] internal inconsistency ...", __PRETTY_FUNCTION__);
     return;
   }
   attrs  = [self fileAttributesAtPath:_path traverseLink:NO];
-  result = nil;
   
   if ([[attrs objectForKey:NSFileType] isEqualToString:NSFileTypeDirectory]) {
     NSEnumerator *enumerator;
@@ -894,14 +892,15 @@ static inline BOOL _abortError(id self) {
 - (BOOL)_removeDirs:(NSArray *)_dirAttr handler:(id)_handler failed:(BOOL*)failed_ {
   NSEnumerator   *enumerator;
   NSDictionary   *attrs;
-  id             handler;
   NSMutableArray *dirs;
 
-  handler = nil;
+  #if 0 // hh(2024-09-19): unused, maybe it should be used below?
+  id handler = nil;
   if ([_handler respondsToSelector:
                 @selector(fileManager:shouldProceedAfterError:)]) {
     handler = _handler;
   }
+  #endif
 
   dirs       = [NSMutableArray arrayWithCapacity:[_dirAttr count]];
   enumerator = [_dirAttr objectEnumerator];

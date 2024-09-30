@@ -348,7 +348,6 @@ static NSCharacterSet *digits = nil;
   NSString   *pname;
   WOResponse *response;
   EOGlobalID *pgid;
-  NSData     *data;
   NSString   *disposition;
   NSRange    r;
   /* TODO: type should be replaced with a protocol */
@@ -389,12 +388,12 @@ static NSCharacterSet *digits = nil;
       
       r = [arg rangeOfString:@"="];
       if (r.length == 0)
-	continue;
+	      continue;
 	
       k = [arg substringToIndex:r.location];
 
       if (![k isEqualToString:@"disposition"])
-	continue;
+	      continue;
 
       disposition = [arg substringFromIndex:(r.location + r.length)];
       disposition = [NSString stringWithFormat:@"%@; filename=%@",
@@ -476,8 +475,6 @@ static NSCharacterSet *digits = nil;
     [response setStatus:404];
     return response;
   }
-
-  data = nil;
   
   /* open file manager */
 

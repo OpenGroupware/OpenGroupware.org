@@ -67,7 +67,7 @@
   static Class RendererClass = NULL;
 
   if (RendererClass == NULL) {
-    if ((RendererClass = NSClassFromString(@"SxEvoPersonRenderer")) == Nil) {
+    if ((RendererClass = NGClassFromString(@"SxEvoPersonRenderer")) == Nil) {
       [self logWithFormat:@"Evolution support not installed!"];
       return nil;
     }
@@ -78,7 +78,7 @@
   static Class RendererClass = NULL;
 
   if (RendererClass == NULL) {
-    if ((RendererClass = NSClassFromString(@"SxZLPersonRenderer")) == Nil) {
+    if ((RendererClass = NGClassFromString(@"SxZLPersonRenderer")) == Nil) {
       [self logWithFormat:@"ZideLook support not installed!"];
       return nil;
     }
@@ -105,7 +105,7 @@
     NSString *className = @"SxZLFullPersonRenderer";
     didInit = YES;
     
-    if ((RendererClass = NSClassFromString(className)) == Nil)
+    if ((RendererClass = NGClassFromString(className)) == Nil)
       [self logWithFormat:@"ERROR: did not find renderer: '%@'", className];
   }
   return RendererClass;

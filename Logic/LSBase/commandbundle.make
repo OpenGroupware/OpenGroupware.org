@@ -7,7 +7,10 @@ sub$(COMMAND_BUNDLE)_OBJC_FILES = $($(COMMAND_BUNDLE)_OBJC_FILES)
 
 BUNDLE_NAME        = $(COMMAND_BUNDLE)
 BUNDLE_EXTENSION   = .cmd
-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-5.5/Commands/
+
+#hh: 2024-09-04
+#BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-5.5/Commands/
+BUNDLE_INSTALL_DIR = $(OGO_COMMANDS)
 
 $(COMMAND_BUNDLE)_RESOURCE_FILES  += commands.plist
 $(COMMAND_BUNDLE)_PRINCIPAL_CLASS = $(COMMAND_BUNDLE)Commands
@@ -16,13 +19,6 @@ $(COMMAND_BUNDLE)_BUNDLE_LIBS += \
 	-lLSFoundation	\
 	-lGDLAccess	\
 	-lNGStreams -lNGExtensions -lEOControl
-
-ifeq ($(GNUSTEP_TARGET_OS),cygwin32)
-$(COMMAND_BUNDLE)_BUNDLE_LIBS += -lFoundation -lobjc
-endif
-ifeq ($(GNUSTEP_TARGET_OS),mingw32)
-$(COMMAND_BUNDLE)_BUNDLE_LIBS += -lFoundation -lobjc
-endif
 
 # set compile flags and go
 

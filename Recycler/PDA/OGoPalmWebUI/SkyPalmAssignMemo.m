@@ -139,19 +139,19 @@ static NSArray     *filenameSortOrderings      = nil;
 
 - (Class)projectFileManagerClass {
   static Class fmClass = Nil;
-  if (fmClass == Nil) fmClass = NSClassFromString(@"SkyProjectFileManager");
+  if (fmClass == Nil) fmClass = NGClassFromString(@"SkyProjectFileManager");
   return fmClass;
 }
 - (Class)projectDataSourceClass {
   static Class dsClass = Nil;
-  if (dsClass == Nil) dsClass = NSClassFromString(@"SkyProjectDataSource");
+  if (dsClass == Nil) dsClass = NGClassFromString(@"SkyProjectDataSource");
   return dsClass;
 }
 #if 0
 - (Class)folderDataSourceClass {
   static Class dsClass = Nil;
   if (dsClass == Nil) 
-    dsClass = NSClassFromString(@"SkyProjectFolderDataSource");
+    dsClass = NGClassFromString(@"SkyProjectFolderDataSource");
   return dsClass;
 }
 #endif

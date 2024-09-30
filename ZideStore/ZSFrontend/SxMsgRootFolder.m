@@ -138,7 +138,7 @@ static NSDictionary *personalFolderMap = nil;
   // [self logWithFormat:@"creating personal folder: %@: %@", _name, _info];
   
   tmp = [_info objectForKey:@"class"];
-  clazz = tmp ? NSClassFromString(tmp) : Nil;
+  clazz = tmp ? NGClassFromString(tmp) : Nil;
   if (clazz == Nil) {
     [self logWithFormat:@"ERROR: got no class for personal folder '%@': %@",
             _name, _info];

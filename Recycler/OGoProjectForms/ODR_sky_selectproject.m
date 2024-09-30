@@ -66,7 +66,7 @@
     EOGlobalID *gid = nil;
     Class clazz;
 
-    clazz = NSClassFromString(@"SkyPersonProjectDataSource");
+    clazz = NGClassFromString(@"SkyPersonProjectDataSource");
     
     if ([tmp isKindOfClass:[EOGlobalID class]])
       gid = tmp;
@@ -84,7 +84,7 @@
     EOGlobalID *gid = nil;
     Class clazz;
     
-    clazz = NSClassFromString(@"SkyEnterpriseProjectDataSource");
+    clazz = NGClassFromString(@"SkyEnterpriseProjectDataSource");
     
     if ([tmp isKindOfClass:[EOGlobalID class]])
       gid = tmp;
@@ -99,7 +99,7 @@
       ds = [[[clazz alloc] initWithContext:cmdctx companyId:gid] autorelease];
   }
   else {
-    tmp = NSClassFromString(@"SkyProjectDataSource");
+    tmp = NGClassFromString(@"SkyProjectDataSource");
     ds = [[[tmp alloc] initWithContext:cmdctx] autorelease];
   }
   

@@ -113,7 +113,7 @@
   NSString *dragType;
   
   obj = [self favorite];
-  dragType = ([obj isKindOfClass:NSClassFromString(@"NGImap4Message")])
+  dragType = ([obj isKindOfClass:NGClassFromString(@"NGImap4Message")])
     ? (NSString *)@"mail" // TODO: fix me
     : (NSString *)[obj favoriteDragType];
   
@@ -136,7 +136,7 @@
   //NSLog(@"obj is %@", obj);
 
   if (NGImapMsgClass == Nil)
-    NGImapMsgClass = NSClassFromString(@"NGImap4Message");
+    NGImapMsgClass = NGClassFromString(@"NGImap4Message");
 
   if ([obj isKindOfClass:[EOGenericRecord class]])
     gid = nil;

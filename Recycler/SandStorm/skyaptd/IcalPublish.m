@@ -143,7 +143,7 @@
   SkyAptAction* action;
 
   action = 
-    [[NSClassFromString(@"SkyAptAction") alloc]
+    [[NGClassFromString(@"SkyAptAction") alloc]
                        initWithContext:
                        [WOContext contextWithRequest:self->request]];
 

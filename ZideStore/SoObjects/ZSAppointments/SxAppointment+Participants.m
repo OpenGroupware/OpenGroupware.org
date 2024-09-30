@@ -22,6 +22,7 @@
 
 #include "SxAppointment.h"
 #include "common.h"
+#include <NGExtensions/NSString+Ext.h> // stringByTrimming..
 #include <ZSBackend/SxContactManager.h>
 #include <ZSBackend/SxAptManager.h>
 
@@ -385,9 +386,15 @@ static BOOL debugOn = NO;
   id       entry;
 
   for (idx = [_emails count]; idx != 0; ) {
-    entry = [_emails objectAtIndex:--idx];
+    entry = [_emails objectAtIndex:--idx]; // hh: ugh!
+    #if 1 // hh(2024-09-24): This is probably what was desired?
+    // TODO: HACK HACK: why is the backend calling into the frontend?
+    if ((entry = [SxAptManager gidForPKeyEmail:entry]) == nil)
+      continue;
+    #else
     if ((entry = [SxAppointment gidForPKeyEmail:entry]) == nil)
       continue;
+    #endif
 
     [_gids addObject:entry];
     [_emails removeObjectAtIndex:idx];
@@ -423,8 +430,7 @@ static BOOL debugOn = NO;
   id                  person;
   id                  tmp;
   NSMutableDictionary *map;
-  BOOL                createNewEntriesForUnknownParticipants;
-
+  
   if (![_persons isNotEmpty])
     return [NSArray array];
   
@@ -436,8 +442,6 @@ static BOOL debugOn = NO;
   cmdctx = [self commandContextInContext:_ctx];
   cm     = [SxContactManager managerWithContext:cmdctx];
   map    = [NSMutableDictionary dictionaryWithCapacity:[_persons count]];
-
-  createNewEntriesForUnknownParticipants = YES;
 
   emails  = [NSMutableArray arrayWithCapacity:[_persons count]];
   persons = [NSMutableArray arrayWithCapacity:8];

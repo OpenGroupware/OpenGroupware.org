@@ -38,7 +38,7 @@
 
   if (factory == nil) {
     factory =
-      [[NSClassFromString(@"SkyPubSourceNodeRenderFactory") alloc] init];
+      [[NGClassFromString(@"SkyPubSourceNodeRenderFactory") alloc] init];
   }
   
   return factory;

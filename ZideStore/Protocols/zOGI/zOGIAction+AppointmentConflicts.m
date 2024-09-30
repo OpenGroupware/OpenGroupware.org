@@ -47,7 +47,6 @@
 
 /* Create an array of conflicts with the provided appointment */
 -(NSArray *)_renderConflictsForDate:(id)_eo {
-  NSArray               *aptAttrs      = nil;
   NSMutableDictionary   *renderedConflict;
   NSDictionary          *conflict;
   NSDictionary          *conflictDates;
@@ -61,10 +60,12 @@
   if ([[_eo objectForKey:@"isConflictDisabled"] isNotNull])
     if ([[_eo objectForKey:@"isConflictDisabled"] intValue])
       return [NSArray arrayWithObjects:nil];
-    
+   
+  #if 0 // hh(2024-09-20): unused
   /* Get required bits from user defaults */
   aptAttrs = [[[[self getCTX] userDefaults]
                    arrayForKey:@"schedulerconflicts_fetchkeys"] copy];
+  #endif
 
   /* Getting conflict info */
   conflictDates = [self _getConflictsForDate:_eo];

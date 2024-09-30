@@ -71,7 +71,6 @@
   NSString              *folder;
   BOOL                  fetchDeep;
   SkyProjectFileManager *fileManager;
-  EOQualifier           *qual;
   unsigned fetchLimit;
   
   pool = [[NSAutoreleasePool alloc] init];
@@ -79,7 +78,7 @@
   fetchLimit = [self->fetchSpecification fetchLimit];
   
   fileManager = [self->source _fileManager];
-  qual        = [self->fetchSpecification qualifier];
+  // unused: qual        = [self->fetchSpecification qualifier];
   folder      = [fileManager pathForGlobalID:[source _folderGID]];
   
   fetchDeep   = [[[self->fetchSpecification hints] objectForKey:@"fetchDeep"]

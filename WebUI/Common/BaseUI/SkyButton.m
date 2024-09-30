@@ -294,7 +294,7 @@ static NSString *SkyButton_right = @"]";
 {
   WOComponent *sComponent;
   BOOL isDisabled, tm;
-  NSString *tt = nil, *s = nil;
+  NSString *s = nil;
   
   sComponent = [_ctx component];
 
@@ -308,10 +308,12 @@ static NSString *SkyButton_right = @"]";
   if (self->string)
     s = [self->string stringValueInComponent:sComponent];
   
+  #if 0 // hh(2024-09-19): unused
   if (self->tooltip)
     tt = [self->tooltip stringValueInComponent:sComponent];
   else if (s)
     tt = s;
+  #endif
 
   if (!tm) {
     [_response appendContentString:

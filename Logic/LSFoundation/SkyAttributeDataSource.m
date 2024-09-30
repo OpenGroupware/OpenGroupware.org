@@ -322,7 +322,7 @@ static BOOL debugOn = NO;
 /* description */
 
 - (void)appendAttributesToDescription:(NSMutableString *)ms {
-  if (self->context)   [ms appendFormat:@" ctx=0x%p", self->context];
+  if (self->context)   [ms appendFormat:@" ctx=%p", self->context];
   if (self->source)    [ms appendFormat:@" source=%@",  self->source];
   if (self->verifyIds) [ms appendString:@" verify-ids"];
   
@@ -337,7 +337,7 @@ static BOOL debugOn = NO;
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   [self appendAttributesToDescription:ms];
   [ms appendString:@">"];
   return ms;

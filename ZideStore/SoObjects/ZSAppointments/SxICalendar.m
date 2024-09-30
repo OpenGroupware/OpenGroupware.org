@@ -81,12 +81,11 @@ static BOOL debugZSICal = NO;
 /* fetching */
 
 - (NSEnumerator *)fetchDatesInContext:(id)_ctx {
-  id           folder;
   SxAptManager *manager;
   NSArray      *dates;
   SxAptSetIdentifier *sid;
   
-  folder  = [self parentFolder];
+  /*unused:folder  =*/ [self parentFolder];
   manager = [self aptManagerInContext:_ctx];
   
   sid   = [self currentAptSet];

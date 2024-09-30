@@ -311,8 +311,8 @@
    * other  - the 'may be' but not before one
    */
   NSString *number = nil;
-  int      pos     = 0;
-  int      pos2    = 0;
+  NSUInteger      pos     = 0;
+  NSUInteger      pos2    = 0;
 
   number = [_inv valueForKey:@"invoiceNr"];
   if ((pos = [number indexOfString:_one]) == NSNotFound)

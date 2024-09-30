@@ -150,10 +150,9 @@ static int useAddressMapLink        = -1;
   WOResourceManager *rm;
   NSString *mapIconURL, *mapIconName;
   NSArray *languages;
-  NSDictionary *mapObject;
     
   mapIconURL = nil;
-  mapObject = [daAddressMapLinks objectForKey:_linkId];
+  // mapObject = [daAddressMapLinks objectForKey:_linkId];
   mapIconName = [[daAddressMapLinks objectForKey:_linkId] objectForKey:@"icon"];    
   
   /** search for map icon */

@@ -1,6 +1,7 @@
 # GNUstep makefile
 
 -include ../config.make
+include ../Version
 include $(GNUSTEP_MAKEFILES)/common.make
 
 SUBPROJECTS += \
@@ -15,8 +16,7 @@ SUBPROJECTS += \
 	NewsUI			\
 	Scheduler		\
 	Mailer			\
-	Project			\
-	SoOGo			\
+	Project
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make

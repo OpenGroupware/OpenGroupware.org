@@ -57,7 +57,7 @@
 
 #include "common.h"
 
-static int compareParticipants(id part1, id part2, void *context);
+static NSComparisonResult compareParticipants(id part1, id part2, void *context);
 
 @implementation SkyPersonSelectPopUp
 
@@ -272,7 +272,8 @@ static NSArray *teamCoreAttrs = nil;
 @end /* SkyPersonSelectPopUp */
 
 // TODO: move to some generic file?
-static int compareParticipants(id part1, id part2, void *context) {
+static NSComparisonResult compareParticipants(id part1, id part2, void *context) 
+{
   BOOL     part1IsTeam;
   BOOL     part2IsTeam;
   NSString *name1 = nil;

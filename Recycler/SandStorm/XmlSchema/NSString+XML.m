@@ -7,7 +7,7 @@
 @implementation NSString(XML)
 
 - (NSString *)uriFromQName {
-  unsigned idx;
+  NSUInteger idx;
 
   if (![self hasPrefix:@"{"])
     return nil;
@@ -17,7 +17,7 @@
     return [self substringWithRange:NSMakeRange(1,idx-1)];
 }
 - (NSString *)valueFromQName {
-  unsigned idx;
+  NSUInteger idx;
 
   return (((idx = [self indexOfString:@"}"]) == NSNotFound))
     ? self

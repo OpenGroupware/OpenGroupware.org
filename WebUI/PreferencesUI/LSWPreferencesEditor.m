@@ -349,10 +349,10 @@ static NSArray  *UserDefKeys        = nil;
     [self->selectedTeams addObject:_team];
 }
 - (id)locationTeam {
-  NSArray      *myTeams;
-  int          i, cnt;
-  unsigned int tidx;
-  id           myTeam;
+  NSArray    *myTeams;
+  int        i, cnt;
+  NSUInteger tidx;
+  id         myTeam;
   
   myTeams = [[self session] locationTeams];
   cnt     = [myTeams count];

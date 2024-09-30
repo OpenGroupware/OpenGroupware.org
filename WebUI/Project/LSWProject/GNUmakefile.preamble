@@ -1,14 +1,6 @@
 # $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
 
-ADDITIONAL_BUNDLE_LIBS += \
-	-lOGoProject -lOGoDocuments
-
-ifeq ($(GNUSTEP_TARGET_OS),mingw32)
-LSWProject_WOBUNDLE_LIBS += \
-	-lNGMime -lNGHttp \
-	-lNGStreams -lNGExtensions -lEOControl \
-	-lFoundation -lobjc
-endif
+ADDITIONAL_BUNDLE_LIBS += -lOGoProject -lOGoDocuments
 
 LSWProject_INCLUDE_DIRS += -IHeaders -I../..
 

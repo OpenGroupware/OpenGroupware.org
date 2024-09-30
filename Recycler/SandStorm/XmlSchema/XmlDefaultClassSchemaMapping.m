@@ -115,7 +115,7 @@ static NSDictionary *TypeToClassName = nil;
       className = [self->classPrefix stringByAppendingString:className];
   }
   
-  clazz = (className) ? NSClassFromString(className) : Nil;
+  clazz = (className) ? NGClassFromString(className) : Nil;
   if (clazz == Nil) {
     NSLog(@"Warning(%s): could not find class %@.",
           __PRETTY_FUNCTION__,

@@ -63,7 +63,9 @@
 
 @implementation SkyProjectSelection
 
-static int compareProjects(id project1, id project2, void *context) {
+static NSComparisonResult compareProjects
+  (id project1, id project2, void *context) 
+{
   NSString *name1 = [project1 valueForKey:@"name"];
   NSString *name2 = [project2 valueForKey:@"name"];
 
@@ -73,7 +75,9 @@ static int compareProjects(id project1, id project2, void *context) {
   return [name1 compare:name2];
 }
 
-static int compareEnterprises(id enterprise1, id enterprise2, void *context) {
+static NSComparisonResult compareEnterprises
+  (id enterprise1, id enterprise2, void *context) 
+{
   NSString *name1 = [enterprise1 valueForKey:@"description"];
   NSString *name2 = [enterprise2 valueForKey:@"description"];
 

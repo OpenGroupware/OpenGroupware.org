@@ -121,7 +121,7 @@ static NSMutableDictionary *devicesCache = nil;
 
         cname = [resource valueForKey:@"skyrixDataSource"];
         if ([cname length])
-          d = [[NSClassFromString(cname) alloc] initWithContext:_ctx];
+          d = [[NGClassFromString(cname) alloc] initWithContext:_ctx];
         else {
           NSLog(@"%s invalid class for palmDb: %@",
                 __PRETTY_FUNCTION__, _palmDb);

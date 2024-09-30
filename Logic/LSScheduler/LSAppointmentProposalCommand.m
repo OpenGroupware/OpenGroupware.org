@@ -89,7 +89,7 @@
 
 #include "common.h"
 
-static int compareDates(id part1, id part2, void *context);
+static NSComparisonResult compareDates(id part1, id part2, void *context);
 
 @implementation LSAppointmentProposalCommand
 
@@ -413,11 +413,10 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   EOAdaptor        *adaptor    = nil;
   EOAdaptorChannel *channel    = nil;
   id               result      = nil;
-  NSTimeZone       *tz         = nil;
   NSEnumerator     *enumerator = nil;
   id               obj         = nil;
   
-  tz = [self timeZoneInContext:_ctx];
+  // unused: tz = [self timeZoneInContext:_ctx];
   
   channel = [[_ctx valueForKey:LSDatabaseChannelKey] adaptorChannel];
   adaptor = [[[_ctx valueForKey:LSDatabaseContextKey] adaptorContext]
@@ -676,7 +675,6 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   
 - (NSMutableArray *)_datesForParticipantsAndResources:(id)_context {
   // TODO: split up this huge method, cleanup duplicate code
-  NSTimeZone       *tz;
   EOAdaptorChannel *channel;
   EOAdaptor        *adaptor;
   EOEntity         *entity;
@@ -688,7 +686,9 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   int            i, cnt;
   
   // TODO: isn't that available using a context key?
+  #if 0 // unused
   tz = [self timeZoneInContext:_context];
+  #endif
   
   channel = [[_context valueForKey:LSDatabaseChannelKey] adaptorChannel];
   adaptor = [[[_context valueForKey:LSDatabaseContextKey] adaptorContext]
@@ -756,10 +756,10 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
       NSDictionary *dict;
 
       while ((dict = [channel fetchAttributes:attributes withZone:NULL])) {
-	/* patch timezone */
-	[[dict objectForKey:@"startDate"] setTimeZone:self->timeZone];
-	[[dict objectForKey:@"endDate"]   setTimeZone:self->timeZone];
-	[result addObject:dict];
+	      /* patch timezone */
+	      [[dict objectForKey:@"startDate"] setTimeZone:self->timeZone];
+	      [[dict objectForKey:@"endDate"]   setTimeZone:self->timeZone];
+	      [result addObject:dict];
       }
       [channel cancelFetch];
     }
@@ -1069,7 +1069,7 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   NSMutableArray *result = nil;
   NSCalendarDate *sD     = nil;
   unsigned i, days;
-  int iDates, cntDates;
+  int iDates;
 
   result = [NSMutableArray arrayWithCapacity:
                              LSAppointmentProposalCommand_MAXSEARCH];
@@ -1092,8 +1092,7 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   
   sD       = self->startDate;
   iDates   = 0;
-  cntDates = [_dates count];
-  
+    
   for (i = 0; i < days; i++) {
     if (![self _getFreeTimeIntervals:_dates 
                forDay:i addToResult:result
@@ -1193,7 +1192,7 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   return [super valueForKey:_key];
 }
 
-static int compareDates(id part1, id part2, void *context) {
+static NSComparisonResult compareDates(id part1, id part2, void *context) {
   return ([[part1 valueForKey:@"startDate"]
                   earlierDate:[part2 valueForKey:@"startDate"]] ==
           [part1 valueForKey:@"startDate"]) ? -1 : 1;

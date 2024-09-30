@@ -198,9 +198,9 @@
     
     if ([EOQualifier respondsToSelector:
                        @selector(registerValueClass:forTypeName:)]) {
-      [EOQualifier registerValueClass:NSClassFromString(@"dateTime")
+      [EOQualifier registerValueClass:NGClassFromString(@"dateTime")
                    forTypeName:@"dateTime"];
-      [EOQualifier registerValueClass:NSClassFromString(@"dateTime")
+      [EOQualifier registerValueClass:NGClassFromString(@"dateTime")
                    forTypeName:@"dateTime.tz"];
     }
     else
@@ -322,11 +322,11 @@
            autorelease];
 }
 - (id)freeBusyInContext:(id)_ctx {
-  id cmd = [[NSClassFromString(@"SxFreeBusy") alloc] init];
+  id cmd = [[NGClassFromString(@"SxFreeBusy") alloc] init];
   return [cmd autorelease];
 }
 - (id)images:(NSString *)_name container:(id)_c {
-  return [[[NSClassFromString(@"SxImageHandler") alloc] 
+  return [[[NGClassFromString(@"SxImageHandler") alloc] 
             initWithName:_name inContainer:_c]
             autorelease];
 }
@@ -435,17 +435,17 @@
   
   if ([[_ctx request] isSoWCAPRequest]) {
     static id r = nil;
-    if (r == nil) r = [[NSClassFromString(@"SoWCAPRenderer") alloc] init];
+    if (r == nil) r = [[NGClassFromString(@"SoWCAPRenderer") alloc] init];
     return r;
   }
   if ([uri hasSuffix:@".vcf"]) {
     static id r = nil;
-    if (r == nil) r = [[NSClassFromString(@"OLVCardRenderer") alloc] init];
+    if (r == nil) r = [[NGClassFromString(@"OLVCardRenderer") alloc] init];
     return r;
   }
   if ([uri hasSuffix:@".EML"]) {
     static id r = nil;
-    if (r == nil) r = [[NSClassFromString(@"OLMailRenderer") alloc] init];
+    if (r == nil) r = [[NGClassFromString(@"OLMailRenderer") alloc] init];
     return r;
   }
   return [super rendererForObject:_obj inContext:_ctx];

@@ -382,7 +382,6 @@
   BOOL         needsUpper, isNull;
   EOAttribute  *pkey;
   NSString     *basePKeyColumn;
-  NSString     *pkeyName;
 
 #if 1
   NSAssert(_join != nil && _key != nil && _value != nil,
@@ -402,7 +401,6 @@
   /* join clause */
 
   pkey           = [[self->entity primaryKeyAttributes] lastObject];
-  pkeyName       = [pkey name];
   basePKeyColumn = [@"B." stringByAppendingString:[pkey columnName]];
 
   [self->sql appendString:basePKeyColumn];
@@ -487,12 +485,13 @@
 }
 
 - (void)appendExtAttrKeyValueQualifier:(EOKeyValueQualifier *)_q {
-  NSString *operator;
-  BOOL     needsUpper, isNull, doBoth;
+  BOOL doBoth;
   
-  operator   = [self sqlForOperator:[_q selector]];
-  needsUpper = [self needsUpperForOperator:[_q selector]];
-  isNull     = ![[_q value] isNotNull];
+  #if 0 // hh(2024-09-19): unused
+  NSString *operator   = [self sqlForOperator:[_q selector]];
+  BOOL needsUpper = [self needsUpperForOperator:[_q selector]];
+  BOOl isNull     = ![[_q value] isNotNull];
+  #endif
   doBoth     = [self doGenerateCompanyValueChecks] && 
                [self doGenerateObjectPropertyChecks];
   
@@ -1100,14 +1099,12 @@
   NSString     *loginPKeyStr;
   EOAttribute  *pkey;
   NSString     *basePKeyColumn;
-  NSString     *pkeyName;
   
   loginPKeyStr = [[self primaryKeyFromObject:_loginId] stringValue];
 
   /* first, construct the base entity primary key */
   
   pkey           = [[self->entity primaryKeyAttributes] lastObject];
-  pkeyName       = [pkey name];
   basePKeyColumn = [@"B." stringByAppendingString:[pkey columnName]];
   
   /* check owner */

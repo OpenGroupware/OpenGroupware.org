@@ -128,7 +128,7 @@
         return nil;
       }
 
-      fmClass = NSClassFromString(@"SkyProjectFileManager");
+      fmClass = NGClassFromString(@"SkyProjectFileManager");
       fm = [[fmClass alloc] initWithContext:self->commandContext
                             projectCode:projectKey];
       if (fm == nil) {

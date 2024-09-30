@@ -27,7 +27,6 @@
 
 -(id)_renderArticles:(NSArray *)_articles withDetail:(NSNumber *)_detail {
   NSMutableArray      *results;
-  EOGenericRecord     *eoArticle;
   NSMutableDictionary *article;
   int                 i;
 
@@ -35,7 +34,7 @@
     return [NSArray arrayWithObjects:nil];
   results = [NSMutableArray arrayWithCapacity:[_articles count]];
   for(i = 0; i < [_articles count]; i++) {
-    eoArticle = [_articles objectAtIndex:i];
+    // unused: eoArticle = [_articles objectAtIndex:i];
     article = [NSMutableDictionary new];
     [self _addObjectDetails:article withDetail:_detail];
     [self _stripInternalKeys:article];

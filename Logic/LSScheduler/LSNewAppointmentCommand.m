@@ -569,9 +569,7 @@ static NSArray  *startDateOrderings = nil;
 }
 
 - (void)_newCyclicDatesInContext:(id)_context {
-  id res;
-  
-  res = LSRunCommandV(_context, @"appointment", @"new-cyclic",
+  /*res =*/ LSRunCommandV(_context, @"appointment", @"new-cyclic",
                       @"cyclicAppointment", [self object],
                       @"isWarningIgnored",  self->isWarningIgnored,
                       @"participants",      self->participants,

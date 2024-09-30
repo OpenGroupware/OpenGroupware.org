@@ -47,7 +47,7 @@
     NSString *rcName = @"SxZLPersonRenderer";
     didInit = YES;
     
-    if ((ZLCLass = NSClassFromString(rcName)) == Nil) {
+    if ((ZLCLass = NGClassFromString(rcName)) == Nil) {
       [self logWithFormat:
 	      @"ERROR: attempt to use '%@' which could not be found."];
     }

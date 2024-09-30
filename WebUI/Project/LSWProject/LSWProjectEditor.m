@@ -81,7 +81,7 @@
 - (id)globalID;
 @end
 
-static int compareAccounts(id e1, id e2, void* context) {
+static NSComparisonResult compareAccounts(id e1, id e2, void* context) {
   return [[e1 valueForKey:@"fullNameLabel"]
           caseInsensitiveCompare:[e2 objectForKey:@"fullNameLabel"]];
 }
@@ -1184,14 +1184,13 @@ static NSString *defaultStorageBackend = nil;
 }
 
 - (id)search {
-  id result = nil;
   [self->allAccess release]; self->allAccess = nil;
   [self->resultList removeAllObjects];
   
   if (self->accountSearchText!=nil && [self->accountSearchText length] > 0)
-    result = [self _primarySearchAccounts:self->accountSearchText];
+    /*unused: result =*/ [self _primarySearchAccounts:self->accountSearchText];
   else if (self->searchTeam != nil)
-    result = [self _primarySearchTeam:self->searchTeam];
+    /*unused: result =*/ [self _primarySearchTeam:self->searchTeam];
   
   [self removeDuplicateAccountListEntries];
 

@@ -24,7 +24,7 @@
 
 static Class StringClass = Nil;
 
-static int arraySorter(id obj1, id obj2, void *sortAttribute) {
+static NSComparisonResult arraySorter(id obj1, id obj2, void *sortAttribute) {
   SEL compareMethod;
   id  value1;
   id  value2;
@@ -52,14 +52,18 @@ static int arraySorter(id obj1, id obj2, void *sortAttribute) {
   }
   return (long)[value1 performSelector:compareMethod withObject:value2];
 }
-static int arrayWithRelKeySorter(id obj1, id obj2, void *sortAttribute) {
+static NSComparisonResult arrayWithRelKeySorter
+  (id obj1, id obj2, void *sortAttribute) 
+{
   id value1 = [obj1 valueForKey:[(id)sortAttribute valueForKey:@"key"]];
   id value2 = [obj2 valueForKey:[(id)sortAttribute valueForKey:@"key"]];
   if (value1 == value2) return NSOrderedSame;
   return
     arraySorter(value1, value2, [(id)sortAttribute valueForKey:@"relKey"]);
 }
-static int arrayDescSorter(id obj1, id obj2, void *sortAttribute) {
+static NSComparisonResult arrayDescSorter
+  (id obj1, id obj2, void *sortAttribute) 
+{
   id  value1;
   id  value2;
   SEL compareMethod;
@@ -87,7 +91,7 @@ static int arrayDescSorter(id obj1, id obj2, void *sortAttribute) {
   
   return (long)[value2 performSelector:compareMethod withObject:value1];
 }
-static int arrayWithRelKeyDescSorter
+static NSComparisonResult arrayWithRelKeyDescSorter
   (id obj1, id obj2, void *sortAttribute)
 {
   id value1 = [obj1 valueForKey:[(id)sortAttribute valueForKey:@"key"]];

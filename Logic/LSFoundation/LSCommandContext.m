@@ -108,13 +108,13 @@ NSString *ProfileCommandsFileName = nil;
     /* setup helper objects */
     
     self->typeManager = 
-      [[NSClassFromString(@"LSTypeManager") alloc] initWithContext:self];
+      [[NGClassFromString(@"LSTypeManager") alloc] initWithContext:self];
     
     self->objectPropertyManager =
-      [[NSClassFromString(@"SkyObjectPropertyManager") 
+      [[NGClassFromString(@"SkyObjectPropertyManager") 
 			 alloc] initWithContext:self];
     self->linkManager =
-      [[NSClassFromString(@"OGoObjectLinkManager") 
+      [[NGClassFromString(@"OGoObjectLinkManager") 
 			 alloc] initWithContext:self];
     self->accessManager = [[SkyAccessManager alloc] initWithContext:self];
     
@@ -202,7 +202,7 @@ NSString *ProfileCommandsFileName = nil;
   
   d = [[EOEntityClassDescription alloc] initWithEntity:entity];
   [EOClassDescription registerClassDescription:(EOClassDescription *)d
-                      forClass:NSClassFromString([entity className])];
+                      forClass:NGClassFromString([entity className])];
   [d release]; d = nil;
 }
 - (void)_requireClassDescriptionForClass:(NSNotification *)_notification {
@@ -231,7 +231,7 @@ NSString *ProfileCommandsFileName = nil;
 
   d = [[EOEntityClassDescription alloc] initWithEntity:entity];
   [EOClassDescription registerClassDescription:d
-                      forClass:NSClassFromString([entity className])];
+                      forClass:NGClassFromString([entity className])];
   [d release]; d = nil;
 }
 
@@ -825,21 +825,17 @@ lookupCommand(LSCommandContext *self, NSString *_domain, NSString *_command,
 }
 
 static id runCommand(LSCommandContext *self, id<LSCommand> _command) {
+  // hh(2024-09-19): This was asking for requiresChannel, but not actually
+  //                 using the result.
   volatile id result = nil;
   BOOL needsTx  = YES;
-  BOOL needsCh  = YES;
   BOOL openedTx = NO;
 
   static int profileDeep = 0;
 
-        
-  
-  needsCh = [_command requiresChannel];
-
   if (self->txStartTime == nil) {
     needsTx = [_command requiresTransaction];
-    needsCh = YES;
-
+    
     if (needsTx) {
       if (![self _beginTransaction]) {
         [self debugWithFormat:@"couldn't begin transaction"];
@@ -938,7 +934,7 @@ static id runCommand(LSCommandContext *self, id<LSCommand> _command) {
   id tmp;
 
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
 
   if ((tmp = [self valueForKey:LSAccountKey]) != nil)
     [ms appendFormat:@" login=%@", [tmp valueForKey:@"login"]];
