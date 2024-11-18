@@ -65,12 +65,8 @@
   mySalt = self->salt ? self->salt : [self _salt];
   
   if ([self->passwd isNotNull] && [mySalt isNotNull]) {
-#if defined(__MINGW32__) || defined(__CYGWIN32__)
-    cryptedPasswd = self->passwd;
-#else
     cryptedPasswd = [NSString stringWithCString:crypt([self->passwd cString],
                                                       [mySalt cString])];
-#endif
   }
   else {
     cryptedPasswd = @"";
