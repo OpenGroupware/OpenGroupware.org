@@ -76,11 +76,11 @@ static NSString *FHSOGoBundleDir               = nil;
   // TODO: would be nice to derive the first entry from the Linux setting
   timeZoneNames =
     [[NSArray alloc] initWithObjects:
-#if COCOA_Foundation_LIBRARY
-		     @"CET", @"GMT", @"PST", @"EST", @"CST",
-#else
+#if LIB_FOUNDATION_LIBRARY
                      @"MET", @"GMT", @"PST", @"EST", @"CST",
-                     @"EET", @"HST", @"MST", @"NZ",
+ @"EET", @"HST", @"MST", @"NZ",
+#else
+                     @"CET", @"GMT", @"PST", @"EST", @"CST",
 #endif
                      @"GMT+0100", @"GMT+0200", @"GMT+0300", @"GMT+0400",
                      @"GMT+0500", @"GMT+0600", @"GMT+0700", @"GMT+0800",
