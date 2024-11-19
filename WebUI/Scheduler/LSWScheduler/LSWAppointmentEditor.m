@@ -1663,7 +1663,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   NSString *tzs;
   
   if ((tzs = [[self userDefaults] stringForKey:@"timezone"]) == nil)
-    tzs = @"MET";
+    tzs = @"CET";
   return tzs;
 }
 

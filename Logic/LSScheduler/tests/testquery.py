@@ -56,7 +56,7 @@ sortOrdering = EOControl.EOSortOrdering("startDate", 'compareAscending:')
 apts  = lso.run("appointment::get-by-globalid",
                  gids=dates,
                  sortOrdering=sortOrdering,
-                 timeZoneName="MET")
+                 timeZoneName="CET")
 
 print "week %i:" % len(apts)
 for date in apts:

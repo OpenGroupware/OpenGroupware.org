@@ -31,7 +31,7 @@
 
 @implementation UIxComponent
 
-static NSTimeZone *MET = nil;
+static NSTimeZone *CET = nil;
 static NSTimeZone *GMT = nil;
 
 static NSMutableArray *dayLabelKeys       = nil;
@@ -46,8 +46,8 @@ static BOOL uixDebugEnabled = NO;
     
   uixDebugEnabled = [ud boolForKey:@"SOGoUIxDebugEnabled"];
 
-  if (MET == nil) {
-    MET = [[NSTimeZone timeZoneWithAbbreviation:@"MET"] retain];
+  if (CET == nil) {
+    CET = [[NSTimeZone timeZoneWithAbbreviation:@"CET"] retain];
     GMT = [[NSTimeZone timeZoneWithAbbreviation:@"GMT"] retain];
   }
   if (dayLabelKeys == nil) {
@@ -261,7 +261,7 @@ static BOOL uixDebugEnabled = NO;
 
 - (NSTimeZone *)viewTimeZone {
   // Note: also in the folder, should be based on a cookie?
-  return MET;
+  return CET;
 }
 
 - (NSTimeZone *)backendTimeZone {

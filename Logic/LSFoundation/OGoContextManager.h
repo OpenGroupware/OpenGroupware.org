@@ -32,7 +32,7 @@
   Defaults:
 
     LSAttachmentPath:  "/home/siteadm/attachments"
-    LSTimeZones:       ( "MET", "GMT", "PST", "EST", "CET" )
+    LSTimeZones:       ( "CET", "GMT", "PST", "EST", "CET" )
     LSOfficeModel:     "lso3dev"
 */
 
