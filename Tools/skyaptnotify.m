@@ -138,7 +138,7 @@ static BOOL     coreOnException = NO;
                   @"/opt/opengroupware.org/logs/sent-resources",
                   @"AptNotifySentResourcesFile",
                   [NSNumber numberWithInt:600], @"AptNotifyCheckPrefix",
-                  @"MET",                       @"AptNotifyDefaultTimeZone",
+                  @"CET",                       @"AptNotifyDefaultTimeZone",
                   @"/usr/lib/sendmail",         @"AptNotifySendmailPath",
                   @"/usr/lib/sendpage",         @"AptNotifySendpagePath",
                   @"localhost",                 @"AptNotifySendpageHost",

@@ -46,12 +46,12 @@ sortby = EOControl.EOSortOrdering("startDate", 'compareAscending:')
 sortby = ( sortby, )
 apts = lso.run("appointment::get-by-globalid",
                gids=dates,
-               timeZoneName="MET",
+               timeZoneName="CET",
                attributes=attrs,
                sortOrderings=sortby)
 apts = lso.run("appointment::get-by-globalid",
                gids=dates,
-               timeZoneName="MET",
+               timeZoneName="CET",
                attributes=attrs,
                sortOrderings=sortby)
 for apt in apts:

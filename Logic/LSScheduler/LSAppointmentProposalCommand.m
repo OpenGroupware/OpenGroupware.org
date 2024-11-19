@@ -103,7 +103,7 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   if (gmt == nil) 
     gmt = [[NSTimeZone timeZoneWithAbbreviation:@"GMT"] retain];
   if (met == nil) 
-    met = [[NSTimeZone timeZoneWithAbbreviation:@"MET"] retain];
+    met = [[NSTimeZone timeZoneWithAbbreviation:@"CET"] retain];
   if (emptyArray == nil)
     emptyArray = [[NSArray alloc] init];
 }

@@ -99,7 +99,7 @@
     return tmp;
   
   return [NSArray arrayWithObjects:
-                  @"GMT",@"MET",@"PST",@"CET",@"EET",@"EST",@"HST",@"MST",
+                  @"GMT",@"CET",@"PST",@"CET",@"EET",@"EST",@"HST",@"MST",
                   @"NZ",@"GMT+0100",@"GMT+0200",@"GMT+0300",@"GMT+0400",
                   @"GMT+0500",@"GMT+0600",@"GMT+0700",@"GMT+0800",@"GMT+0900",
                   @"GMT+1000",@"GMT+1100",@"GMT+1200",@"GMT-0100",@"GMT-0200",

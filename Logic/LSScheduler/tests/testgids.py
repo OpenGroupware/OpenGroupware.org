@@ -28,7 +28,7 @@ print "resolve attributes", attrs, ".."
 
 apts = lso.run("appointment::get-by-globalid",
                gids=dates,
-               timeZoneName="MET",
+               timeZoneName="CET",
                attributes=attrs)
 for apt in apts:
     print "%(startDate)-20s - %(endDate)-20s: '%(title)s'" % apt

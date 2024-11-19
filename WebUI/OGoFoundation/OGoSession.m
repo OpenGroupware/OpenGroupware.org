@@ -895,14 +895,8 @@ static NSString *OGoDateTimeTZFormat     = nil;
   if (abbrev != nil)
     tzone = [NSTimeZone timeZoneWithAbbreviation:abbrev];
   
-#if LIB_FOUNDATION_LIBRARY
-  // TODO: check whether we support CET with libFoundation/gstep-base
-  if (tzone == nil)
-    tzone = [NSTimeZone timeZoneWithAbbreviation:@"MET"];
-#else
   if (tzone == nil)
     tzone = [NSTimeZone timeZoneWithAbbreviation:@"CET"];
-#endif
 
   if (tzone == nil)
     [self errorWithFormat:@"got not timezone for session!"];

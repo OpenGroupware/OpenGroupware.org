@@ -96,7 +96,7 @@
   if (abbrev != nil)
     tzone = [NSTimeZone timeZoneWithAbbreviation:abbrev];
   if (tzone == nil)
-    tzone = [NSTimeZone timeZoneWithAbbreviation:@"MET"];
+    tzone = [NSTimeZone timeZoneWithAbbreviation:@"CET"];
 
   return tzone;
 }

@@ -54,7 +54,7 @@ static BOOL debugOn = YES;
 - (id)init {
   if ((self = [super init])) {
     static NSTimeZone *met = nil;
-    if (met == nil) met = [[NSTimeZone timeZoneWithName:@"MET"] retain];
+    if (met == nil) met = [[NSTimeZone timeZoneWithName:@"CET"] retain];
     
     self->timeZone = [met retain];
     self->dfFlags.showOnlyTimeForToday  = 1;
