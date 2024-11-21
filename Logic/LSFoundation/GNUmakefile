@@ -98,7 +98,9 @@ libLSFoundation_OBJC_FILES = \
 	OGoObjectLinkManager.m			\
 	NGBundleManager+OGo.m			\
 	\
-	EOSQLQualifier+LS.m			
+	EOSQLQualifier+LS.m			\
+	\
+	NSKeyValueCodingOverrides.m
 
 libLSFoundation_INCLUDE_DIRS             = -ILSFoundation
 libLSFoundation_HEADER_FILES_DIR         = .

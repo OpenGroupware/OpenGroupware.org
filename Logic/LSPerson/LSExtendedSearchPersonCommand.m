@@ -90,7 +90,18 @@ static BOOL debugOn = NO;
 
 /* generate searchRecords */
 
+/**
+ * Returns a map from some extended key to the entity name storing such a key.
+ * 
+ * E.g.:
+ *   { "01_tel": "Telephone", "02_tel": "Telephone",
+ *     "private": "Address", "mailing": "Address", "location": "Address",
+ *     "email1": "CompanyValue", ...
+ *   }
+ */
 - (NSDictionary *)_typesInContext:(id)_context {
+  // hh(2024-11-20): This is a little ambiguous and requires that there is
+  //                 no overlap between keys in phone, address and companyValue.
   NSEnumerator        *nameEnum;
   NSString            *name;
   NSMutableDictionary *result;
