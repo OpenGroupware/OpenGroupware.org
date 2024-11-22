@@ -51,7 +51,7 @@ BeforeLabel: WOString {
 }
 
 LogsTab: SkySimpleTabItem {
-  key   = "log";
+  key   = "logtab";
   label = labels.logs;
 }
 

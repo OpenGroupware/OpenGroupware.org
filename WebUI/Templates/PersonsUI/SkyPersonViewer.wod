@@ -50,7 +50,7 @@ AppointmentsTab: SkySimpleTabItem {
 }
 
 LogTab: SkySimpleTabItem {
-  key   = "log";
+  key   = "logtab";
   label = labels.personviewer_tab_log;
 }
 

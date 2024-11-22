@@ -214,7 +214,7 @@ TODO:  IsLinkTabEnabled: WOConditional { condition = isLinkTabEnabled; }
         </tabitem>
 
 TODO:  IsLogTabEnabled:  WOConditional { condition = isLogTabEnabled;  }
-        <tabitem key="log" label="logsTitle">
+        <tabitem key="logtab" label="logsTitle">
           <var:component className="SkyObjectLogList" object="job" />
         </tabitem>
       </tab>

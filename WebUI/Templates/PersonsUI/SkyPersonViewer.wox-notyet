@@ -105,7 +105,7 @@
         <var:component className="OGoObjectLinkList" object="person" />
       </tabitem>
 
-      <tabitem key="log" label="personviewer_tab_log" 
+      <tabitem key="logtab" label="personviewer_tab_log" 
                enabled="isLogTabEnabled">
         <var:component className="SkyObjectLogList" object="person" />
       </tabitem>

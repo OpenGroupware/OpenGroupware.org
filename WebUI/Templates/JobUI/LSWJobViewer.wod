@@ -20,7 +20,7 @@ JobHistoryTab: SkySimpleTabItem {
   label = labels.jobHistoryList;
 }
 LogTab: SkySimpleTabItem {
-  key   = "log";
+  key   = "logtab";
   label = labels.logsTitle;
 }
 

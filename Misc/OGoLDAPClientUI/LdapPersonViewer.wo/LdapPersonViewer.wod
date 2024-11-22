@@ -53,7 +53,7 @@ ViewerTabPerson: SkyTabItem {
   icon  = "attributes";
 }
 ViewerTabLog: SkyTabItem {
-  key   = "log";
+  key   = "logtab";
   label = labels.Log;
   icon  = "log";
 }

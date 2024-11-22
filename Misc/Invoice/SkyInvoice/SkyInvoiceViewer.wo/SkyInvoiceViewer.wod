@@ -93,7 +93,7 @@ PreviewTab: SkyTabItem {
 }
 
 LogTab: SkyTabItem {
-  key       = "log";
+  key       = "logtab";
   action    = tabClicked;
   label     = labels.logsLabel;
   icon      = "log";

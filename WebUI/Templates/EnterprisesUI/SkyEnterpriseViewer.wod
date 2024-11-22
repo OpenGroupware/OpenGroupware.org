@@ -47,7 +47,7 @@ AttributesTab: SkySimpleTabItem {
   isScript = YES;
 }
 LogTab: SkySimpleTabItem {
-  key   = "log";
+  key   = "logtab";
   label = labels.enterpriseviewer_tab_log;
 }
 
