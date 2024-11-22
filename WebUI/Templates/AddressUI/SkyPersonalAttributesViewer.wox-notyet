@@ -35,7 +35,7 @@ TODO: SkyCollapsibleButtonMode in OGoElemBuilder
             <OGo:buttons>
               <OGo:button name="edit" var:action="edit"
                           label="edit" var:enabled="isEditAllowed"/>
-              <OGo:button name="configureAttrs" var:action="viewerConfigModeActivate"
+              <OGo:button name="configure" var:action="viewerConfigModeActivate"
                           label="viewer_config" />
             </OGo:buttons>
           </buttons>
