@@ -20,17 +20,18 @@
 */
 
 /*
-  The SkySimpleTabItem behaves similiar to the SkyTabItem, but does
+  The `SkySimpleTabItem` behaves similiar to the `SkyTabItem`, but does
   not require any images. So you just have to assign a 'label' and a 'key',
   e.g.:
-
+  ```
   TabItem: SkySimpleTabItem {
     key    = "key";
     label  = "label";
     action = "tabClicked";
   }
+  ```
 
-  The SkySimpleTabItem does not support javaScript!!!
+  The `SkySimpleTabItem` does not support `javaScript`!!!
   
   Please also take a look at 'SkyTabView.m' and 'WETabView.m'!
 */

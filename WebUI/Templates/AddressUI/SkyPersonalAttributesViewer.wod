@@ -20,14 +20,14 @@ PatternTitle: SkyCollapsibleContent {
 }
 
 ConfButtons: SkyButtonRow {
-  ordering  = ( "edit", "conf" );
-  hasEdit   = YES;
-  hasConf   = YES;
-  onEdit    = edit;
-  hasEdit   = isEditAllowed;
-  onConf    = viewerConfigModeActivate;
-  edit      = labels.edit;
-  conf      = labels.viewer_config;
+  ordering               = ( "edit", "configureAttributes" );
+  hasEdit                = YES;
+  hasConfigureAttributes = YES;
+  onEdit                 = edit;
+  hasEdit                = isEditAllowed;
+  onConfigureAttributes  = viewerConfigModeActivate;
+  edit                   = labels.edit;
+  configureAttributes    = labels.viewer_config;
 }
 
 IsInConfigMode:    WOConditional { condition = viewerConfigMode; }
