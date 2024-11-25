@@ -78,7 +78,7 @@
     return obj;
   }
   
-  if ([key isKindOfClass:[NSString class]] && [_key hasPrefix: @"@"])
+  if ([_key isKindOfClass:[NSString class]] && [_key hasPrefix:@"@"])
     return [super valueForKey:[_key substringFromIndex:1]];
 
   return nil;
