@@ -61,6 +61,10 @@
 }
 
 - (id)valueForKey:(NSString *)_key {
+  // Note: The string key is a lie, in OGo it is sometimes (and incorrectly)
+  //       used as a more general `-objectForKey:` where the key is `id`.
+  //       Those should be fixed.
+  // E.g. `LSGetSessionLogsForGlobalIDs` does this w/ EOKeyGlobalID's
   id obj;
   
   if (_key == nil)
@@ -74,7 +78,7 @@
     return obj;
   }
   
-  if ([_key hasPrefix: @"@"])
+  if ([key isKindOfClass:[NSString class]] && [_key hasPrefix: @"@"])
     return [super valueForKey:[_key substringFromIndex:1]];
 
   return nil;
