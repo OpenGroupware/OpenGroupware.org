@@ -696,21 +696,21 @@ static Class   StrClass = Nil;
     qual = [EOSQLQualifier alloc];
     if ([_accGids count] > 0) {
       qual = [qual initWithEntity:[self aclEntity]
-		   qualifierFormat:@"(%A IN (%@)) AND (%A IN (%@))",
-		     @"objectId", [self _stringGIDInQualFor:tmp],
-		     @"authId",   [self _stringGIDInQualFor:_accGids],
+		               qualifierFormat:@"(%A IN (%@)) AND (%A IN (%@))",
+		                 @"objectId", [self _stringGIDInQualFor:tmp],
+		                 @"authId",   [self _stringGIDInQualFor:_accGids],
 		   nil];
     }
     else {
       qual = [qual initWithEntity:[self aclEntity]
-		   qualifierFormat:@"%A IN (%@)",
-		     @"objectId", [self _stringGIDInQualFor:tmp]];
+		               qualifierFormat:@"%A IN (%@)",
+		                 @"objectId", [self _stringGIDInQualFor:tmp]];
     }
     
     channel = [self beginTransaction];
     
     error = [channel selectAttributesX:attrs describedByQualifier:qual
-		     fetchOrder:nil lock:NO];
+		                 fetchOrder:nil lock:NO];
     if (error != nil) {
       [self errorWithFormat:@"%s: evaluation of qualifier %@ failed: %@",
             __PRETTY_FUNCTION__, qual, error];
