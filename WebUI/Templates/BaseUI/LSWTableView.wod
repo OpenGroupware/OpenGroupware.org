@@ -15,7 +15,7 @@ Header: LSWTableViewHeader {
   firstLabel     = labels.gotoFirstLabel;
   lastIcon       = "last.gif";
   lastIconBlind  = "last_blind.gif";
-  lastLabel      = label.gotoLastLabel;
+  lastLabel      = labels.gotoLastLabel;
   nextIcon       = "next.gif";
   nextIconBlind  = "next_blind.gif";
   nextLabel      = labels.gotoNextLabel;
