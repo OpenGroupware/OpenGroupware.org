@@ -496,7 +496,7 @@ static NGMimeType *eoTeamType           = nil;
   if ([self->tabKey isEqualToString:@"accounts"])
     return [self _searchAccounts];
   
-  if ([self->tabKey isEqualToString:@"resources"])
+  if ([self->tabKey isEqualToString:@"resourcestab"])
     return [self _searchAptResources];
   
   if ([self->tabKey isEqualToString:@"sessionlogs"])

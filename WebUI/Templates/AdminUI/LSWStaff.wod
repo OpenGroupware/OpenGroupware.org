@@ -24,7 +24,7 @@ TeamsTab: SkySimpleTabItem {
 }
 
 ResourcesTab: SkySimpleTabItem {
-  key    = "resources";
+  key    = "resourcestab";
   action = tabClicked;
   label  = labels.aptResources;
 }
