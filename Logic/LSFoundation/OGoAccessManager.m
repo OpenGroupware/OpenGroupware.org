@@ -663,8 +663,8 @@ static Class   StrClass = Nil;
   if (![_accGids isNotNull])
     _accGids = nil;
   
-  if ([_accGids count] > 250) { // TODO: make configurable?
-    [self warnWithFormat:@"%s: to many ids for sql qualifier", 
+  if ([_accGids count] > 10000) { // TODO: make configurable?
+    [self warnWithFormat:@"%s: too many ids for sql qualifier", 
 	  __PRETTY_FUNCTION__];
     return nil;
   }
