@@ -56,6 +56,16 @@
   [super dealloc];
 }
 
+- (int)batchSize {
+  static int batchSize = -1;
+  if (batchSize <= 0) { // THREAD
+    batchSize = [[NSUserDefaults standardUserDefaults]
+                                 integerForKey:@"LSGetAptByGIDBatchSize"];
+    if (batchSize < 10) batchSize = 10000;
+  }
+  return batchSize;
+}
+
 - (NSArray *)_fetchGIDsForUrls:(NSArray *)_urls inContext:(id)_context {
   // TODO: split up method
   NSMutableArray    *gids;
@@ -80,7 +90,7 @@
     [NSArray arrayWithObjects:[entity attributeNamed:pKeyName],
              sourceUrlAttr, nil];
 
-  batchSize = urlCount > 200 ? 200 : urlCount;
+  batchSize = urlCount > [self batchSize] ? [self batchSize] : urlCount;
   gids      = nil;
   for (i = 0; i < urlCount; i += batchSize) {
     /* building qualifier */
