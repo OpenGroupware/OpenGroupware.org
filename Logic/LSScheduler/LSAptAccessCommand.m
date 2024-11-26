@@ -342,6 +342,16 @@ static EONull   *null  = nil;
   }
 }
 
+- (int)batchSize {
+  static int batchSize = -1;
+  if (batchSize <= 0) { // THREAD
+    batchSize = [[NSUserDefaults standardUserDefaults]
+                                 integerForKey:@"LSAptAccessBatchSize"];
+    if (batchSize < 10) batchSize = 10000;
+  }
+  return batchSize;
+}
+
 - (void)_executeInContext:(id)_ctx {
   // TODO: split up this HUGE method
   NSAutoreleasePool     *pool;
@@ -394,7 +404,7 @@ static EONull   *null  = nil;
   adCh = [[_ctx valueForKey:LSDatabaseChannelKey] adaptorChannel];
   [self assert:(adCh != nil) reason:@"missing adaptor channel"];
   
-  batchSize = gidCount > 200 ? 200 : gidCount;
+  batchSize = gidCount > [self batchSize] ? [self batchSize] : gidCount;
 
   for (i = 0; i < gidCount; i += batchSize) {
     /* fetch in IN batches */

@@ -441,6 +441,16 @@ static NSSet *AllListAttrs = nil;
   return addCount == 0 ? (NSMutableString *)nil : in;
 }
 
+- (int)batchSize {
+  static int batchSize = -1;
+  if (batchSize <= 0) { // THREAD
+    batchSize = [[NSUserDefaults standardUserDefaults]
+                                 integerForKey:@"LSGetAptByGIDBatchSize"];
+    if (batchSize < 10) batchSize = 10000;
+  }
+  return batchSize;
+}
+
 - (id)_fetchAttributesInContext:(id)_context gids:(NSArray *)_gids {
   // TODO: split up this HUGE method
   NSMutableDictionary *gidToApt = nil;
@@ -474,7 +484,7 @@ static NSSet *AllListAttrs = nil;
   if ([participantKeys isNotEmpty])
     gidToApt = [NSMutableDictionary dictionaryWithCapacity:256];
   
-  *(&batchSize) = gidCount > 200 ? 200 : gidCount;
+  *(&batchSize) = gidCount > [self batchSize] ? [self batchSize] : gidCount;
   
   results    = [NSMutableArray arrayWithCapacity:gidCount];
   resultGids = [NSMutableArray arrayWithCapacity:gidCount];
@@ -719,7 +729,7 @@ static NSSet *AllListAttrs = nil;
   if ((dbCh = [_context valueForKey:LSDatabaseChannelKey]) == nil)
     [self assert:(dbCh != nil) reason:@"missing database channel"];
 
-  batchSize = gidCount > 200 ? 200 : gidCount;
+  batchSize = gidCount > [self batchSize] ? [self batchSize] : gidCount;
 
   //  nonEOgids = [NSMutableArray array];
   

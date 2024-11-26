@@ -138,6 +138,17 @@ static BOOL doCacheGIDs = YES;
   [self errorWithFormat:@"catched exception during sort: %@", _ex];
   return nil;
 }
+
+- (int)batchSize {
+  static int batchSize = -1;
+  if (batchSize <= 0) { // THREAD
+    batchSize = [[NSUserDefaults standardUserDefaults]
+                                 integerForKey:@"LSGetByGlobalIDBatchSize"];
+    if (batchSize < 10) batchSize = 10000;
+  }
+  return batchSize;
+}
+
 - (id)_fetchEOsInContext:(id)_context gids:(NSArray *)_gids {
   id                results;
   EODatabaseChannel *dbCh;
@@ -153,7 +164,7 @@ static BOOL doCacheGIDs = YES;
   dbCh = [_context valueForKey:LSDatabaseChannelKey];
   [self assert:(dbCh != nil) reason:@"missing database channel"];
   
-  batchSize = gidCount > 200 ? 200 : gidCount;
+  batchSize = gidCount > [self batchSize] ? [self batchSize] : gidCount;
   
   results = nil;
   for (i = 0; i < gidCount; i += batchSize) {
@@ -361,11 +372,11 @@ static BOOL doCacheGIDs = YES;
         format:@"cannot fetch keys %@", additionalKeys];
 #endif
   
-  batchSize = gidCount > 200 ? 200 : gidCount;
+  batchSize = gidCount > [self batchSize] ? [self batchSize] : gidCount;
   
   results = nil;
 
-  TIME_START(@"fetch zeugs");
+  TIME_START(@"fetch stuff");
   for (i = 0; i < gidCount; i += batchSize) {
     /* fetch in IN batches */
     NSException     *error;
