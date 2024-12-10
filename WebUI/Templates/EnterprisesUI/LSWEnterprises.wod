@@ -53,17 +53,17 @@ FullSearch: LSWFullSearch {
 }
 
 Buttons: SkyButtonRow {
-  ordering    = ( print, config, bulk, import, email, new );
-  onNew       = newEnterprise;
-  new         = labels.new;
-  tipNew      = labels.new;
+  ordering     = ( print, editconfig, bulk, import, email, new );
+  onNew        = newEnterprise;
+  new          = labels.new;
+  tipNew       = labels.new;
 
-  hasImport   = YES;
-  import      = labels.import;
-  onImport    = import;
+  hasImport    = YES;
+  import       = labels.import;
+  onImport     = import;
 
-  config      = labels.config;
-  onConfig    = showColumnConfigEditor;
+  editconfig   = labels.config;
+  onEditconfig = showColumnConfigEditor;
 
   print       = labels.print;
   onPrint     = printList;
@@ -77,7 +77,7 @@ Buttons: SkyButtonRow {
 }
 
 CustomButtons: SkyButtonRow {
-  ordering     = ( print, config, bulk, import, email, new, removetab);
+  ordering     = ( print, editconfig, bulk, import, email, new, removetab);
   onNew        = newEnterprise;
   new          = labels.new;
   tipNew       = labels.new;
@@ -90,8 +90,8 @@ CustomButtons: SkyButtonRow {
   removetab    = labels.removeTab;
   onRemovetab  = removeTab;
 
-  config       = labels.config;
-  onConfig     = showColumnConfigEditor;
+  editconfig   = labels.config;
+  onEditconfig = showColumnConfigEditor;
 
   print        = labels.print;
   onPrint      = printList;
