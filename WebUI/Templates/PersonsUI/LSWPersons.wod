@@ -32,50 +32,52 @@ PersonList: SkyPersonList {
 }
 
 Buttons: SkyButtonRow {
-  ordering    = ( print, config, bulk, gathering, import, email, new );
-  onNew       = newPerson;
-  onGathering = gathering;
-  new         = labels.new;
-  tipNew      = labels.new;
-  gathering   = labels.gathering;
+  ordering     = ( print, editconfig, bulk, gathering, import, email, new );
+  onNew        = newPerson;
+  onGathering  = gathering;
+  new          = labels.new;
+  tipNew       = labels.new;
+  gathering    = labels.gathering;
 
-  hasImport   = YES;
-  import      = labels.import;
-  onImport    = import;
+  hasImport    = YES;
+  import       = labels.import;
+  onImport     = import;
 
-  config      = labels.config;
-  onConfig    = showColumnConfigEditor;
+  editconfig   = labels.config;
+  onEditconfig = showColumnConfigEditor;
 
-  print       = labels.print;
-  onPrint     = printList;
-  targetPrint = "SkyrixPrintView";
+  print        = labels.print;
+  onPrint      = printList;
+  targetPrint  = "SkyrixPrintView";
 
-  bulk        = labels.bulk;
-  onBulk      = showBulkOperations;
+  bulk         = labels.bulk;
+  onBulk       = showBulkOperations;
 
-  email       = labels.email;
-  onEmail     = showMailer;
+  email        = labels.email;
+  onEmail      = showMailer;
 }
 
 // TODO: why not 'hasRemoveTab'?
 CustomButtons: SkyButtonRow {
-  ordering    = ( print, config, bulk, gathering, import, email, removetab );
-  onNew       = newPerson;
-  onGathering = gathering;
-  new         = labels.new;
-  tipNew      = labels.new;
-  gathering   = labels.gathering;
+  ordering     = ( 
+    print, editconfig, bulk, gathering, import, email, removetab 
+  );
+  onNew        = newPerson;
+  onGathering  = gathering;
+  new          = labels.new;
+  tipNew       = labels.new;
+  gathering    = labels.gathering;
 
-  hasImport   = YES;
-  import      = labels.import;
-  onImport    = import;
+  hasImport    = YES;
+  import       = labels.import;
+  onImport     = import;
 
   hasRemovetab = YES;
   removetab    = labels.removeTab;
   onRemovetab  = removeTab;
 
-  config      = labels.config;
-  onConfig    = showColumnConfigEditor;
+  editconfig   = labels.config;
+  onEditconfig = showColumnConfigEditor;
 
   print       = labels.print;
   onPrint     = printList;

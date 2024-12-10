@@ -82,13 +82,13 @@ LogList:      SkyObjectLogList  { object = enterprise; }
 RelatedLinks: OGoObjectLinkList { object = enterprise; }
 
 PersonButtons: SkyButtonRow {
-  ordering  = ( config, assign );
-  onAssign  = assignPerson;
-  hasAssign = isEditEnabled;
-  assign    = labels.assignPerson;
+  ordering     = ( editconfig, assign );
+  onAssign     = assignPerson;
+  hasAssign    = isEditEnabled;
+  assign       = labels.assignPerson;
   
-  config    = labels.config;
-  onConfig  = showColumnConfigEditor;
+  editconfig   = labels.config;
+  onEditconfig = showColumnConfigEditor;
 }
 
 ShortEnterpriseViewer: LSWObjectViewer {
