@@ -15,7 +15,7 @@ TabView: SkyTabView {
 }
 
 ConfigTab: SkyTabItem {
-  key    = "config";
+  key    = "configTab";
   action = tabClicked;
   label  = labels.tab_config;
 }
