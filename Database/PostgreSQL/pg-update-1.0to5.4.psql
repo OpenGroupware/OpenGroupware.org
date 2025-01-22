@@ -347,3 +347,72 @@ ALTER TABLE company_value
   ADD CONSTRAINT email_type 
   CHECK (NOT (attribute LIKE 'email%') 
          OR ((attribute LIKE 'email%') AND type = 3));
+
+-- All company rows have owner_id's, except the root user itself...,
+-- let that recurse, should be fine.
+UPDATE company SET owner_id = 10000 
+ WHERE login = 'root' AND company_id = 10000 AND owner_id IS NULL;
+
+
+-- add more column NOT NULL constraints
+
+ALTER TABLE date_x   ALTER COLUMN owner_id       SET NOT NULL;
+ALTER TABLE date_x   ALTER COLUMN object_version SET NOT NULL;
+ALTER TABLE date_x   ALTER COLUMN db_status      SET NOT NULL;
+
+ALTER TABLE job      ALTER COLUMN object_version SET NOT NULL;
+ALTER TABLE job      ALTER COLUMN db_status      SET NOT NULL;
+ALTER TABLE job      ALTER COLUMN creator_id     SET NOT NULL;
+ALTER TABLE job      ALTER COLUMN owner_id       SET NOT NULL;
+ALTER TABLE job      ALTER COLUMN executant_id   SET NOT NULL;
+
+ALTER TABLE company  ALTER COLUMN owner_id       SET NOT NULL;
+ALTER TABLE company  ALTER COLUMN object_version SET NOT NULL;
+ALTER TABLE company  ALTER COLUMN db_status      SET NOT NULL;
+
+ALTER TABLE company_assignment ALTER COLUMN company_id     SET NOT NULL;
+ALTER TABLE company_assignment ALTER COLUMN sub_company_id SET NOT NULL;
+ALTER TABLE company_assignment ALTER COLUMN db_status      SET NOT NULL;
+
+ALTER TABLE project_company_assignment ALTER COLUMN db_status  SET NOT NULL;
+ALTER TABLE project_company_assignment ALTER COLUMN company_id SET NOT NULL;
+ALTER TABLE project_company_assignment ALTER COLUMN project_id SET NOT NULL;
+ALTER TABLE project_company_assignment ALTER COLUMN has_access SET NOT NULL;
+
+ALTER TABLE document         ALTER COLUMN db_status      SET NOT NULL;
+ALTER TABLE document         ALTER COLUMN creation_date  SET NOT NULL;
+ALTER TABLE document         ALTER COLUMN db_status      SET NOT NULL;
+ALTER TABLE document         ALTER COLUMN first_owner_id SET NOT NULL;
+ALTER TABLE document_editing ALTER COLUMN document_id    SET NOT NULL;
+ALTER TABLE document_editing ALTER COLUMN db_status      SET NOT NULL;
+ALTER TABLE document_version ALTER COLUMN document_id    SET NOT NULL;
+ALTER TABLE document_version ALTER COLUMN db_status      SET NOT NULL;
+ALTER TABLE document_version ALTER COLUMN last_owner_id  SET NOT NULL;
+
+-- 2024-12-02: new, allow inline storage of TEXT.
+-- this can be a prefix, or the actual content, or sth else.
+-- since old clients won't know about this and always access the file,
+-- this tracks the object_version of the last write.
+ALTER TABLE document ADD COLUMN text_content                TEXT     NULL;
+ALTER TABLE document ADD COLUMN text_content_type           SMALLINT NULL;
+ALTER TABLE document ADD COLUMN text_content_object_version INT      NULL;
+
+
+-- Bump versions
+-- 54 - things we changed in 2015
+-- 55 - things changed end of 2024
+UPDATE table_version SET table_version = 55 WHERE table_name = '_model';
+UPDATE table_version SET table_version = 55 WHERE table_name = 'company';
+UPDATE table_version SET table_version = 54 WHERE table_name = 'company_value';
+UPDATE table_version SET table_version = 55 
+ WHERE table_name = 'company_assignment';
+UPDATE table_version SET table_version = 55 WHERE table_name = 'date';
+UPDATE table_version SET table_version = 55 WHERE table_name = 'job';
+UPDATE table_version SET table_version = 54 WHERE table_name = 'project';
+UPDATE table_version SET table_version = 55
+ WHERE table_name = 'project_company_assignment';
+UPDATE table_version SET table_version = 55 WHERE table_name = 'document';
+UPDATE table_version SET table_version = 55
+ WHERE table_name = 'document_version';
+UPDATE table_version SET table_version = 55
+ WHERE table_name = 'document_editing';
