@@ -58,6 +58,7 @@ static NSString *OGoHelpDeskRoleName = nil;
   if ((self = [super initForOperation:_operation inDomain:_domain])) {
     [self takeValue:@"00_created"  forKey:@"logAction"];
     [self takeValue:@"Job created" forKey:@"logText"];
+    [self takeValue:[NSNumber numberWithInt:1] forKey:@"objectVersion"];
   }
   return self;
 }
@@ -108,7 +109,7 @@ static NSString *OGoHelpDeskRoleName = nil;
   endDate   = [self valueForKey:@"endDate"];
   if ([startDate compare:endDate] == NSOrderedDescending) {
     /* TODO: should assert ... */
-    [self logWithFormat:@"WARNING: startDate is before endDate !"];
+    [self logWithFormat:@"WARNING: startDate is after endDate !"];
   }
 }
 

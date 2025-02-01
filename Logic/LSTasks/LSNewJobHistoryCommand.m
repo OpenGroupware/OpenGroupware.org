@@ -55,6 +55,8 @@
 
 - (void)_executeInContext:(id)_context {
   BOOL isOk;
+  
+  [self takeValue:[NSNumber numberWithInt: 1] forKey:@"objectVersion"];
 
   [super _executeInContext:_context];
   isOk = [self _newJobHistoryInfoInContext:_context];

@@ -132,7 +132,8 @@ static int comparePos(id jobAss1, id jobAss2, void *context) {
   id user = [_context valueForKey:LSAccountKey];
   
   [self _checkStartDateIsBeforeEndDate];
-
+  
+  [self takeValue:[NSNumber numberWithInt: 1]     forKey:@"objectVersion"];
   [self takeValue:LSJobCreated                    forKey:@"jobStatus"];
   [self takeValue:[user valueForKey:@"companyId"] forKey:@"creatorId"];
 
