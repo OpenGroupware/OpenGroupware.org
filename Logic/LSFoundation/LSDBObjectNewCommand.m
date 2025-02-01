@@ -86,6 +86,10 @@
 
   NSAssert(self->recordDict, @"no record dict available");
   [self->recordDict setObject:@"inserted" forKey:@"dbStatus"];
+  #if 0 // hh: 2025-02-01: should this set objectVersion? Or in change-trackers?
+  [self->recordDict setObject:[NSNumber numberWithInt: 1]
+                    forKey:@"objectVersion"];
+  #endif
   [obj takeValuesFromDictionary:recordDict];
 }
 

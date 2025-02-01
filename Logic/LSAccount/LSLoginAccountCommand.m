@@ -297,6 +297,8 @@
   return self->crypted;
 }
 
+// If this is set, no password checks are done and the login will always
+// succeed, i.e. the SU can login as any other user.
 - (void)setSuContext:(id)_ctx {
   ASSIGN(self->suCtx,_ctx);
 }
