@@ -264,7 +264,7 @@ static NSArray * addressTypes = nil;
 }
 
 - (void)setUrl:(NSString *)_url {
-  if ((![_url isNotNull]) || ([_url isEqualToString:@"http://"])) _url = @"";
+  if ((![_url isNotNull]) || ([_url isEqualToString:@"http://"] || [_url isEqualToString:@"https://"])) _url = @"";
   ASSIGNCOPY_IFNOT_EQUAL(self->url, _url, self->status.isEdited);
 }
 - (NSString *)url {

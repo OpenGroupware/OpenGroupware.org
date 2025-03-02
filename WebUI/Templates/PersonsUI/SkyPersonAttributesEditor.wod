@@ -60,7 +60,7 @@ CommonAttributes: LSWObjectEditor {
   { 
     key       = "url";
     label     = "url";
-    nilString = "http://"
+    nilString = "https://"
   },
   { 
     key            = "birthday";
