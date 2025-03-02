@@ -53,10 +53,14 @@
   return [[self databaseChannel] insertObject:jobHistoryInfo];
 }
 
+- (void)_prepareForExecutionInContext:(id)_context {
+  [self takeValue:[NSNumber numberWithInt:1] forKey:@"objectVersion"];
+  [super _prepareForExecutionInContext:_context];
+}
+
 - (void)_executeInContext:(id)_context {
   BOOL isOk;
   
-  [self takeValue:[NSNumber numberWithInt: 1] forKey:@"objectVersion"];
 
   [super _executeInContext:_context];
   isOk = [self _newJobHistoryInfoInContext:_context];
