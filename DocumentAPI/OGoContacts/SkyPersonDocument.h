@@ -59,6 +59,7 @@
   NSString       *url;
   NSString       *gender;
   NSCalendarDate *birthday;
+  NSString       *birthPlace;
   EODataSource   *enterpriseDataSource;
 
   BOOL           isAccount;
@@ -109,6 +110,9 @@
 
 - (void)setBirthday:(NSCalendarDate *)_birthday;
 - (NSCalendarDate *)birthday;
+
+- (void)setBirthPlace:(NSString *)_value;
+- (NSString *)birthPlace;
 
 - (void)setUrl:(NSString *)_url;
 - (NSString *)url;

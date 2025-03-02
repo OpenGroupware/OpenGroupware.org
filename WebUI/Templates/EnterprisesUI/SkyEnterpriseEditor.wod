@@ -30,7 +30,7 @@ EnterpriseEditor: LSWObjectEditor {
   }, 
   { 
     key       = "url";
-    nilString = "http://";       
+    nilString = "https://";       
   },
   { 
     key = "email";                                    

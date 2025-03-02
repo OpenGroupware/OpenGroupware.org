@@ -34,10 +34,18 @@ ALTER TABLE company ADD COLUMN citizenship   VARCHAR(255) NULL; -- CSV?!
 ALTER TABLE company ADD COLUMN dayofdeath    TIMESTAMP WITH TIME ZONE NULL;
 
 -- district of a city (eg Magdeburg "Nord")
-ALTER TABLE address ADD COLUMN district    VARCHAR(255) NULL;
+ALTER TABLE address ADD COLUMN district VARCHAR(255) NULL;
+ALTER TABLE address ADD COLUMN latitude       FLOAT8 NULL;
+ALTER TABLE address ADD COLUMN longitude      FLOAT8 NULL;
+ALTER TABLE address ADD COLUMN radius         FLOAT8 NULL;
+ALTER TABLE address ADD COLUMN title          TEXT   NULL;
+ALTER TABLE address ADD COLUMN structured_version INT NULL;
+
 -- ensure that a type is used only once per person/company (eg you can only have
 -- one 'bill' address, this is because OGo creates dictionaries based on the
 -- type)
+-- Note(2025-03-01): This does NOT make NULL/type combo's unique, which fits
+--                   our usecase of detached addresses.
 ALTER TABLE address   ADD CONSTRAINT company_unique_adrtype
   UNIQUE ( company_id, type );
 
@@ -59,8 +67,12 @@ CREATE TABLE login_token (
 ALTER TABLE job ADD COLUMN owner_id INT;
 UPDATE job SET owner_id = creator_id WHERE owner_id IS NULL;
 ALTER TABLE job ADD COLUMN date_id INT;
+ALTER TABLE job ADD COLUMN url     TEXT;
 
-ALTER TABLE date_x ADD COLUMN project_id INT;
+ALTER TABLE date_x ADD COLUMN project_id          INT;
+ALTER TABLE date_x ADD COLUMN url                 TEXT;
+ALTER TABLE date_x ADD COLUMN location_id         INT;
+ALTER TABLE date_x ADD COLUMN location_id_version INT;
 
 -- pg-update-1.0to5.4.psql, used to be a separate file
 
@@ -405,25 +417,41 @@ UPDATE company SET owner_id = 10000
 
 -- add more column NOT NULL constraints
 
-ALTER TABLE date_x      ALTER COLUMN owner_id       SET NOT NULL;
-ALTER TABLE date_x      ALTER COLUMN object_version SET NOT NULL;
-ALTER TABLE date_x      ALTER COLUMN db_status      SET NOT NULL;
+ALTER TABLE date_x      ALTER COLUMN owner_id             SET NOT NULL;
+ALTER TABLE date_x      ALTER COLUMN object_version       SET NOT NULL;
+ALTER TABLE date_x      ALTER COLUMN db_status            SET NOT NULL;
+ALTER TABLE date_x      ALTER COLUMN is_conflict_disabled SET NOT NULL;
+
+ALTER TABLE date_info               ALTER COLUMN db_status  SET NOT NULL;
+ALTER TABLE date_company_assignment ALTER COLUMN db_status  SET NOT NULL;
+ALTER TABLE date_company_assignment ALTER COLUMN date_id    SET NOT NULL;
+ALTER TABLE date_company_assignment ALTER COLUMN company_id SET NOT NULL;
+ALTER TABLE date_company_assignment ALTER COLUMN is_staff   SET NOT NULL;
+ALTER TABLE appointment_resource    ALTER COLUMN db_status  SET NOT NULL;
 
 ALTER TABLE job         ALTER COLUMN object_version SET NOT NULL;
 ALTER TABLE job         ALTER COLUMN db_status      SET NOT NULL;
 ALTER TABLE job         ALTER COLUMN creator_id     SET NOT NULL;
 ALTER TABLE job         ALTER COLUMN owner_id       SET NOT NULL;
 ALTER TABLE job         ALTER COLUMN executant_id   SET NOT NULL;
+ALTER TABLE job         ALTER COLUMN priority       SET NOT NULL;
 ALTER TABLE job_history ALTER COLUMN object_version SET NOT NULL;
+
+ALTER TABLE address     ALTER COLUMN db_status      SET NOT NULL;
 
 ALTER TABLE company     ALTER COLUMN owner_id       SET NOT NULL;
 ALTER TABLE company     ALTER COLUMN object_version SET NOT NULL;
 ALTER TABLE company     ALTER COLUMN db_status      SET NOT NULL;
 
+ALTER TABLE company_value    ALTER COLUMN db_status SET NOT NULL;
+ALTER TABLE company_category ALTER COLUMN db_status SET NOT NULL;
+ALTER TABLE company_category ALTER COLUMN category  SET NOT NULL;
+
 ALTER TABLE company_assignment ALTER COLUMN company_id     SET NOT NULL;
 ALTER TABLE company_assignment ALTER COLUMN sub_company_id SET NOT NULL;
 ALTER TABLE company_assignment ALTER COLUMN db_status      SET NOT NULL;
 
+ALTER TABLE project_info               ALTER COLUMN db_status  SET NOT NULL;
 ALTER TABLE project_company_assignment ALTER COLUMN db_status  SET NOT NULL;
 ALTER TABLE project_company_assignment ALTER COLUMN company_id SET NOT NULL;
 ALTER TABLE project_company_assignment ALTER COLUMN project_id SET NOT NULL;
@@ -453,14 +481,23 @@ ALTER TABLE document ADD COLUMN text_content_object_version INT      NULL;
 -- 55  - things changed end of 2024
 -- 56+ - things changed in 2025
 UPDATE table_version SET table_version = 55 WHERE table_name = '_model';
+UPDATE table_version SET table_version = 56 WHERE table_name = 'address';
 UPDATE table_version SET table_version = 55 WHERE table_name = 'company';
-UPDATE table_version SET table_version = 54 WHERE table_name = 'company_value';
+UPDATE table_version SET table_version = 56 WHERE table_name = 'company_value';
+UPDATE table_version SET table_version = 56
+ WHERE table_name = 'company_category';
 UPDATE table_version SET table_version = 55 
  WHERE table_name = 'company_assignment';
 UPDATE table_version SET table_version = 56 WHERE table_name = 'date';
+UPDATE table_version SET table_version = 56 WHERE table_name = 'date_info';
+UPDATE table_version SET table_version = 56
+ WHERE table_name = 'date_company_assignment';
+UPDATE table_version SET table_version = 56
+ WHERE table_name = 'appointment_resource';
 UPDATE table_version SET table_version = 56 WHERE table_name = 'job';
 UPDATE table_version SET table_version = 56 WHERE table_name = 'job_history';
 UPDATE table_version SET table_version = 54 WHERE table_name = 'project';
+UPDATE table_version SET table_version = 56 WHERE table_name = 'project_info';
 UPDATE table_version SET table_version = 55
  WHERE table_name = 'project_company_assignment';
 UPDATE table_version SET table_version = 56 WHERE table_name = 'document';

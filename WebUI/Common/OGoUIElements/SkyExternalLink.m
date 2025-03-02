@@ -142,7 +142,7 @@ static BOOL     validateLinks    = NO;
   
   if (![link hasPrefix:@"/"] && ([link rangeOfString:@"://"].length == 0)) {
     link = [link isNotEmpty] 
-      ? (id)[@"http://" stringByAppendingString:link] : nil;
+      ? (id)[@"https://" stringByAppendingString:link] : nil;
   }
   
   valid = [self isLinkValid:link];

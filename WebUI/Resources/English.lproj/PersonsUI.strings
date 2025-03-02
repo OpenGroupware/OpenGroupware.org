@@ -109,6 +109,7 @@ bank_comment                       = "Bank comment";
 bill                               = "bill address";
 bulk                               = "Categories/ACLs";
 birthday                           = "Birthday";
+birthplace                         = "Birthplace";
 blockSize                          = "Number of list items";
 bossName                           = "Boss";
 branch                             = "Branch";

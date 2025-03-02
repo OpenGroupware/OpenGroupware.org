@@ -77,7 +77,8 @@ static NSComparisonResult compareAttributes(id attr1, id attr2, void *context) {
     PersonKeys = [[NSArray alloc] initWithObjects:@"name", @"firstname",
                                   @"middlename",@"nickname",
                                   @"degree", @"salutation",@"sex", @"url",
-                                  @"birthday",@"keywords",@"owner", @"contact",
+                                  @"birthday",@"birthPlace",
+                                  @"keywords",@"owner", @"contact",
                                   @"objectVersion", @"comment", nil];
   }
   if (EnterpriseKeys == nil) {

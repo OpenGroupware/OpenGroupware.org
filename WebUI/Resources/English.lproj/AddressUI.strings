@@ -127,6 +127,7 @@ bulk_button_removecategories   = "remove";
 bulk_close_title               = "close";
 bulk_resultnote_pattern        = "Affected: %i\nFailed: %i";
 birthday                       = "Birthday";
+birthplace                     = "Birthplace";
 blockSize                      = "Number of listitems";
 branch                         = "Company";
 branche                        = "Branche";

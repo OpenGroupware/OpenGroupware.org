@@ -144,6 +144,7 @@ static NSArray * addressTypes = nil;
   [self->url        release];
   [self->gender     release];
   [self->birthday   release];
+  [self->birthPlace release];
   [self->enterpriseDataSource release];
 
   [self->partnerName       release];
@@ -262,9 +263,15 @@ static NSArray * addressTypes = nil;
 - (NSCalendarDate *)birthday {
   return self->birthday; // "birthday"
 }
+- (void)setBirthPlace:(NSString *)_value {
+  ASSIGNCOPY_IFNOT_EQUAL(self->birthPlace, _value, self->status.isEdited);
+}
+- (NSString *)birthPlace {
+  return self->birthPlace;
+}
 
 - (void)setUrl:(NSString *)_url {
-  if ((![_url isNotNull]) || ([_url isEqualToString:@"http://"])) _url = @"";
+  if ((![_url isNotNull]) || ([_url isEqualToString:@"http://"] || [_url isEqualToString:@"https://"])) _url = @"";
   ASSIGNCOPY_IFNOT_EQUAL(self->url, _url, self->status.isEdited);
 }
 - (NSString *)url {
@@ -365,6 +372,7 @@ static NSArray * addressTypes = nil;
   [self->url        release]; self->url          = nil;
   [self->gender     release]; self->gender       = nil;
   [self->birthday   release]; self->birthday     = nil;
+  [self->birthPlace release]; self->birthPlace   = nil;
   [self->login      release]; self->login        = nil;
 
   [self->partnerName   release];     self->partnerName       = nil;
@@ -410,6 +418,7 @@ static NSArray * addressTypes = nil;
   [dict takeValue:[self salutation] forKey:@"salutation"];
   [dict takeValue:[self degree]     forKey:@"degree"];
   [dict takeValue:[self birthday]   forKey:@"birthday"];
+  [dict takeValue:[self birthPlace] forKey:@"birthPlace"];
   [dict takeValue:[self url]        forKey:@"url"];
   [dict takeValue:[self gender]     forKey:@"sex"];
   
@@ -464,6 +473,7 @@ static NSArray * addressTypes = nil;
   [self setSalutation:[_object valueForKey:@"salutation"]];
   [self setDegree:    [_object valueForKey:@"degree"]];
   [self setBirthday:  [_object valueForKey:@"birthday"]];
+  [self setBirthPlace:[_object valueForKey:@"birthPlace"]];
   [self setUrl:       [_object valueForKey:@"url"]];
   [self setGender:    [_object valueForKey:@"sex"]];
     

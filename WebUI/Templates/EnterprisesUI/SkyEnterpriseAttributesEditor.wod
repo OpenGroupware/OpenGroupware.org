@@ -22,7 +22,7 @@ CommonAttributes: LSWObjectEditor {
   attributes = (
     { key = "name";        label = "enterprise_name";   },
     { key = "number";      label = "enterprise_number"; }, 
-    { key = "url";         nilString = "http://";       },
+    { key = "url";         nilString = "https://";      },
     { key = "email";                                    },
     { key = "bank";                                     }, 
     { key = "bankCode";    label = "bank_code";         }, 

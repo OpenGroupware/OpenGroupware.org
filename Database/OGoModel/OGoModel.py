@@ -459,6 +459,13 @@ JobHistory = {
       width:      50,
       flags:      [ lock, property, allowsNull, ],
     },
+    "objectVersion": {
+      column:     "object_version",
+      coltype:    't_int',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ lock, property, allowsNull, ],
+    },
     
     # relationships
     

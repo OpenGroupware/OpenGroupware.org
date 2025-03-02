@@ -39,14 +39,19 @@ PersonEditor: LSWObjectEditor {
   { 
     key       = "url";
     label     = "url";
-    nilString = "http://"
+    nilString = "https://"
   },
   { 
     key            = "birthday";
     label          = "birthday";
     calendarFormat = "%Y-%m-%d";
     couldNotFormat = "couldNotFormatBirthday";
-  },);
+  },
+  { 
+    key            = "birthPlace";
+    label          = "birthplace";
+  }
+  );
 }
 
 AddressTypes: WOTable {

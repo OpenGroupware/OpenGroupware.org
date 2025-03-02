@@ -98,6 +98,7 @@ bank_code                          = "Bankcode";
 bank_comment                       = "Bank comment";
 bill                               = "bill address";
 birthday                           = "Birthday";
+birthplace                         = "Birthplace";
 blockSize                          = "Number of list items";
 branch                             = "Branch";
 branche                            = "Branche";
