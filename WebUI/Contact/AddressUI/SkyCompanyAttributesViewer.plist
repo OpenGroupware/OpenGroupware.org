@@ -23,6 +23,7 @@
     { key = "sex";         localizeValue = YES;             },
     { key = "url";         href = ""; target = "personUrl"; },
     { key = "birthday";    calendarFormat = "%Y-%m-%d";     },
+    { key = "birthPlace";  },
     { key = "keywords";                                     },
     { key = "owner";       relKey = "login";                },
     { key = "contact";     relKey = "login";                },

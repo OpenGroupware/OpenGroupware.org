@@ -67,7 +67,12 @@ CommonAttributes: LSWObjectEditor {
     label          = "birthday";
     calendarFormat = "%Y-%m-%d";
     couldNotFormat = "couldNotFormatBirthday";
-  },);
+  },
+  { 
+    key       = "birthPlace";
+    label     = "birthplace";
+  },
+  );
 }
 
 Telephones: SkyPhoneSubEditor {
