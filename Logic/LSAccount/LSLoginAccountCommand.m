@@ -20,6 +20,7 @@
 */
 
 #include "LSGetAccountCommand.h"
+#import <openssl/sha.h> // hh(2025-04-25) will this build?
 
 @class NSString, NSNumber;
 
@@ -55,6 +56,54 @@
 - (id)initWithUserDefaults:(NSUserDefaults *)_ud
   andContext:(LSCommandContext *)_tx;
 @end
+
+NSString *GetSHA512PasswordUpdate(NSString *plainPassword, NSString *companyId) 
+{
+  const char *cstr = [plainPassword UTF8String];
+  unsigned char hash[SHA512_DIGEST_LENGTH];
+  SHA512((const unsigned char*)cstr, strlen(cstr), hash);
+  
+  NSMutableString *sha512 = 
+    [NSMutableString stringWithCapacity:SHA512_DIGEST_LENGTH * 2 + 8];
+  [sha512 appendString:@"{SHA512}"];
+  
+  int i;
+  for (i = 0; i < SHA512_DIGEST_LENGTH; i++) {
+    [sha512 appendFormat:@"%02x", hash[i]];
+  }
+  
+  /* What we do here should be pretty safe wrt SQL injection given the
+   * nature of the values. Would be better to do with the entity/adaptor
+   * anyways */
+  NSMutableString *sql = [NSMutableString stringWithCapacity:256];
+  /*
+  DO $$
+  BEGIN
+    BEGIN
+      EXECUTE 'UPDATE my_table SET missing_column = 42';
+    EXCEPTION
+      WHEN undefined_column THEN
+        RAISE NOTICE 'Column does not exist, update skipped.';
+    END;
+  END;
+  $$;*/
+  [sql appendString:@"DO $$ BEGIN BEGIN EXECUTE '"];
+  
+  [sql appendString:@"UPDATE person SET modern_password = ''"];
+  [sql appendString:sha512];
+  [sql appendString:@"'' WHERE company_id = "];
+  [sql appendString:companyId];
+  [sql appendString:@" AND (modern_password != ''"];
+  [sql appendString:sha512];
+  [sql appendString:@"'' OR modern_password IS NULL)"];
+
+  [sql appendString:@"'; "];
+
+  [sql appendString:@"EXCEPTION WHEN undefined_column THEN "];
+  [sql appendString:@"RAISE NOTICE 'Column does not exist, update skipped.'; "];
+  [sql appendString:@"END; END; $$;"];
+  return sql;
+}
 
 @implementation LSLoginAccountCommand
 
@@ -120,7 +169,7 @@
                                        qualifierFormat:
                                           @"login='%@' AND isAccount=1 AND "
                                           @"(NOT login='template') AND "
-                                          @"(isLocked=0 OR isLocked is null)",
+                                          @"(isLocked=0 OR isLocked IS NULL)",
                                           userName];
   isArchivedQualifier =
     [[EOSQLQualifier alloc] initWithEntity:[self entity]
@@ -186,14 +235,14 @@
       }
     }
     else { /* use table for authorization */
-      NSString *cryptedPwd = nil;
-      id       accountPassword;
-      
-      accountPassword =  [account valueForKey:@"password"];
-    
+
+      // This is the hashed password in the account.
+      id accountPassword = [account valueForKey:@"password"];
       if (accountPassword == nil)
         accountPassword = @"";
-      
+
+      // The crypted version of the password.
+      NSString *cryptedPwd = nil;
       if (![self->crypted boolValue] && [[self password] isNotEmpty]) {
         id cmd = LSLookupCommandV(@"system", @"crypt",
                                   @"password", [self password],
@@ -231,6 +280,25 @@
 
   if (account) {
     NSUserDefaults *defs;
+    
+    // 2025-04-25:
+    // HH: Persist a better hash.
+    // We could also upgrade from crypt to SHA512, but for that we would need
+    // to support this everywhere, doesn't seem worthwile, just yet? Move Auth
+    // out of OGo itself into Apache instead?
+    // TODO: protect by default
+    if (![self->crypted boolValue]) {
+      NSString *sql = GetSHA512PasswordUpdate(
+        [self password], [[account valueForKey:@"companyId"] stringValue]);
+            
+      EOAdaptorChannel *adChannel = [[self databaseChannel] adaptorChannel];
+      id error;
+      if ((error = [adChannel evaluateExpressionX:sql]) != nil) {
+        [self errorWithFormat:@"Couldn't write modern_password: %@", error];
+      }
+    }
+    
+    
     
     /* load defaults */
     
