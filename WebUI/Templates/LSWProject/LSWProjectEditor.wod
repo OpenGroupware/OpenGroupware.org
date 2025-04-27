@@ -30,6 +30,7 @@ ProjectEditor: LSWObjectEditor {
     { key = "name"; },
     { key = "number"; label = "code"; },
     { key = "startDate"; calendarFormat = "%Y-%m-%d"; time = "00:00:00"; },
+    { key = "endDate";   calendarFormat = "%Y-%m-%d"; time = "23:59:59"; }
   );
 }
 

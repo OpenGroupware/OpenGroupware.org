@@ -25,6 +25,7 @@ Buttons: SkyButtonRow {
 NameLabel:      WOString { value = labels.name;      }
 NumberLabel:    WOString { value = labels.number;    }
 StartDateLabel: WOString { value = labels.startDate; }
+EndDateLabel:   WOString { value = labels.endDate;   }
 
 ProjectName:   WOString { value = project.name;   }
 ProjectNumber: WOString { value = project.number; }
