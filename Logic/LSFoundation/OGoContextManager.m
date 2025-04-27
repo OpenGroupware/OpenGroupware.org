@@ -503,7 +503,7 @@ static NSString *fmt = @"%@..-/.%@";
     return NO;
   }
   
-  if (_crypted) {
+  if (_crypted && [LSCommandContext useLDAPAuthorization]) {
     [self errorWithFormat:
 	    @"%s: cannot not perform LDAP-Login with crypted password",
 	    __PRETTY_FUNCTION__];

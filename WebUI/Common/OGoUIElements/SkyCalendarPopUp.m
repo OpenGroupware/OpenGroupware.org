@@ -140,9 +140,11 @@
   
   return [NSString stringWithFormat:
                    @"<!--\n"
-                   @" var calendar_%@ = new skycalendar(%@);\n"
-                   @" calendar_%@.setCalendarPage('%@');\n"
-                   @" calendar_%@.setDateFormat('%@');\n"
+                   @"  setTimeout(function() {\n"
+                   @"    window.calendar_%@ = new skycalendar(%@);\n"
+                   @"    window.calendar_%@.setCalendarPage('%@');\n"
+                   @"    window.calendar_%@.setDateFormat('%@');\n"
+                   @"  }, 50);\n"
                    @"// -->",
                    self->elementName, fullName,
                    self->elementName, [self calendarPageURL],

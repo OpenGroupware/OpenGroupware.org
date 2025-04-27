@@ -296,6 +296,19 @@ static NSString *LDAPPasswordField = nil;
     [self _writePasswordToLdap:_context writeOnly:NO];
   else {
     [super _executeInContext:_context];
+
+    // 2025-04-25: See LSLoginAccountCommand for details!
+    extern NSString *GetSHA512PasswordUpdate(NSString *, NSString *);
+    id obj = [self object];
+
+    NSString *sql = GetSHA512PasswordUpdate(
+      self->newPlainTextPassword, [[obj valueForKey:@"companyId"] stringValue]);
+    
+    EOAdaptorChannel *adChannel = [[self databaseChannel] adaptorChannel];
+    id error;
+    if ((error = [adChannel evaluateExpressionX:sql]) != nil) {
+      [self errorWithFormat:@"Couldn't write modern_password: %@", error];
+    }
     
     if (WritePasswordToLDAP)
       [self _writePasswordToLdap:_context writeOnly:YES];
