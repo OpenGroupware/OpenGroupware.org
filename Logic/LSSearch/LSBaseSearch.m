@@ -154,7 +154,6 @@
 
   format = [NSMutableString stringWithCapacity:32];
 
-#if 1
   if (![[[_attr entity] name] isEqualToString:[[self entity] name]]) {
     NSMutableString *attrName = nil;
 
@@ -189,24 +188,6 @@
               [[self dbAdaptor]
                      charConvertExpressionForAttributeNamed:[_attr name]]];
   }
-
-#else
-  [format appendString:@"CONVERT(CHAR(255),"];
-
-  if (![[[_attr entity] name] isEqualToString:[[self entity] name]]) {
-    if (_entity) {
-      [format appendString:@"to"];
-      [format appendString:[_entity name]];
-      [format appendString:@"."];
-    }
-    [format appendString:@"to"];
-    [format appendString:[[_attr entity] name]];
-    [format appendString:@"."];  
-  }
-  
-  [format appendString:[_attr name]];
-  [format appendString:@")"];
-#endif
   
   [format appendString:@" LIKE '%%"];
   [format appendString:[self _formatForNumberValue:_value]];
