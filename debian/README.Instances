@@ -32,7 +32,7 @@ README.Defaults on how to set it properly.
 The following Defaults are not mandatory but it is highly recommended to 
 specify them as well:
 skyrix_id
-LSAtatchmentPath
+LSAttachmentPath
 LSNewsImagesPath
 LSNewsImagesURL
 SkyFSPath
