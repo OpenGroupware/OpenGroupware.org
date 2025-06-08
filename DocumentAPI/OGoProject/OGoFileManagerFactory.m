@@ -1,6 +1,7 @@
 /*
   Copyright (C) 2000-2006 SKYRIX Software AG
   Copyright (C) 2006      Helge Hess
+  Copyright (C) 2025      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -273,6 +274,12 @@ static NSDictionary *baseToClass  = nil;
         }
       }
   }
+  if (fsPath == nil) {
+    [self errorWithFormat:@"Did not find SkyFSPath, the basis for FS projects.",
+          __PRETTY_FUNCTION__];
+    return nil;
+  }
+  
   fsPath = [NSString stringWithFormat:@"file://%@", fsPath];
   FSBase = [[NSURL alloc] initWithString:fsPath relativeToURL:nil];
   [self logWithFormat:@"FS BaseURL: '%@'", FSBase];

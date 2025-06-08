@@ -97,6 +97,9 @@
           __PRETTY_FUNCTION__, __LINE__, _attr);
   }
   
+  // hh(2025-06-08): I can't find the implementation of
+  // `-lowerExpressionForTextAttributeNamed:` anywhere, is this function
+  // ever used?
   [format appendString:[[self dbAdaptor]
                               lowerExpressionForTextAttributeNamed:attrName]];
 
@@ -119,8 +122,6 @@
 
   format = [NSMutableString stringWithCapacity:32];
   
-  [format appendString:@"LOWER("];
-  
   if (![[[_attr entity] name] isEqualToString:[[self entity] name]]) {
     if (_entity) {
       [format appendString:@"to"];
@@ -132,7 +133,6 @@
     [format appendString:@"."];  
   }
   [format appendString:[_attr name]];
-  [format appendString:@")"];
 
   [self _appendComparatorAndString:_value
         withAttribute:_attr
@@ -154,7 +154,6 @@
 
   format = [NSMutableString stringWithCapacity:32];
 
-#if 1
   if (![[[_attr entity] name] isEqualToString:[[self entity] name]]) {
     NSMutableString *attrName = nil;
 
@@ -189,26 +188,11 @@
               [[self dbAdaptor]
                      charConvertExpressionForAttributeNamed:[_attr name]]];
   }
-
-#else
-  [format appendString:@"CONVERT(CHAR(255),"];
-
-  if (![[[_attr entity] name] isEqualToString:[[self entity] name]]) {
-    if (_entity) {
-      [format appendString:@"to"];
-      [format appendString:[_entity name]];
-      [format appendString:@"."];
-    }
-    [format appendString:@"to"];
-    [format appendString:[[_attr entity] name]];
-    [format appendString:@"."];  
-  }
   
-  [format appendString:[_attr name]];
-  [format appendString:@")"];
-#endif
-  
-  [format appendString:@" LIKE '%%"];
+  // hh(2025-06-08): PostgreSQL specific. 
+  // This should move into the SQLExpression or be done using it.
+  // One cannot run a LIKE query against a number in modern PG.
+  [format appendString:@"::TEXT LIKE '%%"];
   [format appendString:[self _formatForNumberValue:_value]];
   [format appendString:@"%%' "];
 
@@ -235,7 +219,7 @@
 
 - (void)_appendComparatorAndString:(NSString *)_value
   withAttribute:(EOAttribute *)_attr
-  isTextValue:(BOOL)_isTextValue
+  isTextValue:(BOOL)_isTextValue // Text attribute vs String attribute
   toFormat:(NSMutableString *)_format
 {
   BOOL     hasPrefix = YES;
@@ -267,7 +251,7 @@
     if (hasSuffix && [val length] > 1)
       val = [val substringWithRange:NSMakeRange(0,  [val length]-1)];
 
-    [_format appendString:@"LIKE"];
+    [_format appendString:@"ILIKE"];
   }
   else if ([self->comparator isEqualToString:@"EQUAL"]) {
     hasPrefix = NO;
@@ -275,7 +259,7 @@
     hasSuffix = NO;
   }
   else
-    [_format appendString:@"LIKE"];
+    [_format appendString:@"ILIKE"];
 
   [_format appendString:@" "];
 
@@ -292,7 +276,7 @@
   if (hasSuffix)
     val = [val stringByAppendingString:@"%%"];
 
-#if 0  
+#if 0  // hh(2025-06-08): Someone explain this :-)
   [_format appendString:(_isTextValue)
            ? [[self dbAdaptor] expressionForTextValue:val]
            : [self->dbAdaptor formatValue:[self _formatForStringValue:val]
