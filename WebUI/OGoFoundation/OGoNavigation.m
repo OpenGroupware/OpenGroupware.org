@@ -1,6 +1,7 @@
 /*
   Copyright (C) 2000-2006 SKYRIX Software AG
   Copyright (C) 2006      Helge Hess
+  Copyright (C) 2025      Helge Hess
   
   This file is part of OpenGroupware.org.
 
@@ -236,14 +237,14 @@ static BOOL debugNavigation = NO;
     }
   }
 
+  id obj = [self->session getTransferObject];
   for (i = 0; i < count; i++) {
     NGMimeType  *type;
     WOComponent *component;
     
     type      = [types objectAtIndex:i];
-    component =
-      [self->session instantiateComponentForCommand:_command
-           type:type object:[self->session getTransferObject]];
+    component = [self->session instantiateComponentForCommand:_command
+                               type:type object:obj];
     
     if (component != nil) {
       if (![component conformsToProtocol:@protocol(OGoContentPage)]) {
@@ -256,7 +257,7 @@ static BOOL debugNavigation = NO;
     }
   }
   [self->session warnWithFormat:
-	 @"Could not execute command %@ for types %@", _command, [pb types]];
+	 @"Could not execute command '%@' for types %@", _command, [pb types]];
 
   page = [self activePage];
   if ([[page errorString] isNotEmpty])
