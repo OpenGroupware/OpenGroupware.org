@@ -56,12 +56,13 @@
   NSArray        *selTmCache;
   NSArray        *resources;
   NSArray        *aptTypes;
-  NSArray        *selectedAptTypes;
+  NSMutableArray *selectedAptTypes;
   NSMutableArray *selectedResources;
   NSArray        *selResCache;
   NSUserDefaults *defaults;
 
   id       item;
+  int      aptTypeIndex;
   id       selectedCompany;
   id       activeAccount;
   BOOL     fetchMeToo;
@@ -392,7 +393,49 @@ static BOOL         showOnlyMemberTeams = NO;
   return [[self labels] valueForKey:label];
 }
 
-/* single mode */
+/* multi-select mode */
+
+- (void)setAptTypeIndex:(int)_idx {
+  self->aptTypeIndex = _idx;
+}
+- (int)aptTypeIndex {
+  return self->aptTypeIndex;
+}
+
+- (BOOL)isAptTypeSelected {
+  NSString *type = [self->item valueForKey:@"type"];
+  if ([type isEqualToString:@"none"])
+    return (self->selectedAptTypes == nil ||
+            [self->selectedAptTypes count] == 0);
+  return [self->selectedAptTypes containsObject:type];
+}
+
+- (void)setIsAptTypeSelected:(BOOL)_flag {
+  NSString *type = [self->item valueForKey:@"type"];
+  if ([type isEqualToString:@"none"]) {
+    // "All types" checkbox - clear selection
+    if (_flag) {
+      [self->selectedAptTypes release];
+      self->selectedAptTypes = nil;
+    }
+    self->reconfigure = YES;
+    return;
+  }
+
+  if (self->selectedAptTypes == nil)
+    self->selectedAptTypes = [[NSMutableArray alloc] initWithCapacity:4];
+
+  if (_flag) {
+    if (![self->selectedAptTypes containsObject:type])
+      [self->selectedAptTypes addObject:type];
+  }
+  else {
+    [self->selectedAptTypes removeObject:type];
+  }
+  self->reconfigure = YES;
+}
+
+/* single mode (deprecated, kept for backwards compatibility) */
 - (void)setSelectedAptType:(id)_type {
   NSString *key;
   
@@ -401,10 +444,10 @@ static BOOL         showOnlyMemberTeams = NO;
     return;
 
   [self->selectedAptTypes release];
-  if ((key == nil) || ([key isEqualToString:@"none"])) 
+  if ((key == nil) || ([key isEqualToString:@"none"]))
     self->selectedAptTypes = nil;
   else
-    self->selectedAptTypes = [[NSArray alloc] initWithObjects:key, nil];
+    self->selectedAptTypes = [[NSMutableArray alloc] initWithObjects:key, nil];
   self->reconfigure = YES;
 }
 - (id)selectedAptType {
