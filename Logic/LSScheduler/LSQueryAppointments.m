@@ -263,12 +263,20 @@ static EONull   *null = nil;
 	
         enumerator = [self->aptTypes objectEnumerator];
         while ((obj = [enumerator nextObject]) != nil) {
-          qual = [[EOSQLQualifier alloc]
-                                  initWithEntity:entity
-                                  qualifierFormat:@"%A = '%@'",
-		                    @"aptType", obj, nil];
-        
-          if (typeQual == nil) 
+          if ([obj isEqualToString:@"__none__"]) {
+            // Special handling for untyped appointments (apt_type IS NULL)
+            qual = [[EOSQLQualifier alloc]
+                                    initWithEntity:entity
+                                    qualifierFormat:@"%A IS NULL", @"aptType"];
+          }
+          else {
+            qual = [[EOSQLQualifier alloc]
+                                    initWithEntity:entity
+                                    qualifierFormat:@"%A = '%@'",
+                                      @"aptType", obj, nil];
+          }
+
+          if (typeQual == nil)
 	    typeQual = qual;
           else {
             [typeQual disjoinWithQualifier:qual];
@@ -355,6 +363,19 @@ static EONull   *null = nil;
         }
       }
       
+      /* filter out archived appointments (except for root) */
+      if (![_ctx isRoot]) {
+        tq = [[EOSQLQualifier alloc]
+                              initWithEntity:entity
+                              qualifierFormat:@"%A <> 'archived'", @"dbStatus"];
+        if (q == nil)
+          q = tq;
+        else {
+          [q conjoinWithQualifier:tq];
+          [tq release]; tq = nil;
+        }
+      }
+
       [q setUsesDistinct:YES];
       if (q != nil) [qualifiers addObject:q];
       [q release]; q = nil;

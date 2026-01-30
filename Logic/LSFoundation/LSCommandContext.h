@@ -67,6 +67,8 @@
 - (NSUserDefaults *)userDefaults;
 - (SkyAccessManager *)accessManager;
 
+- (BOOL)isRoot;
+
 /* flushing caches */
 
 - (void)flush;

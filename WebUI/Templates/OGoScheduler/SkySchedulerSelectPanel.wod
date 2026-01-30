@@ -65,12 +65,17 @@ YearTextField: WOTextField {
   value = year;
   size  = 4;
 }
-AptTypeSelection: WOPopUpButton {
-  onChange  = "document.windowform.submit(); return true";
-  list      = aptTypes;
-  item      = item;
-  string    = aptTypeLabel;
-  selection = selectedAptType;
+AptTypesRepetition: WORepetition {
+  list  = aptTypes;
+  item  = item;
+  index = aptTypeIndex;
+}
+AptTypeCheckbox: WOCheckBox {
+  checked  = isAptTypeSelected;
+  onChange = "document.windowform.submit(); return true";
+}
+AptTypeLabel: WOString {
+  value = aptTypeLabel;
 }
 
 ExtendLink: WOHyperlink {

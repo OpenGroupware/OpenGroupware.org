@@ -186,9 +186,11 @@ static NSNumber *nYes = nil, *nNo = nil;
 - (EOSQLQualifier *)_buildQualifierWithContext:(id)_context {
   EOSQLQualifier *q = nil;
   NSString       *fmtStart = nil, *fmtEnd = nil;
+  BOOL           isRoot;
 
   fmtStart = nil;
   fmtEnd   = nil;
+  isRoot   = [_context isRoot];
   {
     EOAdaptor   *adaptor;
     EOEntity    *entity;
@@ -209,34 +211,78 @@ static NSNumber *nYes = nil, *nNo = nil;
   q = [EOSQLQualifier alloc];
   
   if ((self->startDate != nil) && (self->endDate != nil)) {
-    q = [q initWithEntity:[self entity]
-           qualifierFormat:
-             @"(%A > %@ AND %A < %@) AND "
-             @"toDateCompanyAssignment.companyId IN (%@)",
-             @"endDate",   fmtStart,
-             @"startDate", fmtEnd,
-             self->ids];
+    if (isRoot) {
+      q = [q initWithEntity:[self entity]
+             qualifierFormat:
+               @"(%A > %@ AND %A < %@) AND "
+               @"toDateCompanyAssignment.companyId IN (%@)",
+               @"endDate",   fmtStart,
+               @"startDate", fmtEnd,
+               self->ids];
+    }
+    else {
+      q = [q initWithEntity:[self entity]
+             qualifierFormat:
+               @"(%A > %@ AND %A < %@) AND "
+               @"toDateCompanyAssignment.companyId IN (%@) AND "
+               @"dbStatus <> 'archived'",
+               @"endDate",   fmtStart,
+               @"startDate", fmtEnd,
+               self->ids];
+    }
   }
   else if (self->startDate) {
-    q = [q initWithEntity:[self entity]
-           qualifierFormat:
-             @"(%A > %@) AND "
-             @"toDateCompanyAssignment.companyId IN (%@)",
-             @"endDate", fmtStart,
-             self->ids];
+    if (isRoot) {
+      q = [q initWithEntity:[self entity]
+             qualifierFormat:
+               @"(%A > %@) AND "
+               @"toDateCompanyAssignment.companyId IN (%@)",
+               @"endDate", fmtStart,
+               self->ids];
+    }
+    else {
+      q = [q initWithEntity:[self entity]
+             qualifierFormat:
+               @"(%A > %@) AND "
+               @"toDateCompanyAssignment.companyId IN (%@) AND "
+               @"dbStatus <> 'archived'",
+               @"endDate", fmtStart,
+               self->ids];
+    }
   }
   else if (self->endDate) {
-    q = [q initWithEntity:[self entity]
-           qualifierFormat:
-             @"(%A < %@) AND "
-             @"toDateCompanyAssignment.companyId IN (%@)",
-             @"startDate", fmtEnd,
-             self->ids];
+    if (isRoot) {
+      q = [q initWithEntity:[self entity]
+             qualifierFormat:
+               @"(%A < %@) AND "
+               @"toDateCompanyAssignment.companyId IN (%@)",
+               @"startDate", fmtEnd,
+               self->ids];
+    }
+    else {
+      q = [q initWithEntity:[self entity]
+             qualifierFormat:
+               @"(%A < %@) AND "
+               @"toDateCompanyAssignment.companyId IN (%@) AND "
+               @"dbStatus <> 'archived'",
+               @"startDate", fmtEnd,
+               self->ids];
+    }
   }
   else {
-    q = [q initWithEntity:[self entity]
-           qualifierFormat:@"toDateCompanyAssignment.companyId IN (%@)",
-           self->ids];
+    if (isRoot) {
+      q = [q initWithEntity:[self entity]
+             qualifierFormat:
+               @"toDateCompanyAssignment.companyId IN (%@)",
+             self->ids];
+    }
+    else {
+      q = [q initWithEntity:[self entity]
+             qualifierFormat:
+               @"toDateCompanyAssignment.companyId IN (%@) AND "
+               @"dbStatus <> 'archived'",
+             self->ids];
+    }
   }
   [q setUsesDistinct:YES];
   return [q autorelease];

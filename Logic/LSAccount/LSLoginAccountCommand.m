@@ -80,7 +80,9 @@ NSString *GetSHA512PasswordUpdate(NSString *plainPassword, NSString *companyId)
   DO $$
   BEGIN
     BEGIN
-      EXECUTE 'UPDATE my_table SET missing_column = 42';
+      EXECUTE 'UPDATE person SET modern_password = ''$sha1'' 
+               WHERE company_id = $id
+               AND (modern_password != ''$sha1'' OR modern_password IS NULL)
     EXCEPTION
       WHEN undefined_column THEN
         RAISE NOTICE 'Column does not exist, update skipped.';

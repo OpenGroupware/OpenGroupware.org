@@ -38,12 +38,9 @@
 /* run command */
 
 - (void)_prepareForExecutionInContext:(id)_context {
-  id account;
-  
-  account = [_context valueForKey:LSAccountKey];
-  [self assert:(account != nil)
+  [self assert:([_context valueForKey:LSAccountKey] != nil)
         reason:@"missing super user account"];
-  [self assert:([[account valueForKey:@"companyId"] intValue] == 10000)
+  [self assert:[_context isRoot]
         reason:@"active user has no super user access"];
 }
 

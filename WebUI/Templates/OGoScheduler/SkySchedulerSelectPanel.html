@@ -6,7 +6,11 @@
         ><#ExtendedCond><#BigSearchField/></#ExtendedCond
         ><#TimeZonePopUp/><#IsWeekModeCond><#WeekPopUp/></#IsWeekModeCond
         ><#IsMonthModeCond><#MonthPopUp/></#IsMonthModeCond
-        ><#ShowAptTypesCond><#AptTypeSelection/></#ShowAptTypesCond
+        ><#ShowAptTypesCond
+          ><#AptTypesRepetition
+            ><span style="white-space: nowrap;"
+              ><#AptTypeCheckbox/> <#AptTypeLabel/></span> </#AptTypesRepetition
+          ></#ShowAptTypesCond
         ><#ExtendLink><#ExtendImg/></#ExtendLink
         ><#Submit/></td>
       

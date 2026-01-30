@@ -77,9 +77,6 @@ static EONull   *null  = nil;
 
 /* execution */
 
-- (BOOL)isRootAccountPKey:(NSNumber *)_pkey inContext:(id)_ctx {
-  return [_pkey intValue] == 10000 ? YES : NO;
-}
 
 - (void)setReturnValueToCopyOfValue:(id)_value {
   id copyValue;
@@ -374,10 +371,9 @@ static EONull   *null  = nil;
   
   pool = [[NSAutoreleasePool alloc] init];
   
-  login    = [_ctx valueForKey:LSAccountKey];
-  
-  if ([self isRootAccountPKey:[login valueForKey:@"companyId"] 
-	    inContext:_ctx]) {
+  login = [_ctx valueForKey:LSAccountKey];
+
+  if ([_ctx isRoot]) {
     [self _executeForRootInContext:_ctx];
     [pool release];
     return;
