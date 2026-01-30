@@ -365,15 +365,24 @@ static BOOL         showOnlyMemberTeams = NO;
 - (NSArray *)configuredAptTypes {
   // TODO: duplicate code, also in LSWAppointmentViewer
   NSUserDefaults *ud;
-  NSArray *configured;
-  NSArray *custom     = nil;
-  
+  NSArray        *configured;
+  NSArray        *custom = nil;
+  NSDictionary   *noTypeEntry;
+
   ud = [[self session] userDefaults];
   configured = [ud arrayForKey:@"SkyScheduler_defaultAppointmentTypes"];
   if (configured == nil) configured = [NSArray array];
   custom = [ud arrayForKey:@"SkyScheduler_customAppointmentTypes"];
   if (custom != nil)
     configured = [configured arrayByAddingObjectsFromArray:custom];
+
+  // Add "No type" entry for filtering untyped appointments
+  noTypeEntry = [[NSDictionary alloc] initWithObjectsAndKeys:
+                   @"__none__", @"type",
+                   nil];
+  configured = [configured arrayByAddingObject:noTypeEntry];
+  [noTypeEntry release];
+
   return configured;
 }
 - (NSArray *)aptTypes {

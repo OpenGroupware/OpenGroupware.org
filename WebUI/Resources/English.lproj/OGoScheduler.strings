@@ -64,6 +64,7 @@ aptType_home                = "at home";
 aptType_ill                 = "ill";
 aptType_meeting             = "meetings";
 aptType_none                = "all types";
+aptType___none__            = "no type";
 aptType_outward             = "outwards";
 aptType_tradeshow           = "tradeshows";
 ascension                   = "Ascension Day";

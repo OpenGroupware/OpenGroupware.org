@@ -261,13 +261,17 @@ static NSNumber *yesNum = nil;
   // it is when aptType is still set
   // if aptType is nil or "" view/sort is not allowed or aptType is unspecified
   // so this must be filtered anyway
-  if (([aptTypes count]) && ([dates count])) {
+  // Special case: "__none__" in aptTypes means include untyped appointments
+  if (([aptTypes count] > 0) && ([dates count] > 0)) {
+    BOOL           includeUntyped = [aptTypes containsObject:@"__none__"];
     NSEnumerator   *e  = [dates objectEnumerator];
     NSMutableArray *ma = [NSMutableArray array];
     id             one = nil;
-    while ((one = [e nextObject]))
-      if ([[one valueForKey:@"aptType"] length])
+    while ((one = [e nextObject])) {
+      NSString *type = [one valueForKey:@"aptType"];
+      if ([type length] > 0 || includeUntyped)
         [ma addObject:one];
+    }
     //dates = [ma copy];
     //AUTORELEASE(dates);
     dates = ma;

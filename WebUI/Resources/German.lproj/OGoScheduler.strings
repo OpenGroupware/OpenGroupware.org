@@ -62,6 +62,7 @@ aptType_home           = "zu Hause";
 aptType_ill            = "krank";
 aptType_meeting        = "Versammlungen";
 aptType_none           = "alle Typen";
+aptType___none__       = "ohne Typ";
 aptType_outward        = "Auswärtstermine";
 aptType_tradeshow      = "Messen";
 ascension              = "Christi Himmelfahrt";
