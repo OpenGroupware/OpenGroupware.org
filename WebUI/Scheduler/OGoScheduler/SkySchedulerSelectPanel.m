@@ -364,10 +364,11 @@ static BOOL         showOnlyMemberTeams = NO;
 
 - (NSArray *)configuredAptTypes {
   // TODO: duplicate code, also in LSWAppointmentViewer
-  NSUserDefaults *ud;
-  NSArray        *configured;
-  NSArray        *custom = nil;
-  NSDictionary   *noTypeEntry;
+  NSUserDefaults   *ud;
+  NSArray          *configured;
+  NSArray          *custom = nil;
+  NSDictionary     *noTypeEntry;
+  NSMutableArray   *result;
 
   ud = [[self session] userDefaults];
   configured = [ud arrayForKey:@"SkyScheduler_defaultAppointmentTypes"];
@@ -376,14 +377,18 @@ static BOOL         showOnlyMemberTeams = NO;
   if (custom != nil)
     configured = [configured arrayByAddingObjectsFromArray:custom];
 
-  // Add "No type" entry for filtering untyped appointments
+  // Insert "No type" entry after "alle Typen" (index 1)
   noTypeEntry = [[NSDictionary alloc] initWithObjectsAndKeys:
                    @"__none__", @"type",
                    nil];
-  configured = [configured arrayByAddingObject:noTypeEntry];
+  result = [configured mutableCopy];
+  if ([result count] > 1)
+    [result insertObject:noTypeEntry atIndex:1];
+  else
+    [result addObject:noTypeEntry];
   [noTypeEntry release];
 
-  return configured;
+  return [result autorelease];
 }
 - (NSArray *)aptTypes {
   if (self->aptTypes == nil)
@@ -395,11 +400,44 @@ static BOOL         showOnlyMemberTeams = NO;
 
   if ((label = [self->item valueForKey:@"label"]))
     return label;
-  
+
   // TODO: should be a formatter?
   label = [[self->item valueForKey:@"type"] stringValue];
   label = [@"aptType_" stringByAppendingString:label];
   return [[self labels] valueForKey:label];
+}
+
+- (NSString *)aptTypeLabelForType:(NSString *)type {
+  NSEnumerator *e;
+  NSDictionary *entry;
+  NSString     *label;
+
+  e = [[self aptTypes] objectEnumerator];
+  while ((entry = [e nextObject]) != nil) {
+    if ([[entry valueForKey:@"type"] isEqualToString:type]) {
+      if ((label = [entry valueForKey:@"label"]) != nil)
+        return label;
+      label = [@"aptType_" stringByAppendingString:type];
+      return [[self labels] valueForKey:label];
+    }
+  }
+  return type;
+}
+
+- (NSString *)aptTypeDropdownLabel {
+  unsigned count;
+
+  count = [self->selectedAptTypes count];
+  if (count == 0)
+    return [[self labels] valueForKey:@"aptType_none"];
+  if (count == 1)
+    return [self aptTypeLabelForType:[self->selectedAptTypes objectAtIndex:0]];
+  return [NSString stringWithFormat:@"%u %@",
+          (unsigned)count, [[self labels] valueForKey:@"types"]];
+}
+
+- (BOOL)isAllTypesItem {
+  return [[self->item valueForKey:@"type"] isEqualToString:@"none"];
 }
 
 /* multi-select mode */

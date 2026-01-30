@@ -361,6 +361,7 @@ this_month         = "dieser Monat";
 this_week          = "diese Woche";
 this_year          = "dieses Jahr";
 title              = "Titel";
+types              = "Typen";
 unextend           = "Suchpanel zuklappen";
 until              = "bis";
 vchart             = "Grafik";

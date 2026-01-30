@@ -72,10 +72,14 @@ AptTypesRepetition: WORepetition {
 }
 AptTypeCheckbox: WOCheckBox {
   checked  = isAptTypeSelected;
-  onChange = "document.windowform.submit(); return true";
+  onChange = "onAptTypeChanged(this, this.closest('label') === \
+this.closest('.apt-type-dropdown-menu').querySelector('label'))";
 }
 AptTypeLabel: WOString {
   value = aptTypeLabel;
+}
+AptTypeDropdownLabel: WOString {
+  value = aptTypeDropdownLabel;
 }
 
 ExtendLink: WOHyperlink {

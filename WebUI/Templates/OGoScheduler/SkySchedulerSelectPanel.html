@@ -1,3 +1,63 @@
+<style>
+.apt-type-dropdown {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+.apt-type-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  z-index: 100;
+  min-width: 150px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.apt-type-dropdown-menu label {
+  display: block;
+  padding: 4px 8px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.apt-type-dropdown-menu label:hover {
+  background: #f0f0f0;
+}
+</style>
+<script>
+function toggleAptTypeDropdown(btn) {
+  var menu = btn.nextElementSibling;
+  var isOpen = menu.style.display !== 'none';
+  // Close any open dropdowns first
+  document.querySelectorAll('.apt-type-dropdown-menu').forEach(function(m) {
+    m.style.display = 'none';
+  });
+  if (!isOpen) {
+    menu.style.display = 'block';
+  }
+}
+function onAptTypeChanged(checkbox, isAllTypes) {
+  if (isAllTypes && checkbox.checked) {
+    // Uncheck all other checkboxes when "alle Typen" is selected
+    var menu = checkbox.closest('.apt-type-dropdown-menu');
+    menu.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+      if (cb !== checkbox) cb.checked = false;
+    });
+  }
+  document.windowform.submit();
+}
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.apt-type-dropdown')) {
+    document.querySelectorAll('.apt-type-dropdown-menu').forEach(function(m) {
+      m.style.display = 'none';
+    });
+  }
+});
+</script>
 <#Form>
   <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <tr bgcolor="#E0E0E0">
@@ -7,9 +67,17 @@
         ><#TimeZonePopUp/><#IsWeekModeCond><#WeekPopUp/></#IsWeekModeCond
         ><#IsMonthModeCond><#MonthPopUp/></#IsMonthModeCond
         ><#ShowAptTypesCond
-          ><#AptTypesRepetition
-            ><span style="white-space: nowrap;"
-              ><#AptTypeCheckbox/> <#AptTypeLabel/></span> </#AptTypesRepetition
+          ><div class="apt-type-dropdown"
+            ><button type="button" class="button_narrow"
+                     onclick="toggleAptTypeDropdown(this)"
+              ><#AptTypeDropdownLabel/> &#9662;</button
+            ><div class="apt-type-dropdown-menu"
+              ><#AptTypesRepetition
+                ><label
+                  ><#AptTypeCheckbox/> <#AptTypeLabel/></label
+                ></#AptTypesRepetition
+            ></div
+          ></div
           ></#ShowAptTypesCond
         ><#ExtendLink><#ExtendImg/></#ExtendLink
         ><#Submit/></td>
