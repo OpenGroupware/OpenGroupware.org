@@ -370,19 +370,13 @@
   self->participantList = validatedList; // validatedList is retained
 }
 
-- (BOOL)isRootPKey:(NSNumber *)_pkey inContext:(id)_ctx {
-  return [_pkey unsignedIntValue] == 10000 ? YES : NO;
-}
-
 - (void)_checkOwnerInContext:(id)_context {
-  id       ac, acId;
+  id acId;
 
   // checks owner of appointment
-  ac    = [_context valueForKey:LSAccountKey];
-  // unused: login = [ac valueForKey:@"login"];
-  acId  = [ac valueForKey:@"companyId"];
-  
-  if (![self isRootPKey:acId inContext:_context]) {
+  acId = [[_context valueForKey:LSAccountKey] valueForKey:@"companyId"];
+
+  if (![_context isRoot]) {
     /* old version (problem: can't add active account to appointment
                              if acctive account is't owner)
        [self assert:[acId isEqual:[[self object] valueForKey:@"ownerId"]] 

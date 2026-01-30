@@ -61,7 +61,7 @@
     
     // the owner may always view the appointment
     if ([[appointment valueForKey:@"ownerId"] isEqual:loginId] ||
-        ([self isRootId:loginId inContext:_ctx])) {
+        [_ctx isRoot]) {
       [filtered addObject:appointment];
       continue;
     }

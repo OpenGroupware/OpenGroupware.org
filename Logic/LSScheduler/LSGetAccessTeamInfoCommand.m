@@ -56,9 +56,6 @@ static NSNumber *nNo  = nil;
 
 /* execution */
 
-- (BOOL)isRootLoginID:(NSNumber *)_num inContext:(id)_ctx {
-  return [_num intValue] == 10000 ? YES : NO;
-}
 
 - (void)_executeInContext:(id)_context {
   NSEnumerator *e;
@@ -98,7 +95,7 @@ static NSNumber *nNo  = nil;
     
     // the owner may always view the appointment
     if ([[appointment valueForKey:@"ownerId"] isEqual:loginId] ||
-	[self isRootLoginID:loginId inContext:_context]) {
+	[_context isRoot]) {
       [appointment takeValue:nYes forKey:@"isViewAllowed"];
       continue;
     }
