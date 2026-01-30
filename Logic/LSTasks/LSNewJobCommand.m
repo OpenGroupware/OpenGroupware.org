@@ -82,7 +82,7 @@ static NSString *OGoHelpDeskRoleName = nil;
     NSArray *teams;
 
     teams = [_context runCommand:@"account::teams",
-                           @"account", user,
+                           @"account", [_context valueForKey:LSAccountKey],
                            @"returnType", intObj(LSDBReturnType_ManyObjects),
                            nil];
     teams = [teams valueForKey:@"description"];
@@ -138,7 +138,7 @@ static NSString *OGoHelpDeskRoleName = nil;
   /* check status */
   
   if ([[self valueForKey:@"jobStatus"] isNotNull]) {
-    if (![self isRootAccountEO:user])
+    if (![_context isRoot])
       [self takeValue:LSJobCreated forKey:@"jobStatus"];
   }
   else
@@ -147,7 +147,7 @@ static NSString *OGoHelpDeskRoleName = nil;
   /* check creator */
 
   if ([[self valueForKey:@"creatorId"] isNotNull]) {
-    if (![self isRootAccountEO:user])
+    if (![_context isRoot])
       [self takeValue:[user valueForKey:@"companyId"] forKey:@"creatorId"];
   }
   else {
@@ -192,7 +192,7 @@ static NSString *OGoHelpDeskRoleName = nil;
   
   job = [self object];
 
-  if (![self isRootAccountEO:[_context valueForKey:LSAccountKey]]) {
+  if (![_context isRoot]) {
     if ([[job valueForKey:@"executantId"]
               isEqual:[job valueForKey:@"creatorId"]]) {
       LSRunCommandV(_context,
