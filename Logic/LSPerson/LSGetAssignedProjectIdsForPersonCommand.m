@@ -131,27 +131,17 @@
   return result;
 }
 
-- (BOOL)isRootAccountID:(NSNumber *)_login {
-  if (![_login isNotNull])
-    return NO;
-  
-  if ([_login intValue] == 10000)
-    return YES;
-  
-  return NO;
+- (BOOL)isRootAccountID:(NSNumber *)_companyId {
+  return [_companyId intValue] == 10000;
 }
 
 - (void)_executeInContext:(id)_context {
   NSMutableSet *projectIds;
-  id           account;
-  NSNumber     *login;
-  
+
   projectIds = [NSMutableSet setWithCapacity:20];
-  account    = [_context valueForKey:LSAccountKey];
-  login      = [account valueForKey:@"companyId"];
-  
+
   // TODO: explain this conditional
-  if ([self isRootAccountID:login] &&
+  if ([_context isRoot] &&
       [self isRootAccountID:[[self object] valueForKey:@"companyId"]]) {
     [projectIds addObjectsFromArray:[self _fetchAllProjectIds]];
   }

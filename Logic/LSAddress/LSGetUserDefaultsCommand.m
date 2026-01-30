@@ -95,8 +95,8 @@
   
   if (![[_context class] useLDAPAuthorization]) {
     [self assert:[login isEqual:[self->user valueForKey:@"companyId"]]
-	  reason:
-	    @"only root is allowed to access preferences of other accounts"];
+          reason:
+            @"only root is allowed to access preferences of other accounts"];
   }
   
   [self _checkLdapAccessInContext:_context];

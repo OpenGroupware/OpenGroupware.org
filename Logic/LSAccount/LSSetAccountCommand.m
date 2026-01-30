@@ -60,9 +60,8 @@
 - (void)_prepareForExecutionInContext:(id)_context {
   id obj            = [self object];
   id isExtraAccount = [obj valueForKey:@"isExtraAccount"];
-  id account        = [_context valueForKey:LSAccountKey];
 
-  [self assert:([[account valueForKey:@"companyId"] intValue] == 10000)
+  [self assert:[_context isRoot]
         reason:@"Only root can change accounts"];
 
   if ([isExtraAccount boolValue]) {

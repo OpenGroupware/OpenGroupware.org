@@ -37,15 +37,12 @@
 
 - (void)_prepareForExecutionInContext:(id)_context {
   id  obj = [self object];
-  int activeAcc;
   BOOL isAccount;
 
   [self assert:([self object] != nil)
         reason:@"no person object to act on"];
 
-  activeAcc = [[[_context valueForKey:LSAccountKey]
-                          valueForKey:@"companyId"] intValue];
-  [self assert:(activeAcc == 10000)
+  [self assert:[_context isRoot]
         reason:@"Only root or user itself can account state."];
   
   isAccount = [[obj valueForKey:@"isAccount"] boolValue];

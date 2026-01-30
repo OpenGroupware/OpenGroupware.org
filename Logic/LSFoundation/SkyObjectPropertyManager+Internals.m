@@ -406,9 +406,9 @@ extern NSString *SkyOPMWrongPropertyKeyExceptionName;
     checkMaskP = YES;
 
   login = [self->context valueForKey:LSAccountKey];
-  l     =  [login valueForKey:@"companyId"];
-  
-  if ([l intValue] == 10000)
+  l     = [login valueForKey:@"companyId"];
+
+  if ([self->context isRoot])
     return YES;
 
   if (self->_loginId == nil) {

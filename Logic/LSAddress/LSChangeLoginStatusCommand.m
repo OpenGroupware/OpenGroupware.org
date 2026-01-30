@@ -109,21 +109,14 @@
   }
 }
 
-- (BOOL)isRootId:(NSNumber *)_pkey inContext:(LSCommandContext *)_ctx {
-  return [_pkey intValue] == 10000 ? YES : NO; // ROOT
-}
-
 - (void)_prepareForExecutionInContext:(id)_context {
   NSString *prefix;
   id obj;
-  id user;
-  
-  obj  = [self object];
-  user = [_context valueForKey:LSAccountKey];
 
-  [self assert:
-          [self isRootId:[user valueForKey:@"companyId"] inContext:_context]
-        reason: @"Only root can change login status!"];
+  obj = [self object];
+
+  [self assert:[_context isRoot]
+        reason:@"Only root can change login status!"];
   
   prefix = [NSString stringWithFormat:@"OGo%@",[obj valueForKey:@"companyId"]];
   

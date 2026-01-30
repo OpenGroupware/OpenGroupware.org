@@ -64,17 +64,10 @@ static NSString *OGoTeamCreatorRoleName = nil;
   [super _prepareForExecutionInContext:_context];
 }
 
-- (BOOL)isRootAccount:(id)_account inContext:(LSCommandContext *)_ctx {
-  // TODO: root
-  return [[_account valueForKey:@"companyId"] intValue] == 10000 ? YES : NO;
-}
-
 - (void)_executeInContext:(id)_context {
   if ([OGoTeamCreatorRoleName isNotEmpty]) {
-    id loginAccount;
-    
-    loginAccount = [_context valueForKey:LSAccountKey];
-    if (![self isRootAccount:loginAccount inContext:_context]) {
+    if (![_context isRoot]) {
+      id loginAccount = [_context valueForKey:LSAccountKey];
       NSArray *myTeams;
     
       // TODO: improve efficiency

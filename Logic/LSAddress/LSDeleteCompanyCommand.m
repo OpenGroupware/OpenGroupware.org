@@ -109,21 +109,15 @@
     [notes clear];
 }
 
-- (BOOL)isRootID:(NSNumber *)_pkey {
-  return [_pkey intValue] == 10000 ? YES : NO;
-}
-
 - (void)_executeInContext:(id)_context {
-  id user;
   id isAccount;
   
   [self assert:([self object] != nil) reason:  @"no object available"];
 
-  user      = [_context valueForKey:LSAccountKey];
   isAccount = [[self object] valueForKey:@"isAccount"];
 
   if ((isAccount != nil) && ([isAccount boolValue])) {
-    [self assert:[self isRootID:[user valueForKey:@"companyId"]]
+    [self assert:[_context isRoot]
           reason:@"Only root can delete accounts!"];
   }
   if (![[_context accessManager] operation:@"w"

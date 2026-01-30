@@ -74,16 +74,9 @@ static NSString *OGoHelpDeskRoleName = nil;
 
 /* operation */
 
-- (BOOL)isRootAccountEO:(id)_eo {
-  return [[_eo valueForKey:@"companyId"] intValue] == 10000 ? YES : NO;
-}
-
 - (BOOL)isHelpDeskUser:(id)_context {
-  id   user;
-
-  user = [_context valueForKey:LSAccountKey];
   /* Root user is always considered Help Desk */
-  if ([self isRootAccountEO:user])
+  if ([_context isRoot])
     return YES;
   if ([OGoHelpDeskRoleName isNotEmpty]) {
     NSArray *teams;
