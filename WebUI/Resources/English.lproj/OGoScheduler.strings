@@ -364,6 +364,7 @@ this_month                  = "this month";
 this_week                   = "this week";
 this_year                   = "this year";
 title                       = "Title";
+types                       = "types";
 unextend                    = "unextend";
 until                       = "until";
 vchart                      = "Chart";
