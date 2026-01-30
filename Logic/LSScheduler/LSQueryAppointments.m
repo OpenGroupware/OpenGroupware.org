@@ -355,6 +355,19 @@ static EONull   *null = nil;
         }
       }
       
+      /* filter out archived appointments (except for root) */
+      if (![_ctx isRoot]) {
+        tq = [[EOSQLQualifier alloc]
+                              initWithEntity:entity
+                              qualifierFormat:@"%A <> 'archived'", @"dbStatus"];
+        if (q == nil)
+          q = tq;
+        else {
+          [q conjoinWithQualifier:tq];
+          [tq release]; tq = nil;
+        }
+      }
+
       [q setUsesDistinct:YES];
       if (q != nil) [qualifiers addObject:q];
       [q release]; q = nil;

@@ -21,14 +21,31 @@
 
 #include "common.h"
 #include <LSFoundation/LSDBFetchRelationCommand.h>
+#include <GDLAccess/EOSQLQualifier.h>
 
 @interface LSFetchCyclicAppointmentCommand : LSDBFetchRelationCommand
+{
+  id currentContext; // temporary storage for _qualifier access
+}
 @end
 
 @implementation LSFetchCyclicAppointmentCommand
 
-- (BOOL)isRootId:(NSNumber *)_companyId inContext:(id)_ctx {
-  return [_companyId intValue] == 10000 ? YES : NO;
+- (EOSQLQualifier *)_qualifier {
+  EOSQLQualifier *q;
+
+  q = [super _qualifier];
+
+  /* filter out archived appointments (except for root) */
+  if (![self->currentContext isRoot]) {
+    EOSQLQualifier *archivedQ;
+    archivedQ =
+      [[EOSQLQualifier alloc] initWithEntity:[self destinationEntity]
+                              qualifierFormat:@"dbStatus <> 'archived'"];
+    [q conjoinWithQualifier:archivedQ];
+    [archivedQ release];
+  }
+  return q;
 }
 
 - (void)_checkPermission:(NSArray *)_appointments context:(id)_ctx {
@@ -120,8 +137,10 @@
 
 - (void)_executeInContext:(id)_context {
   NSArray *results = nil;
-  
+
+  self->currentContext = _context;
   [super _executeInContext:_context];
+  self->currentContext = nil;
 
   results = [self object];
   
