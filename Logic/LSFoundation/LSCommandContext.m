@@ -268,6 +268,11 @@ NSString *ProfileCommandsFileName = nil;
   return self->accessManager;
 }
 
+- (BOOL)isRoot {
+  return [[[self valueForKey:LSAccountKey] valueForKey:@"companyId"]
+          intValue] == 10000;
+}
+
 - (NSUserDefaults *)userDefaults {
   NSUserDefaults *ud;
 
