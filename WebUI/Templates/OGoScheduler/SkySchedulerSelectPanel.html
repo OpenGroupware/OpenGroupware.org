@@ -34,6 +34,12 @@ button.dropdown {
   white-space: nowrap;
   cursor: pointer;
 }
+.apt-type-dropdown-menu input[type="checkbox"] {
+  vertical-align: middle;
+  margin-right: 4px;
+  position: relative;
+  top: -1px;
+}
 .apt-type-dropdown-menu label:hover {
   background: #0069d9;
   color: #fff;
@@ -68,9 +74,19 @@ function toggleAptTypeDropdown(btn) {
   });
 
   if (!isOpen) {
+    var checkboxes = menu.querySelectorAll('input[type="checkbox"]');
+    var allTypesCheckbox = checkboxes[0];
+
+    // If "alle Typen" is selected, visually select all other checkboxes too
+    if (allTypesCheckbox.checked) {
+      checkboxes.forEach(function(cb) {
+        cb.checked = true;
+      });
+    }
+
     // Save original state before opening
     originalAptTypeState = [];
-    menu.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+    checkboxes.forEach(function(cb) {
       originalAptTypeState.push(cb.checked);
     });
     menu.style.display = 'block';
@@ -84,13 +100,38 @@ function toggleAptTypeDropdown(btn) {
 function onAptTypeChanged(checkbox, isAllTypes) {
   var menu = checkbox.closest('.apt-type-dropdown-menu');
   var checkboxes = menu.querySelectorAll('input[type="checkbox"]');
+  var allTypesCheckbox = checkboxes[0];
 
   if (isAllTypes) {
     // "alle Typen" toggled - sync all others to same state
     var newState = checkbox.checked;
     checkboxes.forEach(function(cb) {
-      if (cb !== checkbox) cb.checked = newState;
+      if (cb !== allTypesCheckbox) cb.checked = newState;
     });
+    // Never allow empty selection - if unchecking all, recheck "alle Typen"
+    if (!newState) {
+      allTypesCheckbox.checked = true;
+    }
+  }
+  else {
+    // Check if all or none of the regular checkboxes are selected
+    var allSelected = true;
+    var noneSelected = true;
+    checkboxes.forEach(function(cb) {
+      if (cb !== allTypesCheckbox) {
+        if (!cb.checked) allSelected = false;
+        if (cb.checked) noneSelected = false;
+      }
+    });
+    // If none selected, auto-select "alle Typen" (and all others)
+    if (noneSelected) {
+      checkboxes.forEach(function(cb) {
+        cb.checked = true;
+      });
+    }
+    else {
+      allTypesCheckbox.checked = allSelected;
+    }
   }
   // Don't submit - wait for OK/Cancel/outside click
 }
@@ -139,9 +180,9 @@ document.addEventListener('click', function(e) {
                   ><#AptTypeCheckbox/> <#AptTypeLabel/></label
                 ></#AptTypesRepetition
               ><div class="apt-type-buttons"
-                ><button type="button" onclick="submitAptTypes()">OK</button
                 ><button type="button"
                          onclick="cancelAptTypes(this)">Cancel</button
+                ><button type="button" onclick="submitAptTypes()">OK</button
               ></div
             ></div
           ></div
