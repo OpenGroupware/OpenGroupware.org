@@ -451,9 +451,25 @@ static BOOL         showOnlyMemberTeams = NO;
 
 - (BOOL)isAptTypeSelected {
   NSString *type = [self->item valueForKey:@"type"];
-  if ([type isEqualToString:@"none"])
-    return (self->selectedAptTypes == nil ||
-            [self->selectedAptTypes count] == 0);
+  if ([type isEqualToString:@"none"]) {
+    /* "alle Typen" is selected if no types are explicitly selected,
+       or if ALL content types are selected */
+    if (self->selectedAptTypes == nil ||
+        [self->selectedAptTypes count] == 0)
+    {
+      return YES;
+    }
+    /* Count content types (excluding "none" and "__none__") */
+    NSUInteger contentTypeCount = 0;
+    NSEnumerator *e = [[self aptTypes] objectEnumerator];
+    NSDictionary *entry;
+    while ((entry = [e nextObject]) != nil) {
+      NSString *t = [entry valueForKey:@"type"];
+      if (![t isEqualToString:@"none"] && ![t isEqualToString:@"__none__"])
+        contentTypeCount++;
+    }
+    return [self->selectedAptTypes count] >= contentTypeCount;
+  }
   return [self->selectedAptTypes containsObject:type];
 }
 
