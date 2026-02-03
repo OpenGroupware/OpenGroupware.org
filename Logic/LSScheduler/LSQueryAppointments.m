@@ -363,17 +363,43 @@ static EONull   *null = nil;
         }
       }
       
+      /* Check if user explicitly requested absence types */
+      BOOL includeAbsences = NO;
+      if ([self->aptTypes isNotEmpty]) {
+        NSEnumerator *typeEnum = [self->aptTypes objectEnumerator];
+        NSString     *type;
+        while ((type = [typeEnum nextObject]) != nil) {
+          if ([type isEqualToString:@"Abwesenheit"] ||
+              [type isEqualToString:@"Absence"])
+          {
+            includeAbsences = YES;
+            break;
+          }
+        }
+      }
+
       /* filter out archived/attendance/absence appointments (except for root) */
       if (![_ctx isRoot]) {
-        tq = [[EOSQLQualifier alloc]
-                              initWithEntity:entity
-                              qualifierFormat:
-                                @"%A <> 'archived' AND "
-                                @"(%A IS NULL OR %A = 0) AND "
-                                @"(%A IS NULL OR %A = 0)",
-                              @"dbStatus",
-                              @"isAttendance", @"isAttendance",
-                              @"isAbsence", @"isAbsence"];
+        if (includeAbsences) {
+          tq = [[EOSQLQualifier alloc]
+                                initWithEntity:entity
+                                qualifierFormat:
+                                  @"%A <> 'archived' AND "
+                                  @"(%A IS NULL OR %A = 0)",
+                                @"dbStatus",
+                                @"isAttendance", @"isAttendance"];
+        }
+        else {
+          tq = [[EOSQLQualifier alloc]
+                                initWithEntity:entity
+                                qualifierFormat:
+                                  @"%A <> 'archived' AND "
+                                  @"(%A IS NULL OR %A = 0) AND "
+                                  @"(%A IS NULL OR %A = 0)",
+                                @"dbStatus",
+                                @"isAttendance", @"isAttendance",
+                                @"isAbsence", @"isAbsence"];
+        }
         if (q == nil)
           q = tq;
         else {
