@@ -225,10 +225,14 @@ static NSNumber *nYes = nil, *nNo = nil;
              qualifierFormat:
                @"(%A > %@ AND %A < %@) AND "
                @"toDateCompanyAssignment.companyId IN (%@) AND "
-               @"dbStatus <> 'archived'",
+               @"dbStatus <> 'archived' AND "
+               @"(%A IS NULL OR %A = 0) AND "
+               @"(%A IS NULL OR %A = 0)",
                @"endDate",   fmtStart,
                @"startDate", fmtEnd,
-               self->ids];
+               self->ids,
+               @"isAttendance", @"isAttendance",
+               @"isAbsence", @"isAbsence"];
     }
   }
   else if (self->startDate) {
@@ -245,9 +249,13 @@ static NSNumber *nYes = nil, *nNo = nil;
              qualifierFormat:
                @"(%A > %@) AND "
                @"toDateCompanyAssignment.companyId IN (%@) AND "
-               @"dbStatus <> 'archived'",
+               @"dbStatus <> 'archived' AND "
+               @"(%A IS NULL OR %A = 0) AND "
+               @"(%A IS NULL OR %A = 0)",
                @"endDate", fmtStart,
-               self->ids];
+               self->ids,
+               @"isAttendance", @"isAttendance",
+               @"isAbsence", @"isAbsence"];
     }
   }
   else if (self->endDate) {
@@ -264,9 +272,13 @@ static NSNumber *nYes = nil, *nNo = nil;
              qualifierFormat:
                @"(%A < %@) AND "
                @"toDateCompanyAssignment.companyId IN (%@) AND "
-               @"dbStatus <> 'archived'",
+               @"dbStatus <> 'archived' AND "
+               @"(%A IS NULL OR %A = 0) AND "
+               @"(%A IS NULL OR %A = 0)",
                @"startDate", fmtEnd,
-               self->ids];
+               self->ids,
+               @"isAttendance", @"isAttendance",
+               @"isAbsence", @"isAbsence"];
     }
   }
   else {
@@ -280,8 +292,12 @@ static NSNumber *nYes = nil, *nNo = nil;
       q = [q initWithEntity:[self entity]
              qualifierFormat:
                @"toDateCompanyAssignment.companyId IN (%@) AND "
-               @"dbStatus <> 'archived'",
-             self->ids];
+               @"dbStatus <> 'archived' AND "
+               @"(%A IS NULL OR %A = 0) AND "
+               @"(%A IS NULL OR %A = 0)",
+             self->ids,
+             @"isAttendance", @"isAttendance",
+             @"isAbsence", @"isAbsence"];
     }
   }
   [q setUsesDistinct:YES];

@@ -363,11 +363,17 @@ static EONull   *null = nil;
         }
       }
       
-      /* filter out archived appointments (except for root) */
+      /* filter out archived/attendance/absence appointments (except for root) */
       if (![_ctx isRoot]) {
         tq = [[EOSQLQualifier alloc]
                               initWithEntity:entity
-                              qualifierFormat:@"%A <> 'archived'", @"dbStatus"];
+                              qualifierFormat:
+                                @"%A <> 'archived' AND "
+                                @"(%A IS NULL OR %A = 0) AND "
+                                @"(%A IS NULL OR %A = 0)",
+                              @"dbStatus",
+                              @"isAttendance", @"isAttendance",
+                              @"isAbsence", @"isAbsence"];
         if (q == nil)
           q = tq;
         else {
