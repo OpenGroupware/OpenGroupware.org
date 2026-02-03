@@ -186,10 +186,8 @@
   NSEnumerator* elemEnum;
   id str;
 
-  if ([_string hasSuffix:@"\r"]) {
-    _string = [NSString stringWithCString:[_string cString]
-                        length: [_string length] - 1];
-  }
+  if ([_string hasSuffix:@"\r"])
+    _string = [_string substringToIndex:[_string length] - 1];
 
   elements = [_string componentsSeparatedByString:@" "];
   elemEnum = [elements objectEnumerator];

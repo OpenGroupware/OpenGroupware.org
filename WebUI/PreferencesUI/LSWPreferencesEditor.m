@@ -257,11 +257,8 @@ static NSArray  *UserDefKeys        = nil;
 
     cName = [c objectAtIndex:i];      
 
-    if ([cName hasSuffix:@"\r"]) {
-      // TODO: Unicode?
-      cName = [NSString stringWithCString:[cName cString]
-			length:([cName length] - 1)];
-    }
+    if ([cName hasSuffix:@"\r"])
+      cName = [cName substringToIndex:[cName length] - 1];
     if ([cName isNotEmpty])
       [self->categories addObject:cName];
   }
