@@ -38,35 +38,85 @@ button.dropdown {
   background: #0069d9;
   color: #fff;
 }
+.apt-type-buttons {
+  border-top: 1px solid #ccc;
+  padding: 4px 8px;
+  margin-top: 4px;
+  text-align: right;
+}
+.apt-type-buttons button {
+  margin-left: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
 </style>
 <script>
+var originalAptTypeState = [];
+
 function toggleAptTypeDropdown(btn) {
   var menu = btn.nextElementSibling;
   var isOpen = menu.style.display === 'block';
-  // Close any open dropdowns first
+
+  // Close any open dropdowns first (submit if was open)
   document.querySelectorAll('.apt-type-dropdown-menu').forEach(function(m) {
+    if (m.style.display === 'block' && m !== menu) {
+      document.windowform.submit();
+      return;
+    }
     m.style.display = 'none';
   });
+
   if (!isOpen) {
+    // Save original state before opening
+    originalAptTypeState = [];
+    menu.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+      originalAptTypeState.push(cb.checked);
+    });
     menu.style.display = 'block';
   }
+  else {
+    // Clicking button while open = submit
+    document.windowform.submit();
+  }
 }
+
 function onAptTypeChanged(checkbox, isAllTypes) {
-  if (isAllTypes && checkbox.checked) {
-    // Uncheck all other checkboxes when "alle Typen" is selected
-    var menu = checkbox.closest('.apt-type-dropdown-menu');
-    menu.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
-      if (cb !== checkbox) cb.checked = false;
+  var menu = checkbox.closest('.apt-type-dropdown-menu');
+  var checkboxes = menu.querySelectorAll('input[type="checkbox"]');
+
+  if (isAllTypes) {
+    // "alle Typen" toggled - sync all others to same state
+    var newState = checkbox.checked;
+    checkboxes.forEach(function(cb) {
+      if (cb !== checkbox) cb.checked = newState;
     });
   }
+  // Don't submit - wait for OK/Cancel/outside click
+}
+
+function submitAptTypes() {
   document.windowform.submit();
 }
-// Close dropdown when clicking outside
+
+function cancelAptTypes(btn) {
+  var menu = btn.closest('.apt-type-dropdown-menu');
+  var checkboxes = menu.querySelectorAll('input[type="checkbox"]');
+  // Restore original state
+  checkboxes.forEach(function(cb, i) {
+    cb.checked = originalAptTypeState[i];
+  });
+  menu.style.display = 'none';
+}
+
+// Close dropdown when clicking outside - submit on close
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.apt-type-dropdown')) {
-    document.querySelectorAll('.apt-type-dropdown-menu').forEach(function(m) {
-      m.style.display = 'none';
-    });
+    var openMenu =
+      document.querySelector('.apt-type-dropdown-menu[style*="block"]');
+    if (openMenu) {
+      document.windowform.submit();
+    }
   }
 });
 </script>
@@ -88,6 +138,11 @@ document.addEventListener('click', function(e) {
                 ><label
                   ><#AptTypeCheckbox/> <#AptTypeLabel/></label
                 ></#AptTypesRepetition
+              ><div class="apt-type-buttons"
+                ><button type="button" onclick="submitAptTypes()">OK</button
+                ><button type="button"
+                         onclick="cancelAptTypes(this)">Cancel</button
+              ></div
             ></div
           ></div
           ></#ShowAptTypesCond
