@@ -67,6 +67,7 @@ function toggleAptTypeDropdown(btn) {
   // Close any open dropdowns first (submit if was open)
   document.querySelectorAll('.apt-type-dropdown-menu').forEach(function(m) {
     if (m.style.display === 'block' && m !== menu) {
+      prepareAptTypesForSubmit();
       document.windowform.submit();
       return;
     }
@@ -93,6 +94,7 @@ function toggleAptTypeDropdown(btn) {
   }
   else {
     // Clicking button while open = submit
+    prepareAptTypesForSubmit();
     document.windowform.submit();
   }
 }
@@ -136,7 +138,22 @@ function onAptTypeChanged(checkbox, isAllTypes) {
   // Don't submit - wait for OK/Cancel/outside click
 }
 
+function prepareAptTypesForSubmit() {
+  var menu = document.querySelector('.apt-type-dropdown-menu');
+  if (!menu) return;
+  var checkboxes = menu.querySelectorAll('input[type="checkbox"]');
+  var allTypesCheckbox = checkboxes[0];
+  // If "alle Typen" is selected, uncheck all others before submit
+  // so we don't send all individual types
+  if (allTypesCheckbox && allTypesCheckbox.checked) {
+    checkboxes.forEach(function(cb) {
+      if (cb !== allTypesCheckbox) cb.checked = false;
+    });
+  }
+}
+
 function submitAptTypes() {
+  prepareAptTypesForSubmit();
   document.windowform.submit();
 }
 
@@ -156,6 +173,7 @@ document.addEventListener('click', function(e) {
     var openMenu =
       document.querySelector('.apt-type-dropdown-menu[style*="block"]');
     if (openMenu) {
+      prepareAptTypesForSubmit();
       document.windowform.submit();
     }
   }
