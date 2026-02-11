@@ -38,7 +38,8 @@
   NSArray        *selections;
   NSUserDefaults *defaults;
   BOOL           hideEmptyFields;
-  NSArray        *allAttributes;
+  NSArray              *allAttributes;
+  NSMutableDictionary  *configLabels;
  }
 @end
 
@@ -48,27 +49,27 @@
 #include <OGoJobs/SkyJobDocument.h>
 #include "common.h"
 
+@interface SkyPersonalViewerConfig(LabelLookup)
+- (NSString *)displayLabelForKey:(NSString *)_key;
+@end
+
 @implementation SkyPersonalViewerConfig
 
 static NSArray *PersonKeys     = nil;
 static NSArray *EnterpriseKeys = nil;
 static NSArray *JobKeys        = nil;
 
-static NSComparisonResult compareAttributes(id attr1, id attr2, void *context) {
-  NSString *name1 = nil;
-  NSString *name2 = nil;
+static NSComparisonResult compareAttributes(
+  id attr1, id attr2, void *context)
+{
+  NSString *name1, *name2;
 
-  if (attr1 == nil)
-    return NSOrderedDescending;
-  if (attr2 == nil)
-    return NSOrderedAscending;
-  
-  name1 = [(id)context valueForKey:attr1];
-  name2 = [(id)context valueForKey:attr2];
-  
-  name1 = (name1 == nil) ? (NSString *)attr1 : name1;
-  name2 = (name2 == nil) ? (NSString *)attr2 : name2;
-                                                        
+  if (attr1 == nil) return NSOrderedDescending;
+  if (attr2 == nil) return NSOrderedAscending;
+
+  name1 = [(id)context displayLabelForKey:attr1];
+  name2 = [(id)context displayLabelForKey:attr2];
+
   return [name1 caseInsensitiveCompare:name2];
 }
 
@@ -119,6 +120,7 @@ static NSComparisonResult compareAttributes(id attr1, id attr2, void *context) {
   [self->defaults      release];
   [self->patternName   release];
   [self->allAttributes release];
+  [self->configLabels  release];
   [self->errorString   release];
   [super dealloc];
 }
@@ -135,6 +137,7 @@ static NSComparisonResult compareAttributes(id attr1, id attr2, void *context) {
 
 - (void)syncAwake {
   [self->allAttributes release]; self->allAttributes = nil;
+  [self->configLabels  release]; self->configLabels  = nil;
 }
 
 - (void)sleep {
@@ -169,20 +172,30 @@ static NSComparisonResult compareAttributes(id attr1, id attr2, void *context) {
 - (NSArray *)_allKeyValuesInDefaultsArray:(NSArray *)_a {
   NSMutableArray *tmp;
   NSEnumerator   *en;
-  NSString       *obj;
+  NSDictionary   *entry;
 
   tmp = [NSMutableArray arrayWithCapacity:100];
   if (_a == nil)
     return tmp;
 
   en = [_a objectEnumerator];
-  while ((obj = [(NSDictionary*)[en nextObject] objectForKey:@"key"]) != nil) {
+  while ((entry = [en nextObject]) != nil) {
+    NSString *obj, *label;
+
+    obj = [entry objectForKey:@"key"];
+    if (obj == nil) continue;
+
     if ([obj isEqualToString:@"description"]) {
       if ([[self _entityName] isEqualToString:@"Person"])
-	obj = @"nickname";
-      else //  it's a enterprise
-	obj = @"name";
+        obj = @"nickname";
+      else
+        obj = @"name";
     }
+
+    label = [entry objectForKey:@"label"];
+    if ([label isNotEmpty])
+      [self->configLabels setObject:label forKey:obj];
+
     [tmp addObject:obj];
   }
   return tmp;
@@ -209,6 +222,10 @@ static NSComparisonResult compareAttributes(id attr1, id attr2, void *context) {
     tmp = [eName isEqualToString:@"Person"] ? PersonKeys : EnterpriseKeys;
   [tarray addObjectsFromArray:tmp];
 
+  [self->configLabels release];
+  self->configLabels =
+    [[NSMutableDictionary alloc] initWithCapacity:16];
+
   // PublicAttributes
   key = [NSString stringWithFormat:@"SkyPublicExtended%@Attributes", eName];
   tmp = [self _allKeyValuesInDefaultsArray:[ud objectForKey:key]];
@@ -230,7 +247,7 @@ static NSComparisonResult compareAttributes(id attr1, id attr2, void *context) {
   }
 
   return [tarray sortedArrayUsingFunction:compareAttributes
-                                  context:[self labels]];
+                                  context:self];
 }
 
 - (NSArray *)allAttributes {
@@ -288,18 +305,30 @@ static NSComparisonResult compareAttributes(id attr1, id attr2, void *context) {
   self->hideEmptyFields = _b;
 }
 
-- (NSString *)displayNameForItem {
+- (NSString *)displayLabelForKey:(NSString *)_key {
   NSString *result;
+
+  result = [[self labels] valueForKey:_key];
+  if (result != nil)
+    return result;
+
+  result = [self->configLabels objectForKey:_key];
+  return (result != nil) ? result : _key;
+}
+
+- (NSString *)displayNameForItem {
   NSString *it;
 
   it = self->item;
 
-  if ([self->item isEqualToString:@"mailing"])  it = @"mailing_address";
-  if ([self->item isEqualToString:@"private"])  it = @"private_address";
-  if ([self->item isEqualToString:@"location"]) it = @"location_address";
-    
-  result = [[self labels] valueForKey:it];
-  return (result == nil) ? it : result;
+  if ([it isEqualToString:@"mailing"])
+    it = @"mailing_address";
+  if ([it isEqualToString:@"private"])
+    it = @"private_address";
+  if ([it isEqualToString:@"location"])
+    it = @"location_address";
+
+  return [self displayLabelForKey:it];
 }
 
 - (void)setErrorString:(NSString *)_errorString {
