@@ -125,8 +125,20 @@ static BOOL UseFoldersForIDRanges        = NO;
     : (NSNumber *)[_obj valueForKey:@"projectId"];
   
   if (![pid isNotNull]) {
-    pid = [[_obj valueForKey:@"toDocument"] valueForKey:@"projectId"];
-    
+    /* toDocument is to-many on Notes */
+    id toDoc = [_obj valueForKey:@"toDocument"];
+    if ([toDoc isKindOfClass:[NSArray class]]) {
+      NSEnumerator *e = [toDoc objectEnumerator];
+      id doc;
+      while ((doc = [e nextObject]) != nil) {
+        pid = [doc valueForKey:@"projectId"];
+        if ([pid isNotNull]) break;
+        pid = nil;
+      }
+    }
+    else
+      pid = [toDoc valueForKey:@"projectId"];
+
     if (![pid isNotNull]) {
       pid = [self _getProjectIdForDocId:[_obj valueForKey:@"documentId"]
 		  inContext:_ctx];

@@ -187,8 +187,11 @@ static NSArray *JobAttributes        = nil;
   labels = [self labels];
 
   ak = [self->currentAttr allKeys];
-  if ([ak containsObject:@"label"]) 
+  if ([ak containsObject:@"label"]) {
     ret = [labels valueForKey:[self _currentAttrLabel]];
+    if (ret == nil)
+      ret = [self _currentAttrLabel];
+  }
   else
     ret = [labels valueForKey:[self _currentAttrKey]];
 

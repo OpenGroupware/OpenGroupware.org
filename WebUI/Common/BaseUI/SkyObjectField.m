@@ -225,8 +225,18 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
              [self calFormatAttributeInContext:_ctx]]
       : [tmp stringValue];
   }
-  else
-    ret = [tmp stringValue];
+  else {
+    int tc = [[attrib valueForKey:@"type"] intValue];
+
+    if (tc == 2) { /* checkbox */
+      ret = [self localizeValueAttribute:[tmp stringValue]
+                               inContext:_ctx];
+      if (ret == nil)
+        ret = [tmp stringValue];
+    }
+    else
+      ret = [tmp stringValue];
+  }
   
   return ret;
 }
