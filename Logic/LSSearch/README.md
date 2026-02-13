@@ -37,3 +37,8 @@ own search implementations.
 | `LSFullSearch`              | Full search implementation    |
 | `LSGenericSearchRecord`     | Search record data holder     |
 | `OGoSQLGenerator`           | SQL query generation          |
+
+
+## Defaults
+
+- `LSFullSearchDebugEnabled`

@@ -132,3 +132,84 @@ Most domains implement:
 - `*Editor` - Edit form
 - `*List` - Browse/list view
 - `*Wizard` - Creation wizard
+
+
+WebUI
+=====
+[STABLE]
+[REQUIRES: SOPE, GDL, Logic, DocumentAPI]
+
+The WebUI directory contains most of the OpenGroupware.org HTML user-interface 
+components. The components are packaged in UI bundles which have a .lso 
+extension and are installed into $GNUSTEP_ROOT/Libary/OpenGroupware.org.
+
+[TODO: explain more on how the architecture works ...]
+
+Directories
+===========
+
+OpenGroupware.org
+- this contains the executable binary with the entry (login) page and
+  the application object
+
+Resources
+- contains all the string files for localization
+
+OGoFoundation
+- a library
+- generic OpenGroupware.org objects/classes, like
+  - session class
+  - navigation object
+  - superclasses for editors, viewers, pages
+  - configuration handler
+  - label processors (localization)
+  - various formatters
+
+Common: BaseUI / OGoUIElements / PropertiesUI
+- components and dynamic elements used in all OpenGroupware.org apps
+- BaseUI has "old-style" (3.x) components
+- OGoUIElements contains more modern (4.x) elements
+
+Mailer
+- contains the bundles which form the WebMail client
+
+Scheduler
+- contains the bundles which form the scheduler application
+
+Project
+- contains the bundles which form the document management and
+  project application
+
+JobUI
+- the "job" application, used to manage tasks and simple workflows
+
+NewsUI
+- the news intro page, a *really small* newsboard
+- to be replaced by a "portal-style" application
+
+PreferencesUI
+- components which form the preferences application
+- note that the specific preference panels are "plugged-in"
+  from the application itself (eg the scheduler prefs are
+  implemented in the scheduler application)
+
+AdminUI
+- the administration application
+  - manages users / teams
+  - license keys
+  - system-wide defaults
+
+Contact: AddressUI / EnterprisesUI / PersonsUI / LDAPAccounts
+- components to edit/view/search contact information
+- since both enterprises and persons are "company" objects
+  (objects stored in the company table), common components
+  are placed in LSWAddress
+
+SkyForms / SkyP4Forms
+- SkyForms is a library which provides form capabilities
+- SkyP4Forms contains the components required to implement
+  the custom form capability
+
+
+-- 
+hh@skyrix.com, 2003-05-06

@@ -37,3 +37,18 @@ Configuration plist files for the defaults editor:
 - `NSGlobalDomain.plist` - Global settings
 - `skyxmlrpcd.plist` - XML-RPC server settings
 - `skyaptnotify.plist` - Notification settings
+
+
+# README
+
+User Manager Application
+========================
+
+Note: in case you wonder that there is no LSWAccountEditor - this is the
+      LSWPreferencesEditor in PreferencesUI ...
+
+Note: apparently the LSWAccountViewer is not the viewer for accounts?
+      => apparently LSWPreferencesViewer is used for that?
+TODO: is the LSWAccountViewer actually used somewhere?
+
+Note: the 'nickname' is stored in the 'description' field in the database

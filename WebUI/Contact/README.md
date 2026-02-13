@@ -62,3 +62,21 @@ Enterprise/company management:
 LDAP-aware account components:
 - `SkyGenericLDAPViewer` - Display LDAP data
 - `WelcomeNewLDAPAccount` - LDAP account welcome
+
+
+# README
+
+Contact
+=======
+
+Contact: AddressUI / EnterprisesUI / PersonsUI / LDAPAccounts
+- components to edit/view/search contact information
+- since both enterprises and persons are "company" objects
+  (objects stored in the company table), common components
+  are placed in LSWAddress
+
+LDAPAccounts
+- this bundle contains components for displaying person information
+  coming out of LDAP
+- should be extended to become a full LDAP client for editing inetOrgPerson
+  information

@@ -42,3 +42,23 @@ Provides `teamsDataSource` for fetching account's teams.
 
 Represents a team/group with membership tracking and
 team-specific properties.
+
+
+# README
+
+## Class Hierarchy
+
+- `NSObject`
+  - `SkyDocument`
+    - `SkyAccountDocument`
+    - `SkyTeamDocument`
+  - `SkyDocumentType`
+    - `SkyAccountDocumentType`
+    - `SkyTeamDocumentType`
+  - `EODataSource`
+    - `SkyAccountDataSource`
+      - `SkyMemberDataSource`
+    - `SkyTeamDataSource`
+      - `SkyAccountTeamsDataSource`
+  - `SkyAccountDocumentGlobalIDResolver`
+  - `SkyTeamDocumentGlobalIDResolver`

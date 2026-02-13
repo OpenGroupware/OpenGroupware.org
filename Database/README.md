@@ -7,12 +7,12 @@ mapping model (EOModel) used by the GDLAccess ORM layer.
 
 ## Supported Backends
 
-| Backend | Directory | Status |
+| Backend    | Directory     | Status               |
 |------------|---------------|----------------------|
 | PostgreSQL | `PostgreSQL/` | Primary, recommended |
 | MySQL 5+   | `MySQL/`      | Alternative          |
-| FrontBase   | `FrontBase/`  | Commercial           |
-| SQLite      | `SQLite/`     | Work in progress     |
+| FrontBase  | `FrontBase/`  | Commercial           |
+| SQLite     | `SQLite/`     | Work in progress     |
 
 
 ## PostgreSQL (Recommended)
@@ -20,12 +20,12 @@ mapping model (EOModel) used by the GDLAccess ORM layer.
 Primary backend with full feature support.
 
 | File | Purpose |
-|----------------------------------|---------------------------|
-| `pg-build-schema.psql`          | Create schema             |
-| `pg-build-schema.psql.constraints`| Foreign key constraints |
-| `pg-fill-objinfo.psql`          | Populate object info      |
-| `pg-update-1.0to5.4.psql`      | Migration from 1.0        |
-| `pg-update-schema.psql`         | Schema updates            |
+|-----------------------------------|---------------------------|
+| `pg-build-schema.psql`            | Create schema             |
+| `pg-build-schema.psql.constraints`| Foreign key constraints   |
+| `pg-fill-objinfo.psql`            | Populate object info      |
+| `pg-update-1.0to5.4.psql`         | Migration from 1.0        |
+| `pg-update-schema.psql`           | Schema updates            |
 
 Setup:
 ```bash
@@ -43,12 +43,12 @@ Objects Framework) model that maps database tables to
 Objective-C objects.
 
 | File | Purpose |
-|-----------------------------------------|---------------------|
+|-----------------------------------------|----------------------|
 | `OGoModel.py`                           | Master model (Python)|
-| `genmodel.py`                           | Model generator     |
-| `OpenGroupware.org_PostgreSQL.eomodel`  | PostgreSQL mapping  |
-| `OpenGroupware.org_MySQL5.eomodel`      | MySQL 5 mapping     |
-| `OpenGroupware.org_FrontBase2.eomodel`  | FrontBase mapping   |
+| `genmodel.py`                           | Model generator      |
+| `OpenGroupware.org_PostgreSQL.eomodel`  | PostgreSQL mapping   |
+| `OpenGroupware.org_MySQL5.eomodel`      | MySQL 5 mapping      |
+| `OpenGroupware.org_FrontBase2.eomodel`  | FrontBase mapping    |
 
 The model maps internal entity names to external table
 names (working around SQL keyword conflicts like `date`)

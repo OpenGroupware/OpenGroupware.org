@@ -55,3 +55,30 @@ Object property viewer/editor:
 Object link management:
 - `OGoObjectLinkList` - Display and manage related
   object links
+
+
+# README
+
+Common
+======
+
+WebUI components used in various OGo parts.
+
+Directories
+===========
+
+OGoBaseUI / OGoUIElements
+- components and dynamic elements used in all OpenGroupware.org apps
+- OGoBase has "old-style" (3.x) components
+- OGoUIElements contains more modern (4.x) elements
+
+PropertiesUI
+- components to view/edit property sets associated with SKYRiX
+  objects. any object can have associated property sets, though
+  this functionality is currently used with documents only
+
+RelatedLinksUI
+- components to handle "related links"
+
+--
+hh@skyrix.com, 2003-05-06

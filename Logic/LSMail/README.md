@@ -38,3 +38,14 @@ A minimal module with 3 source files:
 - `LSMailCommands.m` - Command bundle registration
 - `LSMailDeliverCommand.m` - SMTP delivery command
 - `LSMailFunctions.m` - Shared mail utility functions
+
+
+# README
+
+LSMail
+======
+
+The LSMail command bundle is mostly deprecated. It was used for the database
+based mail storage which is replaced with IMAP4 mail servers since SKYRiX 4.x.
+
+Probably the only command still used is the mail::deliver command.

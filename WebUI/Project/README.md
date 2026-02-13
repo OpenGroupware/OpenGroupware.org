@@ -83,3 +83,44 @@ Legacy project components, some still in use:
 SOPE/SOAP project object model:
 - `OGoSoProject`, `OGoSoDocFolder`,
   `OGoSoProjects`
+
+
+# README
+
+This directory contains the bundles which implement the OpenGroupware.org
+web interface for the "project" application. The project application contains
+the document management system and maintains various links between OGo
+objects.
+
+Bundles
+=======
+
+LSWProject
+- contains parts of the "old" SKYRiX 3.x project application
+- contains the deprecated "process" things (real project management things)
+- contains some components still used in OGoProject
+=> TODO: move required stuff to OGoProject
+
+OGoDocInlineViewers
+- components for embedding document content
+
+OGoNote
+- components for listing and editing "Note" records
+
+OGoProject
+- contains most of the OpenGroupware.org UI for the project application
+- project viewers, project lists
+- document viewers, editors, searches
+- etc
+
+OGoProjectInfo
+- this bundle contains the component required to show project links in
+  the dock, it's placed in a separate bundle to avoid loading the whole
+  OGoProject just for displaying a list of links
+
+OGoProjectZip
+- contains viewers and components to compress and uncompress files in
+  the document system using zip and tar
+
+OGoProjectForms
+- all the stuff required for having customized forms in projects

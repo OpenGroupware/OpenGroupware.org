@@ -37,18 +37,18 @@ DocumentAPI / Logic Commands
 
 ### Core Application
 
-| File | Purpose |
-|---------------------------|-------------------------------|
-| `xmlrpcd.m`              | Main entry point              |
-| `Application.m`          | WOApplication subclass        |
-| `Session.m`              | Session management            |
+| File            | Purpose                |
+|-----------------|------------------------|
+| `xmlrpcd.m`     | Main entry point       |
+| `Application.m` | WOApplication subclass |
+| `Session.m`     | Session management     |
 
 ### Actions.subproj - API Endpoints
 
 Each domain has a DirectAction category:
 
-| File | Domain |
-|-------------------------------|------------------------|
+| File                         | Domain                 |
+|------------------------------|------------------------|
 | `DirectAction+Person.m`      | Person contacts        |
 | `DirectAction+Enterprise.m`  | Enterprise/companies   |
 | `DirectAction+Account.m`     | Account management     |
@@ -80,16 +80,16 @@ Document-to-XML-RPC encoding for each entity type:
 
 ## Fault Codes
 
-| Code | Constant | Meaning |
-|------|--------------------------------------|----------------------|
-| 1    | `XMLRPC_FAULT_INVALID_PARAMETER`     | Invalid parameter    |
-| 2    | `XMLRPC_FAULT_MISSING_PARAMETER`     | Missing parameter    |
-| 3    | `XMLRPC_FAULT_MISSING_CONTEXT`       | No context           |
-| 4    | `XMLRPC_FAULT_INVALID_RESULT`        | Invalid result       |
-| 5    | `XMLRPC_FAULT_INTERNAL_ERROR`        | Internal error       |
-| 6    | `XMLRPC_FAULT_LOCK_ERROR`            | Lock conflict        |
-| 7    | `XMLRPC_MISSING_PERMISSIONS`         | Permission denied    |
-| 404  | `XMLRPC_FAULT_NOT_FOUND`             | Object not found     |
+| Code | Constant                         | Meaning              |
+|------|----------------------------------|----------------------|
+| 1    | `XMLRPC_FAULT_INVALID_PARAMETER` | Invalid parameter    |
+| 2    | `XMLRPC_FAULT_MISSING_PARAMETER` | Missing parameter    |
+| 3    | `XMLRPC_FAULT_MISSING_CONTEXT`   | No context           |
+| 4    | `XMLRPC_FAULT_INVALID_RESULT`    | Invalid result       |
+| 5    | `XMLRPC_FAULT_INTERNAL_ERROR`    | Internal error       |
+| 6    | `XMLRPC_FAULT_LOCK_ERROR`        | Lock conflict        |
+| 7    | `XMLRPC_MISSING_PERMISSIONS`     | Permission denied    |
+| 404  | `XMLRPC_FAULT_NOT_FOUND`         | Object not found     |
 
 
 ## API Documentation
@@ -106,3 +106,38 @@ docs for each domain:
 - `README.fetchspec` - Query format
 - `README.defaults` - User defaults API
 - `README.system` - System operations
+
+
+
+XML-RPC Daemon
+==============
+
+The OpenGroupware.org project includes a full features XML-RPC API. This
+directory contains the XML-RPC server and will contain some wrappers for
+various languages.
+
+Note: the XML-RPC API as available will stay and not change for the foreseeable 
+future. But you may want to check out the ZideStore, which
+provides a bit easier API (but are less stable from an API point of view).
+
+TODO: write much more
+
+Note: there is an API PDF document available on the docs website.
+
+General Works
+=============
+
+All methods are attached to a single direct action object. Most of them use
+DocumentAPI internally to execute operations and directly encode/decode
+document objects in XML-RPC.
+
+xmlrpc_call
+===========
+
+To list implemented methods, just call without arguments
+
+  xmlrpc_call http://helge@localhost/RPC2
+
+Listing a directory of project with code 'DBTEST'
+
+  xmlrpc_call http://helge@localhost/RPC2 project.ls DBTEST /mydir

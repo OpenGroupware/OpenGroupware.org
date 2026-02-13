@@ -98,3 +98,18 @@ editing:
 |-------------------------------|--------|---------------------------|
 | `UseFlatDocumentFileStructure`| BOOL   | Use flat file layout      |
 | `UseFoldersForIDRanges`       | BOOL   | Group files by ID ranges  |
+
+
+# README
+
+LSDocuments
+===========
+
+This bundle contains commands which operate on the database tables storing
+document and versioning information.
+
+Defaults
+========
+
+UseFlatDocumentFileStructure - BOOL
+UseFoldersForIDRanges        - BOOL

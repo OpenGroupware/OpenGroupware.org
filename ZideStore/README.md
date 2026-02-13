@@ -27,7 +27,7 @@ SoObjects (mediators)
          ↓
    ┌─────┴─────┐
 ZSFrontend   ZSBackend
-   │             │
+   │           │
    └─────┬─────┘
          ↓
   Logic / DocumentAPI / Database
@@ -48,7 +48,7 @@ ZSFrontend   ZSBackend
 `libZSBackend` encapsulates business logic and SQL
 queries:
 
-| Class | Purpose |
+| Class                     | Purpose                       |
 |---------------------------|-------------------------------|
 | `SxBackendMaster`         | Master backend controller     |
 | `SxAptManager`            | Appointment management        |
@@ -62,15 +62,15 @@ queries:
 
 `libZSFrontend` handles WebDAV protocol:
 
-| Class | Purpose |
-|---------------------------|-------------------------------|
+| Class                     | Purpose                        |
+|---------------------------|--------------------------------|
 | `SxFolder`                | Base folder (WebDAV collection)|
-| `SxFolder+DAV`            | WebDAV protocol support       |
-| `SxObject`                | Base WebDAV resource          |
-| `SxDavAction`             | WebDAV action handler         |
-| `SxUserFolder`            | User home folder              |
-| `SxPublicFolder`          | Public shared folder          |
-| `SxRenderer`              | Response rendering            |
+| `SxFolder+DAV`            | WebDAV protocol support        |
+| `SxObject`                | Base WebDAV resource           |
+| `SxDavAction`             | WebDAV action handler          |
+| `SxUserFolder`            | User home folder               |
+| `SxPublicFolder`          | Public shared folder           |
+| `SxRenderer`              | Response rendering             |
 
 Resources: `E2KAttrMap.plist`, `MAPIPropMap.plist`,
 `DAVPropSets.plist` for Exchange/MAPI compatibility.
@@ -80,7 +80,7 @@ Resources: `E2KAttrMap.plist`, `MAPIPropMap.plist`,
 Mediators between frontend and backend, organized as
 subprojects:
 
-| Subproject | Purpose |
+| Subproject                | Purpose                       |
 |---------------------------|-------------------------------|
 | `ZSCommon/`               | Common SOPE objects           |
 | `ZSAppointments/`         | Calendar SOPE objects         |
@@ -93,7 +93,7 @@ subprojects:
 
 ### Protocols/ - Additional Protocol Handlers
 
-| Subproject | Purpose |
+| Subproject                | Purpose                       |
 |---------------------------|-------------------------------|
 | `EvoConnect/`             | Evolution connectivity        |
 | `GData/`                  | Google Data protocol          |
@@ -121,3 +121,55 @@ Calendars are available at:
 | `ZLRefreshInterval`             | Refresh interval (2 min)  |
 | `SxDebugAuthenticator`          | Debug authentication      |
 | `SxDebugSQL`                    | Debug SQL queries         |
+
+
+OGo WebDAV Daemon for ZideLook and Evolution
+============================================
+
+Frontend
+- the WebDAV frontend handlers written in SOPE
+
+Backend
+- backend storage classes which encapsulate the SKYRiX commands, datasources
+  or raw SQL functions
+- also contains a SQLQuery class for easier generation of custom SQL queries
+  (eg used when fetching contacts)
+
+
+iCalendar Support
+- iCalendars are available under:
+  - "CalendarFolder/calendar.ics"
+  - "CalendarFolder/ics"
+- the Users Default-Calendar under:
+  - /skyrix/so/user/calendar.ics
+
+Defaults
+- SxAptFolder_MonthsIntoFuture (default: 12)
+- SxAptFolder_MonthsIntoPast   (default: 2)
+- SxDebugAuthenticator
+- SxVMemLimit
+- SxDebugCache
+- SxCachePath  (/var/cache/zidestore)
+- SxDebugSQL
+- ZLFolderRefresh
+- SxExplain
+- SxSkyrixLinkPrefix
+- ZLRefreshInterval (2 [minutes])
+- SxEnableAptCoreCache
+- ZLCreateGroupAppointmentsInGroupFolders
+- ZLShowGroupOverviewCalendars
+- SxDebugTaskPatch
+- SxDebugAptHandler
+- SxFolderDebugEnabled
+
+Useful Defaults from Other Modules
+- WOHttpAdaptor_LogStream
+- SkyCommandProfileEnabled
+- SoDebugKeyLookup
+- SoDebugObjectTraversal
+- SoObjectRequestHandlerDebugEnabled
+- SoObjectDAVDispatcherDebugEnabled
+- SoRendererDebugEnabled
+- SoSecurityManagerDebugEnabled
+- WOHttpTransactionUseSimpleParser
+- WOPort

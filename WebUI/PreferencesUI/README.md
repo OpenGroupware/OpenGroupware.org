@@ -30,3 +30,19 @@ settings interface.
 - `SimpleTextSepFormatter` - Text separator formatting
 - `ArrayFormatter` - Array value formatting
 - `BoolFormatter` - Boolean value formatting
+
+
+# README
+
+PreferencesUI
+=============
+
+Note: also contains the account editor and view! This is "LSWPreferencesViewer"
+      and "LSWPreferencesEditor".
+
+Todo
+====
+
+OGoDefaultEditField.m
+- check whether isEditableDef and isEditable are supposed to be the same
+  binding

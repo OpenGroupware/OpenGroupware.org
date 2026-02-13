@@ -76,3 +76,207 @@ extended attributes.
 
 Supports import/export for Evolution, Kontact, and
 Outlook clients. See class headers for format details.
+
+
+# README
+
+LSAddress
+=========
+
+LSAddress contains the base classes for the various "company" objects, like
+LSEnterprise, LSPerson, LSTeam and LSTrust.
+
+NOTE: LSTrust removed on 2009-05-17
+
+## Class Hierarchy
+
+- *NSObject*
+  - *LSModuleManager*
+    - `LSAddressCommands`
+  - *LSBaseCommand*
+    - `LSCheckLoginCommand`
+    - `LSCheckPermissionCompanyCommand`
+    - `LSGetUserDefaultsCommand`
+    - `LSRegisterUserDefaultsCommand`
+    - `LSUserDefaultCommand`
+    - `LSWriteUserDefaultsCommand`
+    - *LSDBObjectBaseCommand*
+      - `LSGetAccountByLoginCommand`
+      - `LSGetCompanyCommand`
+      - `LSGetCompanyForMemberCommand`
+        - `LSGetEnterpriseForPersonCommand`
+        - `LSGetTeamForAccountCommand`
+      - `LSGetFakeProjectForEnterpriseCommand`
+      - `LSGetMemberForCompanyCommand`
+        - `LSGetMemberForEnterpriseCommand`
+        - `LSGetMemberForTeamCommand`
+      - `LSGetProjectForEnterpriseCommand`
+      - `LSGetProjectForPersonCommand`
+      - `LSGroupToMemberAssignmentCommand`
+      - `LSMemberToGroupAssignmentCommand`
+      - `LSProjectsToCompanyAssignmentCommand`
+      - `LSResolveAccountsCommand`
+      - `LSSetCategoriesCommand`
+      - `LSSetResourcesCommand`
+      - *LSDBObjectGetCommand*
+        - `LSGetAccountCommand`
+          - `LSLoginAccountCommand`
+        - `LSGetEnterpriseCommand`
+        - `LSGetPersonCommand`
+      - *LSDBObjectSetCommand*
+        - `LSChangeLoginStatusCommand`
+        - `LSSetCompanyCommand`
+          - `LSSetAccountCommand`
+          - `LSSetEnterpriseCommand`
+          - `LSSetTeamCommand`
+        - `LSSetAddressCommand`
+      - *LSDBObjectNewCommand*
+        - `LSNewCompanyCommand`
+          - `LSNewAccountCommand`
+          - `LSNewEnterpriseCommand`
+          - `LSNewPersonCommand`
+          - `LSNewTeamCommand`
+      - *LSDBObjectDeleteCommand*
+        - `LSDeleteCompanyCommand`
+      - *LSExtendedSearchCommand*
+        - `LSExtendedSearchEnterpriseCommand`
+        - `LSExtendedSearchPersonCommand`
+      - *LSFullSearchCommand*
+        - `LSFullSearchEnterpriseCommand`
+        - `LSFullSearchPersonCommand`
+      - *LSDBFetchRelationCommand*
+        - `LSFetchExtendedAttributesCommand`
+        - `LSFetchTelsForPersonCommand`
+  - `_LSGetMembersForCompany_Cache`
+  - `_LSResolveAccountsCommand_Cache`
+
+
+vCard Notes
+===========
+- some generation stuff is explained in the formatter header files
+- addresses:
+  - Evolution 2.2.2 shows these types (hardcoded, no settings):
+    - work, home, other
+    - no 'pref' is set
+  - Kontact 3.4 allows arbitary addresses, but shows these per default:
+    - work, home
+    - it also allows for 'pref' to be set
+  - vCard ADR has no name1,name2,name3 in addresses ...
+    - LABEL has
+
+
+SQL Queries
+===========
+
+all phone numbers of company contacts
+  SELECT DISTINCT t.type, e.company_id, e.description, t.number
+  FROM  telephone AS t, enterprise AS e
+  WHERE t.company_id=e.company_id;
+
+  SELECT   t.number, t.type, p.name, p.firstname
+  FROM     telephone t, person p
+  WHERE    t.company_id=p.company_id AND p.name='Duck'
+  ORDER BY company_id, type;
+
+vCard Dumps
+===========
+
+K:
+In UI: work + home (with pref-option)
+WORK, POSTAL, ...
+
+ADR;TYPE=dom;TYPE=home;TYPE=intl;TYPE=parcel;TYPE=postal;TYPE=pref;TYPE=wor
+ k:POBOX;;Street\nABC\n;Locality;Region;12345;Germany
+ADR;TYPE=work:PO;;dsafjh\ndsafh;Entenhausen;;12345;Germany
+ADR;TYPE=postal:;;postal;Enten;;;Gabon
+
+E:
+WORK, HOME, OTHER [also in UI]
+
+ADR;TYPE=WORK:;;abc;Berlin;Berlin;03421;Deutschland
+LABEL;TYPE=WORK:abc\nBerlin\, Berlin\n03421\nDeutschland
+ADR;TYPE=HOME:;sdfjak\n;Street ABC;Entenhausen;Enten;12345;Country
+LABEL;TYPE=HOME:Street ABC\nsdfjak\n\nEntenhausen\, Enten\n12345\nCountry
+ADR;TYPE=OTHER:;;;Hamburg;Hamburg;04040;Germany
+
+OL2002:
+ADR;WORK:;office;street;City;State;12345;Germany
+
+OGo:
+Person:     private, mailing, location
+Enterprise: shipping, billing
+
+
+Phone
+=====
+K:
+UI: default: home, work, mobile - in another panel any combination
+work | work | home | cell | fax,modem,video
+
+TEL;TYPE=WORK:0123-work
+TEL;TYPE=WORK:7789
+TEL;TYPE=HOME:0123-home
+TEL;TYPE=CELL:0123-mobile
+TEL;TYPE=FAX;TYPE=MODEM;TYPE=VIDEO:2348978723
+
+E:
+UI: up to 8 phones (4 by default)
+work,voice | home,voice | cell | work,fax | home,fax | pager | voice
++ X-EVOLUTION-UI-SLOT=N
+
+TEL;TYPE=WORK;TYPE=VOICE;X-EVOLUTION-UI-SLOT=1:0123-business
+TEL;TYPE=HOME;TYPE=VOICE;X-EVOLUTION-UI-SLOT=2:0123-home
+TEL;TYPE=CELL;X-EVOLUTION-UI-SLOT=3:0123-mobile
+TEL;TYPE=WORK;TYPE=FAX;X-EVOLUTION-UI-SLOT=4:0432-businessfax
+TEL;TYPE=HOME;TYPE=FAX;X-EVOLUTION-UI-SLOT=5:0432-homefax
+TEL;TYPE=PAGER;X-EVOLUTION-UI-SLOT=6:555-pager
+TEL;TYPE=VOICE;X-EVOLUTION-UI-SLOT=7:0123-other
+TEL;TYPE=VOICE;X-EVOLUTION-UI-SLOT=8:0123-other2
+
+OL2002:
+TEL;WORK;VOICE:busiphone
+TEL;HOME;VOICE:privphone
+TEL;CELL;VOICE:mobile
+TEL;WORK;FAX:faxbusi
+
+OGo:
+ 01_tel
+ 02_tel
+ 03_tel_funk
+ 05_tel_private
+ 10_fax
+ 15_fax_private
+
+Mail
+====
+
+K:
+UI: per default just one email, arbitary number of mails using a panel,
+    no way to set email types. Ability to mark one as 'PREF'
+EMAIL;TYPE=PREF:dago@geldspeicher.ag
+EMAIL:abc@def.org
+EMAIL:nbc@obj.de
+
+E:
+UI: up to 4 emails aka 4 popups with work/home/other
+EMAIL;TYPE=WORK;X-EVOLUTION-UI-SLOT=1:work@dago
+EMAIL;TYPE=HOME;X-EVOLUTION-UI-SLOT=2:home@dago
+EMAIL;TYPE=OTHER;X-EVOLUTION-UI-SLOT=3:other@dago
+EMAIL;TYPE=OTHER;X-EVOLUTION-UI-SLOT=4:other2@dago
+
+OL2002:
+EMAIL;PREF;INTERNET:outlook@ogo.com
+
+OGo Persons:
+  saved in company_value
+  - attribute (name): email1, email2, email3
+  - label => Lost when edited in UI!
+  - type (3=mail, 2=checkbox), often empty, even for email1/...
+  - value_string (value as EO property)
+  Palm:
+  - uid            (set in Skyrix DB, used by palmSync and palmCategory)
+  Not in Model, unknown purpose:
+  - attribute_type (not set in Skyrix DB)
+  - category       (not set in Skyrix DB)
+OGo Enterprises/Teams:
+  saved in 'email' field
