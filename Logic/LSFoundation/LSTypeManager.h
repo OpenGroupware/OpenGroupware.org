@@ -28,6 +28,18 @@
 @class EOGlobalID, EOClassDescription;
 @class LSCommandContext;
 
+/**
+ * @protocol LSTypeManager
+ * @brief Resolves entity names and global IDs for objects.
+ *
+ * The LSTypeManager protocol provides methods to
+ * determine the entity name for a given object or
+ * EOGlobalID, and to convert primary keys into
+ * EOGlobalIDs. It is used throughout the Logic layer
+ * for type introspection and GID resolution.
+ *
+ * @see LSCommandContext
+ */
 @protocol LSTypeManager
 
 /* entity names */

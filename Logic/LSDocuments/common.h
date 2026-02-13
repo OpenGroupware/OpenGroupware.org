@@ -22,6 +22,16 @@
 #ifndef __LSDocuments_common_H__
 #define __LSDocuments_common_H__
 
+/**
+ * @file common.h
+ * @brief Precompiled header for the LSDocuments
+ *        command bundle.
+ *
+ * Imports Foundation, EOControl, NGExtensions,
+ * NGStreams, GDLAccess, and LSFoundation headers
+ * shared by all LSDocuments command implementations.
+ */
+
 #import <Foundation/Foundation.h>
 #include <EOControl/EOControl.h>
 #include <NGExtensions/NGExtensions.h>

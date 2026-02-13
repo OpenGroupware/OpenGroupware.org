@@ -27,11 +27,24 @@
 
 @class LSGenericSearchRecord, NSArray, NSString, EOEntity, EOSQLQualifier;
 
-/*
-  LSExtendedSearch
-
-  TODO: document
-*/
+/**
+ * @class LSExtendedSearch
+ *
+ * Builds an EOSQLQualifier from a primary search record
+ * and a set of related search records. Each
+ * LSGenericSearchRecord maps entity attribute names to
+ * search values; this class iterates over those
+ * key/value pairs and constructs a combined SQL
+ * qualifier format string.
+ *
+ * The operator property (default "AND") controls how
+ * individual attribute conditions are joined within and
+ * across records. The resulting qualifier uses DISTINCT
+ * to avoid duplicate rows from joined entities.
+ *
+ * Used by LSExtendedSearchCommand to perform multi-field
+ * searches on persons, enterprises, and other entities.
+ */
 @interface LSExtendedSearch : LSBaseSearch
 {
 @private

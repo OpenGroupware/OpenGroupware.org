@@ -28,6 +28,23 @@
 @class NSMutableString;
 @class LSCommandContext;
 
+/**
+ * @class LSGetAsRSSFeedCommand
+ * @brief Abstract base command for generating RSS 2.0 feeds
+ *   from database queries.
+ *
+ * Subclasses override -buildQueryExpression to construct the
+ * SQL query, -rssChannelTitle and -rssChannelDescription to
+ * provide channel metadata, and -appendRSSItem: to render
+ * each database record as an RSS item.
+ *
+ * The command produces a UTF-8 encoded NSData containing
+ * the complete RSS XML document as its return value.
+ * Supports configurable time zone, item limit, feed URL,
+ * and channel URL.
+ *
+ * @see LSDBObjectBaseCommand
+ */
 @interface LSGetAsRSSFeedCommand : LSDBObjectBaseCommand
 {
   NSMutableString   *rss, *sql;

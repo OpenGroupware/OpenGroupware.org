@@ -24,6 +24,18 @@
 
 #import <Foundation/NSString.h>
 
+/**
+ * @file LSCommandKeys.h
+ * @brief Shared key constants and return type definitions for
+ *   the OGo command infrastructure.
+ *
+ * Defines context dictionary keys (e.g. LSDatabaseKey,
+ * LSAccountKey) used to store and retrieve well-known objects
+ * from the LSCommandContext, as well as return type constants
+ * (LSDBReturnType_NoObject, _OneObject, _ManyObjects) that
+ * control result validation in database commands.
+ */
+
 #define LSDBReturnType_NoObject    ((int)0)
 #define LSDBReturnType_OneObject   ((int)1)
 #define LSDBReturnType_ManyObjects ((int)2)

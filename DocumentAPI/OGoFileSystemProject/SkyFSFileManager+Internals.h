@@ -23,6 +23,26 @@
 
 #include "SkyFSFileManager.h"
 
+/**
+ * @category SkyFSFileManager(Internals)
+ * @brief Internal path conversion and attribute
+ *        persistence helpers for SkyFSFileManager.
+ *
+ * Provides private methods used within
+ * SkyFSFileManager for converting between the
+ * virtual project path namespace and the underlying
+ * filesystem paths (_makeAbsolute:, _reconvertPath:,
+ * _makeAbsoluteInSky:, _checkPath:).
+ *
+ * Also handles saving, updating, and removing
+ * per-file extended attribute plists stored alongside
+ * the project directory, as well as resolving the
+ * current user's login ID and name from the command
+ * context.
+ *
+ * @see SkyFSFileManager
+ */
+
 @interface SkyFSFileManager(Internals)
 
 - (NSString *)_makeAbsolute:(NSString *)_path;

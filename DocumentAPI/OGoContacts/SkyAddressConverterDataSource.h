@@ -24,17 +24,23 @@
 
 #include <EOControl/EODataSource.h>
 
-/*
-  SkyAddressConverterDataSource
-
-  TODO: document
-  
-  Used by:
-    LSWPersonAdvancedSearch
-    SkyPersonViewer
-    LSWEnterpriseAdvancedSearch
-    SkyEnterpriseViewer
-*/
+/**
+ * @class SkyAddressConverterDataSource
+ * @brief Datasource that converts contacts into
+ *        address export formats.
+ *
+ * Wraps another EODataSource (typically a person or
+ * enterprise datasource) and converts the fetched
+ * contacts into an export format such as form letters
+ * or vCards. The export type and kind can be controlled
+ * via fetch specification hints ("type" and "kind").
+ *
+ * Used by LSWPersonAdvancedSearch, SkyPersonViewer,
+ * LSWEnterpriseAdvancedSearch, and SkyEnterpriseViewer.
+ *
+ * @see SkyPersonDataSource
+ * @see SkyEnterpriseDataSource
+ */
 
 @class EODataSource, EOFetchSpecification;
 @class LSCommandContext;

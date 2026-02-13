@@ -22,6 +22,15 @@
 #ifndef __SkyDocuments_H__
 #define __SkyDocuments_H__
 
+/**
+ * @file SkyDocuments.h
+ * @brief Umbrella header for the OGoDocuments framework.
+ *
+ * Imports all public headers of the OGoDocuments framework,
+ * including the document model, file manager protocols, and
+ * the local filesystem-based implementations.
+ */
+
 #include <OGoDocuments/SkyDocument.h>
 #include <OGoDocuments/SkyDocumentFileManager.h>
 #include <OGoDocuments/SkyDocumentType.h>

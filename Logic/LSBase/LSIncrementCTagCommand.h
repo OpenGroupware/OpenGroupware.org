@@ -24,6 +24,18 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
+/**
+ * @class LSIncrementCTagCommand
+ *
+ * Increments the CTag (change tag) counter in the
+ * "ctags" database table for the entity of the
+ * command's current object. This signals to sync
+ * clients (e.g. CalDAV/CardDAV) that the collection
+ * has been modified.
+ *
+ * Typically run as a post-processing sub-command after
+ * create, update, or delete operations.
+ */
 @interface LSIncrementCTagCommand : LSDBObjectBaseCommand
 {
 }

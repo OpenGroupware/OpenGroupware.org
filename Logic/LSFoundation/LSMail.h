@@ -24,6 +24,17 @@
 
 #import <Foundation/NSObject.h>
 
+/**
+ * @class LSMail
+ * @brief Simple mail sending utility using sendmail.
+ *
+ * Provides both class methods for one-shot message sending
+ * and an instance-based API for constructing and sending
+ * emails. Messages are delivered by piping RFC 822 formatted
+ * output to the sendmail binary (default /usr/lib/sendmail).
+ *
+ * Supports To, CC, From, Subject, and a plain text body.
+ */
 @interface LSMail : NSObject
 {
 @protected

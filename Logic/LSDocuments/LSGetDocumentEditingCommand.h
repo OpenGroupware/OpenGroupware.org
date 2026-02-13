@@ -23,6 +23,21 @@
 
 @class NSNumber;
 
+/**
+ * @class LSGetDocumentEditingCommand
+ * @brief Fetches DocumentEditing records from the
+ *        database.
+ *
+ * Retrieves DocumentEditing entities (checked-out
+ * working copies of documents). After fetching, the
+ * command optionally checks permissions by running the
+ * "documentediting::check-get-permission" subcommand,
+ * and resolves attachment file paths via
+ * "documentediting::get-attachment-name".
+ *
+ * Set `checkPermissions` to NO to skip the permission
+ * check (defaults to YES).
+ */
 @interface LSGetDocumentEditingCommand : LSDBObjectGetCommand
 {
   NSNumber *checkPermissions; /* check for delete */

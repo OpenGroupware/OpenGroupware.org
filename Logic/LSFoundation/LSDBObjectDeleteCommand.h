@@ -26,6 +26,28 @@
 
 @class NSArray;
 
+/**
+ * @class LSDBObjectDeleteCommand
+ * @brief Base command for deleting database objects.
+ *
+ * Supports both hard deletes (removing the row from the
+ * database) and soft deletes (setting dbStatus to "archived").
+ * The mode is controlled by the "reallyDelete" flag, which
+ * defaults to YES.
+ *
+ * If no object is provided, the command fetches it
+ * automatically using the "primaryKey" argument. Cascade
+ * deletion of to-many relationships is supported via
+ * -_deleteRelations:inContext:.
+ *
+ * Tombstone creation and delete-log entries can be controlled
+ * via the LSTombstoneOnDeleteEnabled and LSDisableLogDeletion
+ * user defaults.
+ *
+ * @see LSDBObjectBaseCommand
+ * @see LSDBObjectNewCommand
+ * @see LSDBObjectSetCommand
+ */
 @interface LSDBObjectDeleteCommand : LSDBObjectBaseCommand
 {
 @protected

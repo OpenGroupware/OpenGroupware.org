@@ -24,6 +24,15 @@
 
 #include <LSFoundation/LSModuleManager.h>
 
+/**
+ * @class LSBaseCommands
+ *
+ * Module manager for the LSBase command bundle.
+ * Registers and links the base utility commands
+ * (versioning, CTag management, password encryption,
+ * context transfer, logging, and object type lookup)
+ * so they are available through the OGo command factory.
+ */
 @interface LSBaseCommands : LSModuleManager
 
 @end

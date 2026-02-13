@@ -25,6 +25,17 @@
 #include <NGObjWeb/WOComponent.h>
 #include <OGoFoundation/LSWContentPage.h>
 
+/**
+ * @category WOComponent(Navigation)
+ * @brief Page navigation convenience methods.
+ *
+ * Delegates to the session's OGoNavigation to push
+ * and pop content pages, navigate back by a given
+ * count, and activate objects with a verb.
+ *
+ * @see OGoNavigation
+ * @see OGoContentPage
+ */
 @interface WOComponent(Navigation)
 
 - (void)enterPage:(id)_page;

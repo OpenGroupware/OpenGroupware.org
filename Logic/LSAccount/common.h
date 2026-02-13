@@ -22,6 +22,16 @@
 #ifndef __OGo_LSAccount_common_H__
 #define __OGo_LSAccount_common_H__
 
+/**
+ * @file common.h
+ *
+ * Precompiled common imports for the LSAccount
+ * module. Pulls in Foundation, EOControl,
+ * NGExtensions, GDLAccess, LSFoundation, and
+ * OGoContextManager headers used by the account
+ * command classes.
+ */
+
 #import <Foundation/Foundation.h>
 
 #if LIB_FOUNDATION_LIBRARY

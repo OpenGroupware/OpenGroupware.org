@@ -27,6 +27,15 @@
 @class NSArray;
 @class NSData;
 
+/**
+ * @category NGFileManagerZipTool(Project)
+ *
+ * Adds project-level zip support to NGFileManagerZipTool.
+ * Provides -zipProjectPaths:fileManager:compressionLevel:
+ * which copies the specified paths from a project file
+ * manager into a local temporary directory, zips them, and
+ * returns the resulting archive as NSData.
+ */
 @interface NGFileManagerZipTool(Project)
 - (NSData *)zipProjectPaths:(NSArray *)_srcPaths
   fileManager:(id)_fileManager

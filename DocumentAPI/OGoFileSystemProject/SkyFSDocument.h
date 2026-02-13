@@ -27,6 +27,21 @@
 
 @class EOGlobalID, NSString, NSData, NGMimeType, SkyFSFileManager;
 
+/**
+ * @class SkyFSDocument
+ * @brief Document object for files in a filesystem project.
+ *
+ * Represents a single file stored on the local file system
+ * within a filesystem-backed project. Provides BLOB access
+ * (binary and string content), MIME type detection, file
+ * attributes, and DOM-based content access via the
+ * SkyDOMBLOBDocument protocol.
+ *
+ * @see SkyDocument
+ * @see SkyFSFileManager
+ * @see SkyFSDataSource
+ */
+
 @interface SkyFSDocument : SkyDocument
   < SkyBLOBDocument, SkyStringBLOBDocument >
 {

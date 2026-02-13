@@ -24,18 +24,28 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
-/*
-  LSGetCompanyForMemberCommand
-  
-  Used to retrieve teams for an account and other company<->company
-  relationships.
-  
-  Note: the members must not be immutable dictionaries! The commands sets some
-        values in them.
-*/
-
 @class NSArray, NSString, NSNumber;
 
+/**
+ * @class LSGetCompanyForMemberCommand
+ *
+ * Retrieves the group/parent companies for a set of member
+ * companies. Primarily used to look up team memberships for
+ * accounts and enterprise-to-person relationships.
+ *
+ * Concrete subclasses:
+ *   - LSGetTeamForAccountCommand (team membership)
+ *   - LSGetEnterpriseForPersonCommand
+ *
+ * Accepts one or more member objects via @c setMember: or
+ * @c setMembers: and returns the associated groups sorted
+ * by description. Supports batched SQL queries and can
+ * optionally return global IDs instead of full objects when
+ * @c fetchGlobalIDs is set.
+ *
+ * @note The member objects must be mutable, as the command
+ *       sets relationship values on them.
+ */
 @interface LSGetCompanyForMemberCommand : LSDBObjectBaseCommand
 {
 @private

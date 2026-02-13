@@ -26,6 +26,18 @@
 #include <OGoDocuments/SkyContext.h>
 #include <OGoDocuments/SkyDocumentManager.h>
 
+/**
+ * @category LSCommandContext(Doc)
+ * @brief Adds document manager support to LSCommandContext.
+ *
+ * Implements the SkyContext protocol on LSCommandContext,
+ * lazily creating and caching a SkyDocumentManager instance
+ * that can resolve documents by URL or global ID within
+ * the command context.
+ *
+ * @see SkyContext
+ * @see SkyDocumentManager
+ */
 @interface LSCommandContext(Doc) < SkyContext >
 
 - (id<SkyDocumentManager>)documentManager;

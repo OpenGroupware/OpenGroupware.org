@@ -24,6 +24,24 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
+/**
+ * @class LSGetObjectTypeCommand
+ *
+ * Resolves one or more numeric object IDs to their
+ * entity type names (e.g. "Person", "Enterprise",
+ * "Date"). First checks the ObjectInfo table for a
+ * cached type mapping; if not found, scans all entity
+ * tables in the database model for a matching primary
+ * key.
+ *
+ * Supports both single-ID and batch-ID modes. Results
+ * are cached in the context under the
+ * "LSObjectIdToType" key to avoid repeated lookups.
+ *
+ * Keys: "objectId"/"oid" (single), "oids" (array).
+ * Returns a type name string (single) or an array of
+ * type name strings (batch).
+ */
 @interface LSGetObjectTypeCommand : LSDBObjectBaseCommand
 {
 @private

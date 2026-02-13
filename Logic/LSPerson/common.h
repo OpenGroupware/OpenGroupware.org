@@ -22,6 +22,17 @@
 #ifndef __LSPerson_common_H__
 #define __LSPerson_common_H__
 
+/**
+ * @file common.h
+ *
+ * Precompiled common imports for the LSPerson
+ * module. Pulls in Foundation, EOControl,
+ * NGExtensions, NGObjectMacros, NGStreams, NGMime,
+ * GDLAccess, LSFoundation, and OGoContextManager
+ * headers used by the person contact command
+ * classes.
+ */
+
 #import <Foundation/Foundation.h>
 
 #include <EOControl/EOControl.h>

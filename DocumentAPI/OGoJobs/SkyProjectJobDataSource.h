@@ -26,6 +26,23 @@
 
 @class EOGlobalID, NSException, EOFetchSpecification, NSString;
 
+/**
+ * @class SkyProjectJobDataSource
+ * @brief EODataSource for fetching jobs associated with a
+ *        project.
+ *
+ * Read-only data source that fetches job/task documents
+ * (SkyJobDocument) for a given project via the
+ * "project::get-jobs" Logic command. Supports qualifier
+ * filtering, sort orderings, and morphs the result EOs
+ * into SkyJobDocument instances.
+ *
+ * Insert, update, and delete operations are not
+ * implemented for this data source.
+ *
+ * @see SkyJobDocument
+ * @see SkyPersonJobDataSource
+ */
 @interface SkyProjectJobDataSource : EODataSource
 {
   EOGlobalID           *projectId;

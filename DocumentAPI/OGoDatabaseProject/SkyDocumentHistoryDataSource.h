@@ -26,10 +26,19 @@
 
 @class EOGlobalID, EOFetchSpecification, SkyProjectFileManager;
 
-/*
-  Supported Hints:
-
-*/
+/**
+ * @class SkyDocumentHistoryDataSource
+ * @brief EODataSource that fetches version history of a document.
+ *
+ * Provides access to the version history (all version
+ * attributes) of a single document in a database project.
+ * Registers for version-change notifications on the document
+ * path so that fetched data is automatically invalidated
+ * when new versions are created.
+ *
+ * @see SkyProjectFileManager
+ * @see SkyProjectDocument
+ */
 
 @interface SkyDocumentHistoryDataSource : EODataSource
 {

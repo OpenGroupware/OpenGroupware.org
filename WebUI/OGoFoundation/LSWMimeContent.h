@@ -28,6 +28,19 @@
 @class NGMimeType;
 @class WOContext, WOResponse;
 
+/**
+ * @class LSWMimeContent
+ * @brief Wrapper for generating HTTP responses with
+ *        arbitrary MIME-typed content.
+ *
+ * Encapsulates binary data together with its MIME type
+ * and optional content-disposition header. Can produce
+ * a complete WOResponse suitable for file downloads or
+ * inline display. Handles HEAD and OPTIONS request
+ * methods appropriately.
+ *
+ * @see NGMimeType
+ */
 @interface LSWMimeContent : NSObject
 {
 @protected

@@ -28,6 +28,23 @@
 
 @class NSSet, NSDate;
 
+/**
+ * @class LSBundleCmdFactory
+ * @brief Bundle-based command factory for the Logic
+ *        layer.
+ *
+ * LSBundleCmdFactory implements the LSCommandFactory
+ * protocol by loading command definitions from
+ * commands.plist resources inside Logic bundles. It
+ * discovers, caches and instantiates command objects
+ * identified by "domain::operation" names (e.g.
+ * "person::get"). Bundles are loaded on demand via
+ * NGBundleManager.
+ *
+ * @see LSCommandFactory
+ * @see LSModuleManager
+ * @see NGBundleManager
+ */
 @interface LSBundleCmdFactory : NSObject < LSCommandFactory >
 {
 @private

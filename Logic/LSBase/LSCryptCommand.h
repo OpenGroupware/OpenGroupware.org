@@ -26,6 +26,19 @@
 
 extern char *crypt(const char *key, const char *salt);
 
+/**
+ * @class LSCryptCommand
+ *
+ * Encrypts a password string using the POSIX crypt(3)
+ * function. If no salt is provided, a random two-
+ * character salt is generated from the current time.
+ *
+ * The return value is the encrypted password string.
+ * Does not require a database channel or transaction.
+ *
+ * Keys: "password" (the plaintext), "salt" (optional
+ * two-character salt).
+ */
 @interface LSCryptCommand : LSBaseCommand
 {
 @private 

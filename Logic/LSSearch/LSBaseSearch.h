@@ -28,11 +28,25 @@
 @class LSGenericSearchRecord, NSArray, NSString;
 @class EOAttribute, EOEntity, EOSQLQualifier, EOAdaptor;
 
-/*
-  LSBaseSearch
-
-  TODO: document
-*/
+/**
+ * @class LSBaseSearch
+ *
+ * Abstract base class for constructing SQL qualifier
+ * format strings used in OGo search operations.
+ * Provides helper methods that format string, number,
+ * and text attribute values into SQL LIKE/ILIKE or
+ * equality expressions suitable for use in
+ * EOSQLQualifier format strings.
+ *
+ * Subclasses (LSExtendedSearch, LSFullSearch) use
+ * these formatting methods to build qualifiers for
+ * their specific search strategies.
+ *
+ * The dbAdaptor is used for database-specific value
+ * formatting and expression generation. The comparator
+ * controls whether LIKE, ILIKE, or EQUAL matching is
+ * used.
+ */
 @interface LSBaseSearch : NSObject
 {
   EOAdaptor *dbAdaptor;

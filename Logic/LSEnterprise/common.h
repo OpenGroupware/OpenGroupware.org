@@ -22,7 +22,15 @@
 #ifndef __OGo_LSLogic_LSEnterprise_common_H__
 #define __OGo_LSLogic_LSEnterprise_common_H__
 
-// common include files
+/**
+ * @file common.h
+ *
+ * Precompiled common imports for the LSEnterprise
+ * module. Pulls in Foundation, NGExtensions (incl.
+ * NSNull+misc), GDLAccess, and EOSQLQualifier
+ * headers used by the enterprise (company) command
+ * classes.
+ */
 
 #import <Foundation/Foundation.h>
 

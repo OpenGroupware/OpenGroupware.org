@@ -23,6 +23,22 @@
 #ifndef __LSLogic_LSMail_LSMailFunctions_H__
 #define __LSLogic_LSMail_LSMailFunctions_H__
 
+/**
+ * @file LSMailFunctions.h
+ *
+ * SQL expression builder functions for the LSMail
+ * module.
+ *
+ * Provides C helper functions that construct raw SQL
+ * queries for batch email operations: moving emails
+ * between folders, checking content references,
+ * deleting emails and their content blobs, deleting
+ * folders, and looking up emails/subfolders by
+ * parent folder IDs. Queries are executed in batches
+ * of up to 100 IDs at a time via
+ * _executeIdQueryWith().
+ */
+
 #import "common.h"
 
 typedef NSString*(*__LSMail_getIdExpr)(id,id,NSArray*,NSNumber*);

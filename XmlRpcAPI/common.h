@@ -22,6 +22,16 @@
 #ifndef __skyxmlrpcd_common_H__
 #define __skyxmlrpcd_common_H__
 
+/**
+ * @file common.h
+ *
+ * Common precompiled header for the OGo XML-RPC API
+ * daemon (skyxmlrpcd). Imports Foundation, SOPE
+ * frameworks (NGStreams, NGExtensions, NGMime, NGHttp,
+ * NGObjWeb, DOM), EOControl, GDLAccess, and the core
+ * OGo Logic and DocumentAPI headers needed by the
+ * XML-RPC action handlers.
+ */
 
 #include <Foundation/Foundation.h>
 

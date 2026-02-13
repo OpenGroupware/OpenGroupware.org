@@ -24,6 +24,16 @@
 
 #include <LSFoundation/LSDBObjectSetCommand.h>
 
+/**
+ * @class LSIncreaseVersionCommand
+ *
+ * Increments the "objectVersion" attribute of a database
+ * object by one. Asserts that the entity supports the
+ * objectVersion attribute before proceeding.
+ *
+ * Typically invoked as a sub-command of set/update
+ * commands to implement optimistic locking.
+ */
 @interface LSIncreaseVersionCommand : LSDBObjectSetCommand
 {
 }

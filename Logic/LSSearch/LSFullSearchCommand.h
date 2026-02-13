@@ -26,6 +26,27 @@
 
 @class NSMutableArray, NSString, NSDictionary, NSNumber;
 
+/**
+ * @class LSFullSearchCommand
+ *
+ * Command that performs a fulltext search across all
+ * string attributes of an entity and its configured
+ * related entities. Uses LSFullSearch to build the SQL
+ * qualifiers and executes one or more fetches against
+ * the database.
+ *
+ * Search configuration (which related entities to include
+ * and how to group them) is read from the
+ * "LSFullSearchConfig" user default. Supports single or
+ * multiple search strings; when multiple are given,
+ * results can be intersected (AND mode) or merged
+ * (OR mode).
+ *
+ * Results are capped at "LSMaxSearchCount" (or an
+ * explicit maxSearchCount) and are filtered through the
+ * access manager to enforce read permissions and
+ * privacy checks.
+ */
 @interface LSFullSearchCommand : LSDBObjectBaseCommand
 {
 @private

@@ -31,6 +31,20 @@
 @class EOGlobalID;
 @class NGLocalFileDocument;
 
+/**
+ * @class NGLocalFileManager
+ * @brief File manager backed by the local filesystem.
+ *
+ * Implements SkyDocumentFileManager on top of the native
+ * filesystem. Provides directory and file operations,
+ * attribute management, global ID mapping, data sources,
+ * and document CRUD within a sandboxed root path. Supports
+ * optional caching when modifications are disallowed.
+ *
+ * @see SkyDocumentFileManager
+ * @see NGLocalFileDocument
+ * @see NGLocalFileDataSource
+ */
 @interface NGLocalFileManager : NGFileManager <SkyDocumentFileManager>
 {
   NSString            *rootPath;
@@ -141,6 +155,14 @@
 
 #import <Foundation/NSString.h>
 
+/**
+ * @category NSString(NGPseudoFileManager)
+ * @brief Path component helper for NGLocalFileManager.
+ *
+ * Provides an alternative to -stringByAppendingPathComponent:
+ * that avoids certain edge cases in the standard
+ * implementation.
+ */
 @interface NSString(NGPseudoFileManager)
 - (NSString *)stringByAppendingPathComponent2:(NSString *)_path;
 @end

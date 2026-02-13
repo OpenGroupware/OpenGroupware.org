@@ -26,6 +26,18 @@
 
 @class LSCommandContext;
 
+/**
+ * @class SkyMemberDataSource
+ * @brief Datasource for fetching account members of a team.
+ *
+ * A specialized SkyAccountDataSource that fetches the
+ * account documents for members belonging to a specific
+ * team. Uses the "team::members" command to retrieve the
+ * member list, then converts EOs to SkyAccountDocuments.
+ *
+ * @see SkyAccountDataSource
+ * @see SkyTeamDocument
+ */
 @interface SkyMemberDataSource: SkyAccountDataSource
 {
   id team;

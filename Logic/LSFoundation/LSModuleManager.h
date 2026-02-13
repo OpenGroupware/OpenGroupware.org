@@ -26,6 +26,20 @@
 
 @class NSString, NSBundle, NGBundleManager;
 
+/**
+ * @class LSModuleManager
+ * @brief Manages an OGo Logic command bundle module.
+ *
+ * LSModuleManager is responsible for initializing and
+ * managing a single Logic command bundle plugin. It
+ * registers user defaults from the bundle, configures
+ * domains and operations, and notifies classes after
+ * bundle loading via
+ * +lsModuleManager:didLoadClassFromBundle:.
+ *
+ * @see LSBundleCmdFactory
+ * @see NGBundleManager
+ */
 @interface LSModuleManager : NSObject
 {
 @protected

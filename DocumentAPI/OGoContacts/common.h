@@ -22,6 +22,21 @@
 #ifndef __libOGoPersons_common_H__
 #define __libOGoPersons_common_H__
 
+/**
+ * @file common.h
+ * @brief Shared imports and macros for the OGoContacts
+ *        module.
+ *
+ * Provides common Foundation, EOControl, NGExtensions,
+ * GDLAccess, and LSFoundation imports used throughout
+ * the OGoContacts datasource and document classes.
+ *
+ * Also defines convenience macros for conditional
+ * assignment with change-flag tracking
+ * (ASSIGN_IF_NOT_EQUAL, ASSIGNCOPY_IFNOT_EQUAL)
+ * and a portable SEL_EQ selector comparison macro.
+ */
+
 #import <Foundation/Foundation.h>
 
 #include <EOControl/EOControl.h>

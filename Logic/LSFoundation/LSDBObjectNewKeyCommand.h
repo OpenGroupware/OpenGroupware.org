@@ -26,6 +26,23 @@
 
 @class EOEntity;
 
+/**
+ * @class LSDBObjectNewKeyCommand
+ * @brief Command that generates new primary keys for a given
+ *   entity.
+ *
+ * Delegates to the EOAdaptorChannel's
+ * -primaryKeyForNewRowWithEntity: to obtain a new primary key.
+ * Keys are generated in batches (default batch size 10) and
+ * cached in the command context to reduce database round-trips
+ * for consecutive inserts.
+ *
+ * Registered as the "system::newkey" command and used
+ * internally by LSDBObjectNewCommand.
+ *
+ * @see LSDBObjectNewCommand
+ * @see LSBaseCommand
+ */
 @interface LSDBObjectNewKeyCommand : LSBaseCommand
 {
 @protected

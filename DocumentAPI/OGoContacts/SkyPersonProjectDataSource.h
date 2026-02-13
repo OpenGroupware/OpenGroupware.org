@@ -26,6 +26,19 @@
 
 @class EOGlobalID, NSException;
 
+/**
+ * @class SkyPersonProjectDataSource
+ * @brief Datasource for projects associated with a
+ *        specific person.
+ *
+ * Concrete subclass of SkyCompanyProjectDataSource
+ * that fetches projects linked to a person using the
+ * person::get-by-globalid and person::get-projects
+ * Logic commands.
+ *
+ * @see SkyCompanyProjectDataSource
+ * @see SkyPersonDocument
+ */
 @interface SkyPersonProjectDataSource : SkyCompanyProjectDataSource
 {
 }

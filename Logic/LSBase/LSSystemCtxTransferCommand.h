@@ -25,11 +25,18 @@
 #include <LSFoundation/LSBaseCommand.h>
 #include <LSFoundation/LSCommand.h>
 
-/*
-  Using this command one can transfer keys from a context to a command.
-
-  TODO: used anywhere? If not => remove.
-*/
+/**
+ * @class LSSystemCtxTransferCommand
+ *
+ * Transfers key/value pairs from an LSCommandContext to
+ * a target command, then runs that command. The keys to
+ * transfer are configured by setting key/value pairs on
+ * this command (where each key names a context key and
+ * each value names the corresponding target key on the
+ * wrapped command).
+ *
+ * Does not require a database channel or transaction.
+ */
 
 @class NSString, NSMutableDictionary;
 

@@ -29,6 +29,29 @@
 @class NSDictionary;
 @class EOEntity;
 
+/**
+ * @class LSDBObjectNewCommand
+ * @brief Base command for creating (inserting) new database
+ *   objects.
+ *
+ * Generates a new primary key via the "system::newkey"
+ * command, produces an empty enterprise object, populates it
+ * with the values from the record dictionary, and inserts it
+ * into the database. After insertion the object is refetched
+ * to ensure all database-generated values are current.
+ *
+ * Subclasses can call -prepareChangeTrackingFields to
+ * automatically set objectVersion, creationDate,
+ * lastmodifiedDate, and lastModified if the entity defines
+ * those attributes.
+ *
+ * An entry is also inserted into the obj_info table for most
+ * entity types (excluding assignments and CompanyValue).
+ *
+ * @see LSDBObjectBaseCommand
+ * @see LSDBObjectSetCommand
+ * @see LSDBObjectDeleteCommand
+ */
 @interface LSDBObjectNewCommand : LSDBObjectBaseCommand
 {
 }

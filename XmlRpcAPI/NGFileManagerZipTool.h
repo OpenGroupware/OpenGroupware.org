@@ -30,6 +30,16 @@
 @class NSData;
 @class NSDictionary;
 
+/**
+ * @class NGFileManagerZipTool
+ *
+ * File-manager-aware tool for creating zip archives.
+ * Extends NGFileManagerCopyTool to copy files from a
+ * source file manager into a local temporary directory,
+ * then invokes the system zip command to produce the
+ * archive. Supports zipping single or multiple paths
+ * with a configurable compression level (0-9).
+ */
 @interface NGFileManagerZipTool : NGFileManagerCopyTool
 {
 }
@@ -43,11 +53,31 @@
   compressionLevel:(int)_level;
 @end /* NGFileManagerZipTool */
 
+/**
+ * @class NGFileManagerUnzipTool
+ *
+ * File-manager-aware tool for extracting zip archives.
+ * Extends NGFileManagerCopyTool to unzip data or a file
+ * at a given path into a target file manager location,
+ * using a local temporary directory and the system unzip
+ * command as an intermediary.
+ */
 @interface NGFileManagerUnzipTool : NGFileManagerCopyTool {}
 - (NSException *)unzipPath:(NSString *)_zipfile toPath:(NSString *)_toPath;
 - (NSException *)unzipData:(NSData *)_data toPath:(NSString *)_toPath;
 @end /* NGFileManagerUnzipTool */
 
+/**
+ * @class NGFileManagerZipInfo
+ *
+ * Inspects the contents of zip archives via the system
+ * zipinfo command. Provides methods to retrieve metadata
+ * (permissions, version, size, date, time) for each entry
+ * in a zip archive, either from in-memory NSData or from
+ * a file path resolved through an associated file manager.
+ * Results are returned as NSDictionary (keyed by path) or
+ * as an NSArray of per-entry dictionaries.
+ */
 @interface NGFileManagerZipInfo : NSObject
 {
   id<NSObject,NGFileManager> fileManager;

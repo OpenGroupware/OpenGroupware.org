@@ -25,11 +25,21 @@
 
 #import <Foundation/NSObject.h>
 
-/*
-  SkyDocumentIdHandler
-  
-  TODO: describe what it does.
-*/
+/**
+ * @class SkyDocumentIdHandler
+ * @brief Maps document global IDs to their project global IDs.
+ *
+ * Maintains a cached mapping from document primary keys to
+ * project primary keys, loaded in bulk from the database.
+ * Used by SkyProjectFileManager to resolve which project a
+ * given document belongs to.
+ *
+ * Instances are stored in the command context and can be
+ * obtained via +handlerWithContext:. Call -resetData to
+ * invalidate the cached mapping.
+ *
+ * @see SkyProjectFileManager
+ */
 
 @class EOGlobalID;
 

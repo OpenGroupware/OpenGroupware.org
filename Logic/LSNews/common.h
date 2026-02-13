@@ -23,7 +23,16 @@
 #ifndef __LSLogic_LSNews_common_H__
 #define __LSLogic_LSNews_common_H__
 
-// common include files
+/**
+ * @file common.h
+ * @brief Precompiled header for the LSNews command
+ *        bundle.
+ *
+ * Imports Foundation, NGExtensions, NGStreams,
+ * GDLAccess (including EOSQLQualifier), and
+ * LSFoundation headers shared by all LSNews
+ * command implementations.
+ */
 
 #import <Foundation/Foundation.h>
 #import <NGExtensions/NGExtensions.h>

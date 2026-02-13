@@ -27,6 +27,27 @@
 @class NSArray, NSNumber, NSString, NSDictionary, NSCalendarDate;
 @class EODataSource, EOGlobalID;
 
+/**
+ * @class SkyJobDocument
+ * @brief Document object representing an OGo job (task).
+ *
+ * Wraps a job/task entity as a SkyDocument. Provides
+ * accessors for all job attributes including name, dates,
+ * status, priority, keywords, category, creator, executor,
+ * sensitivity, completion tracking, and work metrics.
+ * Supports save, delete, and reload operations through
+ * its associated data source.
+ *
+ * The set of available attributes can be restricted via
+ * supportedAttributes (e.g. limiting to "creator" or
+ * "executor"). The document tracks its editing state and
+ * validity, and registers for global ID deletion
+ * notifications.
+ *
+ * @see SkyPersonJobDataSource
+ * @see SkyProjectJobDataSource
+ * @see SkyJobHistoryDataSource
+ */
 @interface SkyJobDocument : SkyDocument
 {
   EODataSource      *dataSource;

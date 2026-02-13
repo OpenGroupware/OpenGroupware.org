@@ -24,15 +24,27 @@
 
 #include <GDLAccess/EOAdaptorDataSource.h>
 
-/*
-  SkyAdaptorDataSource
-  
-  TODO: document what it does.
-  
-  I think it is just a thin wrapper which does two things:
-  a) manage the connection using the LSCommandContext
-  b) set timezone information in the fetchspec
-*/
+/**
+ * @class SkyAdaptorDataSource
+ * @brief Adaptor data source integrated with LSCommandContext.
+ *
+ * SkyAdaptorDataSource is a thin wrapper around
+ * EOAdaptorDataSource that adds two capabilities:
+ *
+ * - Manages the database connection and transactions
+ *   through an LSCommandContext instead of a standalone
+ *   adaptor channel.
+ * - Automatically injects the user's timezone into fetch
+ *   specification hints so that date values are returned
+ *   in the correct time zone.
+ *
+ * It can connect either to the main OGo database (via the
+ * context's channel) or to a remote database specified by
+ * an adaptor name and connection dictionary.
+ *
+ * @see SkyDBDataSource
+ * @see EOAdaptorDataSource
+ */
 
 @class NSDictionary;
 

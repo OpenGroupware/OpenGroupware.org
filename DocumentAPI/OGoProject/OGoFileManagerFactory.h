@@ -24,19 +24,34 @@
 
 #import <Foundation/NSObject.h>
 
-/*
-  OGoFileManagerFactory
-  
-  TODO: explain.
-*/
-
 @class NSURL, NSArray;
 @class EOGlobalID;
 
+/**
+ * @protocol SkyFileManager
+ * @brief Protocol for OGo project file managers.
+ *
+ * Defines the initialization method that all OGo project
+ * file manager implementations must support.
+ */
 @protocol SkyFileManager
 - (id)initWithContext:(id)_context projectGlobalID:(EOGlobalID *)_gid;
 @end
 
+/**
+ * @class OGoFileManagerFactory
+ * @brief Factory for creating project file managers based
+ *        on the project's storage backend.
+ *
+ * Discovers available project storage backends (Skyrix DB,
+ * Subversion, FileSystem) via bundle resources and creates
+ * the appropriate NGFileManager subclass for a given
+ * project. Provides base URL accessors for each backend
+ * and a shared singleton instance.
+ *
+ * @see SkyFileManager
+ * @see SkyProject
+ */
 @interface OGoFileManagerFactory : NSObject
 
 + (id)sharedFileManagerFactory;

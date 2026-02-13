@@ -24,6 +24,26 @@
 
 #include <OGoDocuments/SkyDocument.h>
 
+/**
+ * @class SkyLogDocument
+ * @brief Document representing a single object log entry.
+ *
+ * SkyLogDocument wraps a log record that is associated with
+ * an OGo database object. Each log entry stores a textual
+ * message, an action identifier, the creating account, and
+ * a creation timestamp.
+ *
+ * Log documents are insert-only: once saved they become
+ * immutable. The -save method inserts the document through
+ * its owning SkyLogDataSource; updates are not supported.
+ * The -account / -actor accessors lazily resolve the
+ * accountId to the corresponding person document via the
+ * document manager.
+ *
+ * @see SkyLogDataSource
+ * @see SkyDocument
+ */
+
 @class SkyLogDataSource;
 @class NSNumber, NSCalendarDate, NSDictionary;
 

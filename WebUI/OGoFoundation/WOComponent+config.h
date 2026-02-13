@@ -24,6 +24,18 @@
 
 #import <NGObjWeb/WOComponent.h>
 
+/**
+ * @category WOComponent(LSOfficeConfig)
+ * @brief Configuration and label access for
+ *        components.
+ *
+ * Provides access to the component's configuration
+ * handler and label handler, with convenience methods
+ * for looking up localized label strings by key.
+ *
+ * @see OGoConfigHandler
+ * @see LSWLabelHandler
+ */
 @interface WOComponent(LSOfficeConfig)
 
 - (id)config;
@@ -43,6 +55,13 @@
 
 @end
 
+/**
+ * @category WOElement(LSOfficeConfig)
+ * @brief Distinguishes elements from components.
+ *
+ * Returns NO for isComponent, allowing code to
+ * distinguish between WOElement and WOComponent.
+ */
 @interface WOElement(LSOfficeConfig)
 
 - (BOOL)isComponent; // NO

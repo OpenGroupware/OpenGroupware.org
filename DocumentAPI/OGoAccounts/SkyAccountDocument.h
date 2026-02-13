@@ -24,17 +24,25 @@
 
 #include <OGoDocuments/SkyDocument.h>
 
-/*
-  SkyAccountDocument
-  
-  Document object representing an account.
-  
-  Note: this is different to of a person (basically a subset of).
-*/
-
 @class EODataSource, EOGlobalID, NSNumber, NSString, NSArray;
 @class SkyAccountTeamsDataSource;
 
+/**
+ * @class SkyAccountDocument
+ * @brief Document object representing an OGo user account.
+ *
+ * Wraps an account EO (a Person entity flagged as account)
+ * as a SkyDocument, exposing properties like login, name,
+ * password, and number. Supports save and reload operations
+ * via its associated datasource.
+ *
+ * This is different from a person document and represents
+ * a subset of person attributes focused on login credentials
+ * and account state (locked, extra account).
+ *
+ * @see SkyAccountDataSource
+ * @see SkyAccountTeamsDataSource
+ */
 @interface SkyAccountDocument : SkyDocument
 {
   EODataSource *dataSource;
@@ -100,6 +108,10 @@
 
 #include <OGoDocuments/SkyDocumentType.h>
 
+/**
+ * @class SkyAccountDocumentType
+ * @brief Document type descriptor for SkyAccountDocument.
+ */
 @interface SkyAccountDocumentType : SkyDocumentType
 @end /* SkyAccountDocumentType */
 

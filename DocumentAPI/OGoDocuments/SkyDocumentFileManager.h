@@ -27,6 +27,17 @@
 
 @class NSString;
 
+/**
+ * @protocol SkyDocumentFileManager
+ * @brief File manager protocol with document retrieval.
+ *
+ * Extends NGFileManager with the ability to return an OGo
+ * document object for a given path. Implementations provide
+ * filesystem-like access to OGo document stores.
+ *
+ * @see SkyDocument
+ * @see NGLocalFileManager
+ */
 @protocol SkyDocumentFileManager < NGFileManager >
 
 - (id)documentAtPath:(NSString *)_path;

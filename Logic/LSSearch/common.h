@@ -22,7 +22,14 @@
 #ifndef __LSLogic_LSSearch_common_H__
 #define __LSLogic_LSSearch_common_H__
 
-/* common include files */
+/**
+ * @file common.h
+ *
+ * Common include file for the LSSearch module. Imports
+ * Foundation, NGExtensions, NGStreams, GDLAccess, and
+ * LSFoundation headers used throughout the search command
+ * bundle.
+ */
 
 #import <Foundation/Foundation.h>
 #import <NGExtensions/NGExtensions.h>

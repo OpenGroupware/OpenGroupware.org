@@ -24,6 +24,17 @@
 
 #import <Foundation/NSFormatter.h>
 
+/**
+ * @class LSStringFormatter
+ * @brief Simple string-to-object formatter.
+ *
+ * Converts objects to their string representation
+ * and parses strings back into objects. Empty strings
+ * are converted to NSNull. Used by OGoSession as the
+ * default string formatter.
+ *
+ * @see OGoSession
+ */
 @interface LSStringFormatter : NSFormatter
 {
 }

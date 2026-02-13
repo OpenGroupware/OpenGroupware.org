@@ -26,6 +26,15 @@
 
 @class XmlRpcDecoder;
 
+/**
+ * @category SkyDocument(XmlRpcAPICoding)
+ *
+ * Adds XML-RPC coding support to SkyDocument. Provides
+ * -initWithXmlRpcCoder: for decoding and
+ * -encodeWithXmlRpcCoder: for encoding. The encoder
+ * serializes the document URL as the "id" key in the
+ * XML-RPC struct representation.
+ */
 @interface SkyDocument(XmlRpcAPICoding)
 
 - (id)initWithXmlRpcCoder:(XmlRpcDecoder *)_coder;

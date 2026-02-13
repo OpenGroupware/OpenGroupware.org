@@ -27,6 +27,20 @@
 @class NSMutableString;
 @class LSCommandContext;
 
+/**
+ * @class LSGetCTagForEntityCommand
+ *
+ * Retrieves the current CTag (change tag) value for a
+ * given entity name from the "ctags" database table.
+ * CTags are integer counters that are incremented
+ * whenever an entity of that type is modified, enabling
+ * clients to detect changes without fetching full data.
+ *
+ * The entity name is set via the "entity" key. The
+ * return value is the CTag string. The command performs
+ * a rollback after reading to avoid holding a
+ * transaction.
+ */
 @interface LSGetCTagForEntityCommand : LSDBObjectBaseCommand
 {
   NSString          *entity;

@@ -24,11 +24,25 @@
 
 #include <EOControl/EODataSource.h>
 
-/*
-  SkySimpleProjectFolderDataSource
-  
-  TODO: explain what this is used for.
-*/
+/**
+ * @class SkySimpleProjectFolderDataSource
+ * @brief Searches project folder contents using a
+ *        qualifier-based file manager lookup.
+ *
+ * Wraps a SkyProjectFolderDataSource and uses the
+ * underlying SkyProjectFileManager to search for
+ * child documents in a folder, optionally performing
+ * deep (recursive) searches.
+ *
+ * Fetch specification hints:
+ *   - fetchDeep: YES|NO (default: NO)
+ *
+ * Supports fetch limits and sort orderings from the
+ * fetch specification.
+ *
+ * @see SkyProjectFolderDataSource
+ * @see SkyProjectFileManager
+ */
 
 @class EOFetchSpecification;
 @class SkyProjectFolderDataSource;

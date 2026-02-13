@@ -25,11 +25,26 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
-/*
-  LSExtendedSearchCommand
-
-  (Abstract?) Superclass for eg LSExtendedSearchPersonCommand.
-*/
+/**
+ * @class LSExtendedSearchCommand
+ *
+ * Base command for multi-field "extended" searches on
+ * OGo entities. Concrete subclasses (e.g.
+ * LSExtendedSearchPersonCommand) override hooks to
+ * customize qualifier construction for their entity.
+ *
+ * Accepts a list of LSGenericSearchRecord objects (or
+ * key/value pairs set directly) and uses
+ * LSExtendedSearch to build a combined SQL qualifier.
+ * Supports AND/OR operators, configurable maximum result
+ * count, fetching full objects or just primary key IDs
+ * or EOGlobalIDs. Results are filtered through the
+ * access manager to enforce read permissions.
+ *
+ * Handles CSV-style attributes (e.g. keywords) by
+ * extracting them from search records and processing
+ * them via dedicated qualifier logic in subclasses.
+ */
 
 @class NSArray, NSString, NSNumber, NSMutableDictionary;
 @class EOSQLQualifier;
@@ -70,6 +85,13 @@
 
 #import <Foundation/NSString.h>
 
+/**
+ * @category NSString(SQLPatterns)
+ *
+ * Provides a helper to strip SQL wildcard characters
+ * ('*' and '%') from keyword strings used in extended
+ * search commands.
+ */
 @interface NSString(SQLPatterns)
 - (NSString *)stringByDeletingSQLKeywordPatterns;
 @end

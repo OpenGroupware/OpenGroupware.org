@@ -24,16 +24,23 @@
 
 #include <OGoFoundation/LSWContentPage.h>
 
-/*
-  SkyEditorPage
-
-  TODO: document
-  TODO: change superclass
-*/
-
 @class NSMutableDictionary, NSDictionary, NSString;
 @class NGMimeType, SkyDocument;
 
+/**
+ * @class SkyEditorPage
+ * @brief Base class for full-page object editors.
+ *
+ * Provides a content page that can create or edit a
+ * SkyDocument. Supports new-mode vs. edit-mode,
+ * sub-editor coordination, constraint validation,
+ * and navigation after save/delete/cancel. Can be
+ * embedded into a SkyWizard workflow.
+ *
+ * @see SkyEditorComponent
+ * @see OGoContentPage
+ * @see SkyWizard
+ */
 @interface SkyEditorPage : LSWContentPage
 {
 @private
@@ -94,6 +101,11 @@
 
 @end
 
+/**
+ * @category NSObject(SkyEditorPageTyping)
+ * @brief Type-check whether an object is an editor
+ *        page.
+ */
 @interface NSObject(SkyEditorPageTyping)
 - (BOOL)isEditorPage;
 @end

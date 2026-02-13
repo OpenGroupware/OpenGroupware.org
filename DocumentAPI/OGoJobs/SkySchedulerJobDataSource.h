@@ -22,6 +22,29 @@
 #ifndef __SkyJobs_SkySchedulerJobDataSource_H__
 #define __SkyJobs_SkySchedulerJobDataSource_H__
 
+/**
+ * @class SkySchedulerJobDataSource
+ * @brief Provides to-do jobs as scheduler-compatible
+ *        appointment documents.
+ *
+ * Adapts the jobs subsystem for consumption by the
+ * calendar/scheduler UI. Fetches to-do jobs for a
+ * single person within a date range specified by a
+ * SkyAppointmentQualifier, then wraps each job in a
+ * SkySchedulerJobDocument that exposes appointment-like
+ * properties (startDate, endDate, participants, etc.).
+ *
+ * Only handles qualifiers of type
+ * SkyAppointmentQualifier with a single person/account
+ * company and the "_todojob_" appointment type.
+ *
+ * Requires the OGoScheduler datasource bundle to be
+ * loaded at initialization time.
+ *
+ * @see SkyPersonJobDataSource
+ * @see SkyAppointmentDataSource
+ */
+
 #include <NGExtensions/EODataSource+NGExtensions.h>
 
 @interface SkySchedulerJobDataSource : EODataSource

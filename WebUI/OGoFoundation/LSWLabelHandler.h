@@ -27,6 +27,21 @@
 
 @class WOComponent;
 
+/**
+ * @class LSWLabelHandler
+ * @brief Caching proxy for localized label lookups in
+ *        OGo components.
+ *
+ * Provides KVC-based access to localized strings for a
+ * WOComponent. Labels are resolved via the component's
+ * resource manager and cached in an internal hash table
+ * for fast repeated access. Supports computed keys
+ * prefixed with '$' that are resolved through the
+ * component's KVC bindings.
+ *
+ * @see OGoResourceManager
+ * @see OGoStringTableManager
+ */
 @interface LSWLabelHandler : NSObject
 {
 @protected

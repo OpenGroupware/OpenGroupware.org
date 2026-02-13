@@ -26,6 +26,21 @@
 
 @class EOGlobalID, NSException, SkyPersonDataSource;
 
+/**
+ * @class SkyEnterprisePersonDataSource
+ * @brief Datasource for persons associated with a
+ *        specific enterprise.
+ *
+ * Fetches SkyPersonDocument objects for the persons
+ * linked to an enterprise, identified by its global ID.
+ * Subclass of SkyCompanyCompanyDataSource that uses
+ * person::get-by-globalid and a SkyPersonDataSource
+ * internally.
+ *
+ * @see SkyCompanyCompanyDataSource
+ * @see SkyPersonDataSource
+ * @see SkyEnterpriseDocument
+ */
 @interface SkyEnterprisePersonDataSource : SkyCompanyCompanyDataSource
 {
   SkyPersonDataSource *personDS;

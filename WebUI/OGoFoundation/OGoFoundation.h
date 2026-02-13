@@ -22,7 +22,17 @@
 #ifndef __OGo_OGoFoundation_H__
 #define __OGo_OGoFoundation_H__
 
-// Module Header File
+/**
+ * @file OGoFoundation.h
+ * @brief Umbrella header for the OGoFoundation framework.
+ *
+ * Imports all public headers of the OGoFoundation
+ * module, which provides the base classes and
+ * categories for OGo's WebUI layer, including
+ * session management, navigation, component
+ * lifecycle, command execution, and pasteboard
+ * support.
+ */
 
 #include <OGoFoundation/OGoComponent.h>
 #include <OGoFoundation/OGoContentPage.h>
@@ -53,8 +63,14 @@
 #include <OGoFoundation/LSWNotifications.h>
 #include <OGoFoundation/OGoObjectMailPage.h>
 
-// kit class
-
+/**
+ * @class LSWFoundation
+ * @brief Kit anchor class for link-time registration.
+ *
+ * Empty class used with the LINK_LSWFoundation macro
+ * to ensure the OGoFoundation framework is linked
+ * into the application binary.
+ */
 @interface LSWFoundation : NSObject
 @end
 

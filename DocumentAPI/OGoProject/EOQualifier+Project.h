@@ -26,6 +26,17 @@
 
 @class NSArray;
 
+/**
+ * @category EOQualifier(Project)
+ * @brief Project-specific qualifier utilities.
+ *
+ * Adds methods to EOQualifier for working with project kind
+ * restrictions and for creating qualifiers that filter by
+ * project type or project IDs. Used by SkyProjectDataSource
+ * to manage the visibility of hidden project kinds.
+ *
+ * @see SkyProjectDataSource
+ */
 @interface EOQualifier(Project)
 
 - (BOOL)isProjectCheckKindQualifier;

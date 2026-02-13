@@ -26,6 +26,28 @@
 
 @class NSNumber;
 
+/**
+ * @class LSGetAttachmentNameCommand
+ * @brief Resolves filesystem attachment paths for
+ *        document objects.
+ *
+ * Given one or more document, note, or editing objects,
+ * this command computes the filesystem path where the
+ * corresponding attachment file is (or should be)
+ * stored, and caches the result in the "attachmentName"
+ * key of each object.
+ *
+ * Supports three storage layouts controlled by the
+ * user defaults `UseFlatDocumentFileStructure` and
+ * `UseFoldersForIDRanges`: flat storage in a single
+ * directory, per-project subdirectories, and additional
+ * ID-range subdirectories within project folders.
+ *
+ * Accepts objects via the "document", "note",
+ * "documentEditing", "documentVersion" (singular) or
+ * their plural forms. An optional `projectId` can be
+ * set to override the project derived from the object.
+ */
 @interface LSGetAttachmentNameCommand : LSBaseCommand
 {
   NSNumber *projectId;

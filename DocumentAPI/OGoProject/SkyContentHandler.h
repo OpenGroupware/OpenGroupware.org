@@ -24,17 +24,44 @@
 
 @class NSString, NSData;
 
+/**
+ * @protocol SkyBlobHandler
+ * @brief Protocol for lazy-loading binary content from a
+ *        file manager.
+ *
+ * Defines a single method to retrieve binary data (BLOB)
+ * on demand, avoiding eager loading of potentially large
+ * file contents.
+ */
 @protocol SkyBlobHandler
 -(NSData *)blob;
-@end /* SkyContentHandler */
+@end /* SkyBlobHandler */
 
-
+/**
+ * @category NSFileManager(BlobHandler)
+ * @brief Adds BLOB handler support to NSFileManager.
+ *
+ * Extends NSFileManager to indicate it supports the BLOB
+ * handler pattern and to vend SkyBlobHandler instances for
+ * file paths.
+ */
 @interface NSFileManager(BlobHandler)
 - (BOOL)supportsBlobHandler;
 - (id<SkyBlobHandler>)blobHandlerAtPath:(NSString *)_path;
 @end
 
-@interface NSFileManagerBlobHandler : NSObject <SkyBlobHandler> 
+/**
+ * @class NSFileManagerBlobHandler
+ * @brief SkyBlobHandler that reads content from an
+ *        NGFileManager path.
+ *
+ * Lazily loads the binary content of a file from an
+ * NGFileManager instance. Returns an empty blob handler
+ * if the path is empty or the file does not exist.
+ *
+ * @see SkyBlobHandler
+ */
+@interface NSFileManagerBlobHandler : NSObject <SkyBlobHandler>
 {
 @protected
   NSFileManager *fm;

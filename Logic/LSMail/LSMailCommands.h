@@ -24,6 +24,18 @@
 
 #include <LSFoundation/LSModuleManager.h>
 
+/**
+ * @class LSMailCommands
+ *
+ * Module manager (bundle principal class) for the
+ * LSMail command bundle.
+ *
+ * Registers and links the mail-related command
+ * classes (e.g. LSMailDeliverCommand) so they can
+ * be discovered and instantiated by the OGo command
+ * factory at runtime.
+ */
+
 @interface LSMailCommands : LSModuleManager
 @end
 

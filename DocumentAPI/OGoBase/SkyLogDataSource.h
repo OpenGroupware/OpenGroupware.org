@@ -24,6 +24,25 @@
 
 #include <EOControl/EODataSource.h>
 
+/**
+ * @class SkyLogDataSource
+ * @brief Data source for log entries attached to an object.
+ *
+ * SkyLogDataSource fetches and creates log entries
+ * (SkyLogDocument instances) associated with a specific
+ * database object identified by its EOGlobalID. It uses
+ * the "object::get-logs" and "object::add-log" Logic
+ * commands via the LSCommandContext.
+ *
+ * Fetched results can be filtered and sorted through an
+ * optional EOFetchSpecification. New log documents are
+ * created pre-filled with the target object's ID and the
+ * current account.
+ *
+ * @see SkyLogDocument
+ * @see EODataSource
+ */
+
 @class EOGlobalID, EOFetchSpecification;
 
 @interface SkyLogDataSource : EODataSource

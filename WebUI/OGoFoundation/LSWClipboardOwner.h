@@ -26,6 +26,20 @@
 
 @class WOSession;
 
+/**
+ * @class LSWClipboardOwner
+ * @brief Owner object for the OGo session clipboard
+ *        pasteboard.
+ *
+ * Acts as the pasteboard owner in the OWPasteboard
+ * protocol, providing data on demand when the pasteboard
+ * contents are requested. Used internally by
+ * OGoSession+Clipboard to manage clipboard ownership
+ * and lazy data provision.
+ *
+ * @see OWPasteboard
+ * @see OGoClipboard
+ */
 @interface LSWClipboardOwner : NSObject
 {
   WOSession *session; // non-retained;

@@ -22,13 +22,21 @@
 #ifndef __SkyCompanyProjectDataSource_H__
 #define __SkyCompanyProjectDataSource_H__
 
-/*
-  This datasource manages the projects associated with a company/account.
-  
-  This datasource should fetch the associated company project global-ids and
-  use the SkyProjectDataSource to turn those gids into SkyProject-Documents.
-
-  Currently it returns EO objects returned by company::get-projects
+/**
+ * @class SkyCompanyProjectDataSource
+ * @brief Abstract datasource for projects associated
+ *        with a company (person or enterprise).
+ *
+ * Fetches projects linked to a specific company by
+ * its global ID using the company::get-projects
+ * command pattern. Subclasses provide the concrete
+ * command names for the specific entity type.
+ *
+ * Currently returns EO objects rather than
+ * SkyProjectDocuments.
+ *
+ * @see SkyPersonProjectDataSource
+ * @see SkyEnterpriseProjectDataSource
  */
 
 #import <EOControl/EODataSource.h>
@@ -52,6 +60,11 @@
 @end
 
 
+/**
+ * @category SkyCompanyProjectDataSource(CommandNames)
+ * @brief Subclass hooks for entity-specific command
+ *        and entity names.
+ */
 @interface SkyCompanyProjectDataSource(CommandNames)
 - (NSString *)nameOfCompanyGetCommand;
 - (NSString *)nameOfCompanyProjectCommand;

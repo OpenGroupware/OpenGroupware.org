@@ -22,7 +22,16 @@
 #ifndef __OGoFoundation_LSWContentPage_H__
 #define __OGoFoundation_LSWContentPage_H__
 
-/* this file is deprecated and should not be used */
+/**
+ * @file LSWContentPage.h
+ * @brief Deprecated header that imports OGoContentPage.
+ *
+ * This file is deprecated and should not be used directly.
+ * Include OGoContentPage.h instead.
+ *
+ * @deprecated Use OGoContentPage.h.
+ * @see OGoContentPage
+ */
 
 #include <OGoFoundation/OGoContentPage.h>
 

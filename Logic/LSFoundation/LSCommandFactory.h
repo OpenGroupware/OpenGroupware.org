@@ -26,6 +26,19 @@
 
 @class NSString;
 
+/**
+ * @protocol LSCommandFactory
+ * @brief Factory protocol for looking up command objects by
+ *   domain and operation name.
+ *
+ * Implementations resolve a command string (e.g. "get") within
+ * a domain (e.g. "person") to a concrete command instance
+ * conforming to LSCommand. The factory is typically accessed
+ * through the LSCommandContext.
+ *
+ * @see LSCommand
+ * @see LSCommandContext
+ */
 @protocol LSCommandFactory
 
 - (id)command:(NSString *)_command inDomain:(NSString *)_domainName;

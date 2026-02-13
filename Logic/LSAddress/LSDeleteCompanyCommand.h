@@ -24,6 +24,17 @@
 
 #include <LSFoundation/LSDBObjectDeleteCommand.h>
 
+/**
+ * @class LSDeleteCompanyCommand
+ *
+ * Abstract base command for deleting company records
+ * (persons, enterprises, teams) from the database.
+ *
+ * Handles cleanup of associated data such as
+ * @c company_info records, project assignments, notes,
+ * and relationship entries. Supports both hard-delete and
+ * soft-delete (archiving via @c dbStatus).
+ */
 @interface LSDeleteCompanyCommand : LSDBObjectDeleteCommand
 {
 }

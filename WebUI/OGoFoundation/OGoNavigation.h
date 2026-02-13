@@ -25,20 +25,25 @@
 #import <Foundation/NSObject.h>
 #import <NGObjWeb/WOActionResults.h>
 
-/*
-  OGoNavigation
-  
-  This objects tracks the navigation through OGo. It does some clever detection
-  of duplicates (TODO: document).
-  
-  You can debug operation by enabling the 'OGoDebugNavigation' bool default.
-  
-  TODO: explain more.
-*/
-
 @class NSMutableArray, NSArray, NSString;
 @class OGoSession, OGoContentPage;
 
+/**
+ * @class OGoNavigation
+ * @brief Manages the page navigation stack in OGo.
+ *
+ * Tracks the user's navigation through OGo content
+ * pages using an internal stack with duplicate
+ * detection. Pages are pushed via enterPage: and
+ * popped via leavePage. Conforms to WOActionResults
+ * so it can be returned directly from action methods.
+ *
+ * Enable the "OGoDebugNavigation" user default for
+ * debug logging.
+ *
+ * @see OGoContentPage
+ * @see OGoSession
+ */
 @interface OGoNavigation : NSObject < WOActionResults >
 {
 @private
@@ -66,6 +71,14 @@
 
 @end
 
+/**
+ * @category OGoNavigation(Activation)
+ * @brief Object activation via verb-based dispatch.
+ *
+ * Activates an object by looking up and entering the
+ * appropriate viewer or editor component for the
+ * given verb (e.g. "view", "edit").
+ */
 @interface OGoNavigation(Activation)
 
 - (id)activateObject:(id)_object withVerb:(NSString *)_verb;

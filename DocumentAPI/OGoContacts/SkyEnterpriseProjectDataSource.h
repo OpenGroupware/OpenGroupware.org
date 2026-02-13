@@ -26,6 +26,19 @@
 
 @class EOGlobalID, NSException;
 
+/**
+ * @class SkyEnterpriseProjectDataSource
+ * @brief Datasource for projects associated with a
+ *        specific enterprise.
+ *
+ * Concrete subclass of SkyCompanyProjectDataSource
+ * that fetches projects linked to an enterprise using
+ * the enterprise::get and enterprise::get-projects
+ * Logic commands.
+ *
+ * @see SkyCompanyProjectDataSource
+ * @see SkyEnterpriseDocument
+ */
 @interface SkyEnterpriseProjectDataSource : SkyCompanyProjectDataSource
 {
 }

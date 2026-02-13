@@ -29,6 +29,20 @@
 @class NSArray, NSString, NSURL;
 @class WOContext, WOComponent;
 
+/**
+ * @class OGoHelpManager
+ * @brief Singleton that resolves help URLs and tooltip
+ *        strings for OGo components.
+ *
+ * Searches the filesystem for installed OGo documentation
+ * in standard Library/Documentation paths. Provides help
+ * URL generation for components and named keys within
+ * sections, as well as short and field-level help text
+ * lookups.
+ *
+ * @see WOComponent(HelpMethods)
+ * @see NSBundle(HelpMethods)
+ */
 @interface OGoHelpManager : NSObject
 {
   NSArray *pathes;
@@ -51,6 +65,15 @@
 
 @end
 
+/**
+ * @category WOComponent(HelpMethods)
+ * @brief Help-related convenience methods for
+ *        WOComponent.
+ *
+ * Returns the help key (defaults to the class name) and
+ * help section (derived from the bundle) for use with
+ * OGoHelpManager URL generation.
+ */
 @interface WOComponent(HelpMethods)
 
 - (NSString *)helpKey;
@@ -58,6 +81,13 @@
 
 @end
 
+/**
+ * @category NSBundle(HelpMethods)
+ * @brief Help section lookup for NSBundle.
+ *
+ * Returns the help section name for a bundle, derived
+ * from the bundle path or its principal class.
+ */
 @interface NSBundle(HelpMethods)
 
 - (NSString *)helpSection;

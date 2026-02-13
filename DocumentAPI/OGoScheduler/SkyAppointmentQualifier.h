@@ -26,6 +26,22 @@
 
 @class NSCalendarDate, NSTimeZone;
 
+/**
+ * @class SkyAppointmentQualifier
+ * @brief Qualifier for filtering appointment fetches.
+ *
+ * An EOQualifier subclass that specifies criteria for
+ * appointment queries: date range (startDate/endDate),
+ * time zone, participating companies (as global IDs),
+ * resource names, appointment types, and person IDs.
+ *
+ * Supports flags to fetch only notified appointments or
+ * only resource-based appointments. Used as the qualifier
+ * in EOFetchSpecification for appointment datasources.
+ *
+ * @see SkyAptDataSource
+ * @see SkyAppointmentDataSource
+ */
 @interface SkyAppointmentQualifier : EOQualifier
 {
 @protected

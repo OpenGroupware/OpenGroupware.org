@@ -21,6 +21,17 @@
 
 #import <LSFoundation/LSDBObjectNewCommand.h>
 
+/**
+ * @class LSNewJobHistoryCommand
+ * @brief Creates a new JobHistory record and its
+ *        associated JobHistoryInfo.
+ *
+ * Inserts a new row into the JobHistory entity that
+ * logs a state transition or action on a job. In
+ * addition, a companion JobHistoryInfo record is
+ * created to store an optional free-text comment
+ * describing the history entry.
+ */
 @interface LSNewJobHistoryCommand : LSDBObjectNewCommand
 {
   NSString *comment;

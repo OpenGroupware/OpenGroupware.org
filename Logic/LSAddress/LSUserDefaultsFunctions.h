@@ -28,6 +28,19 @@
 @class NSDictionary, NSMutableDictionary;
 @class NSUserDefaults;
 
+/**
+ * @file LSUserDefaultsFunctions.h
+ *
+ * Internal C helper functions for reading and writing
+ * per-user defaults from the filesystem.
+ *
+ * User defaults are stored as plist files in the
+ * @c LSAttachmentPath directory, named
+ * @c \<uid\>.defaults. These functions handle path
+ * resolution, file reading/writing, and registration of
+ * volatile login domains.
+ */
+
 NSString *__getUserDefaultsPath_LSLogic_LSAddress(id self, id _context,
                                                   NSNumber *_uid);
 

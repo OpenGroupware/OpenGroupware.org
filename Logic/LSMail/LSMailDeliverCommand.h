@@ -25,11 +25,23 @@
 #include <LSFoundation/LSBaseCommand.h>
 #include <NGMime/NGPart.h>
 
-/*
-  LSMailDeliverCommand
-
-  Send mail using /usr/lib/sendmail.
-*/
+/**
+ * @class LSMailDeliverCommand
+ *
+ * Command for delivering outgoing email messages
+ * via sendmail.
+ *
+ * Resolves recipient addresses, which may be OGo
+ * account logins, team names, or external email
+ * addresses, into actual email addresses. The
+ * message body is provided as raw MIME data or an
+ * NGMimePart object. Delivery is performed by
+ * piping the message to the sendmail binary.
+ * Mailing list recipients are handled via a
+ * separate bulk-delivery tool
+ * (sky_send_bulk_messages). Optionally copies the
+ * sent message to the user's IMAP Sent folder.
+ */
 
 @class NSArray, NSMutableArray, NSData;
 

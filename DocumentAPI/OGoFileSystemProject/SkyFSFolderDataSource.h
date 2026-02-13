@@ -26,6 +26,20 @@
 
 @class SkyFSFileManager, EOFetchSpecification, NSString;
 
+/**
+ * @class SkyFSFolderDataSource
+ * @brief EODataSource for a folder in a filesystem project.
+ *
+ * Fetches SkyFSDocument objects for files contained in a
+ * specific directory of a filesystem-backed project. Supports
+ * qualifier-based filtering via EOFetchSpecification and
+ * recursively traverses subpaths.
+ *
+ * @see SkyFSFileManager
+ * @see SkyFSDocument
+ * @see SkyFSDataSource
+ */
+
 @interface SkyFSFolderDataSource : EODataSource
 {
   SkyFSFileManager    *fm;

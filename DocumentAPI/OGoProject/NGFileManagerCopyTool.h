@@ -25,6 +25,20 @@
 #include <OGoProject/NGFileManagerProcessingTool.h>
 #include <EOControl/EOQualifier.h>
 
+/**
+ * @class NGFileManagerCopyTool
+ * @brief Copies files and directories between NGFileManager
+ *        instances.
+ *
+ * A processing tool that copies file system trees from a
+ * source NGFileManager to a target NGFileManager. Supports
+ * recursive traversal, overwrite control, include/exclude
+ * qualifier-based filtering, and optional save/restore of
+ * file attributes (subject, MIME type, WebDAV properties).
+ *
+ * @see NGFileManagerProcessingTool
+ * @see NGFileManagerCopyToolHandler
+ */
 @interface NGFileManagerCopyTool : NGFileManagerProcessingTool
 {
   id<NSObject,NGFileManager> targetFileManager;
@@ -71,6 +85,18 @@
 
 @end /* NGFileManagerCopyTool */
 
+/**
+ * @class NGFileManagerCopyToolHandler
+ * @brief Handler for NGFileManagerCopyTool processing
+ *        callbacks.
+ *
+ * Implements the processing callbacks for directory, file,
+ * and symlink operations during a copy. Manages the target
+ * directory stack, applies include/exclude qualifiers, and
+ * handles save/restore of file attributes and properties.
+ *
+ * @see NGFileManagerCopyTool
+ */
 @interface NGFileManagerCopyToolHandler : NSObject
 {
   id<NSObject,NGFileManager> targetFileManager;
@@ -135,6 +161,15 @@
 
 @end /* NGFileManagerCopyToolHandler */
 
+/**
+ * @category NSObject(NGFileManagerCopyToolHandler)
+ * @brief Default handler callbacks for file manager
+ *        processing tools.
+ *
+ * Provides default implementations of the processing
+ * callbacks invoked by NGFileManagerProcessingTool for
+ * directories, files, and symbolic links.
+ */
 @interface NSObject(NGFileManagerCopyToolHandler)
 - (NSException *)tool:(NGFileManagerProcessingTool *)_tool
   processDirectoryPath:(NSString *)_directoryPath;

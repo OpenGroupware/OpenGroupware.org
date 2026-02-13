@@ -27,6 +27,19 @@
 @class NSMutableDictionary, NSDictionary, NSString;
 @class NGMimeType, SkyDocument;
 
+/**
+ * @class SkyEditorComponent
+ * @brief Reusable editor component for SkyDocuments.
+ *
+ * A non-page editor component (embedded within an
+ * editor page) that operates on a SkyDocument.
+ * Provides constraint checking hooks and save/delete/
+ * cancel actions. Subclasses implement prepareEditor
+ * to initialize their UI from the document.
+ *
+ * @see SkyEditorPage
+ * @see SkyDocument
+ */
 @interface SkyEditorComponent : OGoComponent
 {
 @private

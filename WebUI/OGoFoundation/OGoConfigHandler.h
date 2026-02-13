@@ -27,6 +27,21 @@
 
 @class WOComponent;
 
+/**
+ * @class OGoConfigHandler
+ * @brief Caching proxy for per-component configuration
+ *        value lookups.
+ *
+ * Provides KVC-based access to configuration values for
+ * a WOComponent. On first access for a given key, the
+ * value is fetched from the session's configuration
+ * system and then cached in an internal hash table for
+ * fast repeated lookups. Used as the backing object for
+ * the 'config' binding in OGo component templates.
+ *
+ * @see LSWLabelHandler
+ * @see WOComponent(OGoConfig)
+ */
 @interface OGoConfigHandler : NSObject
 {
 @protected

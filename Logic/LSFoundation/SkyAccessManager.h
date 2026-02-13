@@ -24,8 +24,17 @@
 
 #include <LSFoundation/OGoAccessManager.h>
 
-// DEPRECATED: use OGoAccessManager!
-
+/**
+ * @class SkyAccessManager
+ * @brief Deprecated alias for OGoAccessManager.
+ *
+ * SkyAccessManager is a trivial subclass kept for
+ * backwards compatibility. Use OGoAccessManager in new
+ * code.
+ *
+ * @deprecated Use OGoAccessManager instead.
+ * @see OGoAccessManager
+ */
 @interface SkyAccessManager : OGoAccessManager
 {
 }

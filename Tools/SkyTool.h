@@ -24,6 +24,23 @@
 
 #import <Foundation/NSObject.h>
 
+/**
+ * @class SkyTool
+ *
+ * Abstract base class for OGo command-line tools. Provides
+ * common infrastructure for login/password authentication
+ * via NSUserDefaults (-l and -p switches), an
+ * LSCommandContext for executing Logic commands, verbose
+ * logging, standard --help/--version argument handling,
+ * and an optional root-only login requirement.
+ *
+ * Subclasses override -toolName, -toolDescription,
+ * -versionInformation, -additionalSwitches and
+ * -runWithArguments: to implement their specific behavior.
+ *
+ * Exit codes: 1 = missing login, 2 = wrong password/user,
+ * 3 = root login required.
+ */
 @interface SkyTool : NSObject
 {
   LSCommandContext *commandContext;

@@ -22,6 +22,22 @@
 #ifndef __OGoBase_LSCommandContext_Doc_H__
 #define __OGoBase_LSCommandContext_Doc_H__
 
+/**
+ * @file LSCommandContext+Doc.h
+ * @brief Re-export of the LSCommandContext(Doc) category.
+ *
+ * This umbrella header re-exports the
+ * LSCommandContext(Doc) category defined in
+ * OGoDocuments, which extends LSCommandContext with
+ * the SkyContext protocol and provides access to the
+ * SkyDocumentManager. Including this header from OGoBase
+ * makes the category available to higher-level modules
+ * without a direct OGoDocuments import.
+ *
+ * @see LSCommandContext
+ * @see SkyDocumentManager
+ */
+
 #include <OGoDocuments/LSCommandContext+Doc.h>
 
 #endif /* __OGoBase_LSCommandContext_Doc_H__ */

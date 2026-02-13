@@ -27,6 +27,20 @@
 @class EODataSource, EOGlobalID, NSNumber, NSString, NSArray;
 @class SkyMemberDataSource;
 
+/**
+ * @class SkyTeamDocument
+ * @brief Document object representing an OGo team.
+ *
+ * Wraps a Team EO as a SkyDocument, exposing properties
+ * like login, number, info, and email. Supports save and
+ * reload operations via its associated datasource.
+ *
+ * Provides access to the team's members through a
+ * SkyMemberDataSource.
+ *
+ * @see SkyTeamDataSource
+ * @see SkyMemberDataSource
+ */
 @interface SkyTeamDocument : SkyDocument
 {
   EODataSource *dataSource;
@@ -76,6 +90,10 @@
 
 #include <OGoDocuments/SkyDocumentType.h>
 
+/**
+ * @class SkyTeamDocumentType
+ * @brief Document type descriptor for SkyTeamDocument.
+ */
 @interface SkyTeamDocumentType : SkyDocumentType
 @end /* SkyTeamDocumentType */
 

@@ -30,6 +30,30 @@
 
 @class NSMutableDictionary, NSDate, NSTimer, NSUserDefaults, SkyAccessManager;
 
+/**
+ * @class LSCommandContext
+ * @brief Central execution context for OGo logic commands.
+ *
+ * LSCommandContext manages the database channel, transactions,
+ * the command factory, and the authenticated user session. It
+ * is the primary entry point for running commands:
+ *
+ *   [ctx runCommand:@"person::get", @"companyId", pid, nil];
+ *
+ * The context automatically opens database channels on demand,
+ * manages transaction begin/commit/rollback, and supports
+ * channel idle timeouts. It also provides access to shared
+ * managers (type manager, property manager, link manager,
+ * access manager).
+ *
+ * Contexts can be pushed/popped onto a thread-local stack via
+ * -pushContext/-popContext for code that needs to retrieve the
+ * active context without passing it explicitly.
+ *
+ * @see LSCommand
+ * @see LSCommandFactory
+ * @see LSBaseCommand
+ */
 @interface LSCommandContext : NSObject
 {
 @private
@@ -80,6 +104,10 @@
 
 @end
 
+/**
+ * @category LSCommandContext(Logging)
+ * @brief Logging convenience methods for the command context.
+ */
 @interface LSCommandContext(Logging)
 
 - (void)logWithFormat:(NSString *)_format, ...;
@@ -87,6 +115,11 @@
 
 @end /* LSCommandContext(Logging) */
 
+/**
+ * @category LSCommandContext(LookupCommands)
+ * @brief Methods for looking up command objects by domain
+ *   and operation name without executing them.
+ */
 @interface LSCommandContext(LookupCommands)
 
 /* you shouldn't use this stuff in GUI ! */
@@ -102,6 +135,11 @@
 
 @end /* LSCommandContext(LookupCommands) */
 
+/**
+ * @category LSCommandContext(RunningCommands)
+ * @brief Methods for looking up, configuring, and executing
+ *   commands in a single call.
+ */
 @interface LSCommandContext(RunningCommands)
 
 - (id)runCommand:(NSString *)_command,...;
@@ -115,6 +153,11 @@
 
 @end /* LSCommandContext(RunningCommands) */
 
+/**
+ * @category LSCommandContext(Transactions)
+ * @brief Database transaction management (begin, commit,
+ *   rollback).
+ */
 @interface LSCommandContext(Transactions)
 
 - (BOOL)begin;
@@ -124,6 +167,11 @@
 
 @end /* LSCommandContext */
 
+/**
+ * @category LSCommandContext(GlobalContext)
+ * @brief Thread-local context stack for retrieving the active
+ *   command context without explicit parameter passing.
+ */
 @interface LSCommandContext(GlobalContext)
 
 - (void)pushContext;
@@ -132,16 +180,29 @@
 
 @end
 
+/**
+ * @category LSCommandContext(LDAP)
+ * @brief LDAP authorization support.
+ */
 @interface LSCommandContext(LDAP)
 + (BOOL)useLDAPAuthorization;
 @end
 
 @class OGoContextManager;
 
+/**
+ * @category LSCommandContext(Init)
+ * @brief Initialization with an OGoContextManager.
+ */
 @interface LSCommandContext(Init)
 - (id)initWithManager:(OGoContextManager *)_lso;
 @end
 
+/**
+ * @category LSCommandContext(LoginStuff)
+ * @brief User authentication (login) and context switching
+ *   (su) methods.
+ */
 @interface LSCommandContext(LoginStuff)
 - (BOOL)login:(NSString *)_login password:(NSString *)_pwd;
 - (BOOL)login:(NSString *)_login password:(NSString *)_pwd

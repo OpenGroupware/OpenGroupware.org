@@ -28,14 +28,32 @@
 @class NSString, NSArray, NSMutableDictionary;
 @class WOComponent;
 
+/**
+ * @class OGoModuleManager
+ * @brief Manages loading and initialization of OGo bundle
+ *        plugins.
+ *
+ * Acts as a bundle load notification handler for the
+ * NGBundleManager. When a bundle is loaded, the module
+ * manager registers its default settings from
+ * Defaults.plist and ensures that classes provided by
+ * the bundle are initialized via the +initialize method.
+ *
+ * @see NGBundleManager
+ */
 @interface OGoModuleManager : NSObject
 {
 }
 
 @end
 
-/* for compatibility, to be removed */
-
+/**
+ * @class LSWModuleManager
+ * @brief Deprecated alias for OGoModuleManager.
+ *
+ * @deprecated Use OGoModuleManager.
+ * @see OGoModuleManager
+ */
 @interface LSWModuleManager : OGoModuleManager
 @end
 

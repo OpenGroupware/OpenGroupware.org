@@ -24,17 +24,24 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
-/*
-  LSGetObjectForGlobalIDs
-  
-  This class is a superclass for commands which fetch objects based on a list
-  of EOGlobalIDs.
-  
-  Note: LSBase contains a subclass.
-*/
-
 @class NSNumber, NSString, NSArray;
 
+/**
+ * @class LSGetObjectForGlobalIDs
+ * @brief Base class for commands that fetch objects by
+ *        EOGlobalIDs.
+ *
+ * LSGetObjectForGlobalIDs is an abstract superclass for
+ * commands that retrieve database objects given a list of
+ * EOGlobalIDs. Subclasses override -validateQualifier:
+ * to add access restrictions and
+ * -fetchAdditionalInfosForObjects:context: to attach
+ * extra data to fetched objects.
+ *
+ * Note: LSBase contains a subclass.
+ *
+ * @see LSDBObjectBaseCommand
+ */
 @interface LSGetObjectForGlobalIDs : LSDBObjectBaseCommand
 {
   NSArray  *gids;

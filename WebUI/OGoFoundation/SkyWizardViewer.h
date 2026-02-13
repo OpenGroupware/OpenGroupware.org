@@ -26,6 +26,18 @@
 
 @class NSMutableDictionary, NSArray;
 
+/**
+ * @class SkyWizardViewer
+ * @brief Content page for reviewing wizard data.
+ *
+ * Displays an object being edited in a SkyWizard
+ * workflow. Builds a mutable snapshot from the
+ * transfer object when activated with the
+ * "wizard-view" command.
+ *
+ * @see SkyWizard
+ * @see OGoContentPage
+ */
 @interface SkyWizardViewer : LSWContentPage
 {
   id                  object;

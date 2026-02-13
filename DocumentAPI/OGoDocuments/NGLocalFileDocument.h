@@ -30,6 +30,20 @@
 @class EOGlobalID;
 @class NGFileDocument;
 
+/**
+ * @class NGLocalFileDocument
+ * @brief Document backed by a local filesystem file.
+ *
+ * A concrete SkyDocument subclass that wraps a file on the
+ * local filesystem. Provides access to the file content as
+ * NSData or NSString (via SkyStringBLOBDocument), as well
+ * as file attributes and a subject derived from the path.
+ * Content is cached for performance.
+ *
+ * @see NGLocalFileManager
+ * @see NGLocalFileGlobalID
+ * @see SkyDocument
+ */
 @interface NGLocalFileDocument : SkyDocument < SkyStringBLOBDocument >
 {
   EOGlobalID   *globalID;
@@ -57,6 +71,13 @@
 
 @end /* NGLocalFileDocument */
 
+/**
+ * @category NGLocalFileDocument(DOM)
+ * @brief Adds DOM BLOB support to NGLocalFileDocument.
+ *
+ * Allows local file documents to represent their content
+ * as a parsed DOM document object.
+ */
 @interface NGLocalFileDocument(DOM) < SkyDOMBLOBDocument >
 
 - (id)contentAsDOMDocument;

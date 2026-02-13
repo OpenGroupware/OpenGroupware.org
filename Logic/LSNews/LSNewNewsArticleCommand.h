@@ -26,6 +26,23 @@
 
 @class NSData, NSString, NSArray;
 
+/**
+ * @class LSNewNewsArticleCommand
+ * @brief Creates a new NewsArticle record, saves its
+ *        text content and optional image attachment.
+ *
+ * Inserts a new row into the NewsArticle entity.
+ * If the article is marked as the index article,
+ * all other articles are demoted first. Related
+ * articles are linked via
+ * "newsArticle::set-related-Articles"; if none are
+ * supplied, the current index articles are used.
+ *
+ * The text body (`fileContent`) is written to
+ * `LSAttachmentPath` and the optional image (`data`
+ * with `filePath` for the extension) is written to
+ * `LSNewsImagesPath`.
+ */
 @interface LSNewNewsArticleCommand : LSDBObjectNewCommand
 {
 @protected  

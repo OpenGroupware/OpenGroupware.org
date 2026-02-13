@@ -24,6 +24,20 @@
 
 #import <Foundation/NSString.h>
 
+/**
+ * @file LSWNotifications.h
+ * @brief Notification name constants for OGo WebUI change
+ *        notifications.
+ *
+ * Defines string constants for NSNotification names posted
+ * when OGo entities are created, updated, or deleted.
+ * Covers contacts (person, enterprise), appointments,
+ * projects, documents, accounts, teams, tasks, mail,
+ * news articles, catalogs, and object links. Components
+ * observe these notifications to refresh their state when
+ * data changes.
+ */
+
 #define LSWNewAddressNotificationName          @"LSWNewAddress"
 
 #define LSWNewEnterpriseNotificationName       @"LSWNewEnterprise"

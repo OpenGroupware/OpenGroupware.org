@@ -30,10 +30,21 @@
 @class EODatabase, EODatabaseContext, EODatabaseChannel;
 @class OGoContextManager, LSCommandContext;
 
-/*
-  Use command-context instead of this object !!
-*/
-
+/**
+ * @class OGoContextSession
+ * @brief Represents an authenticated user session in OGo.
+ *
+ * OGoContextSession wraps an LSCommandContext with login
+ * state and EOF database objects. It supports session
+ * activation/deactivation (thread-local active session),
+ * running commands, transaction management, and adaptor
+ * debugging.
+ *
+ * Prefer using LSCommandContext directly for new code.
+ *
+ * @see OGoContextManager
+ * @see LSCommandContext
+ */
 @interface OGoContextSession : NSObject
 {
 @private
@@ -67,6 +78,10 @@
 
 @end
 
+/**
+ * @category OGoContextSession(PrivateMethods)
+ * @brief Initializers and EOF/command accessors.
+ */
 @interface OGoContextSession(PrivateMethods)
 
 - (id)initWithCommandContext:(LSCommandContext *)_cmdCtx 

@@ -26,20 +26,24 @@
 
 @class EOGlobalID, NSString, NSNumber;
 
-/*
-  attributes:
-
-  name1      -> string
-  name2      -> string
-  name3      -> string
-  street     -> string
-  zip        -> string
-  city       -> string
-  country    -> string
-  state      -> string
-  type       -> string
-  objectVersion    -> number
-*/
+/**
+ * @class SkyAddressDocument
+ * @brief Document representing a postal address of a
+ *        contact (person or enterprise).
+ *
+ * Holds address fields such as name lines, street, zip,
+ * city, country, state, and an address type. Tracks
+ * editing state and validity, and supports save, delete,
+ * and reload operations via its associated
+ * SkyContactAddressDataSource.
+ *
+ * Attributes: name1, name2, name3, street, zip, city,
+ * country, state, type (all strings), objectVersion
+ * (number).
+ *
+ * @see SkyContactAddressDataSource
+ * @see SkyCompanyDocument
+ */
 
 @class SkyContactAddressDataSource;
 
@@ -131,6 +135,11 @@
 
 @end
 
+/**
+ * @category SkyAddressDocument(ConvenienceMethods)
+ * @brief Convenience methods for persisting and
+ *        reloading address documents.
+ */
 @interface SkyAddressDocument(ConvenienceMethods)
 
 - (BOOL)save;

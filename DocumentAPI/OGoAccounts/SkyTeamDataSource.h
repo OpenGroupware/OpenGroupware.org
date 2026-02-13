@@ -31,6 +31,22 @@
 @class NSArray, NSSet;
 @class EOQualifier, EOFetchSpecification;
 
+/**
+ * @class SkyTeamDataSource
+ * @brief EODataSource for fetching and managing teams.
+ *
+ * Provides a datasource interface for OGo teams. Supports
+ * fetching via EOKeyValueQualifier, EOAndQualifier, and
+ * EOOrQualifier with extended search across team, address,
+ * phone, and company-value records.
+ *
+ * Posts SkyNewTeamNotification, SkyUpdatedTeamNotification,
+ * and SkyDeletedTeamNotification on changes. Fetched EOs
+ * are converted to SkyTeamDocument objects.
+ *
+ * @see SkyTeamDocument
+ * @see SkyAccountTeamsDataSource
+ */
 @interface SkyTeamDataSource : EODataSource
 {
   EOFetchSpecification *fetchSpecification;
@@ -39,6 +55,14 @@
 - (NSSet *)nativeKeys;
 @end
 
+/**
+ * @class SkyTeamDocumentGlobalIDResolver
+ * @brief Resolves Team global IDs to SkyTeamDocuments.
+ *
+ * Implements the SkyDocumentGlobalIDResolver informal
+ * protocol to resolve EOKeyGlobalIDs with entity name
+ * "Team" into SkyTeamDocument instances.
+ */
 @interface SkyTeamDocumentGlobalIDResolver : NSObject
 //  <SkyDocumentGlobalIDResolver>
 @end

@@ -32,6 +32,19 @@
 @class NSDictionary, NSMutableDictionary;
 @class NSMutableSet;
 
+/**
+ * @class lfNSUserDefaults
+ *
+ * Lightweight NSUserDefaults reimplementation derived from
+ * the libFoundation codebase. Provides the standard
+ * NSUserDefaults API (get/set by type, persistent and
+ * volatile domains, search list, synchronize) without
+ * depending on the system NSUserDefaults singleton.
+ *
+ * Used as the base class for LSUserDefaults so that
+ * per-account defaults can be managed with the familiar
+ * NSUserDefaults interface on non-Apple platforms.
+ */
 @interface lfNSUserDefaults : NSObject
 {
     NSString            *directoryForSaving;

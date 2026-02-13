@@ -24,6 +24,21 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
+/**
+ * @class LSProjectAssignmentCommand
+ *
+ * Command for managing company-to-project
+ * assignments (project::assign).
+ *
+ * Adds and removes company (account/team)
+ * assignments for a project. The 'companies' array
+ * specifies entities to assign, while
+ * 'removedCompanies' specifies entities to
+ * unassign. Each assignment carries a hasAccess
+ * flag and an optional accessRight value. Existing
+ * assignments are updated rather than duplicated.
+ */
+
 @class NSArray, NSNumber;
 
 @interface LSProjectAssignmentCommand : LSDBObjectBaseCommand

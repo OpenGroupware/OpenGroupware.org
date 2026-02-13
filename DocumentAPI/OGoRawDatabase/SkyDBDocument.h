@@ -24,11 +24,24 @@
 
 #include <OGoDocuments/SkyDocument.h>
 
-/*
-  SkyDBDocument
-  
-  Represents a database row as fetched from the SkyDBDataSource.
-*/
+/**
+ * @class SkyDBDocument
+ * @brief A document backed by a single database row.
+ *
+ * SkyDBDocument wraps a dictionary of column values fetched
+ * from the database via SkyDBDataSource into an OGo document.
+ * It supports key-value coding on the column values, tracks
+ * modifications, and provides save, delete and revert
+ * operations that delegate back to its owning data source.
+ *
+ * New documents (those without a persistent global ID) can
+ * be inserted; existing documents can be updated or deleted.
+ * The set of supported keys is derived from the dictionary
+ * columns returned by the database.
+ *
+ * @see SkyDBDataSource
+ * @see SkyDocument
+ */
 
 @class NSMutableDictionary, NSDictionary, NSString, NSArray;
 @class EOGlobalID;
@@ -71,6 +84,14 @@
 
 @end
 
+/**
+ * @category SkyDBDocument(Privates)
+ * @brief Private initializer and data source accessor.
+ *
+ * Provides the designated initializer that constructs a
+ * document from a dictionary, global ID, and entity name,
+ * as well as access to the owning SkyDBDataSource.
+ */
 @interface SkyDBDocument(Privates)
 
 - (id)initWithDataSource:(SkyDBDataSource *)_ds

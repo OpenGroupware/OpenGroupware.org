@@ -27,17 +27,24 @@
 @class NSArray;
 @class EOQualifier, EOFetchSpecification;
 
-/*
-  SkyProjectDataSource
-
-  This datasource fetches projects (objects of class SkyProject, which 
-  inherits from SkyDocument).
-  
-  Supported Hints:
-    SearchAllProjects - BOOL - (also fetch 'special' projects)
-    attributes
-    fetchGlobalIDs    - BOOL - return global-ids
-*/
+/**
+ * @class SkyProjectDataSource
+ * @brief EODataSource for fetching OGo projects.
+ *
+ * Fetches projects as SkyProject document objects from the
+ * OGo database via the Logic command layer. Supports
+ * qualifier-based filtering, sort orderings, and fetch
+ * limits. Hidden project kinds (e.g. invoice, history,
+ * EDC, account-log projects) are excluded by default
+ * unless explicitly requested via a qualifier.
+ *
+ * Supported fetch specification hints:
+ * - SearchAllProjects (BOOL) - also fetch special projects
+ * - attributes - restrict returned keys
+ * - fetchGlobalIDs (BOOL) - return global IDs only
+ *
+ * @see SkyProject
+ */
 
 @class LSCommandContext;
 
@@ -65,6 +72,12 @@
 
 #include <OGoDocuments/SkyDocumentManager.h>
 
+/**
+ * @class SkyProjectDocumentGlobalIDResolver
+ * @brief Resolves global IDs to SkyProject document objects.
+ *
+ * @see SkyProjectDataSource
+ */
 @interface SkyProjectDocumentGlobalIDResolver : NSObject
   <SkyDocumentGlobalIDResolver>
 @end

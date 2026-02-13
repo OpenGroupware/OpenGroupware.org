@@ -25,6 +25,24 @@
 #import <Foundation/NSValue.h>
 #include <LSFoundation/LSBaseCommand.h>
 
+/**
+ * @class LSArrayFilterCommand
+ * @brief Abstract filter command that selects objects from an
+ *   input array.
+ *
+ * Subclasses override -includeObjectInResult: (or the variant
+ * with a replacement-object out-parameter) to decide which
+ * objects pass the filter. The command iterates over the
+ * input array set via the "object" key and collects matching
+ * objects into the return value.
+ *
+ * Does not require a database channel or transaction.
+ * When "removeFromSource" is set to YES, matching objects are
+ * also removed from the original source array.
+ *
+ * @see LSDBArrayFilterCommand
+ * @see LSBaseCommand
+ */
 @interface LSArrayFilterCommand : LSBaseCommand
 {
 @private

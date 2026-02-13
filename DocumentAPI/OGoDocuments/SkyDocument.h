@@ -24,18 +24,23 @@
 
 #import <Foundation/NSObject.h>
 
-/*
-  A OGo document is an URL addressable unit consisting of attributes
-  and optionally, a BLOB.
-  
-  The features of a document (whether it has a BLOB, whether it can represent
-  the BLOB as DOM or strings), can be queried using -hasFeature:.
-*/
-
 @class NSURL, NSData, NSString, NSMutableString;
 @class EOGlobalID;
 @class SkyDocumentType;
 
+/**
+ * @protocol SkyDocument
+ * @brief Core protocol for OGo documents.
+ *
+ * An OGo document is a URL-addressable unit consisting of
+ * attributes and, optionally, a BLOB. The capabilities of a
+ * document (whether it has a BLOB, whether it can represent
+ * the BLOB as DOM or strings) can be queried using
+ * -supportsFeature:.
+ *
+ * @see SkyDocumentType
+ * @see SkyDocumentEditing
+ */
 @protocol SkyDocument
 
 /* reflection information on document */
@@ -49,6 +54,16 @@
 
 @end
 
+/**
+ * @protocol SkyDocumentEditing
+ * @brief Protocol for editable documents.
+ *
+ * Provides methods to query the editing state of a document
+ * (readable, writeable, removable, new, edited) and to
+ * perform save, delete, and reload operations.
+ *
+ * @see SkyDocument
+ */
 @protocol SkyDocumentEditing
 /* properties */
 - (BOOL)isReadable;
@@ -64,6 +79,16 @@
 
 @end
 
+/**
+ * @protocol SkyBLOBDocument
+ * @brief Protocol for documents with binary BLOB content.
+ *
+ * Allows getting and setting the document content as raw
+ * NSData.
+ *
+ * @see SkyStringBLOBDocument
+ * @see SkyDOMBLOBDocument
+ */
 @protocol SkyBLOBDocument < SkyDocument >
 
 #define SkyDocumentFeature_BLOB @"http://www.skyrix.com/document/blob"
@@ -73,6 +98,16 @@
 
 @end
 
+/**
+ * @protocol SkyStringBLOBDocument
+ * @brief Protocol for documents with string BLOB content.
+ *
+ * Allows getting and setting the document content as an
+ * NSString.
+ *
+ * @see SkyBLOBDocument
+ * @see SkyDOMBLOBDocument
+ */
 @protocol SkyStringBLOBDocument < SkyDocument >
 
 #define SkyDocumentFeature_STRINGBLOB \
@@ -83,6 +118,16 @@
 
 @end
 
+/**
+ * @protocol SkyDOMBLOBDocument
+ * @brief Protocol for documents with DOM BLOB content.
+ *
+ * Allows getting and setting the document content as a DOM
+ * document object.
+ *
+ * @see SkyBLOBDocument
+ * @see SkyStringBLOBDocument
+ */
 @protocol SkyDOMBLOBDocument < SkyDocument >
 
 #define SkyDocumentFeature_DOMBLOB  @"http://www.skyrix.com/document/domblob"
@@ -92,6 +137,19 @@
 
 @end
 
+/**
+ * @class SkyDocument
+ * @brief Abstract base class for OGo documents.
+ *
+ * Provides a default implementation of the SkyDocument and
+ * SkyDocumentEditing protocols. Subclasses must override
+ * -documentType, -isComplete, -globalID, and -context.
+ * The document URL is derived from the context's document
+ * manager.
+ *
+ * @see SkyDocumentType
+ * @see SkyDocumentManager
+ */
 @interface SkyDocument : NSObject < SkyDocument, SkyDocumentEditing >
 
 /* document identifier */

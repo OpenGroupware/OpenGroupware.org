@@ -26,6 +26,20 @@
 
 @class NSString, NSArray, NSMutableArray;
 
+/**
+ * @class SkyWizard
+ * @brief Multi-step wizard controller.
+ *
+ * Manages a sequence of editor pages that guide the
+ * user through a multi-step creation or editing
+ * workflow. Maintains a page cache and collected
+ * object snapshots across steps. Subclasses override
+ * maxSteps and wizardName to define the wizard flow.
+ * Supports nested wizards via the parent property.
+ *
+ * @see SkyWizardViewer
+ * @see SkyEditorPage
+ */
 @interface SkyWizard : NSObject
 {
   id             startPage; // not retained
