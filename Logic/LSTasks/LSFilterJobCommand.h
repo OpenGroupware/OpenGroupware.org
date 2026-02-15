@@ -21,9 +21,22 @@
 
 #import <LSFoundation/LSBaseCommand.h>
 
-
 @class NSArray, NSNumber;
 
+/**
+ * @class LSFilterJobCommand
+ * @brief Abstract base class for commands that filter
+ *        a list of jobs by role criteria.
+ *
+ * Subclasses must override the -filter method to
+ * perform the actual filtering logic. The command
+ * provides a `jobList` to filter and optional
+ * `creatorId`, `ownerId`, and `executantId` values
+ * to match against.
+ *
+ * The result of -filter is set as the command's
+ * return value.
+ */
 @interface LSFilterJobCommand : LSBaseCommand
 {
   NSArray  *jobList;

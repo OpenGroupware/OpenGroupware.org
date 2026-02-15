@@ -119,6 +119,7 @@ common_gathering_title             = "Gemeinsame Attribute";
 company_gathering_title            = "Unternehmen";
 config                             = "Konfigurieren";
 contact                            = "Kontaktperson";
+csv                                = "CSV";
 couldNotSaveEnterprise             = "Das Unternehmen konnte nicht gespeichert werden";
 country                            = "Land";
 createTab                          = "Tab erstellen";

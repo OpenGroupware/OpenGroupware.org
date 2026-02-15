@@ -26,6 +26,19 @@
 
 @class NSDictionary, NSMutableDictionary;
 
+/**
+ * @class Application
+ *
+ * WOApplication subclass for the OGo XML-RPC daemon.
+ * Manages a credential-to-session-ID cache so that
+ * repeated XML-RPC requests with the same HTTP Basic
+ * authentication credentials reuse the same WOSession
+ * instead of creating a new one each time.
+ *
+ * Sets the default request handler to
+ * WODirectActionRequestHandler and always uses the simple
+ * HTTP parser for transactions.
+ */
 @interface Application : WOApplication
 {
   NSMutableDictionary *cred2sessionId;

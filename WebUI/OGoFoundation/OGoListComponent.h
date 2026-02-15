@@ -24,21 +24,23 @@
 
 #include <OGoFoundation/OGoComponent.h>
 
-/*
-  OGoListComponent
-
-  Abstract superclass for components which display a tableview.
-  
-  TODO: document what it exactly does/provides.
-
-  Known subclasses:
-    SkyPersonList
-    SkyEnterpriseList
-*/
-
 @class NSString, NSArray, NSDictionary;
 @class EODataSource;
 
+/**
+ * @class OGoListComponent
+ * @brief Abstract base class for table-view list pages.
+ *
+ * Provides common infrastructure for components that
+ * display tabular data from an EODataSource, including
+ * configurable columns, favorites tracking, and
+ * per-user column configuration.
+ *
+ * Known subclasses: SkyPersonList, SkyEnterpriseList.
+ *
+ * @see OGoComponent
+ * @see EODataSource
+ */
 @interface OGoListComponent : OGoComponent
 {
   EODataSource *dataSource;

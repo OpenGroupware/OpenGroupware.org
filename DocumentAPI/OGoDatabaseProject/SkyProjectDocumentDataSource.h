@@ -24,17 +24,25 @@
 
 #include <EOControl/EODataSource.h>
 
-/*
-  SkyProjectDocumentDataSource
-
-  TODO: document
-  
-  Apparently this is the datasource used for cross-project searches while
-  SkyProjectFolderDataSource is used if you request a datasource for a single
-  project or project folder.
-  
-  Note: apparently it does not support fetchkeys.
-*/
+/**
+ * @class SkyProjectDocumentDataSource
+ * @brief EODataSource for cross-project document searches.
+ *
+ * Apparently this is the datasource used for cross-project searches while
+ * SkyProjectFolderDataSource is used if you request a datasource for a single
+ * project or project folder.
+ *
+ * Fetches documents across multiple database projects using
+ * qualifier-based search via EOFetchSpecification. Unlike
+ * SkyProjectFolderDataSource, which operates on a single
+ * project or folder, this datasource queries all accessible
+ * projects.
+ *
+ * Note: apparently fetch-key hints are not supported.
+ *
+ * @see SkyProjectFolderDataSource
+ * @see SkyProjectFileManager
+ */
 
 @class NSArray;
 @class EOFetchSpecification;

@@ -24,6 +24,14 @@
 
 #include "Application.h"
 
+/**
+ * @class XmlRpcApplication
+ *
+ * Concrete Application subclass for the OGo XML-RPC
+ * server. Overrides the default port to 22000 (instead
+ * of the SOPE default 20000) and unconditionally reports
+ * the license as valid.
+ */
 @interface XmlRpcApplication : Application
 @end /* XmlRpcApplication */
 

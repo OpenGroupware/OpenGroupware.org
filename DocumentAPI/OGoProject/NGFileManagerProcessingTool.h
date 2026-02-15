@@ -29,6 +29,19 @@
 @class NSException;
 @class NSString;
 
+/**
+ * @class NGFileManagerProcessingTool
+ * @brief Base class for tools that traverse and process
+ *        file manager paths.
+ *
+ * Walks a path in an NGFileManager, dispatching processing
+ * callbacks to a handler object for each file, directory,
+ * and symbolic link encountered. Tracks already-processed
+ * paths to avoid cycles. Subclasses (e.g.
+ * NGFileManagerCopyTool) add specific operations.
+ *
+ * @see NGFileManagerCopyTool
+ */
 @interface NGFileManagerProcessingTool : NSObject
 {
   id<NSObject,NGFileManager> fileManager;

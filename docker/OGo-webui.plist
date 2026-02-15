@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>NGBundlePath</key>
+    <string>/usr/local/lib/GNUstep/Bundles:/usr/local/lib/GNUstep/Models-5.5:/usr/local/lib/GNUstep/Commands-5.5:/usr/local/lib/GNUstep/WOxElemBuilders-4.9:/usr/local/lib/GNUstep/WebUI-5.5</string>
+    <key>NGLogDefaultLogLevel</key>
+    <string>WARN</string>
+    <key>PGDebugEnabled</key>
+    <string>NO</string>
+    <key>SkyLogoutURL</key>
+    <string>/OpenGroupware</string>
+    <key>WONoDetach</key>
+    <string>NO</string>
+    <key>WORunMultithreaded</key>
+    <string>NO</string>
+    <key>WOUseWatchDog</key>
+    <string>YES</string>
+</dict>
+</plist>

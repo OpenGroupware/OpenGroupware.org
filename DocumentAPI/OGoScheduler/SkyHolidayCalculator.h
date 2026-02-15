@@ -22,15 +22,23 @@
 #ifndef __SkyHolidayCalculator_H__
 #define __SkyHolidayCalculator_H__
 
-/*
-  SkyHolidayCalculator
-    - calculates holdidays for a year
-*/
-
 #import <Foundation/Foundation.h>
 
 @class NSTimeZone, NSCalendarDate, NSUserDefaults;
 
+/**
+ * @class SkyHolidayCalculator
+ * @brief Calculates holidays for a given year.
+ *
+ * Computes fixed and variable holidays (Easter-relative,
+ * Advent-relative, etc.) for a specific year and time zone.
+ * Loads configurable holiday definitions from a
+ * Holidays.plist file and user defaults, supporting
+ * per-user custom holidays.
+ *
+ * Caches computed holiday dates per year and resets
+ * the cache when the year or user defaults change.
+ */
 @interface SkyHolidayCalculator : NSObject
 {
 @protected

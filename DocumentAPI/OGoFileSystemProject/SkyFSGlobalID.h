@@ -26,6 +26,18 @@
 
 @class NSString, EOGlobalID;
 
+/**
+ * @class SkyFSGlobalID
+ * @brief Global ID for documents in a filesystem project.
+ *
+ * Uniquely identifies a file within a filesystem-backed
+ * project by combining the file path with the project's
+ * EOGlobalID. Supports NSCopying.
+ *
+ * @see SkyFSFileManager
+ * @see SkyFSDocument
+ */
+
 @interface SkyFSGlobalID : EOGlobalID
 {
   NSString   *path;

@@ -22,6 +22,18 @@
 #ifndef __LSLogic_LSFoundation_H__
 #define __LSLogic_LSFoundation_H__
 
+/**
+ * @file LSFoundation.h
+ * @brief Umbrella header for the LSFoundation framework.
+ *
+ * Imports all public headers of the LSFoundation command
+ * infrastructure including base command classes, database
+ * CRUD commands, the command context, command factory,
+ * type manager, property manager, access manager, and
+ * supporting utilities. Include this single header to get
+ * access to the complete OGo command layer API.
+ */
+
 #if NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
 #  include <NGExtensions/NGExtensions.h>
 #endif

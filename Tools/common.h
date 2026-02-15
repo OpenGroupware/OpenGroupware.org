@@ -19,6 +19,15 @@
   02111-1307, USA.
 */
 
+/**
+ * @file common.h
+ *
+ * Common precompiled header for the OGo Tools module.
+ * Imports Foundation, EOControl, NGExtensions, GDLAccess,
+ * and the core LSFoundation headers (LSCommandContext,
+ * LSCommandKeys) used by all CLI tool implementations.
+ */
+
 #import <Foundation/Foundation.h>
 
 #include <EOControl/EOControl.h>

@@ -24,20 +24,25 @@
 
 #import <Foundation/NSObject.h>
 
-/*
-  This object/protocol manages document-URL/GID relations.
-  
-  The URLs can be specified as either a NSString or a NSURL object, but are
-  always returned as NSURL objects.
-  
-  SKYRiX URLs:
-  
-    skyrix://instance-id/id
-*/
-
 @class NSArray, NSURL;
 @class EOGlobalID;
 
+/**
+ * @protocol SkyDocumentManager
+ * @brief Manages document-URL and document-GID mappings.
+ *
+ * A SkyDocumentManager resolves OGo documents by their URL
+ * or EOGlobalID. URLs can be specified as NSString or NSURL
+ * but are always returned as NSURL objects.
+ *
+ * OGo URLs follow the scheme:
+ * @code
+ *   skyrix://hostname/instance-id/primary-key
+ * @endcode
+ *
+ * @see SkyContext
+ * @see SkyDocument
+ */
 @protocol SkyDocumentManager
 
 /* accessors */
@@ -69,8 +74,16 @@
 
 @end
 
-/* GlobalID Resolvers (found using BundleManager ..) */
-
+/**
+ * @protocol SkyDocumentGlobalIDResolver
+ * @brief Resolves EOGlobalIDs into document objects.
+ *
+ * Implementations are discovered via the NGBundleManager
+ * using the "SkyDocumentGlobalIDResolver" resource type.
+ * Each resolver handles a specific set of global ID types.
+ *
+ * @see SkyDocumentManager
+ */
 @protocol SkyDocumentGlobalIDResolver
 
 - (BOOL)canResolveGlobalID:(EOGlobalID *)_gid
@@ -81,12 +94,24 @@
 
 @end
 
-/* GID/URL conversion protocols */
-
+/**
+ * @protocol SkyURLToGlobalIDConversion
+ * @brief Allows URL objects to convert themselves to GIDs.
+ *
+ * Adopted by URL objects that know how to derive their
+ * corresponding EOGlobalID given a SkyDocumentManager.
+ */
 @protocol SkyURLToGlobalIDConversion
 - (EOGlobalID *)globalIDWithDocumentManager:(id<SkyDocumentManager>)_dm;
 @end
 
+/**
+ * @protocol SkyGlobalIDToURLConversion
+ * @brief Allows GID objects to convert themselves to URLs.
+ *
+ * Adopted by EOGlobalID objects that know how to derive
+ * their corresponding NSURL given a SkyDocumentManager.
+ */
 @protocol SkyGlobalIDToURLConversion
 - (NSURL *)urlWithDocumentManager:(id<SkyDocumentManager>)_dm;
 @end

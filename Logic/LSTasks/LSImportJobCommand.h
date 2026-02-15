@@ -24,6 +24,26 @@
 
 #import <LSFoundation/LSDBObjectBaseCommand.h>
 
+/**
+ * @class LSImportJobCommand
+ * @brief Imports jobs (tasks) from a delimiter-separated
+ *        text format.
+ *
+ * Parses import data (NSData or NSString) according to
+ * the column format configured in the user default
+ * `LSJobImportFormat`. Each line is split by the
+ * configured separator, and columns are mapped to job
+ * fields such as start/end dates, executant, and
+ * arbitrary database fields.
+ *
+ * The `accounts` array provides the account objects
+ * used to resolve executant tokens. Errors encountered
+ * during parsing are collected in the mutable
+ * `errorReport` dictionary, keyed by line number.
+ *
+ * Returns an array of NSDictionary job descriptions
+ * ready for further processing.
+ */
 @interface LSImportJobCommand : LSDBObjectBaseCommand
 {
 @protected

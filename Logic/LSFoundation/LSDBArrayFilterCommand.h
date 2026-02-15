@@ -26,6 +26,23 @@
 
 @class NSNumber;
 
+/**
+ * @class LSDBArrayFilterCommand
+ * @brief Abstract database-aware filter command that selects
+ *   objects from an input array.
+ *
+ * Like LSArrayFilterCommand, but inherits from
+ * LSDBObjectBaseCommand so that subclasses have access to the
+ * database channel and entity model during filtering.
+ * Subclasses override -includeObjectInResult: to implement
+ * the filter predicate.
+ *
+ * When "removeFromSource" is set to YES, matching objects are
+ * also removed from the original source array.
+ *
+ * @see LSArrayFilterCommand
+ * @see LSDBObjectBaseCommand
+ */
 @interface LSDBArrayFilterCommand : LSDBObjectBaseCommand
 {
 @private

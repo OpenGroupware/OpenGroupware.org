@@ -24,10 +24,26 @@
 #include <Foundation/NSObject.h>
 #include <Foundation/NSDictionary.h>
 
+/**
+ * @category NSObject(EKVC)
+ *
+ * Extended Key-Value Coding category on NSObject.
+ * Provides -takeValuesFromObject:keys: to copy multiple
+ * key-value pairs from a source object in a single call,
+ * skipping nil values and empty strings.
+ */
 @interface NSObject(EKVC)
 - (void)takeValuesFromObject:(id)_object keys:(NSString *)_key, ...;
 @end /* NSObject(EKVC) */
 
+/**
+ * @category NSMutableDictionary(EKVC)
+ *
+ * Extended Key-Value Coding category on
+ * NSMutableDictionary. Provides -removeAllNulls to strip
+ * all entries whose values are EONull instances from the
+ * receiver.
+ */
 @interface NSMutableDictionary(EKVC)
 - (void)removeAllNulls;
 @end

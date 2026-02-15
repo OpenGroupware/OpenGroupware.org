@@ -24,15 +24,6 @@
 
 #import <Foundation/NSObject.h>
 
-/*
-  SkyObjectPropertyManager
-  
-  TODO: document class.
-  
-  This class is the primary interface to extended attributes stored in the
-  object_properties table.
-*/
-
 @class NSDictionary, NSArray, NSString, NSException, NSMutableArray, NSNumber;
 @class NSMutableDictionary, NSSet, NSNotification;
 @class EOQualifier, EOGlobalID, EODatabase, EOAdaptorChannel, EOEntity;
@@ -55,6 +46,25 @@ extern NSString *SkyOPMCouldntSelectExceptionName;
 extern NSString *SkyOPMKeyDoesntExistExceptionName;
 extern NSString *SkyOPMWrongPropertyKeyExceptionName;
 
+/**
+ * @class SkyObjectPropertyManager
+ * @brief Manages extended object attributes in the
+ *        object_property table.
+ *
+ * SkyObjectPropertyManager is the primary interface to
+ * the extended (custom) attributes system. It reads and
+ * writes key-value properties for objects identified by
+ * EOGlobalIDs, supports namespaced keys, access-control
+ * per property, qualifier-based searches across
+ * properties, and bulk copy operations.
+ *
+ * Properties can be restricted by optional SQL qualifier
+ * strings and entity join restrictions for more targeted
+ * queries.
+ *
+ * @see SkyAttributeDataSource
+ * @see LSCommandContext
+ */
 @interface SkyObjectPropertyManager : NSObject
 {
 @private

@@ -22,7 +22,16 @@
 #ifndef __OGoFoundation_LSWViewerPage_H__
 #define __OGoFoundation_LSWViewerPage_H__
 
-/* DEPRECATED: this file is deprecated and should not be used */
+/**
+ * @file LSWViewerPage.h
+ * @brief Deprecated header that imports OGoViewerPage.
+ *
+ * This file is deprecated and should not be used directly.
+ * Include OGoViewerPage.h instead.
+ *
+ * @deprecated Use OGoViewerPage.h.
+ * @see OGoViewerPage
+ */
 
 #include <OGoFoundation/OGoViewerPage.h>
 

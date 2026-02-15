@@ -36,6 +36,22 @@
 @class LSCommandContext, OGoContextSession;
 @class OGoNavigation, OGoClipboard;
 
+/**
+ * @class OGoSession
+ * @brief The OGo application session.
+ *
+ * Central session object that manages the
+ * authenticated user context, navigation stack,
+ * clipboard/favorites, notification center,
+ * formatters, pasteboard system, and cached
+ * account/team data. Extends WOSession with
+ * OGo-specific command execution and transaction
+ * control.
+ *
+ * @see OGoNavigation
+ * @see OGoClipboard
+ * @see LSCommandContext
+ */
 @interface OGoSession : WOSession
 {
 @private
@@ -112,6 +128,14 @@
 
 @end
 
+/**
+ * @category WOSession(Pasteboard)
+ * @brief Pasteboard management on the session.
+ *
+ * Provides named pasteboards and a transfer
+ * pasteboard for passing objects between
+ * components.
+ */
 @interface WOSession(Pasteboard)
 
 - (OWPasteboard *)pasteboardWithName:(NSString *)_name;
@@ -125,6 +149,14 @@
 
 @end
 
+/**
+ * @category WOSession(Activation)
+ * @brief Instantiate components by command and type.
+ *
+ * Creates viewer or editor components matching a
+ * given activation command and MIME type, optionally
+ * binding them to a specific object.
+ */
 @interface WOSession(Activation)
 
 - (WOComponent *)instantiateComponentForCommand:(NSString *)_command
@@ -138,6 +170,13 @@
 
 @class OWPasteboard, NSArray, NGMimeType;
 
+/**
+ * @category WOSession(Clipboard)
+ * @brief Session clipboard for single-object storage.
+ *
+ * Manages a clipboard pasteboard that holds a single
+ * object with its associated MIME types.
+ */
 @interface WOSession(Clipboard)
 
 - (OWPasteboard *)clipboard;
@@ -153,6 +192,17 @@
 
 @class NSString, NSDictionary;
 
+/**
+ * @category WOSession(Commands)
+ * @brief Execute Logic commands and control
+ *        transactions on the session.
+ *
+ * Provides variadic and dictionary-based methods for
+ * running OGo Logic commands, plus commit/rollback
+ * transaction control.
+ *
+ * @see WOComponent(Commands)
+ */
 @interface WOSession(Commands)
 
 // running commands
@@ -172,6 +222,15 @@
 
 @class NSArray;
 
+/**
+ * @category WOSession(UserManagement)
+ * @brief Fetch and cache accounts, teams, and
+ *        categories.
+ *
+ * Provides methods to load and access the lists of
+ * user accounts, teams, categories, resources, and
+ * docked projects for the current session.
+ */
 @interface WOSession(UserManagement)
 
 - (void)fetchTeams;
@@ -195,6 +254,14 @@
 
 @class NSFormatter;
 
+/**
+ * @category WOSession(Formatters)
+ * @brief Shared NSFormatter instances for the session.
+ *
+ * Provides reusable formatters for strings, dates,
+ * times, and date-time combinations, respecting the
+ * user's locale and timezone settings.
+ */
 @interface WOSession(Formatters)
 
 - (NSFormatter *)formatString;
@@ -207,6 +274,14 @@
 
 @class NSString;
 
+/**
+ * @category WOSession(Notifications)
+ * @brief Per-session notification center.
+ *
+ * Manages a session-scoped NSNotificationCenter for
+ * posting and observing change notifications within
+ * the session.
+ */
 @interface WOSession(Notifications)
 
 - (NSNotificationCenter *)notificationCenter;
@@ -221,6 +296,10 @@
 
 @end
 
+/**
+ * @category WOSession(PageManagement)
+ * @brief Save and restore pages by context ID.
+ */
 @interface WOSession(PageManagement)
 
 - (WOComponent *)restorePageForContextID:(NSString *)_idx;
@@ -228,12 +307,25 @@
 
 @end
 
+/**
+ * @category WOSession(PersistentComponents)
+ * @brief Registry for session-persistent components.
+ */
 @interface WOSession(PersistentComponents)
 
 - (NSMutableDictionary *)pComponents;
 
 @end
 
+/**
+ * @category WOComponent(PersistentComponents)
+ * @brief Register and retrieve persistent component
+ *        instances.
+ *
+ * Allows a component to register itself as a
+ * persistent instance in the session, so it survives
+ * across request-response cycles.
+ */
 @interface WOComponent(PersistentComponents)
 
 - (id)persistentInstance;

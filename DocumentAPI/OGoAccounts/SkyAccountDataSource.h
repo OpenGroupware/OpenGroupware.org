@@ -32,6 +32,25 @@
 @class EOQualifier, EOFetchSpecification;
 @class LSCommandContext;
 
+/**
+ * @class SkyAccountDataSource
+ * @brief EODataSource for fetching and managing user accounts.
+ *
+ * Provides a datasource interface for OGo user accounts
+ * (Person entities marked as accounts). Supports fetching
+ * via EOKeyValueQualifier, EOAndQualifier, and
+ * EOOrQualifier, extended search across company, address,
+ * phone, and company-value records.
+ *
+ * Posts SkyNewAccountNotification,
+ * SkyUpdatedAccountNotification, and
+ * SkyDeletedAccountNotification on changes.
+ *
+ * Fetched EOs are converted to SkyAccountDocument objects.
+ *
+ * @see SkyAccountDocument
+ * @see SkyMemberDataSource
+ */
 @interface SkyAccountDataSource : EODataSource
 {
   EOFetchSpecification *fetchSpecification;
@@ -46,6 +65,14 @@
 
 @end
 
+/**
+ * @class SkyAccountDocumentGlobalIDResolver
+ * @brief Resolves Account global IDs to SkyAccountDocuments.
+ *
+ * Implements the SkyDocumentGlobalIDResolver informal
+ * protocol to resolve EOKeyGlobalIDs with entity name
+ * "Account" into SkyAccountDocument instances.
+ */
 @interface SkyAccountDocumentGlobalIDResolver : NSObject
 //  <SkyDocumentGlobalIDResolver>
 @end

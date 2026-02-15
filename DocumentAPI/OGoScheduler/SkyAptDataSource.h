@@ -34,22 +34,36 @@
 @class NSTimeZone;
 @class LSCommandContext;
 
-/*
-  Input:
-
-    EOFetchSpecification
-      SkyAppointmentQualifier
-      hints: attributeKeys => attributes
-             SkyReturnDocs = YesNumber|NoNumber (default is NO)
-             FetchGIDs     = date GlobalIDs to fetch 
-
-  Notifications
-
-    SkyDataSourceWillClear
-    SkyDataSourceDidFetch
-
-*/
-
+/**
+ * @class SkyAptDataSource
+ * @brief EODataSource for fetching and managing appointments.
+ *
+ * Fetches appointments using a SkyAppointmentQualifier and
+ * the "appointment::query" / "appointment::get-by-globalid"
+ * commands. Supports caching of fetched results and can
+ * optionally return SkyAppointmentDocument objects.
+ *
+ * Input via EOFetchSpecification:
+ *   - qualifier: SkyAppointmentQualifier
+ *   - hints:
+ *     - attributeKeys,
+ *     - SkyReturnDocs (BOOL, default NO),
+ *     - FetchGIDs (date GlobalIDs to fetch directly)
+ *
+ * Posts 
+ * - SkyDataSourceWillClear before clearing the cache
+ * and 
+ * - SkyDataSourceDidFetch 
+ * after fetching. 
+ * Also posts
+ * - SkyNewAppointmentNotification,
+ * - SkyUpdatedAppointmentNotification, and
+ * - SkyDeletedAppointmentNotification on changes.
+ *
+ * @see SkyAppointmentQualifier
+ * @see SkyAppointmentDocument
+ * @see SkyAptCompoundDataSource
+ */
 @interface SkyAptDataSource : EODataSource
 {
   /* execution context */

@@ -21,6 +21,15 @@
 
 #import <Foundation/NSString.h>
 
+/**
+ * @category NSString(XMLNamespaces)
+ * @brief Convenience methods for handling Clark-notation
+ *        XML namespace prefixes in strings.
+ *
+ * Provides methods to detect, extract, remove, and set
+ * XML namespace prefixes in the "{namespace}localName"
+ * Clark notation commonly used in WebDAV property names.
+ */
 @interface NSString(XMLNamespaces)
 - (BOOL)hasXMLNamespace;
 - (NSString *)xmlNamespace;

@@ -24,15 +24,18 @@
 
 #import <Foundation/NSObject.h>
 
-/*
-  SkyDocumentType
-  
-  More or less the 'EOClassDescription' of a document. It is supposed to 
-  describe the 'schema' of a document.
-  
-  Note: not really used a lot. Conceptual placeholder.
-*/
-
+/**
+ * @class SkyDocumentType
+ * @brief Describes the schema of an OGo document.
+ *
+ * Analogous to EOClassDescription, SkyDocumentType is
+ * intended to describe the type and schema of a document.
+ *
+ * Note: This is largely a conceptual placeholder and is
+ * not heavily used in practice.
+ *
+ * @see SkyDocument
+ */
 @interface SkyDocumentType : NSObject
 @end
 

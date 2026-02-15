@@ -21,6 +21,17 @@
 
 #import <LSFoundation/LSDBObjectGetCommand.h>
 
+/**
+ * @class LSGetDocumentVersionCommand
+ * @brief Fetches DocumentVersion records from the
+ *        database.
+ *
+ * Retrieves versioned snapshots of documents. After
+ * fetching, the command checks permissions via
+ * "documentversion::check-get-permission" and resolves
+ * the attachment file path for each version via
+ * "documentversion::get-attachment-name".
+ */
 @interface LSGetDocumentVersionCommand : LSDBObjectGetCommand
 {
 }

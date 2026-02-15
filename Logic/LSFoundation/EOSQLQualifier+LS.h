@@ -24,15 +24,21 @@
 
 #include <GDLAccess/EOSQLQualifier.h>
 
-/*
-  EOSQLQualifier(LS)
-  
-  The 'csv' methods construct qualifiers to search for values in comma
-  separated string fields (eg the 'keywords' field in the company table).
-*/
-
 @class NSString, NSArray;
 
+/**
+ * @category EOSQLQualifier(LS)
+ * @brief Qualifier constructors for comma-separated
+ *        value fields.
+ *
+ * Provides initializers that build SQL qualifiers to
+ * search for values inside comma-separated string
+ * columns (e.g. the "keywords" field in the company
+ * table). Supports single-value and multi-value
+ * searches with conjunction or disjunction.
+ *
+ * @see EOSQLQualifier
+ */
 @interface EOSQLQualifier(LS)
 
 - (id)initWithEntity:(EOEntity *)_entity

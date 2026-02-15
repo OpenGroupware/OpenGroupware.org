@@ -24,6 +24,17 @@
 
 #import <Foundation/NSString.h>
 
+/**
+ * @category NSString(ICal)
+ *
+ * iCalendar text escaping utilities for NSString.
+ *
+ * Provides methods to count and escape characters
+ * that are unsafe in iCalendar property values,
+ * namely commas, semicolons, backslashes, and
+ * newlines (RFC 5545 TEXT escaping).
+ */
+
 @interface NSString(ICal)
 
 - (unsigned)numberOfUnsafeICalCharacters;

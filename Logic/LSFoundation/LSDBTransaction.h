@@ -26,6 +26,18 @@
 
 @class EODatabaseContext, EODatabaseChannel;
 
+/**
+ * @class LSDBTransaction
+ * @brief Lightweight wrapper around an EODatabaseContext for
+ *   transaction management.
+ *
+ * Provides -beginTransaction, -commitTransaction, and
+ * -rollbackTransaction by delegating to the underlying
+ * EODatabaseContext. Used by LSDBObjectTransactionCommand to
+ * bracket sub-command execution in a database transaction.
+ *
+ * @see LSDBObjectTransactionCommand
+ */
 @interface LSDBTransaction : NSObject
 {
 @private

@@ -24,23 +24,29 @@
 
 #include <LSFoundation/LSDBObjectNewCommand.h>
 
-/*
-  LSNewCompanyCommand
-
-  TODO: document
-
-  Abstract superclass for
-    person::new
-    enterprise::new
-    account::new
-    team::new
-    
-  TODO: add some way to create filled address records, subcommands do not work
-        since the primary key of the company is not known at that point.
-*/
-
 @class NSString, NSMutableArray, NSArray, NSData, NSDictionary;
 
+/**
+ * @class LSNewCompanyCommand
+ *
+ * Abstract base command for creating new company records in
+ * the database.
+ *
+ * Concrete subclasses:
+ *   - person::new     (LSNewPersonCommand)
+ *   - enterprise::new (LSNewEnterpriseCommand)
+ *   - account::new    (LSNewAccountCommand)
+ *   - team::new       (LSNewTeamCommand)
+ *
+ * Creates the company row, associated address and telephone
+ * records, the @c company_info comment record, and applies
+ * default extended attributes. Contact picture data can be
+ * stored by setting @c pictureData or @c pictureFilePath.
+ *
+ * Phone records are passed via the @c telephones property as
+ * an NSArray of NSDictionary entries with keys @c type,
+ * @c number, and @c info.
+ */
 @interface LSNewCompanyCommand : LSDBObjectNewCommand
 {
 @private 

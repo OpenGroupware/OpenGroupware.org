@@ -24,6 +24,16 @@
 
 #include <LSFoundation/LSModuleManager.h>
 
+/**
+ * @class LSNewsCommands
+ * @brief Module manager that registers the LSNews
+ *        command bundle classes.
+ *
+ * Ensures the command classes for news article
+ * operations (new, set, delete, get/set related
+ * articles) are linked into the runtime so the
+ * command factory can discover them.
+ */
 @interface LSNewsCommands : LSModuleManager
 
 @end

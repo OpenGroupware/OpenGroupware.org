@@ -24,6 +24,20 @@
 
 #import <Foundation/NSException.h>
 
+/**
+ * @class LSDBObjectCommandException
+ * @brief Exception raised by OGo command assertions on
+ *   failure.
+ *
+ * Used by LSBaseCommand's -assert: family of methods to signal
+ * command execution failures. Carries the failing command
+ * object and a boolean status flag. The +raiseOnFail:... class
+ * methods conditionally raise only when the status is NO,
+ * making them convenient inline assertion helpers.
+ *
+ * @see LSBaseCommand
+ * @see LSDBObjectBaseCommand
+ */
 @interface LSDBObjectCommandException : NSException
 {
 @protected

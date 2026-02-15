@@ -22,6 +22,23 @@
 #ifndef __SkyDBDocumentType_H__
 #define __SkyDBDocumentType_H__
 
+/**
+ * @class SkyDBDocumentType
+ * @brief A document type identified by its database
+ *        entity name.
+ *
+ * Extends SkyDocumentType with an entityName property
+ * that ties the type to a specific GDLAccess/EOF
+ * entity (e.g. "Person", "Enterprise", "Date").
+ *
+ * Two SkyDBDocumentType instances are considered equal
+ * when their entity names match.
+ *
+ * @see SkyDocumentType
+ * @see SkyDBDocument
+ * @see SkyDBDataSource
+ */
+
 #include <OGoDocuments/SkyDocumentType.h>
 
 @interface SkyDBDocumentType : SkyDocumentType

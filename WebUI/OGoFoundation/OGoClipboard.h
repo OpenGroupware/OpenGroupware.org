@@ -24,11 +24,21 @@
 
 #import <Foundation/NSObject.h>
 
-/*
-  OGoClipboard
-  
-  Maintains a LIFO list of clipped items.
-*/
+/**
+ * @class OGoClipboard
+ * @brief Maintains a LIFO list of favorited/clipped
+ *        objects in the OGo session.
+ *
+ * Stores recently clipped OGo objects (identified by
+ * their EOGlobalID) as user favorites. Prevents
+ * duplicates by comparing global IDs and enforces a
+ * maximum count read from the SkyMaxFavoritesCount
+ * user default. Provides array-like accessors (count,
+ * objectAtIndex:, objectEnumerator) for iteration.
+ *
+ * @see OGoSession
+ * @see EOGlobalID
+ */
 
 @class NSUserDefaults, NSMutableArray, NSEnumerator;
 

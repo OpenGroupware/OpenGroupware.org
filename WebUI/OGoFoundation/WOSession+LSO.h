@@ -32,6 +32,21 @@
 @class OWPasteboard;
 @class OGoNavigation, OGoClipboard;
 
+/**
+ * @category WOSession(LSOffice)
+ * @brief OGo extensions to WOSession for command execution,
+ *        transactions, clipboard, and session services.
+ *
+ * Adds OGo-specific functionality to the SOPE WOSession,
+ * including running Logic commands, managing database
+ * transactions, clipboard/pasteboard handling, favorites,
+ * object labeling, formatting, team/account lookups,
+ * and configuration access.
+ *
+ * @see OGoNavigation
+ * @see OGoClipboard
+ * @see OWPasteboard
+ */
 @interface WOSession(LSOffice)
 
 /* command in 'domain::cmd' form */
@@ -133,6 +148,15 @@
 
 @end
 
+/**
+ * @category WOSession(OGoSessionPasteboard)
+ * @brief Pasteboard support for transferring objects between
+ *        components in an OGo session.
+ *
+ * Provides methods for placing objects on and retrieving
+ * objects from the session's transfer pasteboard, which
+ * is used to pass data between pages during navigation.
+ */
 @interface WOSession(OGoSessionPasteboard)
 
 - (OWPasteboard *)transferPasteboard;

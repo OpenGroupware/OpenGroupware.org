@@ -22,6 +22,17 @@
 #ifndef __OGoFoundation_LSWEditorPage_H__
 #define __OGoFoundation_LSWEditorPage_H__
 
+/**
+ * @file LSWEditorPage.h
+ * @brief Deprecated header that imports OGoEditorPage.
+ *
+ * This file is deprecated and should not be used directly.
+ * Include OGoEditorPage.h instead.
+ *
+ * @deprecated Use OGoEditorPage.h.
+ * @see OGoEditorPage
+ */
+
 #include <OGoFoundation/OGoEditorPage.h>
 
 #endif /* __OGoFoundation_LSWEditorPage_H__ */

@@ -22,6 +22,26 @@
 #ifndef __LSJobStatus_H__
 #define __LSJobStatus_H__
 
+/**
+ * @file LSJobStatus.h
+ * @brief String constants for job (task) lifecycle
+ *        states.
+ *
+ * Defines the status codes stored in the `jobStatus`
+ * database column. The two-digit numeric prefix
+ * determines the sort order of the workflow:
+ *
+ *  - 00_created     -- newly created
+ *  - 02_rejected    -- rejected by assignee
+ *  - 05_accepted    -- accepted by assignee
+ *  - 10_commented   -- has new comments
+ *  - 15_divided     -- split into sub-tasks
+ *  - 20_processing  -- work in progress
+ *  - 25_done        -- completed
+ *  - 27_reactivated -- reopened after completion
+ *  - 30_archived    -- archived / closed
+ */
+
 #import <Foundation/NSString.h>
 
 #define LSJobCreated    @"00_created"

@@ -24,15 +24,26 @@
 
 #include <OGoDocuments/SkyDocument.h>
 
-/*
-  SkyProjectDocument
-
-  Note: this document object does not represent a project but a file in a
-        database project. The 'document' class for project documents is
-	'SkyProject'.
-  
-  TODO: document
-*/
+/**
+ * @class SkyProjectDocument
+ * @brief Represents a file within a database-backed project.
+ *
+ * This document object does not represent a project itself
+ * but a file stored in a database project. The document
+ * class for project records is SkyProject.
+ *
+ * SkyProjectDocument tracks BLOB content, subject, file
+ * attributes, and both native and extended (namespaced)
+ * properties. It supports versioning, locking, checkout/
+ * release workflows, and DOM-based BLOB access.
+ *
+ * The default attribute namespace is
+ * `http://www.skyrix.com/namespaces/project-document`.
+ *
+ * @see SkyDocument
+ * @see SkyProjectFileManager
+ * @see SkyProjectFolderDataSource
+ */
 
 @class NSString, NSData, NSMutableDictionary, NSDictionary, NSArray;
 @class SkyObjectPropertyManager, SkyProjectFileManager, SkyProjectFolderDataSource;

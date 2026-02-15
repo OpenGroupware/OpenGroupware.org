@@ -22,7 +22,14 @@
 #ifndef __OGo_LSScheduler_common_H__
 #define __OGo_LSScheduler_common_H__
 
-// common include files
+/**
+ * @file common.h
+ *
+ * Precompiled common imports for the LSScheduler
+ * module. Pulls in Foundation, EOControl,
+ * NGExtensions, GDLAccess, and LSFoundation headers
+ * used by the scheduler command classes.
+ */
 
 #import <Foundation/Foundation.h>
 

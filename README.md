@@ -142,6 +142,103 @@ sources are licensed under the GNU Lesser General Public License and
 the copyright is owned by SKYRIX Software AG.
 
 
+### Running OGo in Docker
+
+OGo can be built and run as a Docker image for local testing.
+
+#### Prerequisites
+
+A PostgreSQL server must be reachable from the container.
+The easiest way is to run PostgreSQL in Docker as well and
+connect the containers via a shared Docker network.
+
+Create the external Docker networks that the compose file
+expects:
+
+```bash
+docker network create postgres
+```
+
+The `postgres` network must contain a PostgreSQL container
+(hostname `postgres`) with the OGo database already set up
+(see GitHub Wiki).
+
+#### Building the Image
+
+```bash
+make docker-build
+```
+
+This builds the `ogo-local-dev:latest` image from local
+sources using `docker/OGoLocalBuild.dockerfile`.
+
+#### Example docker-compose.yml
+
+The `docker-compose.yml` is git-ignored, create your own
+in the repository root:
+
+```yaml
+networks:
+    postgres:
+        external: true
+
+services:
+    opengroupware:
+        container_name: ogo-local-dev
+        image: ogo-local-dev:latest
+        restart: always
+        networks:
+            - postgres
+        volumes:
+            - ./data/docs:/var/lib/opengroupware.org/documents
+            - ./data/news:/var/lib/opengroupware.org/news
+        env_file: "OGo.env"
+        environment:
+            - OGO_SERVER_PROTOCOL=http
+            - OGO_SERVER_NAME=localhost
+            - OGO_SERVER_PORT=80
+            - OGO_INSTANCE_COUNT=1
+            - OGO_INSTANCE_ID=OGo
+            - OGO_DATABASE_NAME=OGo
+            - OGO_DATABASE_USER=OGo
+            - OGO_DATABASE_HOST=postgres
+            - OGO_DATABASE_PORT=5432
+        ports:
+            - 8080:80
+```
+
+#### Credentials
+
+Create an `OGo.env` file in the repository root (it is
+git-ignored). This file supplies the database password to
+the container:
+
+```
+OGO_DATABASE_PASSWORD=<your-password>
+```
+
+All other configuration (database host, port, user, etc.)
+is set inline in `docker-compose.yml` via the `environment`
+section.
+
+#### Running
+
+```bash
+make docker-run
+```
+
+This runs `docker compose up` in the foreground. OGo will
+be available at `http://localhost:8080/OpenGroupware`.
+Press Ctrl-C to stop the stack.
+
+#### Volume Mounts
+
+The `docker-compose.yml` contains example volume mounts for
+documents, news, and SkyFS storage. Adjust the host paths
+to match your local data directories, or comment them out
+for a fresh install.
+
+
 ### Contact
 
 [@helge@mastodon.social](https://mastodon.social/@helge)

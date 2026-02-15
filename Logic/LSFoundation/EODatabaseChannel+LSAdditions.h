@@ -27,6 +27,18 @@
 @class NSArray;
 @class EOSQLQualifier;
 
+/**
+ * @category EODatabaseChannel(LSAdditions)
+ * @brief Adds global-ID fetching to EODatabaseChannel.
+ *
+ * Provides convenience methods to fetch an array of
+ * EOGlobalIDs for all objects matching a given
+ * EOSQLQualifier. The entity is derived from the
+ * qualifier's root entity. Optionally accepts sort
+ * orderings.
+ *
+ * @see EOSQLQualifier
+ */
 @interface EODatabaseChannel(LSAdditions)
 
 /*

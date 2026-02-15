@@ -26,6 +26,22 @@
 
 @class NSArray, NSString;
 
+/**
+ * @class LSGetMemberForCompanyCommand
+ *
+ * Retrieves the member companies (sub-companies) belonging
+ * to one or more group/parent companies. This is the
+ * inverse of LSGetCompanyForMemberCommand.
+ *
+ * Concrete subclasses:
+ *   - LSGetMemberForTeamCommand (team::members)
+ *   - LSGetMemberForEnterpriseCommand
+ *
+ * Accepts one or more group objects via @c setGroup: or
+ * @c setGroups: and returns their member records. Excludes
+ * archived members (dbStatus). Supports batched SQL queries
+ * and optional global-ID-only fetching.
+ */
 @interface LSGetMemberForCompanyCommand : LSDBObjectBaseCommand
 {
 @private

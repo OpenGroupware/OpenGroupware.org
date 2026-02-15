@@ -24,13 +24,28 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
-/*
-  LSDBObjectGetCommand
-
-  TODO: document
-  
-  Note: this is actually a search command, not a simple "get one EO".
-*/
+/**
+ * @class LSDBObjectGetCommand
+ * @brief Base command for searching/fetching database objects.
+ *
+ * Despite its name, this is actually a search command, not a
+ * simple single-object getter. It builds an SQL qualifier from
+ * the key-value pairs set on the command and fetches all
+ * matching enterprise objects from the database.
+ *
+ * String attributes are searched case-insensitively using LIKE
+ * by default; the "comparator" key can be set to "EQUAL" for
+ * exact matches. Multiple search criteria are combined with
+ * the "operator" (default "OR").
+ *
+ * When a primary key is provided, the qualifier short-circuits
+ * to a simple equality match. Access checking can be disabled
+ * by setting "checkAccess" to NO.
+ *
+ * @see LSDBObjectBaseCommand
+ * @see LSDBObjectSetCommand
+ * @see LSDBObjectNewCommand
+ */
 
 @class NSNumber, NSString;
 @class EOSQLQualifier;

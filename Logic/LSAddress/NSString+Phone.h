@@ -24,22 +24,26 @@
 
 #import <Foundation/NSString.h>
 
-/*
-  Note: used to fill the 'real_number' column in the database.
-
-   parses a number and trys to build a unique number
- 
-   +<country>-<city>-<number>{-<extension>}
- 
-   example (the skyrix office):
-   +49-391-6623-0
- 
-   a double zero at the start ('00') is replaced with a '+'
-   all other digits are kept.
-   any non-digit sequence is replaced with a '-'
-   (if it's not a '+' at the start)
-*/
-
+/**
+ * @category NSString(Phone)
+ *
+ * Adds phone number normalization for OGo contacts. Used
+ * to populate the @c real_number column in the telephone
+ * database table with a canonical format.
+ *
+ * The normalized format is:
+ * @code
+ *   +<country>-<city>-<number>{-<extension>}
+ * @endcode
+ *
+ * Example: @c +49-391-6623-0
+ *
+ * Rules:
+ *   - A leading @c "00" is replaced with @c "+"
+ *   - All digit sequences are preserved
+ *   - Any non-digit sequence (except a leading @c "+") is
+ *     replaced with @c "-"
+ */
 @interface NSString(Phone)
 
 - (NSString *)stringByNormalizingOGoPhoneNumber;

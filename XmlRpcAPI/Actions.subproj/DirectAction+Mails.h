@@ -22,6 +22,27 @@
 #ifndef __DirectAction_Mails_H__
 #define __DirectAction_Mails_H__
 
+/**
+ * @file DirectAction+Mails.h
+ *
+ * Internal header for the DirectAction mail composition
+ * support. Defines static inline helper functions used
+ * by the DirectAction(MailMethods) category to manage
+ * mail transactions on disk.
+ *
+ * Mail transactions are stored as directories under a
+ * per-user temporary path. Each transaction directory
+ * contains a headers.plist, optional body text files
+ * (blob.text / blob.html), and an attachments
+ * subdirectory. A distributed lock protects concurrent
+ * writes.
+ *
+ * Key helpers include functions for locking/unlocking,
+ * loading/saving headers and body text, building MIME
+ * body parts and multipart messages, and managing
+ * attachment metadata.
+ */
+
 #include "DirectAction.h"
 #include <EOControl/EOControl.h>
 #include <NGMime/NGMimeType.h>

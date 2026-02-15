@@ -23,6 +23,25 @@
 
 @class NSData, NSString;
 
+/**
+ * @class LSNewDocumentCommand
+ * @brief Creates a new document record in a project
+ *        and writes its attachment to the filesystem.
+ *
+ * Inserts a new Doc entity row and, for non-folder
+ * documents, also creates an associated DocumentEditing
+ * record representing the initial checked-out version.
+ * The binary content is written to disk as an attachment
+ * file (via `LSGetAttachmentNameCommand`).
+ *
+ * Content can be supplied as raw `data` (NSData) or
+ * as `fileContent` (NSString). The `filePath` is used
+ * to derive the file extension. A `folder` and
+ * `project` must be set before execution.
+ *
+ * When `autoRelease` is YES, the document is
+ * immediately released (checked in) after creation.
+ */
 @interface LSNewDocumentCommand : LSDBObjectNewCommand
 {
 @protected  

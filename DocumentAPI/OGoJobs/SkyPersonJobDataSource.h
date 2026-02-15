@@ -19,20 +19,6 @@
   02111-1307, USA.
 */
 
-/*
-  Following types are supported:
-     "toDoJob"
-     "controlJob"
-     "delegatedJob"
-     "archivedJob"
-     "palmJob"
-
-     e.g. type = 'toDoJob'
-
-  hints:
-     fetchGlobalIDs      YES | NO (default: NO)
-*/
-
 #ifndef __SkyJobs_SkyPersonJobDataSource_H__
 #define __SkyJobs_SkyPersonJobDataSource_H__
 
@@ -45,6 +31,33 @@
 @class NSString, NSException;
 @class EOGlobalID, EOFetchSpecification;
 
+/**
+ * @class SkyPersonJobDataSource
+ * @brief EODataSource for fetching jobs assigned to a
+ *        person.
+ *
+ * Fetches job/task documents (SkyJobDocument) for a given
+ * person from the OGo database. 
+ *
+ * The job type is selected via a qualifier key "type" with one of the supported
+ * values: 
+ * - "toDoJob", 
+ * - "controlJob", 
+ * - "delegatedJob",
+ * - "archivedJob", or 
+ * - "palmJob".
+ *
+ * Supports the "fetchGlobalIDs" (BOOL) hint to return only
+ * global IDs instead of full document objects.
+ *
+ * Observes SkyNewJobNotification,
+ * SkyUpdatedJobNotification, and
+ * SkyDeletedJobNotification to post data source change
+ * notifications.
+ *
+ * @see SkyJobDocument
+ * @see SkyProjectJobDataSource
+ */
 @interface SkyPersonJobDataSource : EODataSource
 {
   EOGlobalID           *personId;

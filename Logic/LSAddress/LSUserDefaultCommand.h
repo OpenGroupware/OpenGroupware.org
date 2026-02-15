@@ -24,6 +24,20 @@
 
 #include <LSFoundation/LSBaseCommand.h>
 
+/**
+ * @class LSUserDefaultCommand
+ *
+ * Command for getting, setting, and deleting individual
+ * per-user default values.
+ *
+ * Operates on the LSUserDefaults storage for the current
+ * account. The @c mode enum selects the operation
+ * (get, set, or delete), and the @c kind enum selects the
+ * value type (object, string, int, float, array, or
+ * dictionary).
+ *
+ * Accepts a @c key and an optional @c value via KVC.
+ */
 @interface LSUserDefaultCommand : LSBaseCommand
 {
   NSString *key;

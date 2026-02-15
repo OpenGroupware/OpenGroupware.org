@@ -24,6 +24,17 @@
 
 @class NSArray;
 
+/**
+ * @class LSFilterAndSortFolderCommand
+ * @brief Filters a document list to folders only and
+ *        optionally sorts the result.
+ *
+ * Takes a flat list of document objects (`documentList`)
+ * and returns only those where `isFolder` is true. The
+ * filtered result can be sorted by a given attribute
+ * and ordering (ascending/descending) using the
+ * "system::sort" command.
+ */
 @interface LSFilterAndSortFolderCommand : LSBaseCommand
 {
 @private

@@ -27,6 +27,23 @@
 @class NSArray, NSMutableDictionary;
 @class OGoStringTableManager, OGoResourceKey;
 
+/**
+ * @class OGoResourceManager
+ * @brief Custom resource manager for locating OGo
+ *        templates, web resources, and localized strings.
+ *
+ * Extends the SOPE OWResourceManager to search OGo-
+ * specific directory layouts (GNUstep and FHS) for
+ * components, WebServerResources, and string tables.
+ * Supports theme-based template overrides and caches
+ * lookup results for component paths, resource paths,
+ * and resource URLs. Also provides localized label
+ * lookups via the OGoStringTableManager.
+ *
+ * @see OWResourceManager
+ * @see OGoStringTableManager
+ * @see OGoResourceKey
+ */
 @interface OGoResourceManager : OWResourceManager
 {
 @private

@@ -27,6 +27,20 @@
 #include <EOControl/EOFetchSpecification.h>
 #include <LSFoundation/LSFoundation.h>
 
+/**
+ * @class SkyAptCompoundDataSource
+ * @brief Compound datasource that merges multiple
+ *        appointment datasources.
+ *
+ * Wraps an EOCompoundDataSource to aggregate results
+ * from multiple appointment datasources (e.g.
+ * SkyAptDataSource and PalmDateDataSource). Propagates
+ * fetch specification, time zone, and resource category
+ * settings to all child sources.
+ *
+ * @see SkyAptDataSource
+ * @see EOCompoundDataSource
+ */
 @interface SkyAptCompoundDataSource : EODataSource
 {
   EOCompoundDataSource *source;

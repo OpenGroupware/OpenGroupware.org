@@ -26,6 +26,21 @@
 
 @class EODataSource, EOGlobalID, NSString, NSCalendarDate, SkyDocument;
 
+/**
+ * @class SkyJobHistoryDocument
+ * @brief Document representing a single history entry of
+ *        an OGo job.
+ *
+ * Wraps a job history record as a SkyDocument. Each entry
+ * contains a comment describing a state change of the
+ * parent job. Supports save, delete, and reload operations
+ * through its data source, and tracks editing state and
+ * validity. Registers for global ID deletion
+ * notifications.
+ *
+ * @see SkyJobHistoryDataSource
+ * @see SkyJobDocument
+ */
 @interface SkyJobHistoryDocument : SkyDocument
 {
   EODataSource      *dataSource;

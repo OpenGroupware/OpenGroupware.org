@@ -23,6 +23,18 @@
 
 @class NSArray;
 
+/**
+ * @class LSSetRelatedArticlesCommand
+ * @brief Updates the set of articles linked to a news
+ *        article.
+ *
+ * Synchronises the NewsArticleLink join-table rows
+ * for the given news article object. Existing links
+ * that are no longer in the `relatedArticles` array
+ * are deleted, and new links are created for articles
+ * not yet present. The command accepts the source
+ * article via "newsArticle" key.
+ */
 @interface LSSetRelatedArticlesCommand : LSDBObjectBaseCommand
 {
 @private 

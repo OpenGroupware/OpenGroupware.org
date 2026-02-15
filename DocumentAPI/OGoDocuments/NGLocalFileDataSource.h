@@ -27,6 +27,19 @@
 @class NSString;
 @class EOGlobalID;
 
+/**
+ * @class NGLocalFileDataSource
+ * @brief EODataSource for fetching local file documents.
+ *
+ * Provides an EODataSource interface over the local
+ * filesystem via NGLocalFileManager. Fetches
+ * NGLocalFileDocument objects for a given directory path,
+ * supporting fetch specifications for filtering and
+ * sorting.
+ *
+ * @see NGLocalFileManager
+ * @see NGLocalFileDocument
+ */
 @interface NGLocalFileDataSource : EODataSource
 {
   EOFetchSpecification *fetchSpecification;

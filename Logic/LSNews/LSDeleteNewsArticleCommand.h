@@ -21,6 +21,16 @@
 
 #import <LSFoundation/LSDBObjectDeleteCommand.h>
 
+/**
+ * @class LSDeleteNewsArticleCommand
+ * @brief Deletes a NewsArticle record and all its
+ *        relationship rows.
+ *
+ * Removes the NewsArticle entity and cascades the
+ * deletion to all related join-table entries (e.g.
+ * NewsArticleLink rows) by iterating the entity's
+ * relationships before invoking the standard delete.
+ */
 @interface LSDeleteNewsArticleCommand : LSDBObjectDeleteCommand
 {
 }

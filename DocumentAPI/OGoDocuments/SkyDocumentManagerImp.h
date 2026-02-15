@@ -24,7 +24,26 @@
 
 #include <OGoDocuments/SkyDocumentManager.h>
 
-/* private header file */
+/**
+ * @class SkyDocumentManager
+ * @brief Private implementation of the SkyDocumentManager
+ *        protocol.
+ *
+ * Provides the concrete implementation that resolves
+ * OGo documents by EOGlobalID or URL. Uses a
+ * plug-in resolver architecture: GID resolvers are
+ * discovered via NGBundleManager and cached for reuse.
+ *
+ * Maintains a URL-to-GID cache (urlToGID) for fast
+ * repeated lookups. The base URL follows the scheme
+ * "skyrix://hostname/instance-id/".
+ *
+ * This is a private header; consumers should
+ * program against the SkyDocumentManager protocol.
+ *
+ * @see SkyDocumentManager (protocol)
+ * @see SkyDocumentGlobalIDResolver
+ */
 
 @class NSMutableArray, NSMutableDictionary;
 @class LSCommandContext;

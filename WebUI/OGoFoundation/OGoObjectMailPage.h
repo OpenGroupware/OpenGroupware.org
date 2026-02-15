@@ -28,6 +28,21 @@
 @class NGMimeType, NGMimeContentDispositionHeaderField;
 @class EOGlobalID;
 
+/**
+ * @class OGoObjectMailPage
+ * @brief Abstract base component for rendering OGo objects
+ *        as email body parts.
+ *
+ * Provides the framework for embedding OGo business
+ * objects (contacts, appointments, etc.) into email
+ * messages. Subclasses override hook methods to supply
+ * the entity name, fetch command, object data, MIME type,
+ * content disposition, and URL key. Supports inline links,
+ * direct action links, and data attachments.
+ *
+ * @see OGoComponent
+ * @see LSWMailEditorComponent
+ */
 @interface OGoObjectMailPage : OGoComponent
 {
 @protected

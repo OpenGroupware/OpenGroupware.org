@@ -26,6 +26,26 @@
 @class NSFileManager, NSString, NSDictionary, NSDistributedLock, NSException;
 @class SkyDocument;
 
+/**
+ * @class SkyFSFileManager
+ * @brief NGFileManager backed by the local file system.
+ *
+ * Provides an NGFileManager-compatible interface for projects
+ * whose documents are stored directly on the file system
+ * rather than in the database. The root path is derived from
+ * the project's URL.
+ *
+ * Supports standard file operations (create, copy, move,
+ * link, delete), directory enumeration, symbolic links,
+ * file attributes, global-ID mapping, trash folders, and
+ * distributed locking via NSDistributedLock.
+ *
+ * @see SkyFSDocument
+ * @see SkyFSDataSource
+ * @see SkyFSFolderDataSource
+ * @see SkyProjectFileManager
+ */
+
 @interface SkyFSFileManager : NGFileManager
 {
   NSFileManager *fileManager;

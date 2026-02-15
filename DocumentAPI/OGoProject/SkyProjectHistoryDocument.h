@@ -26,6 +26,19 @@
 
 @class NSString, NSData, NSDictionary;
 
+/**
+ * @class SkyProjectHistoryDocument
+ * @brief Document representing a version history entry
+ *        of a project file.
+ *
+ * Wraps a file version in the project filesystem as a
+ * SkyDocument. Provides read-only access to the version
+ * metadata (path, filename, version label, size, subject)
+ * and the binary content (BLOB) of the versioned file.
+ * Conforms to SkyBLOBDocument and SkyStringBLOBDocument.
+ *
+ * @see SkyDocument
+ */
 @interface SkyProjectHistoryDocument : SkyDocument
 < SkyBLOBDocument, SkyStringBLOBDocument >
 {

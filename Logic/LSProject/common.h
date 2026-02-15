@@ -22,7 +22,17 @@
 #ifndef __LSProject_common_H__
 #define __LSProject_common_H__
 
-// common include files
+/**
+ * @file common.h
+ *
+ * Precompiled common imports for the LSProject
+ * module. Pulls in Foundation, EOControl,
+ * NGExtensions, NGStreams, GDLAccess, and
+ * LSFoundation headers. Also defines the LSJob*
+ * status string constants used by task/job
+ * lifecycle transitions (e.g. LSJobCreated,
+ * LSJobDone, LSJobArchived).
+ */
 
 #import <Foundation/Foundation.h>
 #include <EOControl/EOControl.h>

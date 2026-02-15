@@ -26,6 +26,15 @@
 
 @class NSString;
 
+/**
+ * @class SkyMoneyFormatter
+ * @brief Formats numeric values as currency strings.
+ *
+ * Converts numbers to strings with two decimal places
+ * and an optional currency symbol suffix. Parses
+ * currency strings back to NSNumber. Used in
+ * financial fields of the OGo WebUI.
+ */
 @interface SkyMoneyFormatter : NSFormatter
 {
   NSString *currencySymbol;

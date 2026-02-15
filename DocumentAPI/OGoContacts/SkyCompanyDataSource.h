@@ -22,25 +22,33 @@
 #ifndef __OGoContacts_SkyCompanyDataSource_H__
 #define __OGoContacts_SkyCompanyDataSource_H__
 
-/*
-  supports following hints:
-
-    fetchIds:               YES|NO (default: No)
-    fetchGlobalIDs:         YES|NO (default: No)
-    addDocumentsAsObserver: YES|NO (default: YES)
-    
-    attributes: (NSArray)
-                describes the keys to fetch
-                possible keys are:
-                    "telephones",
-                    "addresses",
-                    "comment",
-                    "keywords"
-                    "contact",
-                    "owner",
-                    "extendedAttributes",
-
-*/
+/**
+ * @class SkyCompanyDataSource
+ * @brief Abstract base datasource for fetching company
+ *        contacts (persons and enterprises).
+ *
+ * Provides the common fetch, insert, update, and delete
+ * logic for company entities. Subclasses
+ * (SkyPersonDataSource, SkyEnterpriseDataSource) supply
+ * entity-specific details such as the document class,
+ * entity name, native keys, and notification names.
+ *
+ * Supports EOKeyValueQualifier, EOOrQualifier, and
+ * EOAndQualifier for searches, including full-text
+ * search via the "fullSearchString" key.
+ *
+ * Fetch specification hints:
+ *   - fetchIds: YES|NO (default: NO)
+ *   - fetchGlobalIDs: YES|NO (default: NO)
+ *   - addDocumentsAsObserver: YES|NO (default: YES)
+ *   - attributes: NSArray of keys to fetch
+ *     (telephones, addresses, comment, keywords,
+ *      contact, owner, extendedAttributes)
+ *
+ * @see SkyPersonDataSource
+ * @see SkyEnterpriseDataSource
+ * @see SkyCompanyDocument
+ */
 
 #import <EOControl/EODataSource.h>
 
@@ -70,6 +78,11 @@
 
 @class EOKeyValueQualifier;
 
+/**
+ * @category SkyCompanyDataSource(Privates)
+ * @brief Internal fetch and search methods used by
+ *        the datasource implementation.
+ */
 @interface SkyCompanyDataSource(Privates)
 
 - (NSArray *)_performFullTextSearch:(NSString *)_txt fetchLimit:(int)_limit;
@@ -93,6 +106,11 @@
 
 @end
 
+/**
+ * @category SkyCompanyDataSource(ConcretePrivates)
+ * @brief Methods that concrete subclasses must override
+ *        to provide entity-specific behavior.
+ */
 @interface SkyCompanyDataSource(ConcretePrivates)
 
 - (Class)documentClass;

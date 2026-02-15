@@ -24,17 +24,31 @@
 
 #include <LSSearch/LSBaseSearch.h>
 
-/*
-  LSFullSearch
-
-  TODO: explain much more
-  
-  LSFullSearch is used to construct qualifiers for fulltext searches. A 
-  fulltext search is a search on every string attribute of an EOEntity.
-
-  Note that the search itself is done by the command, this object is only
-  used to construct the required SQL expression.
-*/
+/**
+ * @class LSFullSearch
+ *
+ * Constructs EOSQLQualifier format strings for fulltext
+ * searches. A fulltext search matches a search string
+ * against every string attribute of an EOEntity and its
+ * related entities, using LIKE/ILIKE expressions.
+ *
+ * The actual database fetch is performed by the command
+ * (LSFullSearchCommand); this class is only responsible
+ * for building the qualifier expression.
+ *
+ * Key properties:
+ *  - entity: the primary EOEntity to search.
+ *  - relatedEntities: additional entities whose string
+ *    attributes are included in the search.
+ *  - searchString: the user-supplied search text; '*'
+ *    wildcards are converted to SQL '%' patterns.
+ *  - includesOwnAttributes: whether to search the
+ *    primary entity's own attributes (default YES).
+ *  - furtherSearches: nested LSFullSearch instances for
+ *    compound (multi-hop) relationship searches.
+ *  - foreignAttributes: the computed set of attributes
+ *    belonging to related entities.
+ */
 
 @class NSArray, NSString, EOSQLQualifier, NSMutableArray;
 

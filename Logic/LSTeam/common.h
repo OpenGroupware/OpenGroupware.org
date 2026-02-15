@@ -22,6 +22,16 @@
 #ifndef __LSAddress_common_H__
 #define __LSAddress_common_H__
 
+/**
+ * @file common.h
+ *
+ * Precompiled common imports for the LSTeam module.
+ * Pulls in Foundation, EOControl, NGExtensions,
+ * NGObjectMacros, NGStreams, GDLAccess, LSFoundation,
+ * and OGoContextManager headers used by the team
+ * management command classes.
+ */
+
 #import <Foundation/Foundation.h>
 
 #include <EOControl/EOControl.h>

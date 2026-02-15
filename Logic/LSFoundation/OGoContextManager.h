@@ -28,14 +28,28 @@
 @class EOAdaptor, EOModel, EOAdaptorChannel, EOAdaptorContext, EOEntity;
 @class OGoContextSession;
 
-/*
-  Defaults:
-
-    LSAttachmentPath:  "/home/siteadm/attachments"
-    LSTimeZones:       ( "CET", "GMT", "PST", "EST", "CET" )
-    LSOfficeModel:     "lso3dev"
-*/
-
+/**
+ * @class OGoContextManager
+ * @brief Central manager for OGo database access and
+ *        authentication.
+ *
+ * OGoContextManager is the singleton entry point for
+ * OGo. It sets up the database adaptor and model, loads
+ * Logic command bundles on startup, verifies login
+ * credentials (with optional LDAP support), and creates
+ * authenticated OGoContextSession instances. Access it
+ * via +defaultManager.
+ *
+ * Relevant defaults:
+ * - LSConnectionDictionary - DB connection parameters
+ * - LSAdaptor - adaptor name (default: PostgreSQL)
+ * - LSOfficeModel - EO model name (e.g. "lso3dev")
+ * - LSTimeZones - available timezone names, 
+ *   e.g. @c ( "CET", "GMT", "PST", "EST", "CET" )
+ *
+ * @see OGoContextSession
+ * @see LSBundleCmdFactory
+ */
 @interface OGoContextManager : NSObject
 {
 @private
@@ -82,6 +96,11 @@
 
 @end
 
+/**
+ * @category OGoContextManager(PrivateMethods)
+ * @brief Internal accessors for adaptor, model and
+ *        command factory.
+ */
 @interface OGoContextManager(PrivateMethods)
 
 - (EOAdaptor *)adaptor;

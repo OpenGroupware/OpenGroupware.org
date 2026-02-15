@@ -24,6 +24,20 @@
 
 #include <LSFoundation/LSDBObjectGetCommand.h>
 
+/**
+ * @class LSGetCompanyCommand
+ *
+ * Command that fetches company records by @c companyId,
+ * searching across all company entity types (teams, persons,
+ * and enterprises).
+ *
+ * Delegates to the @c team::get, @c person::get, and
+ * @c enterprise::get commands and merges their results.
+ * Access control is enforced via the context's access
+ * manager before returning results.
+ *
+ * Registered as: @c company::get
+ */
 @interface LSGetCompanyCommand : LSDBObjectBaseCommand
 {
   NSNumber *companyId;

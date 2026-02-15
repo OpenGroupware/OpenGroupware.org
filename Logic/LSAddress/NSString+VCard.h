@@ -24,6 +24,17 @@
 
 #import <Foundation/NSString.h>
 
+/**
+ * @category NSString(VCard)
+ *
+ * Adds vCard character escaping to NSString. The vCard
+ * format requires that commas, semicolons, newlines, and
+ * backslashes be escaped with a preceding backslash.
+ *
+ * Provides a method to count unsafe characters and a method
+ * to return an escaped copy of the string suitable for use
+ * in vCard property values.
+ */
 @interface NSString(VCard)
 
 - (unsigned)numberOfUnsafeVCardCharacters;

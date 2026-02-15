@@ -1,0 +1,40 @@
+#!/bin/bash
+set -e
+
+# This should run as the OGo user!
+
+# ENV OGO_INSTANCE_ID=OGo
+# ENV OGO_DATABASE_NAME=OGo
+# ENV OGO_DATABASE_USER=OGo
+# ENV OGO_DATABASE_PASSWORD=OGo
+# ENV OGO_DATABASE_PASSWORD_FILE=
+# ENV OGO_DATABASE_HOST=postgres
+# ENV OGO_DATABASE_PORT=5432
+# ENV OGO_INSTANCE_COUNT=10
+
+# put into .profile?!
+source /usr/share/GNUstep/Makefiles/GNUstep.sh
+
+# if set already, keep those! (likely overridden in defaults mounted via volume)
+if [[ $(defaults read NSGlobalDomain skyrix_id 2>/dev/null) == "" ]]; then
+  defaults write NSGlobalDomain skyrix_id "${OGO_INSTANCE_ID}"
+fi
+
+if [[ $(defaults read NSGlobalDomain LSConnectionDictionary 2>/dev/null) == "" ]]; then
+  defaults write NSGlobalDomain LSConnectionDictionary "{\
+    databaseName=${OGO_DATABASE_NAME};\
+    hostName=${OGO_DATABASE_HOST};\
+    port=${OGO_DATABASE_PORT};\
+    userName=${OGO_DATABASE_USER};\
+    password=${OGO_DATABASE_PASSWORD};\
+  }"
+fi
+
+for i in $(seq $OGO_INSTANCE_COUNT); do
+    let port=12000+$i
+    echo "Starting instance ${i} on port ${port}"
+    /usr/local/bin/ogo-webui-5.5 \
+        -WOPidFile /var/run/opengroupware/instance-${i}.pid \
+        -WOLogFile /var/log/opengroupware/instance-${i}.log \
+        -WOPort "0.0.0.0:${port}"
+done

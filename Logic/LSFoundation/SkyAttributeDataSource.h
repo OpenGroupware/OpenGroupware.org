@@ -24,29 +24,29 @@
 
 #import <EOControl/EODataSource.h>
 
-/*
-  SkyAttributeDataSource
-  
-  A datasource which fetches extended object attributes. It takes a "primary"
-  datasource which returns the objects and then uses the property manager to
-  fill the "primary objects" with the extended properties.
-  So this datasource does not only fetch the properties, but also the objects
-  itself.
-  
-  TODO: add exact documentation, add feature documentation
-
-  hints:
-    -restrictionQualifierString
-    -restrictionPrimaryKeyName
-    -restrictionEntityName
-       --> look at SkyObjectPropertyManager.h
-
-    -namespaces  --> NSSet of namespaces for the objects
-*/
-
 @class NSSet, NSMutableDictionary, NSString;
 @class EOFetchSpecification, EODataSource;
 
+/**
+ * @class SkyAttributeDataSource
+ * @brief DataSource that merges extended properties into
+ *        fetched objects.
+ *
+ * SkyAttributeDataSource wraps a "primary" EODataSource
+ * and augments its fetched objects with extended
+ * attributes from SkyObjectPropertyManager. Qualifiers
+ * on the fetch specification may reference both regular
+ * database keys and namespaced property keys.
+ *
+ * Fetch specification hints:
+ * - restrictionQualifierString
+ * - restrictionPrimaryKeyName
+ * - restrictionEntityName (--> look at SkyObjectPropertyManager.h)
+ * - namespaces (NSSet of property namespaces)
+ *
+ * @see SkyObjectPropertyManager
+ * @see EODataSource
+ */
 @interface SkyAttributeDataSource : EODataSource
 {
 @protected

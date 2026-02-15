@@ -27,10 +27,17 @@
 @class NSString, NSDictionary, NSMutableDictionary;
 @class OGoContextSession;
 
-/*
-  This category runs commands based on objects.
-*/
-
+/**
+ * @category NSObject(Commands)
+ * @brief Runs Logic commands with the receiver as the
+ *        "object" argument.
+ *
+ * Convenience methods to execute a named command, passing
+ * the receiver as the "object" key in the argument
+ * dictionary. Requires an explicit OGoContextSession.
+ *
+ * @see LSCommandContext
+ */
 @interface NSObject(Commands)
 
 - (id)run:(NSString *)_command
@@ -43,10 +50,11 @@
 
 @end
 
-/*
-  Determine session & context of an object
-*/
-
+/**
+ * @category NSObject(SessionContext)
+ * @brief Determines the active session and command
+ *        context for an object.
+ */
 @interface NSObject(SessionContext)
 
 - (OGoContextSession *)skySession;
@@ -54,10 +62,14 @@
 
 @end
 
-/*
-  Run command's in the current session & context as determined above.
-*/
-
+/**
+ * @category NSObject(CallCommands)
+ * @brief Runs commands using the current active session.
+ *
+ * Deprecated convenience methods that use the
+ * thread-local active OGoContextSession to run commands.
+ * Prefer LSCommandContext directly.
+ */
 @interface NSObject(CallCommands)
 - (id)call:(NSString *)_command, ...;
 - (id)call1:(NSString *)_command, ...;

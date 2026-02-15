@@ -27,6 +27,18 @@
 
 @class NSString, NSException;
 
+/**
+ * @category WOComponent(Commands)
+ * @brief Execute OGo Logic commands from components.
+ *
+ * Provides variadic and dictionary-based methods to
+ * run Logic commands in the session's command context.
+ * Also offers transaction control (commit/rollback)
+ * and error handling hooks for failed commands.
+ *
+ * @see WOSession(Commands)
+ * @see NSObject(LSWCommands)
+ */
 @interface WOComponent(Commands)
 
 // command in 'domain::cmd' form

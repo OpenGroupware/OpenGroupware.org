@@ -28,11 +28,19 @@
 @class NSString, NSArray, NSMutableDictionary;
 @class NGMimeType;
 
-/*
-  A web pasteboard used in conjunction with OWSession.
-  See NSPasteboard's description for a conceptual introduction.
-*/
-
+/**
+ * @class OWPasteboard
+ * @brief Web pasteboard for inter-component data transfer.
+ *
+ * Provides a named pasteboard mechanism similar to
+ * NSPasteboard, used in conjunction with OGoSession.
+ * Objects can be placed on the pasteboard with a
+ * MIME type and retrieved by consumers that accept
+ * compatible types.
+ *
+ * @see OGoSession
+ * @see OGoClipboard
+ */
 @interface OWPasteboard : NSObject
 {
 @protected
@@ -68,6 +76,10 @@
 
 @end
 
+/**
+ * @category OWPasteboard(ConvenienceMethods)
+ * @brief Variadic convenience methods for OWPasteboard.
+ */
 @interface OWPasteboard(ConvenienceMethods)
 
 - (int)declareTypesWithOwner:(id)_newOwner types:(NGMimeType *)_first, ...;
@@ -75,6 +87,14 @@
 
 @end
 
+/**
+ * @category NSObject(OWPasteboardOwner)
+ * @brief Informal protocol for pasteboard owners.
+ *
+ * Objects that own pasteboard content can implement
+ * these methods to respond to ownership changes and
+ * lazy data provision requests.
+ */
 @interface NSObject(OWPasteboardOwner)
 
 - (void)pasteboardChangedOwner:(OWPasteboard *)_pasteboard;

@@ -24,9 +24,21 @@
 
 #import <Foundation/NSObject.h>
 
-/*
-  A category for using filter commands with EOQualifiers.
-*/
+/**
+ * @category NSObject(LSAppointmentFilters)
+ *
+ * Filter predicates for appointment objects used
+ * with array filter commands and EOQualifiers.
+ *
+ * Provides methods to exclude or include
+ * appointments based on attendance, absence, and
+ * multi-day duration. Each filter method returns
+ * YES if the receiver passes the filter, NO if it
+ * should be excluded. The filter specification
+ * context (_ctx) carries flags like
+ * 'withAttendance', 'withAbsence', and
+ * 'withSeveralDays'.
+ */
 
 @interface NSObject(LSAppointmentFilters)
 
@@ -69,6 +81,19 @@
 
 @end
 
+/**
+ * @category NSObject(WeekDaysFilters)
+ *
+ * Week-day based appointment filter predicates.
+ *
+ * Filters appointments by their day-of-week within a
+ * given week, using the 'mondayOfWeek' and 'weekDay'
+ * properties from the filter specification context.
+ * Also provides AM/PM sub-day filters. Applies the
+ * common attendance, absence, and multi-day filters
+ * as prerequisites.
+ */
+
 @interface NSObject(WeekDaysFilters)
 
 /*
@@ -103,6 +128,17 @@
 - (BOOL)filterAMWeekDayWithSpec:(id)_ctx;
 
 @end
+
+/**
+ * @category NSObject(AppointmentFilterStaff)
+ *
+ * Staff-based appointment filter predicate.
+ *
+ * Filters appointments by checking whether any of
+ * their assigned participants
+ * ('toDateCompanyAssignment') overlap with the
+ * 'staffList' provided in the filter context.
+ */
 
 @interface NSObject(AppointmentFilterStaff)
 

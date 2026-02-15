@@ -24,12 +24,18 @@
 
 #import <NGObjWeb/WOComponent.h>
 
-/*
-  OGoComponent
-  
-  TODO: document what it exactly does/provides.
-*/
-
+/**
+ * @class OGoComponent
+ * @brief Base class for OGo web components.
+ *
+ * Extends WOComponent with OGo-specific lifecycle
+ * management, including synchronized awake/sleep
+ * cycles, configuration handling, and label
+ * localization support.
+ *
+ * @see OGoContentPage
+ * @see OGoSession
+ */
 @interface OGoComponent : WOComponent
 {
 @protected
@@ -47,6 +53,10 @@
 
 @end
 
+/**
+ * @category WOComponent(LSWMiscComponentAdditions)
+ * @brief Label access for any WOComponent.
+ */
 @interface WOComponent(LSWMiscComponentAdditions)
 
 /* labels */

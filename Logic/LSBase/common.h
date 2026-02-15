@@ -22,7 +22,14 @@
 #ifndef __OGo_LSBase_common_H__
 #define __OGo_LSBase_common_H__
 
-// common include files
+/**
+ * @file common.h
+ *
+ * Common include file for the LSBase command bundle.
+ * Imports Foundation, NGExtensions, NGStreams,
+ * GDLAccess, LSFoundation, and LSCommandKeys headers
+ * used throughout the base utility commands.
+ */
 
 #import <Foundation/Foundation.h>
 

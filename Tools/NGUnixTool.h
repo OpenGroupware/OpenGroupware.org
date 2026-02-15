@@ -25,6 +25,21 @@
 #import "common.h"
 #include <unistd.h>
 
+/**
+ * @class NGUnixTool
+ *
+ * Helper class that provides configurable paths to common
+ * Unix command-line utilities (zip, unzip, zipinfo, rm,
+ * diff, tar) and convenience methods for working with
+ * temporary files and directories.
+ *
+ * Tool paths are resolved from NSUserDefaults and can be
+ * overridden at runtime. Both class and instance accessors
+ * are provided. The class also offers methods to create
+ * unique temporary file paths, write NSData to temporary
+ * files, and recursively remove local paths via the
+ * configured rm tool.
+ */
 @interface NGUnixTool: NSObject {
 }
 + (NSString *)pathToZipTool;

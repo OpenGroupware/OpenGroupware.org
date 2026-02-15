@@ -26,6 +26,19 @@
 
 @class EODataSource;
 
+/**
+ * @class Session
+ *
+ * WOSession subclass for the OGo XML-RPC daemon. Holds
+ * the authenticated LSCommandContext and provides lazy
+ * factory accessors for the commonly used DocumentAPI
+ * data sources (person, enterprise, appointment, account,
+ * team, project).
+ *
+ * Also manages a cache of SkyProjectFileManager instances
+ * keyed by project code or URL, and commits any open
+ * database transaction when the session goes to sleep.
+ */
 @interface Session : WOSession
 {
   EODataSource        *accountDS;

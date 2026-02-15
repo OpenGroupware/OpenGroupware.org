@@ -24,6 +24,19 @@
 
 #include <LSFoundation/LSDBObjectGetCommand.h>
 
+/**
+ * @class LSGetAccountCommand
+ *
+ * Command for fetching OGo user account records
+ * (account::get).
+ *
+ * Retrieves Person entities where isAccount=1 and
+ * dbStatus is not 'archived'. After fetching, it
+ * also resolves the account's team memberships,
+ * extended attributes (companyValue), and telephone
+ * numbers into the returned objects.
+ */
+
 @interface LSGetAccountCommand : LSDBObjectGetCommand
 @end
 

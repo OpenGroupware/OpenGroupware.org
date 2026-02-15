@@ -22,12 +22,23 @@
 #ifndef __Skyrix_Logic_SkyContacts_SkyContactAddressDataSource__
 #define __Skyrix_Logic_SkyContacts_SkyContactAddressDataSource__
 
-/*
-  datasource for addresses of contact
-
-  hints:  addDocumentsAsObserver (NSNumber) default=YES
-  
-*/
+/**
+ * @class SkyContactAddressDataSource
+ * @brief Datasource for postal addresses belonging to
+ *        a specific contact (person or enterprise).
+ *
+ * Fetches, creates, inserts, updates, and deletes
+ * SkyAddressDocument objects for a given contact
+ * identified by its global ID. Uses the address::get,
+ * address::new, address::set, and address::delete
+ * Logic commands.
+ *
+ * Fetch specification hints:
+ *   - addDocumentsAsObserver: NSNumber (default: YES)
+ *
+ * @see SkyAddressDocument
+ * @see SkyCompanyDocument
+ */
 
 #import <EOControl/EODataSource.h>
 
@@ -49,6 +60,11 @@
 
 @end
 
+/**
+ * @category SkyContactAddressDataSource(ConcretePrivats)
+ * @brief Subclass hooks for contact-type-specific
+ *        address configuration.
+ */
 @interface SkyContactAddressDataSource(ConcretePrivats)
 - (NSString *)contactType;   // Person or Enterprise
 - (NSArray *)validAddressTypes; // valid address types for contact

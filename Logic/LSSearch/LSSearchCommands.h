@@ -24,6 +24,15 @@
 
 #include <LSFoundation/LSModuleManager.h>
 
+/**
+ * @class LSSearchCommands
+ *
+ * Module manager for the LSSearch command bundle. Registers
+ * and links the search-related command classes
+ * (LSNewSearchRecordCommand, LSExtendedSearchCommand,
+ * LSFullSearchCommand) so they are available through the
+ * OGo command factory.
+ */
 @interface LSSearchCommands : LSModuleManager
 {
 }

@@ -22,7 +22,14 @@
 #ifndef __LSLogic_LSMail_common_H__
 #define __LSLogic_LSMail_common_H__
 
-// common include files
+/**
+ * @file common.h
+ *
+ * Precompiled common imports for the LSMail module.
+ * Pulls in Foundation, NGExtensions, NGStreams,
+ * NGMime, NGMail, GDLAccess, and LSFoundation
+ * headers used by the mail command classes.
+ */
 
 #import <Foundation/Foundation.h>
 

@@ -22,6 +22,23 @@
 #ifndef __SkyEnterpriseAllProjectsDataSource_H__
 #define __SkyEnterpriseAllProjectsDataSource_H__
 
+/**
+ * @class SkyEnterpriseAllProjectsDataSource
+ * @brief Fetches all projects for an enterprise,
+ *        including the "fake" enterprise project.
+ *
+ * Combines the enterprise's own implicit project
+ * (obtained via "enterprise::get-fake-project") with
+ * the explicitly assigned projects fetched through a
+ * SkyEnterpriseProjectDataSource.
+ *
+ * Supports qualifier filtering and sort orderings
+ * from the fetch specification.
+ *
+ * @see SkyEnterpriseProjectDataSource
+ * @see SkyProjectDataSource
+ */
+
 #include <NGExtensions/EODataSource+NGExtensions.h>
 #include "common.h"
 

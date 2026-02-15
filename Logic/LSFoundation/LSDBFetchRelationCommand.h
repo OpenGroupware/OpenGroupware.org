@@ -24,19 +24,28 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
-/*
-  LSDBFetchRelationCommand
-
-  TODO: document
-  
-  Note: internally this command uses an array as the 'object'. The 'object'
-        parameter is converted to an array automagically and you can use
-	the 'objects' argument if you want to specify multiple base objects.
-
-  Subclasses:
-    LSFetchJobCommand
-    TODO: ...
-*/
+/**
+ * @class LSDBFetchRelationCommand
+ * @brief Fetches related objects for a set of source objects
+ *   via a foreign-key relationship.
+ *
+ * Given one or more source objects, this command resolves a
+ * relationship by querying the destination entity using an
+ * SQL IN clause on the collected source primary keys. It
+ * supports both to-one and to-many relationships and can
+ * optionally attach the fetched relations back onto the source
+ * objects under a configurable "relationKey".
+ *
+ * Internally the command always works with an array of source
+ * objects. The "object" key auto-wraps a single object into
+ * an array; use "objects" to supply multiple base objects.
+ *
+ * Queries are batched to avoid exceeding the maximum IN-clause
+ * size (configurable via the
+ * LSDBFetchRelationCommand_MAX_SEARCH_COUNT default).
+ *
+ * @see LSDBObjectBaseCommand
+ */
 
 @class NSString, NSArray;
 @class EOSQLQualifier, EOEntity;

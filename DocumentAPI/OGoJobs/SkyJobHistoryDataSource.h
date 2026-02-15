@@ -19,10 +19,6 @@
   02111-1307, USA.
 */
 
-/*
-  
-*/
-
 #ifndef __SkyJobs_SkyJobHistoryDataSource_H__
 #define __SkyJobs_SkyJobHistoryDataSource_H__
 
@@ -30,6 +26,22 @@
 
 @class EOGlobalID, NSException, EOFetchSpecification, NSString;
 
+/**
+ * @class SkyJobHistoryDataSource
+ * @brief EODataSource for fetching the history entries of
+ *        a job.
+ *
+ * Read-only data source that fetches job history records
+ * (SkyJobHistoryDocument) for a given job via the
+ * "job::get-job-history" Logic command. Supports qualifier
+ * filtering and sort orderings on the fetched results.
+ *
+ * Insert, update, and delete operations are not
+ * implemented for this data source.
+ *
+ * @see SkyJobHistoryDocument
+ * @see SkyJobDocument
+ */
 @interface SkyJobHistoryDataSource : EODataSource
 {
   EOGlobalID           *jobId;

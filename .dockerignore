@@ -1,0 +1,7 @@
+.git
+*.o
+*.d
+obj/
+derived_src/
+config.make
+.makeenv/

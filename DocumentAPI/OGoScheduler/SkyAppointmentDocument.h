@@ -27,6 +27,27 @@
 @class NSArray, NSNumber, NSString, NSCalendarDate, NSDictionary;
 @class EODataSource, EOGlobalID;
 
+/**
+ * @class SkyAppointmentDocument
+ * @brief Document object representing an OGo appointment.
+ *
+ * Wraps an appointment EO as a SkyDocument, exposing
+ * properties like title, location, start/end dates,
+ * cycle end date, repetition type, appointment type,
+ * participants, resource names, notification time, owner,
+ * and access control settings.
+ *
+ * Supports save, delete, and reload operations via its
+ * associated datasource. Handles recurring appointments
+ * through the saveCycles flag and parent date references.
+ *
+ * Respects view permissions: when the user lacks "v"
+ * permission, sensitive fields are masked with "*".
+ *
+ * @see SkyAptDataSource
+ * @see SkyAppointmentDataSource
+ * @see SkyAppointmentQualifier
+ */
 @interface SkyAppointmentDocument : SkyDocument
 {
   EODataSource   *dataSource;
@@ -158,6 +179,11 @@
 
 #include <OGoDocuments/SkyDocumentType.h>
 
+/**
+ * @class SkyAppointmentDocumentType
+ * @brief Document type descriptor for
+ *        SkyAppointmentDocument.
+ */
 @interface SkyAppointmentDocumentType : SkyDocumentType
 @end /* SkyAppointmentDocumentType */
 

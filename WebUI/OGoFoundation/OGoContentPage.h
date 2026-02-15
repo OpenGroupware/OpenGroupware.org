@@ -37,12 +37,40 @@
 @class WOContext;
 @class OGoNavigation;
 
+/**
+ * @protocol OGoContentPage
+ * @brief Protocol for pages that can be placed on
+ *        the navigation stack.
+ *
+ * Defines the interface that content pages must
+ * implement to participate in OGo's page-based
+ * navigation, including labeling and rollback
+ * support.
+ */
 @protocol OGoContentPage < NSObject >
 - (NSString *)label;
 - (BOOL)rollbackForPage:(id<OGoContentPage>)_page;
 @end
 
 /* should inherit from OGoComponent in the long run ..*/
+/**
+ * @class OGoContentPage
+ * @brief Base class for navigable content pages.
+ *
+ * Provides the foundation for full-page components
+ * in OGo's navigation stack. Supports warning mode
+ * with confirmation dialogs, error string display,
+ * change notifications, and pasteboard integration.
+ *
+ * Subclasses include OGoViewerPage, OGoEditorPage,
+ * and SkyEditorPage. Exposes KVC keys
+ * "confirmString" and "confirmAction" for use in
+ * templates.
+ *
+ * @see OGoNavigation
+ * @see OGoViewerPage
+ * @see SkyEditorPage
+ */
 @interface OGoContentPage : OGoComponent < OGoContentPage >
 {
 @private
@@ -87,6 +115,15 @@
 
 @class NGMimeType;
 
+/**
+ * @category WOComponent(OGoActivationComponent)
+ * @brief Component activation via command and type.
+ *
+ * Allows components to prepare themselves for
+ * activation by a named command and MIME type,
+ * optionally with a configuration dictionary or
+ * a specific object.
+ */
 @interface WOComponent(OGoActivationComponent)
 
 - (BOOL)prepareForActivationCommand:(NSString *)_name
@@ -100,6 +137,10 @@
 
 @end
 
+/**
+ * @category NSObject(ContentPageTyping)
+ * @brief Type-check whether an object is a content page.
+ */
 @interface NSObject(ContentPageTyping)
 - (BOOL)isContentPage;
 @end

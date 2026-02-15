@@ -25,10 +25,17 @@
 #include <LSFoundation/LSBaseCommand.h>
 #import  <NGStreams/NGTextStreamProtocols.h>
 
-/*
-  Mit diesem Kommando kann man Keys aus dem Context auf einen stream
-  loggen.
-*/
+/**
+ * @class LSSystemCtxLogCommand
+ *
+ * Diagnostic command that logs the values of specified
+ * keys from the LSCommandContext to an
+ * NGExtendedTextOutputStream. Each configured key is
+ * looked up in the context and its value is written to
+ * the output stream.
+ *
+ * Does not require a database channel or transaction.
+ */
 
 @class NSArray;
 

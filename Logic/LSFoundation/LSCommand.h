@@ -26,6 +26,19 @@
 
 @class NSString, NSDictionary;
 
+/**
+ * @protocol LSCommand
+ * @brief Core protocol for all OGo logic commands.
+ *
+ * Defines the interface every command object must implement:
+ * initialization with an operation and domain, transaction
+ * and channel requirements, execution via -runInContext:,
+ * key-value coding for setting command arguments, and a
+ * success status flag.
+ *
+ * @see LSBaseCommand
+ * @see LSCommandFactory
+ */
 @protocol LSCommand <NSObject>
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain;
@@ -49,6 +62,16 @@
 
 @end
 
+/**
+ * @protocol LSInitializableCommand
+ * @brief Extended initialization protocol for commands that
+ *   accept an init dictionary.
+ *
+ * Commands conforming to this protocol can be initialized
+ * with an additional dictionary that provides configuration
+ * parameters (e.g. entity name, relation keys) loaded from
+ * the command bundle definition.
+ */
 @protocol LSInitializableCommand
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain

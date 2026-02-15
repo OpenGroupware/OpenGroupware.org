@@ -29,6 +29,21 @@
 @class EOGlobalID, EOKeyGlobalID;
 @class OGoObjectLink, LSCommandContext;
 
+/**
+ * @class OGoObjectLinkManager
+ * @brief Manages typed links between OGo objects in the
+ *        database.
+ *
+ * OGoObjectLinkManager provides CRUD operations for
+ * object links stored in the obj_link database table.
+ * Links connect a source global ID to a target global
+ * ID with a type string and optional label. The manager
+ * supports querying links by source, target, type, or
+ * combinations thereof.
+ *
+ * @see OGoObjectLink
+ * @see LSCommandContext
+ */
 @interface OGoObjectLinkManager : NSObject
 {
   LSCommandContext *context;

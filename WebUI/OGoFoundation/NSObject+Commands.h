@@ -27,10 +27,17 @@
 @class NSString, NSDictionary;
 @class OGoContextSession;
 
-/*
-  This category runs commands based on objects.
-*/
-
+/**
+ * @category NSObject(LSWCommands)
+ * @brief Run OGo commands with the receiver as object.
+ *
+ * Convenience category that executes Logic commands in
+ * the current session, automatically passing the
+ * receiver as the "object" argument to the command.
+ *
+ * @see WOComponent(Commands)
+ * @see OGoSession
+ */
 @interface NSObject(LSWCommands)
 
 - (id)run:(NSString *)_command arguments:(NSDictionary *)_args;

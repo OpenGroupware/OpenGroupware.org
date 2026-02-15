@@ -22,17 +22,30 @@
 #ifndef __SkyContacts_SkyCompanyCompanyDataSource_H__
 #define __SkyContacts_SkyCompanyCompanyDataSource_H__
 
-/*
-  This datasource manages the company associated with a company, e.g.
-  persons of an enterprise object or enterprises of a person.
-  
-  It returns SkyCompanyDocuments.
-
-  hints:
-  
-    addDocumentsAsObserver: (YesNumber or NoNumber) (default: YES)
-  
-*/
+/**
+ * @class SkyCompanyCompanyDataSource
+ * @brief Abstract datasource for fetching companies
+ *        associated with another company.
+ *
+ * Manages the bidirectional company-to-company
+ * relationships, e.g. persons of an enterprise or
+ * enterprises of a person. Uses the
+ * "companyassignment" Logic commands to resolve,
+ * create, and delete assignments.
+ *
+ * Returns SkyCompanyDocument objects. Subclasses must
+ * override -destinyEntityName, -companyDataSource,
+ * -nameOfGetByGIDCommand, and -documentClass to
+ * provide entity-specific behavior.
+ *
+ * Fetch specification hints:
+ *   - addDocumentsAsObserver: YES|NO (default: YES)
+ *   - attributes: NSArray of keys to fetch
+ *
+ * @see SkyPersonEnterpriseDataSource
+ * @see SkyEnterprisePersonDataSource
+ * @see SkyCompanyDocument
+ */
 
 #import <EOControl/EODataSource.h>
 
@@ -54,6 +67,14 @@
 
 @end
 
+/**
+ * @category SkyCompanyCompanyDataSource(CommandNames)
+ * @brief Subclass hooks for entity-specific details.
+ *
+ * Concrete subclasses must override these methods
+ * to provide the target entity name, a properly
+ * typed company datasource, and key mapping logic.
+ */
 @interface SkyCompanyCompanyDataSource(CommandNames)
 - (NSString *)destinyEntityName;
 - (EODataSource *)companyDataSource;

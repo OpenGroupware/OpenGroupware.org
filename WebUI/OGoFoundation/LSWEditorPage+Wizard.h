@@ -24,6 +24,19 @@
 
 #include <OGoFoundation/OGoEditorPage.h>
 
+/**
+ * @category OGoEditorPage(Wizard)
+ * @brief Wizard-mode extensions for OGoEditorPage.
+ *
+ * Adds multi-step wizard navigation to editor pages,
+ * allowing forward/back/finish/cancel flow through a
+ * sequence of editing steps. The wizard manages a parent
+ * object reference and provides the entity type of the
+ * object being edited.
+ *
+ * @see OGoEditorPage
+ * @see SkyWizard
+ */
 @interface OGoEditorPage(Wizard)
 
 - (id)wizard;

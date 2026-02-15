@@ -30,19 +30,33 @@
 
 @class LSCommandContext, EOFetchSpecification;
 
-/*
-  Input:
-    EOFetchSpecification
-      qualifier => SkyAppointmentQualifier
-      hints: attributes (NSArray)    => attributes to fetch
-             fetchGIDs  (NSArray)    => make SkyAppointentDocuments of it
-             timeZone   (NSTimeZone) => timeZone,the qualifier can overwrite it
-             fetchGlobalIDs (BOOL)   => return globalIDs (default is NO)
-
-  Ouput:
-    Array of SkyAppointmentDocuments
-*/
-
+/**
+ * @class SkyAppointmentDataSource
+ * @brief EODataSource for appointment documents with
+ *        document-level operations.
+ *
+ * A datasource that fetches appointments and always
+ * returns SkyAppointmentDocument instances. Supports
+ * create, insert, update, and delete operations.
+ *
+ * Input via EOFetchSpecification:
+ *   - qualifier: SkyAppointmentQualifier
+ *   - hints: 
+ *     - attributes (NSArray), 
+ *     - fetchGIDs (NSArray),
+ *     - timeZone (NSTimeZone, qualifier can override),
+ *     - fetchGlobalIDs (BOOL, default NO)
+ *
+ * Output: Array of SkyAppointmentDocument objects.
+ *
+ * Posts SkyNewAppointmentNotification,
+ * SkyUpdatedAppointmentNotification, and
+ * SkyDeletedAppointmentNotification on changes.
+ *
+ * @see SkyAppointmentDocument
+ * @see SkyAppointmentQualifier
+ * @see SkyAptDataSource
+ */
 @interface SkyAppointmentDataSource : EODataSource
 {
   LSCommandContext     *context;
@@ -56,7 +70,15 @@
 
 @end
 
-/* TODO: the resolver class does not really need to be public? */
+/**
+ * @class SkyAppointmentDocumentGlobalIDResolver
+ * @brief Resolves Date global IDs to
+ *        SkyAppointmentDocuments.
+ *
+ * Implements the SkyDocumentGlobalIDResolver protocol
+ * to resolve EOKeyGlobalIDs with entity name "Date"
+ * into SkyAppointmentDocument instances.
+ */
 
 #include <OGoDocuments/SkyDocumentManager.h>
 

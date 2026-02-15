@@ -33,6 +33,22 @@
 @class LSCommandContext;
 @class NSUserDefaults;
 
+/**
+ * @class LSUserDefaults
+ *
+ * Per-account user defaults implementation backed by the
+ * OGo database. Subclasses lfNSUserDefaults (or
+ * NSUserDefaults on Apple platforms) to provide an
+ * NSUserDefaults-compatible API for per-user preferences.
+ *
+ * Reads and writes user defaults through the command
+ * context. Changes are tracked via the @c isChanged flag
+ * and persisted on synchronize. Falls back to the system
+ * @c standardUserDefaults for keys not stored per-account.
+ *
+ * The designated initializer is
+ * @c initWithUserDefaults:andContext:.
+ */
 @interface LSUserDefaults : _NSUserDefaults
 {
 @protected

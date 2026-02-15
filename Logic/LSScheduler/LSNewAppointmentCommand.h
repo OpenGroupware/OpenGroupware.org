@@ -24,12 +24,25 @@
 
 #include <LSFoundation/LSDBObjectNewCommand.h>
 
-/*
-  LSNewAppointmentCommand (appointment::new)
-
-  Subclasses:
-    LSNewAppointmentFromVEventCommand
-*/
+/**
+ * @class LSNewAppointmentCommand
+ *
+ * Command for creating new appointments
+ * (appointment::new).
+ *
+ * Creates a new calendar appointment in the database,
+ * including its associated DateInfo comment record.
+ * Validates the title, enforces ownership rules,
+ * checks for scheduling conflicts (unless warnings
+ * are ignored), assigns participants, and handles
+ * cyclic (recurring) appointments. Also supports
+ * iCalendar RRULE recurrence patterns via
+ * OGoCycleDateCalculator and stores custom extended
+ * attributes.
+ *
+ * Subclasses:
+ *   LSNewAppointmentFromVEventCommand
+ */
 
 @class NSNumber, NSString, NSArray, NSDictionary;
 

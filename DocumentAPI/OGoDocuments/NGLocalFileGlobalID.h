@@ -26,6 +26,17 @@
 
 @class NSString;
 
+/**
+ * @class NGLocalFileGlobalID
+ * @brief Global ID for local filesystem documents.
+ *
+ * An EOGlobalID subclass that uniquely identifies a file
+ * by its path relative to a root directory. Equality is
+ * determined by both the path and root path.
+ *
+ * @see NGLocalFileDocument
+ * @see NGLocalFileManager
+ */
 @interface NGLocalFileGlobalID : EOGlobalID
 {
   NSString *path;

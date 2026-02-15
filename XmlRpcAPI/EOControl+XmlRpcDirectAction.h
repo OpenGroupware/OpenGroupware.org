@@ -26,18 +26,46 @@
 #include <EOControl/EOSortOrdering.h>
 #include <EOControl/EOQualifier.h>
 
+/**
+ * @category EOFetchSpecification(XmlRpcDirectAction)
+ *
+ * Adds -initWithBaseValue: to EOFetchSpecification for
+ * constructing fetch specifications from XML-RPC
+ * parameters. Accepts an NSDictionary with optional keys
+ * "qualifier", "sortOrderings", "fetchLimit", and "hints",
+ * or a plain qualifier format string. Automatically
+ * disables document observer registration.
+ */
 @interface EOFetchSpecification(XmlRpcDirectAction)
 
 - (id)initWithBaseValue:(id)_baseValue;
 
 @end /* EOFetchSpecification(XmlRpcDirectAction) */
 
+/**
+ * @category EOSortOrdering(XmlRpcDirectAction)
+ *
+ * Adds -initWithBaseValue: to EOSortOrdering for
+ * constructing sort orderings from XML-RPC parameters.
+ * Accepts an NSDictionary with "key" and optional
+ * "selector" entries, or a plain key string (defaults
+ * to ascending sort).
+ */
 @interface EOSortOrdering(XmlRpcDirectAction)
 
 - (id)initWithBaseValue:(id)_baseValue;
 
-@end /* EOFetchSpecification(XmlRpcDirectAction) */
+@end /* EOSortOrdering(XmlRpcDirectAction) */
 
+/**
+ * @category EOQualifier(XmlRpcDirectAction)
+ *
+ * Adds +qualifierToMatchAllValues:selector: to
+ * EOQualifier for constructing AND-combined
+ * key-value qualifiers from a dictionary. Each
+ * key-value pair becomes an EOKeyValueQualifier joined
+ * into an EOAndQualifier.
+ */
 @interface EOQualifier(XmlRpcDirectAction)
 
 + (EOQualifier *)qualifierToMatchAllValues:(NSDictionary *)_values

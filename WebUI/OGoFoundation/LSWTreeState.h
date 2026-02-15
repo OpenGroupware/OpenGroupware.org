@@ -25,6 +25,19 @@
 #include <Foundation/NSObject.h>
 #include <OGoFoundation/WOComponent+Commands.h>
 
+/**
+ * @class LSWTreeState
+ * @brief Tracks expand/collapse state of tree UI nodes.
+ *
+ * Maintains a dictionary mapping tree node paths to
+ * their expanded/collapsed boolean state. The current
+ * node path is resolved dynamically via KVC on the
+ * associated component using the configured path key.
+ * State can be persisted to and restored from user
+ * defaults.
+ *
+ * @see OGoContentPage
+ */
 @interface LSWTreeState : NSObject
 {
 @protected

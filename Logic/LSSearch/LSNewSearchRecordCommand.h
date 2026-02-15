@@ -26,6 +26,19 @@
 
 @class EOEntity;
 
+/**
+ * @class LSNewSearchRecordCommand
+ *
+ * Command that creates a new LSGenericSearchRecord for a
+ * given entity. Key/value pairs passed via -takeValue:
+ * forKey: (other than "entity") are stored in the
+ * record's search dictionary.
+ *
+ * The return value is the newly created
+ * LSGenericSearchRecord, ready to be passed to
+ * LSExtendedSearchCommand as part of a search record
+ * list.
+ */
 @interface LSNewSearchRecordCommand : LSDBObjectBaseCommand
 {
 }

@@ -52,6 +52,10 @@
     /* URLs */
     url,
 
+    /* company */
+    "company.name",
+    "company.number",
+
     /* adresses */
     
     "private.name1",

@@ -25,17 +25,48 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSString.h>
 
+/**
+ * @file LSSort.h
+ * @brief Sort ordering types and array sorting utilities.
+ *
+ * Defines the LSOrdering enum for ascending/descending
+ * sort order, a category on NSString for sort-friendly
+ * string normalization (German umlaut expansion), and
+ * the LSSort class for KVC-based array sorting.
+ */
+
 typedef enum {
     LSAscendingOrder  = -1,
     LSDescendingOrder =  1
 } LSOrdering;
 
+/**
+ * @category NSString(SortMiscStrings)
+ * @brief Normalizes strings for locale-aware sorting.
+ *
+ * Expands German umlauts and sharp-s into their ASCII
+ * equivalents (e.g. "ae" for U+00E4) so that
+ * case-insensitive comparison produces a natural sort
+ * order.
+ */
 @interface NSString(SortMiscStrings)
 
 - (NSString *)sortString;
 
 @end
 
+/**
+ * @class LSSort
+ * @brief Sorts arrays of KVC-compliant objects by key.
+ *
+ * LSSort sorts an array of objects using key-value coding
+ * to extract sort values. It supports ascending and
+ * descending ordering, simple key sorting, and
+ * relationship-key sorting where a related object's
+ * attribute is used as the comparison value.
+ *
+ * @see LSSortCommand
+ */
 @interface LSSort : NSObject
 {
   NSArray    *sortArray;

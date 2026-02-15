@@ -30,10 +30,28 @@
 #include <NGExtensions/NSFileManager+Extensions.h>
 
 
-/*
-  Defaults SkyProjectFileManagerErrorLogEnabled --> log all errors
-           SkyProjectFileManagerAbortOnErrors   --> core on error
-*/
+/**
+ * @class SkyProjectFileManager
+ * @brief NSFileManager-style interface for database projects.
+ *
+ * Provides a virtual file system backed by the OGo database,
+ * mapping project documents to a path-based hierarchy. Supports
+ * standard file operations (create, move, copy, delete),
+ * directory listing, symbolic links, versioning, locking,
+ * access control, and trash folders.
+ *
+ * Uses SkyProjectFileManagerCache for internal caching and
+ * delegates permission checks to SkyAccessManager. Errors
+ * are exposed via -lastException and -lastErrorCode.
+ *
+ * User defaults:
+ * - `SkyProjectFileManagerErrorLogEnabled` -- log all errors
+ * - `SkyProjectFileManagerAbortOnErrors`   -- abort on error
+ *
+ * @see SkyProjectFileManagerCache
+ * @see SkyProjectDocument
+ * @see SkyProjectFolderDataSource
+ */
 
 @class NSString, NSException, NSData, NSDictionary, NSArray, NSMutableDictionary;
 @class SkyProjectFileManagerCache, SkyProjectDocument;

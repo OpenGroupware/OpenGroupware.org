@@ -24,7 +24,18 @@
 
 #include <LSFoundation/OGoAccessHandler.h>
 
-// DEPRECATED: use OGoAccessHandler!
+/**
+ * @file SkyAccessHandler.h
+ * @brief Deprecated compatibility header for
+ *        OGoAccessHandler.
+ *
+ * Defines SkyAccessHandler as a preprocessor alias for
+ * OGoAccessHandler. Use OGoAccessHandler directly in
+ * new code.
+ *
+ * @deprecated Use OGoAccessHandler instead.
+ * @see OGoAccessHandler
+ */
 
 #ifndef SkyAccessHandler
 #  define SkyAccessHandler OGoAccessHandler

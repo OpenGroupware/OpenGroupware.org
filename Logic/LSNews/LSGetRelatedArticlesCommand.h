@@ -26,6 +26,22 @@
 
 @class NSArray;
 
+/**
+ * @class LSGetRelatedArticlesCommand
+ * @brief Fetches news articles that are linked to one
+ *        or more source articles.
+ *
+ * Queries the NewsArticleLink join table to find
+ * related articles. For a single article the lookup
+ * is done with a simple join qualifier; for multiple
+ * articles the command performs a batch fetch and
+ * distributes the results to each source article's
+ * "relatedArticles" key.
+ *
+ * The -relatedEntityName method returns the entity
+ * to fetch (defaults to "NewsArticle") and can be
+ * overridden in subclasses.
+ */
 @interface LSGetRelatedArticlesCommand : LSDBObjectBaseCommand
 {
 @private

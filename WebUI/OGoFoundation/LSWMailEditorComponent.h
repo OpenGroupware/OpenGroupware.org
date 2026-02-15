@@ -28,6 +28,19 @@
 @class NGMimeType;
 @class NSNumber;
 
+/**
+ * @protocol LSWMailEditorComponent
+ * @brief Protocol for composing and sending email from
+ *        OGo pages.
+ *
+ * Defines the interface for mail editor components that
+ * can set a subject, content body (with or without
+ * signature), add receivers and attachments, configure
+ * template bindings, and send the composed message.
+ * Conforms to the OGoContentPage protocol.
+ *
+ * @see OGoContentPage
+ */
 @protocol LSWMailEditorComponent < OGoContentPage >
 
 - (void)setSubject:(NSString *)_subject;

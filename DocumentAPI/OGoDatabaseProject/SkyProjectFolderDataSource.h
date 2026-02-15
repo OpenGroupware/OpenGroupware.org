@@ -28,23 +28,25 @@
 @class EOQualifier, EOGlobalID, EOFetchSpecification;
 @class SkyProjectFileManager;                           
 
-/*
-  SkyProjectFolderDataSource
-
-  TODO: more docu
-  
-  This datasource should be used to run document queries on a single project,
-  it can either query a single folder or a whole project.
-  
-  Hints:
-    fetchDeep[BOOL]          : fetch all subdocuments from folder, currently
-                               only on root folders
-
-    onlySubFolderNames[BOOL] : returns an array with subfolder names (use
-                               cache; for TreeView)
-
-    fetchKeys [NSArray]      : set of properties to fetch
-*/
+/**
+ * @class SkyProjectFolderDataSource
+ * @brief EODataSource for documents within a single project.
+ *
+ * Provides fetch, insert, update, and delete operations on
+ * documents in a single database project folder or across an
+ * entire project tree.
+ *
+ * Supported fetch specification hints:
+ * - `fetchDeep` (BOOL) -- fetch all subdocuments from the
+ *   folder (currently only from root folders).
+ * - `onlySubFolderNames` (BOOL) -- return only subfolder
+ *   names (uses the cache; intended for tree views).
+ * - `fetchKeys` (NSArray) -- set of properties to fetch.
+ *
+ * @see SkyProjectFileManager
+ * @see SkyProjectDocument
+ * @see SkyProjectDocumentDataSource
+ */
 
 @interface SkyProjectFolderDataSource : EODataSource
 {

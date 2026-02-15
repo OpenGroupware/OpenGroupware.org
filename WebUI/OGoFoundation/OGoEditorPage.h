@@ -24,13 +24,26 @@
 
 #include <OGoFoundation/LSWContentPage.h>
 
-/*
-  OGoEditorPage
-  
-  A page which shows an object for editing (that is, in a form). Editor pages
-  disable other links to ensure that the user doesn't click them and looses
-  form content (don't ask ;-).
-*/
+/**
+ * @class OGoEditorPage
+ * @brief Base page for editing OGo objects in a form.
+ *
+ * Provides the standard editing lifecycle: activation
+ * (new or edit mode), snapshot management, constraint
+ * checking, insert/update/delete operations wrapped in
+ * database transactions, and navigation back to the
+ * previous page. Editor pages disable navigation links
+ * to prevent accidental data loss. Supports optional
+ * wizard mode for multi-step creation flows.
+ *
+ * Subclasses override -insertObject, -updateObject, and
+ * -deleteObject to perform the actual Logic command
+ * execution, and -checkConstraintsForSave /
+ * -checkConstraintsForDelete for validation.
+ *
+ * @see OGoContentPage
+ * @see OGoEditorPage(Wizard)
+ */
 
 @class NSMutableDictionary, NSDictionary, NSString;
 @class NGMimeType;
@@ -127,9 +140,24 @@
 
 @end
 
+/**
+ * @class LSWEditorPage
+ * @brief Deprecated alias for OGoEditorPage.
+ *
+ * @deprecated Use OGoEditorPage.
+ * @see OGoEditorPage
+ */
 @interface LSWEditorPage : OGoEditorPage // DEPRECATED
 @end
 
+/**
+ * @category NSObject(LSWEditorPageTyping)
+ * @brief Typing check for editor pages.
+ *
+ * Provides -isEditorPage which returns NO by default.
+ * OGoEditorPage overrides this to return YES, allowing
+ * runtime type discrimination without class checks.
+ */
 @interface NSObject(LSWEditorPageTyping)
 
 - (BOOL)isEditorPage;

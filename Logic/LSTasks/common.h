@@ -22,6 +22,17 @@
 #ifndef __LSTasks_common_H__
 #define __LSTasks_common_H__
 
+/**
+ * @file common.h
+ * @brief Precompiled header for the LSTasks command
+ *        bundle.
+ *
+ * Imports Foundation, EOControl, NGExtensions,
+ * NGStreams, GDLAccess, LSFoundation, and the
+ * LSJobStatus constants shared by all LSTasks
+ * command implementations.
+ */
+
 #import <Foundation/Foundation.h>
 #include <EOControl/EOControl.h>
 #include <NGExtensions/NGExtensions.h>

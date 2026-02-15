@@ -26,6 +26,18 @@
 
 @class SkyProject;
 
+/**
+ * @class SkyProjectTeamDataSource
+ * @brief EODataSource for fetching teams assigned to a
+ *        project.
+ *
+ * Provides the list of teams that are assigned to a given
+ * SkyProject by resolving the project's company assignment
+ * IDs into team global IDs, then fetching the corresponding
+ * team documents via SkyTeamDataSource.
+ *
+ * @see SkyProject
+ */
 @interface SkyProjectTeamDataSource : EODataSource
 {
   SkyProject *project;

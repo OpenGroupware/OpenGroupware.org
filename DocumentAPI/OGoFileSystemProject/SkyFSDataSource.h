@@ -28,6 +28,21 @@
 @class SkyFSFileManager;
 @class EOGlobalID, EOFetchSpecification;
 
+/**
+ * @class SkyFSDataSource
+ * @brief EODataSource for filesystem-backed project documents.
+ *
+ * Provides fetch operations for documents stored in a
+ * directory on the local file system. The datasource is
+ * initialized with a SkyFSFileManager, a command context,
+ * the project object, and a base directory path. Only
+ * existing directories are accepted as the base path.
+ *
+ * @see SkyFSFileManager
+ * @see SkyFSDocument
+ * @see SkyFSFolderDataSource
+ */
+
 @interface SkyFSDataSource : EODataSource
 {
   NSString             *path;

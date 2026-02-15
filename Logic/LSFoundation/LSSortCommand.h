@@ -24,6 +24,18 @@
 
 #include <LSFoundation/LSBaseCommand.h>
 
+/**
+ * @class LSSortCommand
+ * @brief Command that sorts an array using LSSort.
+ *
+ * LSSortCommand is a Logic command that wraps LSSort to
+ * sort a list of objects by a given attribute key. It
+ * does not require a database channel or transaction.
+ * The sorted array is returned as the command result.
+ *
+ * @see LSSort
+ * @see LSBaseCommand
+ */
 @interface LSSortCommand : LSBaseCommand
 {
 @private 

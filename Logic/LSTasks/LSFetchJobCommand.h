@@ -26,6 +26,23 @@
 
 @class EOSQLQualifier;
 
+/**
+ * @class LSFetchJobCommand
+ * @brief Fetches Job records related to a person
+ *        (account).
+ *
+ * Uses the Person-to-Job relation (via `companyId`)
+ * to retrieve jobs assigned to accounts. If no object
+ * is set, defaults to the currently logged-in account.
+ *
+ * When `fetchGlobalIDs` is YES, only the primary-key
+ * global IDs are fetched instead of full objects,
+ * which is more efficient for large result sets.
+ *
+ * Subclasses can override
+ * -_checkConjoinWithQualifier: to refine the SQL
+ * qualifier used for fetching.
+ */
 @interface LSFetchJobCommand : LSDBFetchRelationCommand
 {
 @private

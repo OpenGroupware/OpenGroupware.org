@@ -24,15 +24,19 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
-/*
-  LSMemberToGroupAssignmentCommand
-  
-  TODO: document
-  TODO: subclasses?
-*/
-
 @class NSArray, NSMutableArray;
 
+/**
+ * @class LSMemberToGroupAssignmentCommand
+ *
+ * Manages the assignment of member companies to a group
+ * company (e.g. assigning accounts to a team).
+ *
+ * Registered as @c team::set-members. Compares the desired
+ * member list against the current assignments, then inserts
+ * or removes @c company_assignment rows as needed. Tracks
+ * changed member IDs for downstream notification.
+ */
 @interface LSMemberToGroupAssignmentCommand : LSDBObjectBaseCommand
 {
 @private 

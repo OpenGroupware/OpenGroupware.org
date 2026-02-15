@@ -26,6 +26,22 @@
 
 @class EOEntity, NSMutableDictionary, NSDictionary;
 
+/**
+ * @class LSGenericSearchRecord
+ *
+ * A key/value container that pairs an EOEntity with a
+ * dictionary of attribute names to search values. Used as
+ * input to LSExtendedSearch and LSExtendedSearchCommand
+ * to describe the fields and values to match.
+ *
+ * Supports NSCopying and key/value coding. Values are
+ * stored in an internal mutable dictionary and can be
+ * set via -takeValue:forKey: or -takeValuesFromDictionary:.
+ *
+ * The comparator property (e.g. "LIKE", "EQUAL") is
+ * passed through to LSBaseSearch to control the SQL
+ * matching mode.
+ */
 @interface LSGenericSearchRecord : NSObject < NSCopying >
 {
 @private

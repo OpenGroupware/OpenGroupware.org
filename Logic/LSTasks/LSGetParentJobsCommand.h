@@ -21,6 +21,17 @@
 
 #import <LSFoundation/LSBaseCommand.h>
 
+/**
+ * @class LSGetParentJobsCommand
+ * @brief Deprecated command that formerly retrieved
+ *        parent jobs for a given set of jobs.
+ *
+ * This command is no longer functional; its execute
+ * method emits a deprecation warning and returns
+ * without performing any work. It is retained for
+ * backward compatibility with existing command
+ * registrations.
+ */
 @interface LSGetParentJobsCommand : LSBaseCommand
 {
   NSArray *jobs;

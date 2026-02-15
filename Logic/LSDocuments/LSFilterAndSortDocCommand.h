@@ -24,6 +24,18 @@
 
 @class NSArray;
 
+/**
+ * @class LSFilterAndSortDocCommand
+ * @brief Filters a document list to non-folder
+ *        documents and optionally sorts the result.
+ *
+ * Takes a flat list of document objects (`documentList`)
+ * and returns only those where `isFolder` is false
+ * (i.e. actual files). The filtered result can be
+ * sorted by a given attribute and ordering
+ * (ascending/descending) using the "system::sort"
+ * command.
+ */
 @interface LSFilterAndSortDocCommand : LSBaseCommand
 {
 @private

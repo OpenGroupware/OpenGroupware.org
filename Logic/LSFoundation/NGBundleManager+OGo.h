@@ -24,6 +24,18 @@
 
 #include <NGExtensions/NGBundleManager.h>
 
+/**
+ * @category NGBundleManager(OGo)
+ * @brief OGo-specific bundle loading helpers.
+ *
+ * Adds convenience methods to NGBundleManager for
+ * scanning directories and loading all bundles of a
+ * given type (e.g. ".cmd", ".ds", ".model"). Used by
+ * OGoContextManager during startup to discover Logic
+ * command and datasource bundles.
+ *
+ * @see OGoContextManager
+ */
 @interface NGBundleManager(OGo)
 
 /* search directory _p for all bundles ending in _type, load them */

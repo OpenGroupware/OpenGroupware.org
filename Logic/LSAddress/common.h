@@ -22,6 +22,18 @@
 #ifndef __OGo_LSAddress_common_H__
 #define __OGo_LSAddress_common_H__
 
+/**
+ * @file common.h
+ *
+ * Common precompiled header for the LSAddress module.
+ *
+ * LSAddress provides the base classes for all OGo "company"
+ * entities (persons, enterprises, teams). This header
+ * aggregates the Foundation, EOControl, NGExtensions,
+ * GDLAccess, and LSFoundation imports used throughout the
+ * module.
+ */
+
 #import <Foundation/Foundation.h>
 #import <Foundation/NSDateFormatter.h>
 

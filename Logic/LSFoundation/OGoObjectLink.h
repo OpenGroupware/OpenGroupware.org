@@ -25,16 +25,23 @@
 
 #import <Foundation/NSObject.h>
 
-/*
-  OGoObjectLink
-  
-  Note: instances of this class are considered immutable (eg copy will return
-        self)
-*/
-
 @class EOGlobalID, EOKeyGlobalID;
 @class NSDictionary, NSString;
 
+/**
+ * @class OGoObjectLink
+ * @brief Immutable value object representing a typed
+ *        link between two OGo objects.
+ *
+ * OGoObjectLink represents a directional link from a
+ * source object to a target object, with a link type
+ * and an optional label. Instances are immutable (copy
+ * returns self). Source and target are identified by
+ * their EOGlobalIDs, which are derived from the stored
+ * integer IDs and entity type strings.
+ *
+ * @see OGoObjectLinkManager
+ */
 @interface OGoObjectLink : NSObject < NSCopying >
 {
   /* Global id`s are calculated from id and type */

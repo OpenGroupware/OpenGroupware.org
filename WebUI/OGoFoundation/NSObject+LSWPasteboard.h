@@ -29,12 +29,29 @@
 @class NSString;
 @class NGMimeType;
 
+/**
+ * @category NSObject(LSWPasteboardAdds)
+ * @brief Pasteboard MIME type for arbitrary objects.
+ *
+ * Returns a MIME type derived from the Objective-C
+ * class name, used to identify the object type on
+ * the OGo pasteboard.
+ *
+ * @see OWPasteboard
+ */
 @interface NSObject(LSWPasteboardAdds)
 
 - (NGMimeType *)lswPasteboardType;
 
 @end
 
+/**
+ * @category EOGenericRecord(LSWPasteboardAdds)
+ * @brief Pasteboard MIME type for Enterprise Objects.
+ *
+ * Returns a MIME type based on the entity name of
+ * the generic record (e.g. "eo/person").
+ */
 @interface EOGenericRecord(LSWPasteboardAdds)
 
 - (NGMimeType *)lswPasteboardType;

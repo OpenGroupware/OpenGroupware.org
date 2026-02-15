@@ -24,6 +24,16 @@
 
 #include <OGoFoundation/OGoConfigHandler.h>
 
+/**
+ * @class LSWConfigHandler
+ * @brief Deprecated alias for OGoConfigHandler.
+ *
+ * This class exists solely for backward compatibility.
+ * Use OGoConfigHandler instead.
+ *
+ * @deprecated Use OGoConfigHandler.
+ * @see OGoConfigHandler
+ */
 @interface LSWConfigHandler : OGoConfigHandler /* DEPRECATED */
 {
 }

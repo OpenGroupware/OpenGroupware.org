@@ -26,6 +26,27 @@
 
 @class NSData, NSString, NSArray;
 
+/**
+ * @class LSSetNewsArticleCommand
+ * @brief Updates an existing NewsArticle record, its
+ *        text content, image, and related-article
+ *        links.
+ *
+ * Requires the caller to be the root account or a
+ * member of the "newseditors" team. If the article
+ * is marked as the index article, all others are
+ * demoted first.
+ *
+ * Text body changes (`fileContent`) are written to
+ * `LSAttachmentPath`. When a new image (`data` /
+ * `filePath`) is provided or `deleteImage` is YES,
+ * existing images are removed from `LSNewsImagesPath`
+ * before the new one is saved.
+ *
+ * If `relatedArticles` is set, the related-article
+ * links are updated via
+ * "newsArticle::set-related-Articles".
+ */
 @interface LSSetNewsArticleCommand : LSDBObjectSetCommand
 {
 @private  
