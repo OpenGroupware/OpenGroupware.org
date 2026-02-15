@@ -23,13 +23,16 @@
 
 @interface OGoCSVCompanyList : OGoListComponent
 {
-  id labels;
+  id                  labels;
+  NSMutableDictionary *_companyCache;
 }
 
 @end
 
 #include "common.h"
 #include <OGoContacts/SkyCompanyDocument.h>
+#include <OGoContacts/SkyPersonDocument.h>
+#include <OGoContacts/SkyEnterpriseDocument.h>
 
 @implementation OGoCSVCompanyList
 
@@ -43,6 +46,7 @@
 }
 
 - (void)dealloc {
+  [self->_companyCache release];
   [self->labels release];
   [super dealloc];
 }
@@ -50,6 +54,8 @@
 /* notifications */
 
 - (void)sleep {
+  [self->_companyCache release];
+  self->_companyCache = nil;
   [self->labels release]; self->labels = nil;
   [super sleep];
 }
@@ -66,12 +72,80 @@
 /* config key */
 
 - (NSString *)defaultConfigKey {
-  if ([self->configKey rangeOfString:@"person"].length > 0)
+  if ([self->configKey rangeOfString:@"person"]
+        .length > 0)
     return @"person_defaultlist";
-  if ([self->configKey rangeOfString:@"enterprise"].length > 0)
+  if ([self->configKey rangeOfString:@"enterprise"]
+        .length > 0)
     return @"enterprise_defaultlist";
 
   return nil;
+}
+
+/* company column support */
+
+- (NSArray *)_enterprisesForCurrentItem {
+  NSNumber *pid;
+  NSArray  *cached;
+
+  pid = [[self item] companyId];
+  if (pid == nil) return nil;
+
+  if (self->_companyCache == nil) {
+    self->_companyCache =
+      [[NSMutableDictionary alloc]
+          initWithCapacity:32];
+  }
+
+  cached = [self->_companyCache objectForKey:pid];
+  if (cached == nil) {
+    NSArray        *all;
+    NSMutableArray *filtered;
+    unsigned       i, count;
+
+    all = [[[self item] enterpriseDataSource]
+              fetchObjects];
+    count    = [all count];
+    filtered = [NSMutableArray arrayWithCapacity:count];
+    for (i = 0; i < count; i++) {
+      SkyEnterpriseDocument *ent;
+      ent = [all objectAtIndex:i];
+      if ([ent isEnterprise])
+        [filtered addObject:ent];
+    }
+    [self->_companyCache setObject:filtered forKey:pid];
+    cached = filtered;
+  }
+  return cached;
+}
+
+/* column values */
+
+- (id)currentColumnValue {
+  NSString *col = [self currentColumn];
+
+  if ([col hasPrefix:@"company."]) {
+    NSArray        *ents;
+    NSMutableArray *values;
+    NSString       *attr;
+    unsigned       i, count;
+
+    attr  = [col substringFromIndex:8];
+    ents  = [self _enterprisesForCurrentItem];
+    count = [ents count];
+    if (count == 0) return @"";
+
+    values = [NSMutableArray arrayWithCapacity:count];
+    for (i = 0; i < count; i++) {
+      NSString *v;
+      v = [[ents objectAtIndex:i] valueForKey:attr];
+      if ([v isNotEmpty]) [values addObject:v];
+    }
+    [values sortUsingSelector:
+        @selector(caseInsensitiveCompare:)];
+    return [values componentsJoinedByString:@", "];
+  }
+  return [super currentColumnValue];
 }
 
 /* CSV helpers */

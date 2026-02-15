@@ -46,12 +46,14 @@
 
 @interface SkyPersonList : OGoListComponent
 {
+  NSMutableDictionary *_companyCache;
 }
 
 @end
 
 #include "common.h"
 #include <OGoContacts/SkyPersonDocument.h>
+#include <OGoContacts/SkyEnterpriseDocument.h>
 
 @implementation SkyPersonList
 
@@ -62,6 +64,19 @@
   NSAssert2([super version] == 4,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
+}
+
+- (void)dealloc {
+  [self->_companyCache release];
+  [super dealloc];
+}
+
+/* notifications */
+
+- (void)sleep {
+  [self->_companyCache release];
+  self->_companyCache = nil;
+  [super sleep];
 }
 
 /* config */
@@ -102,6 +117,77 @@
     s = [[self item] firstname];
 
   return [s isNotEmpty] ? s : (NSString *)@"---";
+}
+
+/* company column support */
+
+/**
+ * Returns cached enterprise documents for the
+ * current item, excluding groups (isEnterprise==NO).
+ * Fetches and caches on first access per item.
+ */
+- (NSArray *)_enterprisesForCurrentItem {
+  NSNumber *pid;
+  NSArray  *cached;
+
+  pid = [[self item] companyId];
+  if (pid == nil) return nil;
+
+  if (self->_companyCache == nil) {
+    self->_companyCache =
+      [[NSMutableDictionary alloc]
+          initWithCapacity:32];
+  }
+
+  cached = [self->_companyCache objectForKey:pid];
+  if (cached == nil) {
+    NSArray        *all;
+    NSMutableArray *filtered;
+    unsigned       i, count;
+
+    all = [[[self item] enterpriseDataSource]
+              fetchObjects];
+    count    = [all count];
+    filtered = [NSMutableArray arrayWithCapacity:count];
+    for (i = 0; i < count; i++) {
+      SkyEnterpriseDocument *ent;
+      ent = [all objectAtIndex:i];
+      if ([ent isEnterprise])
+        [filtered addObject:ent];
+    }
+    [self->_companyCache setObject:filtered forKey:pid];
+    cached = filtered;
+  }
+  return cached;
+}
+
+/* column values */
+
+- (id)currentColumnValue {
+  NSString *col = [self currentColumn];
+
+  if ([col hasPrefix:@"company."]) {
+    NSArray        *ents;
+    NSMutableArray *values;
+    NSString       *attr;
+    unsigned       i, count;
+
+    attr  = [col substringFromIndex:8];
+    ents  = [self _enterprisesForCurrentItem];
+    count = [ents count];
+    if (count == 0) return @"";
+
+    values = [NSMutableArray arrayWithCapacity:count];
+    for (i = 0; i < count; i++) {
+      NSString *v;
+      v = [[ents objectAtIndex:i] valueForKey:attr];
+      if ([v isNotEmpty]) [values addObject:v];
+    }
+    [values sortUsingSelector:
+        @selector(caseInsensitiveCompare:)];
+    return [values componentsJoinedByString:@", "];
+  }
+  return [super currentColumnValue];
 }
 
 /* deprecated */
