@@ -32,7 +32,10 @@ PersonList: SkyPersonList {
 }
 
 Buttons: SkyButtonRow {
-  ordering     = ( print, editconfig, bulk, gathering, import, email, new );
+  ordering     = (
+    csv, print, editconfig, bulk,
+    gathering, import, email, new
+  );
   onNew        = newPerson;
   onGathering  = gathering;
   new          = labels.new;
@@ -50,6 +53,9 @@ Buttons: SkyButtonRow {
   onPrint      = printList;
   targetPrint  = "SkyrixPrintView";
 
+  csv          = labels.csv;
+  onCsv        = csvList;
+
   bulk         = labels.bulk;
   onBulk       = showBulkOperations;
 
@@ -59,8 +65,9 @@ Buttons: SkyButtonRow {
 
 // TODO: why not 'hasRemoveTab'?
 CustomButtons: SkyButtonRow {
-  ordering     = ( 
-    print, editconfig, bulk, gathering, import, email, removetab 
+  ordering     = (
+    csv, print, editconfig, bulk,
+    gathering, import, email, removetab
   );
   onNew        = newPerson;
   onGathering  = gathering;
@@ -79,15 +86,18 @@ CustomButtons: SkyButtonRow {
   editconfig   = labels.config;
   onEditconfig = showColumnConfigEditor;
 
-  print       = labels.print;
-  onPrint     = printList;
-  targetPrint = "SkyrixPrintView";
+  print        = labels.print;
+  onPrint      = printList;
+  targetPrint  = "SkyrixPrintView";
 
-  bulk        = labels.bulk;
-  onBulk      = showBulkOperations;
+  csv          = labels.csv;
+  onCsv        = csvList;
 
-  email       = labels.email;
-  onEmail     = showMailer;
+  bulk         = labels.bulk;
+  onBulk       = showBulkOperations;
+
+  email        = labels.email;
+  onEmail      = showMailer;
 }
 
 HasSearchedCond: WOConditional {

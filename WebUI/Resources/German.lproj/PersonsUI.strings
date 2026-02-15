@@ -138,6 +138,7 @@ company_gathering_title            = "Unternehmen";
 competition_products               = "Konkurrenzprodukte";
 config                             = "Konfigurieren";
 contact                            = "Kontaktperson";
+csv                                = "CSV";
 contact_type                       = "Kontakt";
 couldNotSavePerson                 = "Die Person konnte nicht gespeichert werden";
 country                            = "Land";

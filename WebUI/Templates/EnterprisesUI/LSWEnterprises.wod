@@ -53,7 +53,10 @@ FullSearch: LSWFullSearch {
 }
 
 Buttons: SkyButtonRow {
-  ordering     = ( print, editconfig, bulk, import, email, new );
+  ordering     = (
+    csv, print, editconfig, bulk,
+    import, email, new
+  );
   onNew        = newEnterprise;
   new          = labels.new;
   tipNew       = labels.new;
@@ -65,19 +68,25 @@ Buttons: SkyButtonRow {
   editconfig   = labels.config;
   onEditconfig = showColumnConfigEditor;
 
-  print       = labels.print;
-  onPrint     = printList;
-  targetPrint = "SkyrixPrintView";
+  print        = labels.print;
+  onPrint      = printList;
+  targetPrint  = "SkyrixPrintView";
 
-  bulk        = labels.bulk;
-  onBulk      = showBulkOperations;
+  csv          = labels.csv;
+  onCsv        = csvList;
 
-  email       = labels.email;
-  onEmail     = showMailer;
+  bulk         = labels.bulk;
+  onBulk       = showBulkOperations;
+
+  email        = labels.email;
+  onEmail      = showMailer;
 }
 
 CustomButtons: SkyButtonRow {
-  ordering     = ( print, editconfig, bulk, import, email, new, removetab);
+  ordering     = (
+    csv, print, editconfig, bulk,
+    import, email, new, removetab
+  );
   onNew        = newEnterprise;
   new          = labels.new;
   tipNew       = labels.new;
@@ -97,11 +106,14 @@ CustomButtons: SkyButtonRow {
   onPrint      = printList;
   targetPrint  = "SkyrixPrintView";
 
-  bulk        = labels.bulk;
-  onBulk      = showBulkOperations;
+  csv          = labels.csv;
+  onCsv        = csvList;
 
-  email       = labels.email;
-  onEmail     = showMailer;
+  bulk         = labels.bulk;
+  onBulk       = showBulkOperations;
+
+  email        = labels.email;
+  onEmail      = showMailer;
 }
 
 SearchField: WOTextField {

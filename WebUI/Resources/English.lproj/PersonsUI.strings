@@ -136,6 +136,7 @@ company_gathering_title            = "Company";
 competition_products               = "Competition products";
 config                             = "Configure";
 contact                            = "Contact";
+csv                                = "CSV";
 contact_type                       = "Contact";
 couldNotSavePerson                 = "Could not save person";
 country                            = "Country";

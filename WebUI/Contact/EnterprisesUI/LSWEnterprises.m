@@ -560,6 +560,17 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   return r;
 }
 
+- (id)csvList {
+  OGoComponent *page;
+
+  page = [self pageWithName:@"OGoCSVCompanyList"];
+  [page takeValue:[self dataSource]      forKey:@"dataSource"];
+  [page takeValue:[self activeConfigKey] forKey:@"configKey"];
+  [page takeValue:[self labels]          forKey:@"labels"];
+
+  return [page generateResponse];
+}
+
 
 /* custom tabs */
 
