@@ -23,6 +23,30 @@
 #include "WOComponent+Navigation.h"
 #include "common.h"
 
+/**
+ * Returns YES if the string contains a dot that is NOT
+ * the last character (i.e. it is a real key-path like
+ * `addr01.street`). A trailing dot (e.g. `P-Nr.`) is
+ * just part of the key name and not a key-path separator.
+ */
+static BOOL isKeyPath(NSString *s) {
+  NSUInteger len = [s length];
+  if (len == 0) return NO;
+  NSRange r = [s rangeOfString:@"."];
+  if (r.length == 0) return NO;
+  /* trailing dot is not a key path */
+  return (r.location + r.length) < len;
+}
+
+static BOOL didWarnTrailingDot = NO;
+
+static void warnTrailingDot(NSString *key) {
+  if (didWarnTrailingDot) return;
+  didWarnTrailingDot = YES;
+  NSLog(@"OGoListComponent: column key '%@' has a "
+        @"trailing dot, using valueForKey:.", key);
+}
+
 @implementation OGoListComponent
 
 + (int)version {
@@ -109,7 +133,7 @@
 }
 - (NSString *)currentSortKey {
   NSString *s = [self currentColumn];
-  return (s == nil || [s rangeOfString:@"."].length > 0) ? nil : (id)s;
+  return (s == nil || isKeyPath(s)) ? nil : (id)s;
 }
 
 - (void)setCurrentColumnOpt:(NSString *)_s {
@@ -135,23 +159,31 @@
 
 - (id)currentColumnValue {
   NSString *kp = [self currentColumn];
-  id       v   = [[self item] valueForKeyPath:kp];
+  id v;
+
+  if (isKeyPath(kp))
+    v = [[self item] valueForKeyPath:kp];
+  else {
+    if ([kp hasSuffix:@"."])
+      warnTrailingDot(kp);
+    v = [[self item] valueForKey:kp];
+  }
 
   if (![[self columnType] isEqualToString:@"plain"])
     return v;
-  
+
   if ([v isKindOfClass:[NSDate class]]) /* birthday */
     return [v descriptionWithCalendarFormat:@"%Y-%m-%d"];
-  
-  if ([kp rangeOfString:@"."].length > 0) /* addresses */
+
+  if (isKeyPath(kp)) /* addresses */
     return v;
   if ([kp rangeOfString:@"name"].length > 0)
     return v;
-  
+
   /* attempt to localize everything else ... */
   if ([v isKindOfClass:[NSString class]])
     return [[self labels] valueForKey:v];
-  
+
   return v;
 }
 
@@ -170,8 +202,8 @@
 
 - (NSString *)columnOptItemGroup {
   NSString *s = [self currentColumnOpt];
-  
-  s = ([s rangeOfString:@"."].length > 0)
+
+  s = isKeyPath(s)
     ? (NSString *)@"address"
     : [self columnTypeForKey:s];
   s = [@"listcoltype_" stringByAppendingString:s];
