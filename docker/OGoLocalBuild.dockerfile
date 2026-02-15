@@ -1,4 +1,4 @@
-# Dockerfile
+# syntax=docker/dockerfile:1
 #
 # OpenGroupware Local Build Image
 #
@@ -69,25 +69,14 @@ RUN ./configure \
   && make install
 
 
-# Copy local OGo sources into the image
-COPY . /src/OGo
+# Enable the necessary Apache modules
+RUN a2enmod proxy \
+ && a2enmod proxy_http \
+ && a2enmod proxy_balancer \
+ && a2enmod lbmethod_byrequests \
+ && a2enmod headers
 
-# Backward-compat symlink so startup scripts that reference
-# /src/OpenGroupware.org-<version>/... keep working.
-RUN ln -s /src/OGo \
-    /src/OpenGroupware.org-${OGO_VERSION}
-
-# Compile and install OGo
-WORKDIR /src/OGo
-RUN ./configure \
-  --with-gnustep \
-  --gsmake=/usr/share/GNUstep/Makefiles \
-  --enable-debug \
-  --disable-strip \
-  && make -j 8 \
-  && make install
-
-# Add some necessary links
+# Add symlinks for OGo resources (targets provided by COPY below)
 RUN mkdir /usr/local/share/opengroupware.org-${OGO_SOVERSION}/ \
  && ln -s /src/OGo/Themes/WebServerResources \
     /usr/local/share/opengroupware.org-${OGO_SOVERSION}/www \
@@ -96,13 +85,10 @@ RUN mkdir /usr/local/share/opengroupware.org-${OGO_SOVERSION}/ \
  && ln -s /src/OGo/WebUI/Resources \
     /usr/local/share/opengroupware.org-${OGO_SOVERSION}/translations
 
-
-# Enable the necessary Apache modules
-RUN a2enmod proxy \
- && a2enmod proxy_http \
- && a2enmod proxy_balancer \
- && a2enmod lbmethod_byrequests \
- && a2enmod headers
+# Backward-compat symlink so startup scripts that reference
+# /src/OpenGroupware.org-<version>/... keep working.
+RUN ln -s /src/OGo \
+    /src/OpenGroupware.org-${OGO_VERSION}
 
 
 # Add OGo User
@@ -110,7 +96,6 @@ USER root
 RUN useradd -u 700 --create-home --shell /bin/bash OGo
 
 USER OGo
-
 RUN mkdir -p /home/OGo/GNUstep/Defaults
 COPY docker/OGo-globaldomain.plist \
      /home/OGo/GNUstep/Defaults/NSGlobalDomain.plist
@@ -141,6 +126,34 @@ RUN mkdir /var/run/opengroupware \
  && chown OGo /var/run/opengroupware \
  && mkdir /var/log/opengroupware \
  && chown OGo /var/log/opengroupware
+
+
+# Copy local OGo sources into the image
+COPY . /src/OGo
+
+# Configure OGo (fast, regenerates config.make)
+WORKDIR /src/OGo
+RUN ./configure \
+  --with-gnustep \
+  --gsmake=/usr/share/GNUstep/Makefiles \
+  --enable-debug \
+  --disable-strip
+
+# Build and install OGo.
+# Uses a BuildKit cache mount to persist GNUstep-make obj/
+# directories across rebuilds, enabling incremental
+# compilation (only changed files are recompiled).
+RUN --mount=type=cache,target=/tmp/ogo-buildcache \
+    if [ -f /tmp/ogo-buildcache/obj.tar ]; then \
+      tar xf /tmp/ogo-buildcache/obj.tar \
+        2>/dev/null || true; \
+    fi \
+ && make -j 8 \
+ && make install \
+ && find . -name obj -type d \
+      | tar cf /tmp/ogo-buildcache/obj.tar \
+            -T - 2>/dev/null || true
+
 
 # this should be set on the outside to a globally unique value
 ENV OGO_INSTANCE_ID=OGo
