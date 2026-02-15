@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>NGBundlePath</key>
+    <string>/usr/local/lib/GNUstep/Bundles:/usr/local/lib/GNUstep/Models-5.5:/usr/local/lib/GNUstep/Commands-5.5:/usr/local/lib/GNUstep/WOxElemBuilders-4.9</string>
+    <key>WOCoreOnHTTPAdaptorException</key>
+    <string>YES</string>
+</dict>
+</plist>

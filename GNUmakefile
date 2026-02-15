@@ -2,9 +2,9 @@
 
 -include ./config.make
 
-ifeq ($(GNUSTEP_MAKEFILES),)
+ifeq ($(wildcard $(GNUSTEP_MAKEFILES)/common.make),)
 
-$(warning Note: Your $(GNUSTEP_MAKEFILES) environment variable is empty!)
+$(warning Note: GNUstep makefiles not found.)
 $(warning       Either use ./configure or source GNUstep.sh.)
 
 else
@@ -25,6 +25,21 @@ include $(GNUSTEP_MAKEFILES)/aggregate.make
 -include GNUmakefile.postamble
 
 endif
+
+
+# Docker local build
+
+DOCKER_TAG  = ogo-local-dev:latest
+DOCKER_FILE = docker/OGoLocalBuild.dockerfile
+
+docker-build:
+	docker build -t $(DOCKER_TAG) -f $(DOCKER_FILE) .
+
+docker-run:
+	docker compose up
+
+docker-clean:
+	docker rmi $(DOCKER_TAG) 2>/dev/null || true
 
 
 distclean ::

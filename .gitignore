@@ -6,4 +6,6 @@ obj
 config.make
 Database/OGoModel/OGo.model/
 .nova
+OGo.env
+docker-compose.yml
 

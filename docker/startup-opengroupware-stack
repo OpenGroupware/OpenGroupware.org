@@ -1,0 +1,119 @@
+#!/bin/bash
+#
+# Write the Apache configuration according to the environment variables,
+# start the OGo servers using `startup-opengroupware`,
+# and finally start Apache in the foreground.
+#
+set -e
+
+APACHE_GLOBAL_CONF_PATH=/etc/apache2/apache2.conf
+APACHE_CONF_PATH=/etc/apache2/sites-available/000-default.conf
+APACHE_OGO_CONF_PATH=/etc/apache2/opengroupware.conf
+
+# ==========================================================================
+# This is the virtual host configuration
+
+if [[ -v OGO_SERVER_NAME ]] ; then
+    sed -i "s|#ServerName www.example.com|ServerName ${OGO_SERVER_NAME}|g" \
+           ${APACHE_CONF_PATH}
+    echo "ServerName ${OGO_SERVER_NAME}" >> "${APACHE_GLOBAL_CONF_PATH}"
+fi
+if [[ -v OGO_SERVER_ADMIN ]] ; then
+    sed -i "s|#ServerAdmin .*|ServerAdmin ${OGO_SERVER_ADMIN}|g" \
+           ${APACHE_CONF_PATH}
+fi
+
+sed -i '22i\
+\
+    Include opengroupware.conf\
+' ${APACHE_CONF_PATH}
+
+
+# ==========================================================================
+# Generate Apache opengroupware.conf file
+SOVERSION_STRIP=$(echo "${OGO_SOVERSION}" | sed s#[.]##g)
+rm -f "${APACHE_OGO_CONF_PATH}"
+touch "${APACHE_OGO_CONF_PATH}"
+
+echo 'RedirectMatch ^/$ /OpenGroupware' >>"${APACHE_OGO_CONF_PATH}"
+
+cat >> "${APACHE_OGO_CONF_PATH}" << EOF
+<Directory "/src/OpenGroupware.org-${OGO_VERSION}/Themes/WebServerResources/">
+  Require all granted
+</Directory>
+Alias /OpenGroupware${SOVERSION_STRIP}.woa/WebServerResources/ \
+      /src/OpenGroupware.org-${OGO_VERSION}/Themes/WebServerResources/
+EOF
+
+# TBD: x-webobjects-server-url
+if [[ -v OGO_SERVER_PROTOCOL ]] ; then
+    echo "RequestHeader add x-webobjects-server-protocol ${OGO_SERVER_PROTOCOL}" \
+      >> "${APACHE_OGO_CONF_PATH}"
+fi
+if [[ -v OGO_SERVER_NAME ]] ; then
+    echo "RequestHeader add x-webobjects-server-name ${OGO_SERVER_NAME}" \
+      >> "${APACHE_OGO_CONF_PATH}"
+fi
+if [[ -v OGO_SERVER_PORT ]] ; then
+    echo "RequestHeader add x-webobjects-server-port ${OGO_SERVER_PORT}" \
+      >> "${APACHE_OGO_CONF_PATH}"
+fi
+
+echo 'Header add Set-Cookie "OGOROUTEID=.%{BALANCER_WORKER_ROUTE}e; path=/" env=BALANCER_ROUTE_CHANGED' \
+  >> "${APACHE_OGO_CONF_PATH}"
+
+
+echo "<Proxy balancer://OGoCluster>" >> "${APACHE_OGO_CONF_PATH}"
+for i in $(seq $OGO_INSTANCE_COUNT); do
+    let port=12000+$i
+
+    #echo "Starting instance ${i} on port ${port}"
+    #/usr/local/bin/ogo-webui-5.5 \
+    #    -WOPidFile /var/run/opengroupware/instance-${i}.pid \
+    #    -WOPort "0.0.0.0:${port}"
+    echo "  BalancerMember http://127.0.0.1:${port} route=$i" \
+        >> "${APACHE_OGO_CONF_PATH}"
+done
+echo "  ProxySet stickysession=OGOROUTEID" >> "${APACHE_OGO_CONF_PATH}"
+echo "</Proxy>" >> "${APACHE_OGO_CONF_PATH}"
+
+cat >>"${APACHE_OGO_CONF_PATH}" << EOF
+ProxyPass        /OpenGroupware.woa balancer://OGoCluster/OpenGroupware.woa
+ProxyPassReverse /OpenGroupware.woa balancer://OGoCluster/OpenGroupware.woa
+ProxyPass        /OpenGroupware     balancer://OGoCluster/OpenGroupware
+ProxyPassReverse /OpenGroupware     balancer://OGoCluster/OpenGroupware
+EOF
+
+
+# ==========================================================================
+# allow core files for debugging purposes
+ulimit -c 100000000
+
+# spin up OGo processes
+sudo -u OGo \
+    OGO_INSTANCE_ID="${OGO_INSTANCE_ID}" \
+    OGO_DATABASE_NAME="${OGO_DATABASE_NAME}" \
+    OGO_DATABASE_USER="${OGO_DATABASE_USER}" \
+    OGO_DATABASE_PASSWORD="${OGO_DATABASE_PASSWORD}" \
+    OGO_DATABASE_PASSWORD_FILE="${OGO_DATABASE_PASSWORD_FILE}" \
+    OGO_DATABASE_HOST="${OGO_DATABASE_HOST}" \
+    OGO_DATABASE_PORT="${OGO_DATABASE_PORT}" \
+    OGO_INSTANCE_COUNT="${OGO_INSTANCE_COUNT}" \
+    /usr/local/bin/startup-opengroupware
+
+
+
+# start Apache as the main driver of the Docker container
+echo "=========="
+echo "OGo Apache config:"
+cat "${APACHE_OGO_CONF_PATH}"
+
+echo "=========="
+echo "Starting Apache in foreground... $(date)"
+# Apache gets grumpy about PID files pre-existing
+rm -f /var/run/apache2/apache2.pid
+
+apachectl -DFOREGROUND "$@"
+
+echo "Apache finished $(date):"
+tail /var/log/apache2/error.log
