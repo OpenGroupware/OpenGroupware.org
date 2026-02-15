@@ -26,13 +26,28 @@
 #import  <Foundation/NSNotification.h>
 #include <LSFoundation/LSBaseCommand.h>
 
-/*
-  LSDBObjectBaseCommand
-
-  Abstract superclass for other CRUD subclasses.
-
-  TODO: document!
-*/
+/**
+ * @class LSDBObjectBaseCommand
+ * @brief Abstract superclass for database CRUD commands.
+ *
+ * Extends LSBaseCommand with database access (channel, model,
+ * entity, adaptor) and a record dictionary that collects
+ * key-value pairs to be applied to the target enterprise
+ * object. Provides convenience methods for fetching objects
+ * by qualifier, building SQL IN clauses, extracting primary
+ * keys from heterogeneous arrays, and validating date-typed
+ * command arguments against the EOModel.
+ *
+ * Concrete subclasses (LSDBObjectNewCommand,
+ * LSDBObjectSetCommand, LSDBObjectGetCommand,
+ * LSDBObjectDeleteCommand) implement specific CRUD operations.
+ *
+ * @see LSBaseCommand
+ * @see LSDBObjectNewCommand
+ * @see LSDBObjectSetCommand
+ * @see LSDBObjectGetCommand
+ * @see LSDBObjectDeleteCommand
+ */
 
 @class NSMutableArray, NSMutableDictionary, NSArray;
 @class EOAdaptor, EOModel, EODatabase, EOEntity;
@@ -40,6 +55,11 @@
 @class EODatabaseContext, EODatabaseChannel;
 @class LSCommandContext;
 
+/**
+ * @protocol LSDBCommand
+ * @brief Extension of LSCommand for database-bound commands
+ *   that operate on a named entity.
+ */
 @protocol LSDBCommand < LSCommand >
 
 - (NSString *)entityName;

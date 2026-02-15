@@ -24,15 +24,25 @@
 
 #include <LSFoundation/LSDBObjectSetCommand.h>
 
-/*
-  LSSetAppointmentCommand (appointment::set)
-  
-  TODO: document
-  
-  Subclasses:
-    LSMoveAppointmentCommand - TODO: fix that ...
-    LSUpdateAppointmentWithVEventCommand ?
-*/
+/**
+ * @class LSSetAppointmentCommand
+ *
+ * Command for updating existing appointments
+ * (appointment::set).
+ *
+ * Modifies an existing calendar appointment in the
+ * database. Checks edit permissions, validates that
+ * the start date precedes the end date, detects
+ * scheduling conflicts, updates the DateInfo comment
+ * record, reassigns participants, and optionally
+ * regenerates all cyclic (recurring) instances when
+ * setAllCyclic is enabled. Also stores custom
+ * extended attributes and adds a change log entry.
+ *
+ * Subclasses:
+ *   LSMoveAppointmentCommand,
+ *   LSUpdateAppointmentWithVEventCommand
+ */
 
 @class NSString, NSArray, NSDictionary;
 

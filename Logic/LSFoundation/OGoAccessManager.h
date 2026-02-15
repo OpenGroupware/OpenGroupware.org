@@ -24,25 +24,37 @@
 
 #import <Foundation/NSObject.h>
 
-/*
-  OGoAccessManager
-  
-  This class determines whether a login has access to some object identified
-  by an EOKeyGlobalID. To check the access, the class relies on "access
-  handler" objects which are bound by entity name and do the actual permission
-  check.
-  
-  Most access handlers are currently provided by DocumentAPI.
-  
-  TODO: should move to own bundles in Logic?
-*/
-
 @class NSString, NSArray, NSMutableDictionary, NSDictionary;
 @class EOGlobalID;
 @class LSCommandContext;
 
 extern NSString *SkyAccessFlagsDidChange;
 
+/**
+ * @class OGoAccessManager
+ * @brief Checks object-level access permissions for
+ *        login accounts.
+ *
+ * OGoAccessManager determines whether a login account
+ * has access to objects identified by EOKeyGlobalIDs. It
+ * delegates actual permission checks to entity-specific
+ * OGoAccessHandler instances (loaded from bundles by
+ * entity name) and caches results per command context.
+ *
+ * It also manages the ACL (ObjectAcl) table for reading,
+ * inserting, updating and deleting per-object permission
+ * entries.
+ *
+ * Posts the SkyAccessFlagsDidChange notification when
+ * permissions are modified.
+ *
+ * Most access handlers are currently provided by DocumentAPI.
+ *
+ * TODO: should move to own bundles in Logic?
+ *
+ * @see OGoAccessHandler
+ * @see LSCommandContext
+ */
 @interface OGoAccessManager : NSObject
 {
 @private

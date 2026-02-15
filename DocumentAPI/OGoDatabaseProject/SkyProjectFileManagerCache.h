@@ -29,24 +29,31 @@
 @class EOGlobalID, EOQualifier;
 @class SkyProjectFileManager, SkyAccessManager;
 
-/*
-  Defaults:
-
-  SkyProjectFileManagerUseSessionCache YES/NO // syncronize FileManager
-                                              //flush with context flush
-
-  if (!SkyProjectFileManagerUseSessionCache) {
-    SkyProjectFileManagerFlushTimeout n    // flush cache all n seconds after
-                                           // the last flush
-    
-    SkyProjectFileManagerClickTimeout n    // flush cache after n seconds
-                                           // of inactivity
-                                               
-    SkyProjectFileManagerCacheTimeout n    // flush cache after n seconds
-                                           // after the last project manager
-                                           // released
-  }
-*/
+/**
+ * @class SkyProjectFileManagerCache
+ * @brief Caching layer for SkyProjectFileManager.
+ *
+ * Manages cached file attributes, child listings, global-ID
+ * mappings, and generic records for a single database project.
+ * Provides timer-based cache invalidation and coordinates
+ * flush/commit with the command context.
+ *
+ * Also performs access-control checks by delegating to
+ * SkyAccessManager (readability, writability, deletability,
+ * custom operations, etc.).
+ *
+ * User defaults:
+ * - `SkyProjectFileManagerUseSessionCache` (BOOL) --
+ *   synchronize FileManager flushes with context flush.
+ * - `SkyProjectFileManagerFlushTimeout` (int) -- seconds
+ *   between automatic flushes.
+ * - `SkyProjectFileManagerClickTimeout` (int) -- seconds
+ *   of inactivity before flushing.
+ * - `SkyProjectFileManagerCacheTimeout` (int) -- seconds
+ *   after the last manager is released before flushing.
+ *
+ * @see SkyProjectFileManager
+ */
 
 @interface SkyProjectFileManagerCache : NSObject <SkyProjectFileManagerContext>
 {

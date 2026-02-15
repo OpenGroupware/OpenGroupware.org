@@ -4,15 +4,34 @@
 
 #include <Foundation/NSObject.h>
 
+/**
+ * @class OGoCycleDateCalculator
+ *
+ * Calculates recurring (cyclic) appointment dates.
+ *
+ * Given a start/end date, a recurrence frequency,
+ * and a delegate that defines the stepping strategy,
+ * this class computes the concrete occurrence dates
+ * for a repeating appointment. Supports daily,
+ * weekly, monthly (by weekday or date), yearly, and
+ * iCalendar RRULE recurrence patterns.
+ *
+ * A period window (periodStart/periodEnd) or a
+ * seekIndex can be used to limit the result set.
+ * Exception dates are excluded from the output.
+ * Results are returned as arrays of NSDictionary
+ * with 'startDate', 'endDate', and
+ * 'repetitionIndex' keys.
+ */
 /*
-  TODO: very bad programming style below! Instead of using a singleton a
-        whole lot of class methods are introduced, sigh.
-
-        Then there is a class "OGoCycleDateDelegate". *what the heck*?
-        Delegates are a concept and delegates can be any object. It doesn't
-        make sense to have a class called that way!
-        And again it has lots of class methods.
-*/
+   TODO: very bad programming style below! Instead of using a singleton a
+         whole lot of class methods are introduced, sigh.
+ 
+         Then there is a class "OGoCycleDateDelegate". *what the heck*?
+         Delegates are a concept and delegates can be any object. It doesn't
+         make sense to have a class called that way!
+         And again it has lots of class methods.
+ */
 
 @class NSCalendarDate, NSArray;
 
@@ -145,6 +164,21 @@
   periodEnd:(NSCalendarDate *)_periodEnd;
 
 @end /* OGoCycleDateCalculator */
+
+/**
+ * @class OGoCycleDateDelegate
+ *
+ * Strategy object for advancing cycle dates in
+ * OGoCycleDateCalculator.
+ *
+ * Provides factory methods that return delegate
+ * instances for different recurrence strategies:
+ * daily, weekly (on specific weekdays), monthly
+ * (by weekday-in-week or by calendar date), and
+ * yearly. The calculator calls
+ * -nextStartDate:andEndDate:forCycleCalculator:
+ * on the delegate to step to the next occurrence.
+ */
 
 @interface OGoCycleDateDelegate : NSObject
 {

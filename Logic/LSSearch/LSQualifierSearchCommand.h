@@ -21,13 +21,26 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
-/*
-  LSQualifierSearchCommand
-
-  Common superclass for qualifier based search commands.
-  
-  TODO: document
-*/
+/**
+ * @class LSQualifierSearchCommand
+ *
+ * Base command for EOQualifier-driven searches. Accepts
+ * an EOQualifier (or a string/dictionary/array that is
+ * converted into one) and uses OGoSQLGenerator to
+ * translate it into raw SQL with proper JOIN, ACL,
+ * and archived-object filtering.
+ *
+ * Supports fetching EOGlobalIDs, primary-key
+ * dictionaries, or full Enterprise Objects. Subclasses
+ * can override -sqlSelect to customize the SELECT
+ * columns, -aclOwnerAttributeName /
+ * -aclPrivateAttributeName to enable ACL enforcement,
+ * and -addConjoinSQLClausesToArray: to inject additional
+ * WHERE conditions.
+ *
+ * Pagination is available via offset and maxSearchCount.
+ * A fetchCount mode returns a COUNT(*) instead of rows.
+ */
 
 #ifndef __LSLogic_LSSearch_LSQualifierSearchCommand_H__
 #define __LSLogic_LSSearch_LSQualifierSearchCommand_H__

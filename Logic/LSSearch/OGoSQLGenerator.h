@@ -24,21 +24,43 @@
 
 #import <Foundation/NSObject.h>
 
+/**
+ * @class OGoSQLGenerator
+ *
+ * Translates EOQualifier trees into raw SQL strings
+ * tailored to the OGo data model. Functions similarly to
+ * EOSQLExpression but adds OGo-specific features:
+ *
+ *  - globalID/gid/pkey/primaryKey special key mapping.
+ *  - "comment" key mapped to CompanyInfo join/subselect.
+ *  - CSV attribute handling (e.g. "keywords" stored as
+ *    comma-separated values).
+ *  - Extended/extra attribute support via company_value
+ *    and obj_property tables, using either JOINs or
+ *    subselects.
+ *  - ACL enforcement through object_acl subselects that
+ *    check owner, privacy, and auth_id permissions.
+ *
+ * Manages table alias mapping (e.g. "B" for the base
+ * entity, "CV" for CompanyValue, "OP" for
+ * ObjectProperty) and generates the FROM table list and
+ * JOIN clauses.
+ *
+ * Used by LSQualifierSearchCommand.
+ */
 /*
-  OGoSQLGenerator
-
-  TODO: document
-  
-  This really belongs into GDL, but its already quite hackish ... Its more or
-  less the same thing like EOSQLExpression. Plus some OGo specific datamodel
-  things.
-  
-  Features:
-  - globalID/gid/pkey/primaryKey special keys
-  - comment special key (eg CompanyInfo)
-  - CSV attributes (keywords)
-  - extra attributes (company_value and obj_property)
-*/
+   TODO: document
+   
+   This really belongs into GDL, but its already quite hackish ... Its more or
+   less the same thing like EOSQLExpression. Plus some OGo specific datamodel
+   things.
+   
+   Features:
+   - globalID/gid/pkey/primaryKey special keys
+   - comment special key (eg CompanyInfo)
+   - CSV attributes (keywords)
+   - extra attributes (company_value and obj_property)
+ */
 
 @class NSString, NSNumber, NSMutableString, NSMutableDictionary, NSArray;
 @class EOQualifier;

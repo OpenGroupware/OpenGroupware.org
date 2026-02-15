@@ -24,21 +24,33 @@
 
 #import <EOControl/EODataSource.h>
 
-/*
-  SkySchedulerConflictDataSource
-
-  TODO: document
-
-  Used by:
-    OGoSchedulerViews/SkyInlineAptDataSourceView.m
-    OGoScheduler/SkySchedulerConflictPage.m
-    LSWScheduler/LSWAppointmentMove.m
-    LSWScheduler/LSWAppointmentEditor.m
-*/
-
 @class NSArray, NSMutableArray;
 @class LSCommandContext;
 
+/**
+ * @class SkySchedulerConflictDataSource
+ * @brief Datasource that detects scheduling conflicts for
+ *        an appointment.
+ *
+ * Given an appointment (with participants, resources, and
+ * time range), fetches all conflicting appointments using
+ * the "appointment::conflicts" command. Handles recurring
+ * appointments by expanding cycle dates before checking
+ * each slot for conflicts.
+ *
+ * Supports additional child datasources (e.g. PalmDS) to
+ * check for conflicts from external calendar sources.
+ * Results are cached and sorted by start date.
+ *
+ * Used by:
+ * - OGoSchedulerViews/SkyInlineAptDataSourceView.m
+ * - OGoScheduler/SkySchedulerConflictPage.m
+ * - LSWScheduler/LSWAppointmentMove.m
+ * - LSWScheduler/LSWAppointmentEditor.m
+ *
+ * @see SkyAppointmentQualifier
+ * @see SkyAptDataSource
+ */
 @interface SkySchedulerConflictDataSource : EODataSource
 {
   /* execution context */

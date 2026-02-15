@@ -24,16 +24,21 @@
 
 #include <LSFoundation/LSBaseCommand.h>
 
-/*
-  LSDBObjectTransactionCommand legt eine EOF-Transaktion um die enthaltenen
-  Kommandos.
-
-  Wenn eines der Unterkommandos fehlschlaegt, wird die Transaktion zurueckgesetzt
-  (rollback) und das Transaktionskommando schlaegt fehl.
-
-  Laufen alle Unterkommandos fehlfrei ab, wird die Transaktion ausgefuehrt (commit)
-  und das Kommando erfolgreich abgeschlossen.
-*/
+/**
+ * @class LSDBObjectTransactionCommand
+ * @brief Wraps a set of sub-commands in a database
+ *   transaction.
+ *
+ * Begins a transaction before executing its sub-commands. If
+ * all sub-commands succeed, the transaction is committed;
+ * otherwise it is rolled back and the command reports failure.
+ *
+ * This is useful for grouping multiple independent commands
+ * into an atomic unit of work.
+ *
+ * @see LSDBTransaction
+ * @see LSBaseCommand
+ */
 
 @class LSDBTransaction;
 

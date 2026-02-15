@@ -24,16 +24,27 @@
 
 #include <OGoRawDatabase/SkyAdaptorDataSource.h>
 
-/*
-  SkyDBDataSource
-  
-  Returns SkyDBDocuments as the result of fetches. That is, it wraps the
-  dictionaries returned by SkyAdaptorDataSource into documents.
-  
-  TODO: we need a schema, eg the SkyDocumentType filled with the attributes
-        available for the datasource.
-*/
-
+/**
+ * @class SkyDBDataSource
+ * @brief Data source that returns SkyDBDocument objects.
+ *
+ * SkyDBDataSource extends SkyAdaptorDataSource by wrapping
+ * the raw dictionaries fetched from the database into
+ * SkyDBDocument instances. It handles document creation,
+ * insertion, update and deletion, validating documents
+ * before each operation.
+ *
+ * The entity name is taken from the current fetch
+ * specification and determines which database table is
+ * accessed. Created documents are initialized with columns
+ * derived from the table's attribute list.
+ *   
+ * TODO: we need a schema, eg the SkyDocumentType filled with the attributes
+ *       available for the datasource.
+ *
+ * @see SkyDBDocument
+ * @see SkyAdaptorDataSource
+ */
 @interface SkyDBDataSource : SkyAdaptorDataSource
 {
 }

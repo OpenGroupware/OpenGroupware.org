@@ -24,13 +24,21 @@
 
 #import <EOControl/EODataSource.h>
 
-/*
-  SkyDocumentDataSource
-  
-  Apparently this is deprecated in favor of 'SkyProjectFolderDataSource'.
-
-  TODO: document what it does.
-*/
+/**
+ * @class SkyDocumentDataSource
+ * @brief Deprecated datasource for project documents.
+ *
+ * Apparently this is deprecated in favor of 'SkyProjectFolderDataSource'.
+ *
+ * On initialization it creates a SkyProjectFolderDataSource for the root path 
+ * of the given project and returns that instance instead of itself.
+ *
+ * Use SkyProjectFolderDataSource directly for new code.
+ *
+ * @deprecated Use SkyProjectFolderDataSource instead.
+ * @see SkyProjectFolderDataSource
+ * @see SkyProjectFileManager
+ */
 
 @class EOGlobalID;
 
