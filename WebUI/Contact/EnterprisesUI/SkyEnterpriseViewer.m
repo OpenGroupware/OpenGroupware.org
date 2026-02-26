@@ -338,8 +338,15 @@ static NSArray *accessChecks = nil;
       id ctx;
 
       if ([obj isKindOfClass:[EOGlobalID class]]) {
+        EOGlobalID *gid = obj;
         obj = [[self runCommand:@"enterprise::get-by-globalid",
-                     @"gid", obj, nil] lastObject];
+                     @"gid", gid, nil] lastObject];
+        if (obj == nil) {
+          [self errorWithFormat:
+            @"could not fetch enterprise for gid %@"
+            @" (archived?)", gid];
+          return NO;
+        }
       }
       ctx = [self commandContext];
       obj = [[SkyEnterpriseDocument alloc] initWithEO:obj context:ctx];

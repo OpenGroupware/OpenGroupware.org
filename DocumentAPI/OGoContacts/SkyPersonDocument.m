@@ -186,8 +186,15 @@ static NSArray * addressTypes = nil;
 - (EODataSource *)projectDataSource {
   SkyPersonProjectDataSource *ds;
 
-  ds = [[SkyPersonProjectDataSource alloc] initWithContext:[self context]
-                                           personId:[self globalID]];
+  if (self->globalID == nil) {
+    [self logWithFormat:
+      @"WARNING: no globalID for project datasource"];
+    return nil;
+  }
+
+  ds = [[SkyPersonProjectDataSource alloc]
+         initWithContext:[self context]
+         personId:[self globalID]];
   return [ds autorelease];
 }
 
