@@ -75,7 +75,12 @@
   [[_context linkManager] deleteLinksTo:(id)[[self object] globalID] type:nil];
   [[_context linkManager] deleteLinksFrom:(id)[[self object] globalID] type:nil];
   /* log deletion */
-  if (![self reallyDelete]) {
+  if ([self reallyDelete]) {
+    if ([self isDeleteLogsEnabled])
+      LSRunCommandV(_context, @"object", @"remove-logs",
+                    @"object", [self object], nil);
+  }
+  else {
     LSRunCommandV(_context, @"object", @"add-log",
                   @"logText"    , [self valueForKey:@"logText"],
                   @"action"     , [self valueForKey:@"logAction"],
