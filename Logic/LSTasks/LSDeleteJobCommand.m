@@ -79,6 +79,12 @@
     if ([self isDeleteLogsEnabled])
       LSRunCommandV(_context, @"object", @"remove-logs",
                     @"object", [self object], nil);
+    if ([self isTombstoneEnabled])
+      LSRunCommandV(_context, @"object", @"add-log",
+                    @"logText"    , @"Job deleted",
+                    @"action"     , @"99_delete",
+                    @"objectToLog", [self object],
+                    nil);
   }
   else {
     LSRunCommandV(_context, @"object", @"add-log",
