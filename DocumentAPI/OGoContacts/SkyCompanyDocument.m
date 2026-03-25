@@ -1002,6 +1002,16 @@ static BOOL DebugDocumentRegistration = NO;
     return;
   }
 
+  /* check for .png */
+
+  imgPath = [NSString stringWithFormat:@"%@/%@.picture.png", path, companyId];
+  if ([manager fileExistsAtPath:imgPath]) {
+    self->imageData = [[NSData alloc] initWithContentsOfFile:imgPath];
+    self->imageType = @"image/png";
+    ASSIGNCOPY(self->imagePath, imgPath);
+    return;
+  }
+
   /* check for .gif */
   
   imgPath = [NSString stringWithFormat:@"%@/%@.picture.gif", path, companyId];
