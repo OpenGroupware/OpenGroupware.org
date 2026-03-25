@@ -302,7 +302,12 @@ static NSString *autoNumberPrefix = @"OGo";
     fName = [fileName stringByAppendingPathExtension:@"gif"];
 
     if ([manager fileExistsAtPath:fName])
-      [manager removeFileAtPath:fName handler:nil];        
+      [manager removeFileAtPath:fName handler:nil];
+
+    fName = [fileName stringByAppendingPathExtension:@"png"];
+
+    if ([manager fileExistsAtPath:fName])
+      [manager removeFileAtPath:fName handler:nil];
   }
 
   if (self->pictureData !=nil && self->pictureFilePath != nil &&
