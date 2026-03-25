@@ -125,7 +125,9 @@ COPY docker/startup-opengroupware-stack /usr/local/bin/
 RUN mkdir /var/run/opengroupware \
  && chown OGo /var/run/opengroupware \
  && mkdir /var/log/opengroupware \
- && chown OGo /var/log/opengroupware
+ && chown OGo /var/log/opengroupware \
+ && mkdir -p /var/lib/opengroupware.org/documents \
+ && chown OGo /var/lib/opengroupware.org/documents
 
 
 # Copy local OGo sources into the image
