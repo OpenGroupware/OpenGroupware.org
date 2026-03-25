@@ -14,6 +14,7 @@ WarningMode: SkyWarningMode {
 EnterpriseForm: WOForm {
   action  = search;
   name    = "enterpriseEditor";
+  enctype = "multipart/form-data";
 }
 
 EnterpriseEditor: LSWObjectEditor {
@@ -153,4 +154,47 @@ CreateLimitedAttr: SkyAttribute {
 
 CreateLimitedCheckBox: WOCheckBox {
   checked = limitAccessToCreator;
+}
+
+PictureCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.enterprise_editor_pictureVisibility;
+  submitActionName = "";
+  title            = labels.picture;
+}
+
+AttributeCell: SkyAttributeCell {}
+
+ValueCell: SkyValueCell {
+  alignTop = YES;
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+PictureUploadLabel: WOString {
+  value = labels.pictureUpload;
+}
+
+PictureUpload: WOFileUpload {
+  data     = data;
+  filePath = filePath;
+  size     = "40";
+}
+
+IsNotInNewMode: WOConditional {
+  condition = isInNewMode;
+  negate    = YES;
+}
+
+DeleteImageCond: WOConditional {
+  condition = hasImage;
+}
+
+DeleteImageLabel: WOString {
+  value      = labels.deleteImage;
+  escapeHTML = NO;
+}
+
+DeleteImageCheckBox: WOCheckBox {
+  checked = deleteImage;
 }

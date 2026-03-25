@@ -162,6 +162,7 @@ enterpriseviewer_tab_links         = "links";
 enterpriseviewer_tab_log           = "logs";
 enterpriseviewer_tab_overview      = "overview";
 enterpriseviewer_tab_persons       = "persons";
+enterpriseviewer_tab_picture       = "picture";
 enterpriseviewer_tab_projects      = "projects";
 enterpriseviewer_tab_ship          = "ship address";
 enterpriseviewer_tab_urls          = "urls";

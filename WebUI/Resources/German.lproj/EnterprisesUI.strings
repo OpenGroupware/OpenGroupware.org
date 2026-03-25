@@ -163,6 +163,7 @@ enterpriseviewer_tab_links	   = "Links";
 enterpriseviewer_tab_log           = "Logs";
 enterpriseviewer_tab_overview      = "Übersicht";
 enterpriseviewer_tab_persons       = "Kontaktpers.";
+enterpriseviewer_tab_picture       = "Bild";
 enterpriseviewer_tab_projects      = "Projekte";
 enterpriseviewer_tab_ship          = "Lieferanschrift";
 enterpriseviewer_tab_urls          = "Urls";

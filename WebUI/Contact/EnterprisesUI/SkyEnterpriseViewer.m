@@ -359,6 +359,10 @@ static NSArray *accessChecks = nil;
     
   self->tabKey = (tb != nil) ? [tb copy] : (id)@"documents";
 
+  if ([self->tabKey isEqualToString:@"picture"] && ![self hasImage]) {
+    [self->tabKey release];
+    self->tabKey = [@"attributes" copy];
+  }
   if ([self->tabKey isEqualToString:@"overview"])
     [self _fetchFakeProject];
   if ([self->tabKey isEqualToString:@"documents"])
@@ -471,6 +475,20 @@ static NSArray *accessChecks = nil;
 
 - (id)enterprise {
   return [self object];
+}
+
+/* picture */
+
+- (NSData *)imageData {
+  return [[self enterprise] imageData];
+}
+
+- (NSString *)imageType {
+  return [[self enterprise] imageType];
+}
+
+- (BOOL)hasImage {
+  return [[self imageData] isNotEmpty];
 }
 
 - (BOOL)isEditDisabled {
