@@ -30,6 +30,29 @@
             <tr><td colspan="2"></td></tr>
             <#ContactCollapsible><#ContactEditor/></#ContactCollapsible>
 
+            <tr><td colspan="2"></td></tr>
+            <#PictureCollapsible>
+              <tr>
+                <#AttributeCell>
+                  <#Font><#PictureUploadLabel/>:</#Font>
+                </#AttributeCell>
+                <#ValueCell>
+                  <#EditFont><#PictureUpload/></#EditFont>
+                </#ValueCell>
+              </tr>
+
+              <#DeleteImageCond>
+                <tr>
+                  <#AttributeCell>
+                    <#Font><#DeleteImageLabel/>:</#Font>
+                  </#AttributeCell>
+                  <#ValueCell>
+                    <#EditFont><#DeleteImageCheckBox/></#EditFont>
+                  </#ValueCell>
+                </tr>
+              </#DeleteImageCond>
+            </#PictureCollapsible>
+
             <#IsOwnerLoggedInOrNewCond>
               <tr><td collspan="2"></td></tr>
               <#PrivateCollapsible>

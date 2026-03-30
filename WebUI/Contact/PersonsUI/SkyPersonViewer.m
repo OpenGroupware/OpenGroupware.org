@@ -276,8 +276,15 @@ static NSArray      *formLetterTypes          = nil;
     id ctx;
     
     if ([obj isKindOfClass:[EOKeyGlobalID class]]) {
+      EOGlobalID *gid = obj;
       obj = [[self runCommand:@"person::get-by-globalID",
-                                @"gid", obj, nil] lastObject];
+                                @"gid", gid, nil] lastObject];
+      if (obj == nil) {
+        [self errorWithFormat:
+          @"could not fetch person for gid %@"
+          @" (archived?)", gid];
+        return NO;
+      }
     }
     else {
       // should be an eo (activated by LSWViewAction/viewPerson)

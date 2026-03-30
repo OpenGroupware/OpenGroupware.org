@@ -21,12 +21,15 @@
 
 #include <OGoFoundation/SkyEditorPage.h>
 
-@class NSString;
+@class NSString, NSData;
 
 @interface SkyEnterpriseEditor : SkyEditorPage
 {
   BOOL     isInAssignMode;
+  BOOL     deleteImage;
   BOOL     limitAccessToCreator; // only if isNew
+  NSData   *pictureData;
+  NSString *pictureFilePath;
   NSString *addressType;
 }
 @end
@@ -55,7 +58,9 @@ static BOOL OGoEnterpriseEditor_PreselectReadonlyCheckbox = NO;
 }
 
 - (void)dealloc {
-  [self->addressType release];
+  [self->pictureFilePath release];
+  [self->pictureData     release];
+  [self->addressType     release];
   [super dealloc];
 }
 
@@ -105,6 +110,33 @@ static BOOL OGoEnterpriseEditor_PreselectReadonlyCheckbox = NO;
 
 - (id)enterprise {
   return [self object];
+}
+
+/* picture */
+
+- (void)setData:(id)_data {
+  ASSIGN(self->pictureData, _data);
+}
+- (id)data {
+  return self->pictureData;
+}
+
+- (void)setFilePath:(id)_path {
+  ASSIGNCOPY(self->pictureFilePath, _path);
+}
+- (id)filePath {
+  return self->pictureFilePath;
+}
+
+- (BOOL)hasImage {
+  return [[[self enterprise] imageData] length] > 0;
+}
+
+- (void)setDeleteImage:(BOOL)_del {
+  self->deleteImage = _del;
+}
+- (BOOL)deleteImage {
+  return self->deleteImage;
 }
 
 - (void)setLimitAccessToCreator:(BOOL)_flag {
@@ -190,8 +222,14 @@ static BOOL OGoEnterpriseEditor_PreselectReadonlyCheckbox = NO;
     }
   }
 
-  if (result)
+  if (result) {
+    if ([self deleteImage] || ([[self data] length] > 0 &&
+                               [[self filePath] isNotEmpty])) {
+      [[self enterprise] setImageData:[self data]
+                         filePath:[self filePath]];
+    }
     return result;
+  }
   else if ((key = [self _violatedUniqueKeyName])) {
     NSMutableString *str = [[NSMutableString alloc] initWithCapacity:128];
 

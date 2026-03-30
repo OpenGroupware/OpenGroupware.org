@@ -148,24 +148,45 @@ static NSArray * addressTypes = nil;
 - (EODataSource *)personDataSource {
   SkyEnterprisePersonDataSource *ds;
 
+  if (self->globalID == nil) {
+    [self logWithFormat:
+      @"WARNING: no globalID for person datasource"];
+    return nil;
+  }
+
   ds = [SkyEnterprisePersonDataSource alloc]; // keep gcc happy
-  ds = [ds initWithContext:[self context] enterpriseId:[self globalID]];
+  ds = [ds initWithContext:[self context]
+         enterpriseId:[self globalID]];
   return [ds autorelease];
 }
 
 - (EODataSource *)projectDataSource {
   SkyEnterpriseProjectDataSource *ds;
 
+  if (self->globalID == nil) {
+    [self logWithFormat:
+      @"WARNING: no globalID for project datasource"];
+    return nil;
+  }
+
   ds = [SkyEnterpriseProjectDataSource alloc]; // keep gcc happy
-  ds = [ds initWithContext:[self context] enterpriseId:[self globalID]];
+  ds = [ds initWithContext:[self context]
+         enterpriseId:[self globalID]];
   return [ds autorelease];
 }
 
 - (EODataSource *)allProjectsDataSource {
   SkyEnterpriseAllProjectsDataSource *ds;
 
+  if (self->globalID == nil) {
+    [self logWithFormat:
+      @"WARNING: no globalID for allProjects datasource"];
+    return nil;
+  }
+
   ds = [SkyEnterpriseAllProjectsDataSource alloc]; // keep gcc happy
-  ds = [ds initWithContext:[self context] enterpriseId:[self globalID]];
+  ds = [ds initWithContext:[self context]
+         enterpriseId:[self globalID]];
   return [ds autorelease];
 }
 

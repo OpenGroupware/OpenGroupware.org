@@ -251,3 +251,17 @@ IsProjectEnabled:     WOConditional { condition = isProjectEnabled;     }
 IsLogTabEnabled:      WOConditional { condition = isLogTabEnabled;      }
 IsAccessRightEnabled: WOConditional { condition = isAccessRightEnabled; }
 IsLinkTabEnabled:     WOConditional { condition = isLinkTabEnabled;     }
+
+HasImage: WOConditional {
+  condition = hasImage;
+}
+
+PictureTab: SkySimpleTabItem {
+  key   = "picture";
+  label = labels.enterpriseviewer_tab_picture;
+}
+
+Picture: WOImage {
+  data     = imageData;
+  mimeType = imageType;
+}

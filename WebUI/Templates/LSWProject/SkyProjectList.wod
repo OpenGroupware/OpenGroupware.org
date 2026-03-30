@@ -41,10 +41,15 @@ ProjectList: LSWTableView {
                 electFontColor           = "colors_deleted_object";
                 fontColor                = "font_color";
         },
-        { 
-                key      = "startDate"; 
+        {
+                key      = "startDate";
                 labelKey = "startDate" ;
-                sort     = YES; 
+                sort     = YES;
+        },
+        {
+                key      = "endDate";
+                labelKey = "endDate" ;
+                sort     = YES;
         },
   );
 };
@@ -82,10 +87,15 @@ ExtendedProjectList: LSWTableView {
                 electFontColor           = "colors_deleted_object";
                 fontColor                = "font_color";
         },
-        { 
-                key       = "startDate"; 
+        {
+                key       = "startDate";
                 labelKey  = "startDate" ;
-                sort      = YES; 
+                sort      = YES;
+        },
+        {
+                key       = "endDate";
+                labelKey  = "endDate" ;
+                sort      = YES;
         },
   );
 };
