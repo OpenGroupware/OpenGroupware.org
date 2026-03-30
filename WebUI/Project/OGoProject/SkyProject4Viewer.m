@@ -537,6 +537,12 @@ static inline BOOL _showUnknownFiles(id self) {
                          path:url queryString:qs];
 }
 
+/* log tab */
+
+- (BOOL)isLogTabEnabled {
+  return YES;
+}
+
 /* actions */
 
 - (id)placeInClipboard {

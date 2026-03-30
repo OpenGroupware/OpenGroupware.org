@@ -31,6 +31,7 @@ NotesTab:     SkySimpleTabItem { key = "notes";   label = labels.notes;       }
 JournalTab:   SkySimpleTabItem { key = "journal"; label = labels.journal;     }
 JobsTab:      SkySimpleTabItem { key = "jobs";    label = labels.jobsSubview; }
 LinkTab:      SkySimpleTabItem { key = "links";   label = labels.links;       }
+LogTab:       SkySimpleTabItem { key = "logtab"; label = labels.log;         }
 
 Buttons: SkyButtonRow {
   ordering    = ( pubpreview, publisher, mail, test, refresh, clip );
@@ -103,6 +104,10 @@ Notes: SkyNoteList {
 Journal: SkyP4DocJournal {
   fileManager = fileManager;
 }
+
+LogList: SkyObjectLogList { object = project; }
+
+IsLogTabEnabled: WOConditional { condition = isLogTabEnabled; }
 
 /* forms */
 
