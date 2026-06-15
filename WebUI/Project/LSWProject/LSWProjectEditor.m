@@ -1377,7 +1377,7 @@ static NSString *defaultStorageBackend = nil;
 - (BOOL)checkConstraints {
   // TODO: split up method!
   id              project;
-  NSCalendarDate  *begin, *end;
+  NSCalendarDate  *begin;
   NSString        *pName;
   NSArray         *members;
   NSString        *pNumber;
@@ -1386,17 +1386,14 @@ static NSString *defaultStorageBackend = nil;
 
   project = [self snapshot];
   begin   = [project valueForKey:@"startDate"];
-  end     = [project valueForKey:@"endDate"];
   pName   = [project valueForKey:@"name"];
   pNumber = [project valueForKey:@"number"];
   labels  = [self labels];
   error   = [NSMutableString stringWithCapacity:128];
   
-  if (begin == nil) 
+  if (begin == nil)
     [error appendString:[labels valueForKey:@"error_no_start_date"]];
-  if (end == nil) 
-    [error appendString:[labels valueForKey:@"error_no_end_date"]];
-  if (pName == nil || [pName length] == 0) 
+  if (pName == nil || [pName length] == 0)
     [error appendString:[labels valueForKey:@"error_no_project_name"]];
   
   if ([self isInNewMode]) {
