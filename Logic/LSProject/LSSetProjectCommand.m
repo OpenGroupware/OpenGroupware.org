@@ -130,6 +130,10 @@
   
   startDate = [self valueForKey:@"startDate"];
   endDate   = [self valueForKey:@"endDate"];
+
+  if (![startDate isNotNull] || ![endDate isNotNull])
+    return;
+
   if ([startDate compare:endDate] == NSOrderedDescending) {
     [self takeValue:startDate forKey:@"endDate"];
     [self takeValue:endDate forKey:@"startDate"];

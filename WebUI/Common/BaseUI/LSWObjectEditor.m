@@ -372,9 +372,15 @@
   
   value          = _value;
   calendarFormat = [dict valueForKey:@"calendarFormat"];
-  
+
   if ((calendarFormat != nil) && ([value isNotNull])) {
     NSString *time, *tz;
+
+    /* an empty date field clears the value (write EONull, not a parse) */
+    if ([[value stringValue] length] == 0) {
+      [self setAttributeRawValue:[EONull null]];
+      return;
+    }
 
     time = [dict valueForKey:@"time"];
     tz   = [[(id)[self session] timeZone] abbreviation];

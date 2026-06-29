@@ -222,8 +222,8 @@ static NSString *defaultStorageBackend = nil;
   [today setTimeZone:[sn timeZone]];
   
   silvester = [NSCalendarDate dateWithYear:2028
-                              month:12 day:31 
-                              hour:0 minute:0 second:0
+                              month:12 day:31
+                              hour:23 minute:59 second:59
                               timeZone:[sn timeZone]];
 
   [project takeValue:today     forKey:@"startDate"];
@@ -1374,6 +1374,23 @@ static NSString *defaultStorageBackend = nil;
   return [self runCommand:@"team::members", @"object", _teams, nil];
 }
 
+/*
+  The date fields use the '%Y-%m-%d' calendar format (see the .wod). An empty
+  field is allowed (it clears the value), but a non-empty field that does not
+  parse is silently dropped by LSWObjectEditor - so we re-check the raw input
+  here and report it as a user error.
+*/
+- (BOOL)_dateFieldIsInvalid:(NSString *)_field {
+  NSString *raw;
+
+  raw = [[[[self context] request] formValueForKey:_field]
+                                   stringByTrimmingSpaces];
+  if (![raw isNotEmpty])
+    return NO;
+  return [NSCalendarDate dateWithString:raw
+                         calendarFormat:@"%Y-%m-%d"] == nil;
+}
+
 - (BOOL)checkConstraints {
   // TODO: split up method!
   id              project;
@@ -1390,9 +1407,13 @@ static NSString *defaultStorageBackend = nil;
   pNumber = [project valueForKey:@"number"];
   labels  = [self labels];
   error   = [NSMutableString stringWithCapacity:128];
-  
+
   if (begin == nil)
     [error appendString:[labels valueForKey:@"error_no_start_date"]];
+  if ([self _dateFieldIsInvalid:@"startDate"])
+    [error appendString:[labels valueForKey:@"error_invalid_start_date"]];
+  if ([self _dateFieldIsInvalid:@"endDate"])
+    [error appendString:[labels valueForKey:@"error_invalid_end_date"]];
   if (pName == nil || [pName length] == 0)
     [error appendString:[labels valueForKey:@"error_no_project_name"]];
   

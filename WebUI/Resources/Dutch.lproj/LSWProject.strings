@@ -126,6 +126,8 @@
 "error_no_project" = "Fout: geen project geselecteerd!"
 "error_no_project_name" = "Fout in naamveld: invullen a.u.b.!"
 "error_no_start_date" = "Fout in startdatumveld : invullen a.u.b.!"
+"error_invalid_start_date" = "Fout in startdatumveld: ongeldige datum!"
+"error_invalid_end_date" = "Fout in einddatumveld: ongeldige datum!"
 "error_pcode_not_unique" = "Fout in projectcodeveld: is reeds gebruikt!"
 "error_projectContainsDataOrNoAccess" = "Fout: project bevat gegevens of geen toegang!"
 "executant" = "Bewerker"
