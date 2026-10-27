@@ -5,7 +5,7 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
 >
- <form var:action="noteQuickCreate">
+ <form var:action="noteQuickCreate" var:condition="wrapInForm">
 
   <!-- title with new note link -->
   <!-- TODO: can we use <OGo:page-head> ? => different color/clash with tv -->

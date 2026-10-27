@@ -148,6 +148,11 @@ IsTemplateUserCheckBox: WOCheckBox {
   checked = isTemplateUser;
 }
 
+ShowLocationTeamCond: WOConditional {
+  condition = session.locationTeamsAreMailLists;
+  negate    = YES;
+}
+
 TeamPopUp: WOPopUpButton {
   list      = session.locationTeams;
   item      = item;

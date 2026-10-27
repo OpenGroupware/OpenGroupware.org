@@ -146,6 +146,69 @@ static NSComparisonResult compareTeams(id team1, id team2, void *context) {
   return myTeams;
 }
 
+/*
+  OGoLocationTeamsAreMailLists: interim hack, location teams are used to mark
+  mail distribution lists ("Funktionsmail"). If enabled, they are hidden in
+  the scheduler and the account editor has no location team popup.
+*/
+
+- (BOOL)locationTeamsAreMailLists {
+  static int flag = -1;
+  if (flag == -1) {
+    flag = [[NSUserDefaults standardUserDefaults]
+             boolForKey:@"OGoLocationTeamsAreMailLists"] ? 1 : 0;
+  }
+  return flag ? YES : NO;
+}
+
+- (NSArray *)filterSchedulerTeams:(NSArray *)_teams {
+  /* removes mail-list teams from team EOs (requires isLocationTeam) */
+  NSMutableArray *myTeams;
+  NSEnumerator   *e;
+  id             team;
+
+  if (![self locationTeamsAreMailLists] || [_teams count] == 0)
+    return _teams;
+
+  myTeams = [NSMutableArray arrayWithCapacity:[_teams count]];
+  e       = [_teams objectEnumerator];
+  while ((team = [e nextObject]) != nil) {
+    if (![[team valueForKey:@"isLocationTeam"] boolValue])
+      [myTeams addObject:team];
+  }
+  return myTeams;
+}
+
+- (NSArray *)filterSchedulerTeamGlobalIDs:(NSArray *)_gids {
+  /* removes mail-list teams from team global-ids, fetches the flag */
+  NSMutableArray *gids;
+  NSDictionary   *flags;
+  NSEnumerator   *e;
+  EOGlobalID     *gid;
+
+  if (![self locationTeamsAreMailLists] || [_gids count] == 0)
+    return _gids;
+
+  flags = [self runCommand:@"team::get-by-globalID",
+                  @"gids",       _gids,
+                  @"attributes", [NSArray arrayWithObject:@"isLocationTeam"],
+                  @"groupBy",    @"globalID", nil];
+
+  gids = [NSMutableArray arrayWithCapacity:[_gids count]];
+  e    = [_gids objectEnumerator];
+  while ((gid = [e nextObject]) != nil) {
+    id info = [flags objectForKey:gid];
+    if (![[info valueForKey:@"isLocationTeam"] boolValue])
+      [gids addObject:gid];
+  }
+  return gids;
+}
+
+- (NSArray *)schedulerTeams {
+  [self _fetchTeamsOnDemand];
+  return [self filterSchedulerTeams:self->teams];
+}
+
 - (NSArray *)teamsWithNames:(NSArray *)_names {
   // TODO: who uses this??
   // Note: might have side-effects with OGoShowMemberTeamsOnly (only searches

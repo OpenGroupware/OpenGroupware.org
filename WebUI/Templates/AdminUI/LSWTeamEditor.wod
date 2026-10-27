@@ -155,7 +155,7 @@ ExportTeam: OGoDefaultEditField {
 /* labels */
 
 AccountLabel:         WOString { value = labels.members;           }
-LocationTeamLabel:    WOString { value = labels.locationTeamLabel; }
+LocationTeamLabel:    WOString { value = locationTeamLabel;        }
 SearchAccounts:       WOString { value = labels.searchAccounts;    }
 AddAccountsAttribute: WOString { value = labels.addAccounts;       }
 ReadOnlyLabel:        WOString { value = labels.isreadonly;        }

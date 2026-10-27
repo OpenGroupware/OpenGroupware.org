@@ -346,9 +346,17 @@ static BOOL debugOn = YES;
                        @"attributes",    contactPermAttrs, nil];
     
   if ([objects count] != [_oids count]) {
+    NSArray        *foundGIDs;
+    NSMutableArray *missing;
+
+    foundGIDs = [objects valueForKey:@"globalID"];
+    missing   = [NSMutableArray arrayWithArray:_oids];
+    if (foundGIDs != nil) [missing removeObjectsInArray:foundGIDs];
     [self errorWithFormat:
-	    @"%s: could not fetch all persons oids[%d] objects[%d]",
-            __PRETTY_FUNCTION__, [_oids count], [objects count]];
+	    @"%s: could not fetch all persons oids[%d] objects[%d],"
+            @" requested=%@ missing=%@",
+            __PRETTY_FUNCTION__, [_oids count], [objects count],
+            _oids, missing];
   }
   return objects;
 }

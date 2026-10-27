@@ -166,16 +166,16 @@
 - (id)objectForType:(NGMimeType *)_type {
   id object;
 
-  object = [self->type2content objectForKey:[_type stringValue]];
-  if (object != nil) return object;
-  
   if (_type == nil) {
-    /* this can happen if called by OGoSession -removeTransferObject */
-    [self warnWithFormat:
-            @"missing type argument for retrieving object from "
-            @"the pasteboard: %@", self];
+    /* Benign: OGoSession -removeTransferObject / -getTransferObject pass
+       the result of -preferredTransferObjectType, which is nil when the
+       pasteboard is empty (no declared types). Treat as "nothing to
+       retrieve" silently. */
     return nil;
   }
+
+  object = [self->type2content objectForKey:[_type stringValue]];
+  if (object != nil) return object;
   if (![self isTypeDeclared:_type]) {
     [self warnWithFormat:
             @"type %@ is not declared for pasteboard: %@",_type,self];

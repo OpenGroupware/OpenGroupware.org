@@ -134,7 +134,7 @@ static NSArray  *UserDefKeys        = nil;
     t    = [ts objectAtIndex:i];
     isLT = [[t valueForKey:@"isLocationTeam"] boolValue];
       
-    if (!isLT)
+    if (!isLT || [[self session] locationTeamsAreMailLists])
       [self->teams addObject:t];
   }
 
@@ -195,7 +195,7 @@ static NSArray  *UserDefKeys        = nil;
       t    = [ts objectAtIndex:i];
       isLT = [[t valueForKey:@"isLocationTeam"] boolValue];
 
-      if (!isLT)
+      if (!isLT || [[self session] locationTeamsAreMailLists])
         [self->teams addObject:t];
     }
   } 

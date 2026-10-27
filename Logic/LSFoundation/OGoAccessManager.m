@@ -896,9 +896,13 @@ static Class   StrClass = Nil;
     if (warnedEntities == nil) {
       warnedEntities = [[NSMutableSet alloc] initWithCapacity:16];
 
-      /* otherwise we get a lot of warnings ... */
+      /* No dedicated handler exists for these; access derives from the
+         parent record (e.g. CompanyValue from Company, Note from Project
+         or Company). Suppress to keep the log readable. */
       [warnedEntities addObject:@"Telephone"];
       [warnedEntities addObject:@"Address"];
+      [warnedEntities addObject:@"Note"];
+      [warnedEntities addObject:@"CompanyValue"];
     }
     
     if (![warnedEntities containsObject:entityName]) {
