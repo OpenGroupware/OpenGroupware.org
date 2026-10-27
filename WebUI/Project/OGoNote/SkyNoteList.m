@@ -191,6 +191,13 @@ static NGMimeType *eoNoteType    = nil;
   self->printMode = _printMode;
 }
 
+- (BOOL)wrapInForm {
+  /* In print mode the entire quick-create UI (the only form-action
+     content) is gated off, so the surrounding <form> is dead weight
+     and ends up nested in whatever embeds SkyNotePrint => no form. */
+  return self->printMode ? NO : YES;
+}
+
 - (id)printNotes {
   WOResponse *r;
 
