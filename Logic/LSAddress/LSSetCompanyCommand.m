@@ -122,10 +122,42 @@ static NSString *autoNumberPrefix = @"OGo";
   
   /* handle already existing attributes */
   obj      = [self object];
-  extAttrs = [obj valueForKey:@"companyValue"]; // TODO: who does that?
-  // TODO: autofetch if 'companyValue' isn't set?
-  if (extAttrs == nil)
-    [self warnWithFormat:@"companyValue is not set, might DUP attrs."];
+  extAttrs = [obj valueForKey:@"companyValue"];
+  if (extAttrs == nil) {
+    /* Caller did not pre-fetch the existing extended attributes (typically
+       done via person::get-extattrs / enterprise::get-extattrs). Without
+       them, the "handle new attributes" pass below would re-insert
+       attributes that already exist in the DB and create duplicate rows.
+       => Autofetch directly via LSFetchExtendedAttributesCommand. */
+    Class fetchCls;
+
+    fetchCls = NSClassFromString(@"LSFetchExtendedAttributesCommand");
+    if (fetchCls != Nil) {
+      id fetchCmd;
+
+      fetchCmd = [[fetchCls alloc] initForOperation:@"get-extattrs"
+                                           inDomain:@"company"];
+      [fetchCmd takeValue:[NSArray arrayWithObject:obj] forKey:@"objects"];
+      [fetchCmd takeValue:@"companyValue"              forKey:@"relationKey"];
+      [fetchCmd runInContext:_context];
+      [fetchCmd release];
+      extAttrs = [obj valueForKey:@"companyValue"];
+
+      /* The fetch pushes the stored values back onto the object, which
+         overwrites the values passed to this command. Reapply them. */
+      for (i = 0, cnt = [extAttrs count]; i < cnt; i++) {
+        NSString *attr;
+        id       value;
+
+        attr  = [[extAttrs objectAtIndex:i] valueForKey:@"attribute"];
+        value = [self valueForKey:attr];
+        if (value != nil) [obj takeValue:value forKey:attr];
+      }
+    }
+    if (extAttrs == nil) {
+      [self warnWithFormat:@"companyValue is not set, might DUP attrs."];
+    }
+  }
   
   for (i = 0, cnt = [extAttrs count]; i < cnt; i++) {
     id extAttr, value;
