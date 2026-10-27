@@ -339,7 +339,7 @@ AddParticipantsAttribute:    WOString { value = labels.addParticipants;    }
 SearchParticipantsAttribute: WOString { value = labels.searchParticipants; }
 
 TeamsPopUp: WOPopUpButton {
-  list              = session.teams;
+  list              = session.schedulerTeams;
   item              = item;
   string            = item.description;
   selection         = searchTeam;

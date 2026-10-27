@@ -141,6 +141,7 @@ license_modules            = "Modules";
 license_user               = "Contact";
 licensesTab                = "licenses";
 locationTeamLabel          = "Location Team";
+mailListTeamLabel          = "Distribution List";
 locked                     = "locked";
 loginLabel                 = "Login";
 mailConfig                 = "mail";

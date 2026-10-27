@@ -242,6 +242,13 @@
 - (NSArray *)teams;
 - (NSArray *)locationTeams;
 - (NSArray *)teamsWithNames:(NSArray *)_names;
+
+/* OGoLocationTeamsAreMailLists hack: location teams mark mail lists */
+- (BOOL)locationTeamsAreMailLists;
+- (NSArray *)schedulerTeams;
+- (NSArray *)filterSchedulerTeams:(NSArray *)_teams;
+- (NSArray *)filterSchedulerTeamGlobalIDs:(NSArray *)_gids;
+
 - (NSArray *)accounts;
 - (NSArray *)allAccounts;
 - (NSArray *)resources;

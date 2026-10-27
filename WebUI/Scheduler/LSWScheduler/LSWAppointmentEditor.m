@@ -553,7 +553,15 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   snp         = [self snapshot];
   appointment = [self object];
   teams       = [self _fetchTeams];
-  
+
+  /* hide mail-list teams, but keep one already used as the access team */
+  teams = [[self session] filterSchedulerTeams:teams];
+  if ([[self->selectedAccessTeam valueForKey:@"isLocationTeam"] boolValue] &&
+      ![teams containsObject:self->selectedAccessTeam])
+  {
+    teams = [teams arrayByAddingObject:self->selectedAccessTeam];
+  }
+
   ASSIGN(self->accessTeams, teams);
   
   if ([self isInNewMode]) {

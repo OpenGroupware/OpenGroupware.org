@@ -275,6 +275,13 @@ static BOOL IsMailConfigEnabled = NO;
   return (value == nil) ? NO : [value boolValue];
 }
 
+- (NSString *)locationTeamLabel {
+  /* OGoLocationTeamsAreMailLists hack: location teams mark mail lists */
+  return [[self labels] valueForKey:
+                          [[self session] locationTeamsAreMailLists]
+                          ? @"mailListTeamLabel" : @"locationTeamLabel"];
+}
+
 - (void)setIsReadonly:(BOOL)_flag {
   [[self snapshot] takeValue:[NSNumber numberWithBool:_flag]
                    forKey:@"isReadonly"];

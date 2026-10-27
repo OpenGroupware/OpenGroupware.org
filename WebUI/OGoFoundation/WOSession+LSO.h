@@ -109,6 +109,10 @@
 - (NSArray *)teams;
 - (NSArray *)locationTeams;
 - (NSArray *)teamsWithNames:(NSArray *)_names;
+- (BOOL)locationTeamsAreMailLists;
+- (NSArray *)schedulerTeams;
+- (NSArray *)filterSchedulerTeams:(NSArray *)_teams;
+- (NSArray *)filterSchedulerTeamGlobalIDs:(NSArray *)_gids;
 - (void)fetchTeams;
 
 /* accounts */

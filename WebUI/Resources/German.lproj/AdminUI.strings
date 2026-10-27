@@ -86,6 +86,7 @@ license_modules        = "Module";
 license_user           = "Kontakt";
 licensesTab            = "Lizenzen";
 locationTeamLabel      = "Standort";
+mailListTeamLabel      = "Funktionsmail";
 locked                 = "gesperrt";
 login                  = "Login";
 loginLabel             = "Login";

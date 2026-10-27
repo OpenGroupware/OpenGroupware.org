@@ -180,16 +180,21 @@ static BOOL     showOnlyMemberTeams  = NO;
 }
 
 - (NSArray *)_fetchAllTeamGlobalIDs {
-  return [self runCommand:@"team::extended-search",
+  NSArray *gids;
+
+  gids = [self runCommand:@"team::extended-search",
 	         @"fetchGlobalIDs", yesNum,
                  @"onlyTeamsWithAccount", 
                  (showOnlyMemberTeams
                   ? [[self session] activeAccount] : (id)[NSNull null]),
 	         @"description", @"%%", nil];
+  return [[self session] filterSchedulerTeamGlobalIDs:gids];
 }
 
 - (NSArray *)_fetchTeamGlobalIDsMatching:(NSString *)_text max:(int)_max {
-  return [self runCommand:@"team::extended-search",
+  NSArray *gids;
+
+  gids = [self runCommand:@"team::extended-search",
 	         @"fetchGlobalIDs",       yesNum,
 	         @"operator",             @"OR",
 	         @"description",          _text,
@@ -198,6 +203,7 @@ static BOOL     showOnlyMemberTeams  = NO;
                  (showOnlyMemberTeams
                   ? [[self session] activeAccount] : (id)[NSNull null]),
 	       nil];
+  return [[self session] filterSchedulerTeamGlobalIDs:gids];
 }
 
 - (NSArray *)_fetchAccountGlobalIDsMatching:(NSString *)_text max:(int)_max {
@@ -568,6 +574,7 @@ static BOOL     showOnlyMemberTeams  = NO;
     
     if (showOnlyMemberTeams) {
       tmp = [self _fetchTeamsOfAccountEO:[[self session] activeAccount]];
+      tmp = [[self session] filterSchedulerTeams:tmp];
       tmp = [tmp valueForKey:@"globalID"];
     }
     else

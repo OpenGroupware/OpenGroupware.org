@@ -147,6 +147,13 @@ static BOOL IsMailConfigEnabled = NO;
                         ? @"yesValue" : @"noValue"];
 }
 
+- (NSString *)locationTeamLabel {
+  /* OGoLocationTeamsAreMailLists hack: location teams mark mail lists */
+  return [[self labels] valueForKey:
+                          [[self session] locationTeamsAreMailLists]
+                          ? @"mailListTeamLabel" : @"locationTeamLabel"];
+}
+
 - (NSUserDefaults *)defaults {
   return self->defaults;
 }

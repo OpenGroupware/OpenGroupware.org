@@ -1361,6 +1361,7 @@ static BOOL         showOnlyMemberTeams = NO;
                  (showOnlyMemberTeams
                   ? [[self session] activeAccount] : (id)[NSNull null]),
                 nil];
+    res = [[self session] filterSchedulerTeamGlobalIDs:res];
     if (res != nil) {
       res = [self runCommand:@"team::get-by-globalID",
                   @"gids",       res,

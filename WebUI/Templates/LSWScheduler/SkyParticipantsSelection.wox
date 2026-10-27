@@ -27,7 +27,8 @@
   
     <OGo:attribute label="$searchLabel" editfont="1">
       <nobr>
-        <var:popup list="session.teams" item="item" string="item.description"
+        <var:popup list="session.schedulerTeams" item="item"
+                   string="item.description"
                    selection="searchTeam" noSelectionString="noSelectionString"
                    const:onChange="document.editform.submit();" />
         <input type="text"   var:value="searchParticipantText" />
@@ -80,7 +81,8 @@
 
   <var:if condition="plainMode">
     <nobr>
-      <var:popup list="session.teams" item="item" string="item.description"
+      <var:popup list="session.schedulerTeams" item="item"
+                 string="item.description"
                  selection="searchTeam" noSelectionString="noSelectionString"
                  const:onChange="document.editform.submit();" />
       <input type="text"   var:value="searchParticipantText" />
