@@ -66,15 +66,21 @@ static inline NSMutableDictionary *_vaToDict(OGoSession *self, va_list *va) {
   arguments:(NSDictionary *)_args
 {
   NSString *s;
-  
-  [self logWithFormat:@"command %@(%@) failed:\n"
-          @"  name:   %@"
-          @"  reason: %@"
+
+  /* Promoted from logWithFormat: to errorWithFormat: so the exception
+     name/reason/userInfo is captured at ERROR level in the syslog.
+     Without this, all that survives upstream is the opaque
+     "failed: <cmd>(...)" line, which omits the actual SQL or logic
+     error. */
+  [self errorWithFormat:
+          @"command %@(%@) failed:\n"
+          @"  name:   %@\n"
+          @"  reason: %@\n"
           @"  info:   %@",
-	  _command,
-	  _args ? _args : (NSDictionary *)@"<void>", // TODO, hm ;-)
+          _command,
+          _args ? _args : (NSDictionary *)@"<void>",
           [_exc name], [_exc reason],
-	  [_exc userInfo] ? [_exc userInfo] : (NSDictionary *)@"<none>"];
+          [_exc userInfo] ? [_exc userInfo] : (NSDictionary *)@"<none>"];
 
   s = [NSString stringWithFormat:@"%@: %@ %@",
 		_command, [_exc name], [_exc reason]];

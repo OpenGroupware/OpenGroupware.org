@@ -230,10 +230,32 @@
 }
 
 - (void)setIsClicked:(BOOL)_clicked {
-  self->sccFlags.isClicked = _clicked ? 1 : 0;  
+  self->sccFlags.isClicked = _clicked ? 1 : 0;
 }
 - (BOOL)isClicked {
   return self->sccFlags.isClicked ? YES : NO;
+}
+
+/* KVC */
+
+- (void)unableToSetNilForKey:(NSString *)_key {
+  /* Setters for visibility/condition/structuredMode take a primitive BOOL,
+     so KVC can't unbox nil. nil bindings are common (e.g. an unset
+     NSUserDefault for an "expand_X" preference) => treat as NO silently
+     instead of logging. Does not persist anything to the user default. */
+  if ([_key isEqualToString:@"visibility"]) {
+    self->sccFlags.visibility = 0;
+    return;
+  }
+  if ([_key isEqualToString:@"condition"]) {
+    self->sccFlags.condition = 0;
+    return;
+  }
+  if ([_key isEqualToString:@"structuredMode"]) {
+    self->sccFlags.structuredMode = 0;
+    return;
+  }
+  [super unableToSetNilForKey:_key];
 }
 
 @end /* SkyCollapsibleContent */

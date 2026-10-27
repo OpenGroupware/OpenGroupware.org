@@ -475,9 +475,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 - (void)_setSelectedAccessTeamTo:(NSString *)_teamName
   inArray:(NSArray *)_teams
 {
-  /* 
-     searches the accessTeams array for all-intranet and sets that as the 
-     selected team 
+  /*
+     searches the accessTeams array for the user's configured default
+     team (e.g. "all intranet") and sets that as the selected team
   */
   unsigned i, cnt;
   
@@ -491,8 +491,11 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     }
   }
   [self warnWithFormat:
-          @"did not find configured default-access team: %@",
-          _teamName];
+          @"did not find configured default-access team: %@"
+          @" (account=%@, available=%@)",
+          _teamName,
+          [[[self existingSession] activeAccount] valueForKey:@"login"],
+          [_teams valueForKey:@"description"]];
 }
 
 - (NSString *)timeStringForHour:(int)_hour minute:(int)_minute {
