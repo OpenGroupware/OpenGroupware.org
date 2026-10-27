@@ -334,6 +334,19 @@ static BOOL logBundleLoading          = NO;
 	  [_notification name], obj, NSStringFromClass([obj class]), d];
 }
 
+/* edition */
+
+- (BOOL)isEnterpriseEdition {
+  /* enables the enterprise-only template parts, e.g. the access checkbox
+     in SkyContactSubEditor and the banner slots in the OOo frame */
+  static int flag = -1;
+  if (flag == -1) {
+    flag = [[NSUserDefaults standardUserDefaults]
+             boolForKey:@"OGoIsEnterpriseEdition"] ? 1 : 0;
+  }
+  return flag ? YES : NO;
+}
+
 /* deprecated */
 
 - (BOOL)hasLogTab {
