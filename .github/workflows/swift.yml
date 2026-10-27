@@ -3,6 +3,7 @@ name: Build and Test
 on:
   push:
   pull_request:
+  workflow_dispatch:
   schedule:
     - cron: "20 15 * * 1"
 
@@ -14,14 +15,15 @@ jobs:
       matrix:
         image:
           - ubuntu:noble
+          - ubuntu:resolute
     container: ${{ matrix.image }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: OGo
       - name: Checkout SOPE Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: OpenGroupware/SOPE
           ref: refs/heads/develop

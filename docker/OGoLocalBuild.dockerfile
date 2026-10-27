@@ -8,7 +8,7 @@
 # Build from the OGo repo root:
 #   docker build -t ogo-local-dev -f docker/OGoLocalBuild.dockerfile .
 #
-FROM ubuntu:noble
+FROM ubuntu:resolute
 
 LABEL maintainer="Helge Heß <me@helgehess.eu>"
 
@@ -42,9 +42,9 @@ RUN apt-get -y -qq update \
 
 
 # Grab the SOPE sources from GitHub (tagged release, cached layer).
-ENV SOPE_VERSION=6.0.6
+ENV SOPE_VERSION=6.0.8
 ENV OGO_SOVERSION=5.5
-ENV OGO_VERSION=${OGO_SOVERSION}.25
+ENV OGO_VERSION=${OGO_SOVERSION}.30
 ENV OGO_ORGANIZATION=https://github.com/OpenGroupware
 ENV SOPE_REPO=${OGO_ORGANIZATION}/SOPE
 
