@@ -39,6 +39,13 @@ ProjectEndDate: WOString {
   formatter = session.formatDate;
 }
 
+ProjectKindLabel:   WOString { value = labels.projectKind;   }
+ProjectStatusLabel: WOString { value = labels.projectStatus; }
+ProjectKind:        WOString { value = projectKindLabel;     }
+ProjectStatus:      WOString { value = projectStatusLabel;   }
+HasProjectKind:     WOConditional { condition = hasProjectKind;   }
+HasProjectStatus:   WOConditional { condition = hasProjectStatus; }
+
 ProjectLink: WOHyperlink {
   directActionName = "activate";
   ?oid             = project.projectId;

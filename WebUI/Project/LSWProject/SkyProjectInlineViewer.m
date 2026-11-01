@@ -174,6 +174,36 @@
   return self->project;
 }
 
+- (NSString *)projectKind {
+  return [[self project] valueForKey:@"kind"];
+}
+- (BOOL)hasProjectKind {
+  return [[self projectKind] isNotEmpty];
+}
+- (NSString *)projectKindLabel {
+  NSString *kind, *label;
+  
+  if (![(kind = [self projectKind]) isNotEmpty])
+    return nil;
+  label = [[self labels] valueForKey:kind];
+  return [label isNotEmpty] ? label : kind;
+}
+
+- (NSString *)projectStatus {
+  return [[self project] valueForKey:@"status"];
+}
+- (BOOL)hasProjectStatus {
+  return [[self projectStatus] isNotEmpty];
+}
+- (NSString *)projectStatusLabel {
+  NSString *status, *label;
+  
+  if (![(status = [self projectStatus]) isNotEmpty])
+    return nil;
+  label = [[self labels] valueForKey:status];
+  return [label isNotEmpty] ? label : status;
+}
+
 - (BOOL)isEditDisabled {
   SkyAccessManager *accessManager;
   

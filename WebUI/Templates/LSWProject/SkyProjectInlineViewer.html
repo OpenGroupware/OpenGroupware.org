@@ -24,6 +24,22 @@
       <#ProjectEndDate/>
     </#Font></#SubValueCell>
   </tr>
+  <#HasProjectKind>
+    <tr>
+      <#SubAttributeCell>
+        <#Font><#ProjectKindLabel/>:</#Font>
+      </#SubAttributeCell>
+      <#SubValueCell><#Font><#ProjectKind/></#Font></#SubValueCell>
+    </tr>
+  </#HasProjectKind>
+  <#HasProjectStatus>
+    <tr>
+      <#SubAttributeCell>
+        <#Font><#ProjectStatusLabel/>:</#Font>
+      </#SubAttributeCell>
+      <#SubValueCell><#Font><#ProjectStatus/></#Font></#SubValueCell>
+    </tr>
+  </#HasProjectStatus>
 
   <#ProjectViewer />
 
