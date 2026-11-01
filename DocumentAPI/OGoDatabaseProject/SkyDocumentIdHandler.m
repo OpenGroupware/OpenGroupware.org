@@ -157,8 +157,7 @@ static EOSQLQualifier *trueQualifier = nil;
   
   if (trueQualifier == nil) {
     trueQualifier = [[EOSQLQualifier alloc] initWithEntity:doc
-					    qualifierFormat:@"1 = 1"
-					    argumentsArray:nil];
+					    qualifierFormat:@"1 = 1"];
   }
   if (![channel selectAttributes:attrs
                 describedByQualifier:trueQualifier
